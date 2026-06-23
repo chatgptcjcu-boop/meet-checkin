@@ -3,164 +3,281 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>臺灣道法總會－教育委員會 視訊會議入口</title>
+    <title>臺灣道法總會－教育委員會 會議報到與簽退</title>
+    <meta property="og:title" content="2026宮廟管理師職能基準 iCAP推動會議">
+    <meta property="og:description" content="第一次評核委員委員會議 (2026/06/30) - 請進行視訊簽到/簽退。">
+    <meta property="og:type" content="website">
+    
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        body {
-            font-family: 'Noto Sans TC', sans-serif;
-            /* 帶有莊重感的漸層背景 */
-            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+        .custom-shadow { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+        .glass-panel { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        #loadingOverlay, #successOverlay { display: none; }
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3); border-radius: 50%;
+            border-top: 4px solid #ffffff; width: 40px; height: 40px;
+            animation: spin 1s linear infinite;
         }
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-        }
-        .header-gradient {
-            /* 莊重且帶有教育/道法意象的深藍與金色點綴 */
-            background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%);
-            border-bottom: 4px solid #d4af37; /* 香檳金邊 */
-        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .video-container { position: relative; width: 100%; max-width: 200px; margin: 0 auto; border-radius: 0.5rem; overflow: hidden; background: #e5e7eb; border: 2px solid #cbd5e1; }
+        #webcam { width: 100%; height: 150px; object-fit: cover; transform: scaleX(-1); }
+        #capturedPhoto { display: none; width: 100%; height: 150px; object-fit: cover; transform: scaleX(-1); }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="bg-gray-100 min-h-screen flex flex-col font-sans" style="background-image: url('https://www.transparenttextures.com/patterns/cubes.png');">
 
-    <!-- 最上面的網頁框架：固定顯示會議名稱 -->
-    <header class="header-gradient text-white w-full py-4 px-6 shadow-md fixed top-0 z-50">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="flex-1">
-                <p class="text-sm md:text-base text-gray-200 font-medium tracking-wider mb-1">
-                    臺灣道法總會－教育委員會
-                </p>
-                <h1 class="text-lg md:text-2xl font-bold tracking-wide leading-snug">
-                    2026宮廟管理師職能基準 iCAP推動與職能導向課程發展
-                </h1>
-            </div>
-            <div class="bg-white/20 px-4 py-2 rounded-lg border border-white/30 flex items-center gap-2 whitespace-nowrap">
-                <i class="fa-solid fa-circle text-red-500 animate-pulse text-xs"></i>
-                <span class="text-sm font-medium tracking-widest">同步錄影中</span>
+    <header class="bg-blue-900 text-white shadow-md border-b-4 border-yellow-500 z-10" id="headerArea">
+        <div class="max-w-4xl mx-auto px-4 py-6 text-center">
+            <h2 class="text-sm md:text-base font-semibold text-yellow-300 tracking-wider mb-1">臺灣道法總會－教育委員會</h2>
+            <h1 class="text-xl md:text-3xl font-bold leading-snug">
+                2026宮廟管理師職能基準<br class="hidden md:block">
+                iCAP推動與職能導向課程發展
+            </h1>
+            <div class="mt-3 inline-block bg-blue-800 rounded-full px-4 py-1 text-sm md:text-base font-medium tracking-wide">
+                第一次評核委員委員會議 ｜ 2026/06/30
             </div>
         </div>
     </header>
 
-    <!-- 主要報到內容區塊 -->
-    <main class="flex-grow flex items-center justify-center p-4 mt-28 mb-12">
-        <div class="glass-panel w-full max-w-lg rounded-2xl overflow-hidden transform transition-all">
+    <main class="flex-grow flex items-center justify-center p-4 my-4" id="formArea">
+        <div class="glass-panel w-full max-w-md rounded-2xl custom-shadow p-6 md:p-8 border border-gray-200">
             
-            <!-- 會議資訊 -->
-            <div class="bg-gray-50 p-8 border-b border-gray-100 text-center">
-                <div class="inline-block p-4 rounded-full bg-blue-50 text-blue-800 mb-4">
-                    <i class="fa-solid fa-users-viewfinder text-4xl"></i>
-                </div>
-                <h2 class="text-2xl font-bold text-gray-800 mb-2">第一次評核委員委員會議</h2>
-                <div class="flex items-center justify-center gap-2 text-gray-600 font-medium bg-gray-200/50 inline-flex px-4 py-1.5 rounded-full">
-                    <i class="fa-regular fa-calendar-check"></i>
-                    <span>會議日期：2026 / 06 / 30</span>
-                </div>
+            <div class="flex bg-gray-200 rounded-lg p-1 mb-6 shadow-inner">
+                <button type="button" id="tabSignIn" onclick="switchMode('signin')" class="flex-1 py-2 text-center text-sm font-bold rounded-md bg-white text-blue-700 shadow transition-all">
+                    會議簽到 (進場)
+                </button>
+                <button type="button" id="tabSignOut" onclick="switchMode('signout')" class="flex-1 py-2 text-center text-sm font-bold rounded-md text-gray-500 hover:text-gray-700 transition-all">
+                    會議簽退 (離場)
+                </button>
             </div>
 
-            <!-- 報到表單 -->
-            <div class="p-8">
-                <form id="joinForm" class="space-y-6">
-                    
-                    <!-- 中文名稱輸入 -->
-                    <div>
-                        <label for="userName" class="block text-sm font-bold text-gray-700 mb-2">
-                            <i class="fa-solid fa-user mr-1 text-gray-400"></i> 中文名稱 (真實姓名)
-                        </label>
-                        <input type="text" id="userName" name="userName" required
-                            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-800 placeholder-gray-400"
-                            placeholder="請輸入您的完整中文姓名">
-                    </div>
+            <div class="text-center mb-6">
+                <h3 id="modeTitle" class="text-2xl font-bold text-gray-800">會議視訊簽到</h3>
+                <p id="modeSubtitle" class="text-gray-500 text-sm mt-1">為核實身分，請允許相機權限拍攝大頭照</p>
+            </div>
 
-                    <!-- 身份別選擇 -->
-                    <div>
-                        <label for="userRole" class="block text-sm font-bold text-gray-700 mb-2">
-                            <i class="fa-solid fa-id-badge mr-1 text-gray-400"></i> 身份別
-                        </label>
-                        <div class="relative">
-                            <select id="userRole" name="userRole" required
-                                class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-800 appearance-none bg-white">
-                                <option value="" disabled selected>請選擇您的參與身份...</option>
-                                <option value="評核委員">評核委員</option>
-                                <option value="計畫主持人/共同主持人">計畫主持人 / 共同主持人</option>
-                                <option value="課程專家學者">課程專家學者</option>
-                                <option value="教育委員會幹部">教育委員會幹部</option>
-                                <option value="專案行政助理">專案行政助理</option>
-                                <option value="列席貴賓">列席貴賓 / 旁聽</option>
-                            </select>
-                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500">
-                                <i class="fa-solid fa-chevron-down text-sm"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 錄影同意勾選 -->
-                    <div class="flex items-start mt-4 bg-yellow-50 p-4 rounded-lg border border-yellow-200">
-                        <div class="flex items-center h-5">
-                            <input id="recordingConsent" name="recordingConsent" type="checkbox" required
-                                class="w-5 h-5 text-blue-600 bg-white border-gray-300 rounded focus:ring-blue-500 focus:ring-2 cursor-pointer">
-                        </div>
-                        <div class="ml-3 text-sm">
-                            <label for="recordingConsent" class="font-bold text-gray-800 cursor-pointer">我已了解並同意會議錄影</label>
-                            <p class="text-gray-600 mt-1">為確保專案推動之記錄完整性，本視訊會議將全程進行同步錄影、錄音。加入會議即表示您同意授權主辦單位記錄。</p>
-                        </div>
-                    </div>
-
-                    <!-- 提交按鈕 -->
-                    <button type="submit" id="submitBtn"
-                        class="w-full bg-gradient-to-r from-[#1e3c72] to-[#2a5298] hover:from-[#152a55] hover:to-[#1e3c72] text-white font-bold py-4 px-6 rounded-lg shadow-lg transform transition-all hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-blue-300 flex items-center justify-center gap-3">
-                        <i class="fa-brands fa-google"></i>
-                        <span>加入 Google Meet 視訊會議</span>
-                    </button>
-                </form>
+            <form id="joinForm" class="space-y-4">
                 
-                <!-- 載入中動畫 (預設隱藏) -->
-                <div id="loadingState" class="hidden text-center py-6">
-                    <div class="inline-block animate-spin rounded-full h-10 w-10 border-4 border-blue-500 border-t-transparent mb-4"></div>
-                    <p class="text-gray-800 font-bold" id="loadingText">正在為您準備會議室...</p>
-                    <p class="text-sm text-gray-500 mt-2">請確保您的麥克風與攝影機已準備就緒</p>
+                <div class="text-center">
+                    <div class="video-container shadow-sm mb-2">
+                        <video id="webcam" autoplay playsinline></video>
+                        <img id="capturedPhoto" alt="大頭照">
+                        <div id="cameraStatus" class="absolute inset-0 flex items-center justify-center text-xs text-gray-500 p-2 bg-gray-100">
+                            正在存取相機...<br>(請點擊允許)
+                        </div>
+                    </div>
                 </div>
-            </div>
+
+                <div>
+                    <label for="userName" class="block text-sm font-semibold text-gray-700 mb-1">真實中文名稱 <span class="text-red-500">*</span></label>
+                    <input type="text" id="userName" required placeholder="例如：王小明"
+                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                </div>
+
+                <div>
+                    <label for="userRole" class="block text-sm font-semibold text-gray-700 mb-1">身份別 <span class="text-red-500">*</span></label>
+                    <div class="relative">
+                        <select id="userRole" required
+                            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white transition-colors">
+                            <option value="" disabled selected>請選擇您的身份</option>
+                            <option value="評核委員">評核委員</option>
+                            <option value="專家顧問">專家顧問</option>
+                            <option value="專案工作人員">專案工作人員</option>
+                            <option value="列席人員">列席人員</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 mt-2">
+                    <label class="flex items-start space-x-3 cursor-pointer">
+                        <input type="checkbox" id="recordConsent" required
+                            class="mt-1 w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                        <span id="consentText" class="text-sm text-gray-700 leading-relaxed">
+                            <strong class="text-red-600">【會議簽到與錄影同意】</strong><br>
+                            本人同意於簽到時拍攝大頭照存證，並同意於視訊會議期間進行同步全程錄影錄音。
+                        </span>
+                    </label>
+                </div>
+
+                <button type="submit" id="submitBtn"
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition-transform transform hover:-translate-y-0.5 mt-2 flex justify-center items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    拍攝簽到照並進入會議
+                </button>
+
+            </form>
         </div>
     </main>
 
-    <footer class="text-center text-sm text-gray-500 pb-6">
+    <footer class="bg-gray-800 text-gray-400 text-center py-4 text-xs">
         &copy; 2026 臺灣道法總會 教育委員會 版權所有
     </footer>
 
+    <div id="loadingOverlay" class="fixed inset-0 bg-blue-900 bg-opacity-95 z-50 flex flex-col items-center justify-center">
+        <div class="spinner mb-4"></div>
+        <h2 id="loadingTitle" class="text-xl text-white font-bold tracking-wide">正在完成簽到與加密傳輸...</h2>
+        <p id="loadingSubtitle" class="text-blue-200 text-sm mt-2">（完成後將為您開啟會議室）</p>
+    </div>
+
+    <div id="successOverlay" class="fixed inset-0 bg-green-900 bg-opacity-95 z-50 flex flex-col items-center justify-center text-center px-4">
+        <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mb-6">
+            <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+        </div>
+        <h2 class="text-3xl text-white font-bold tracking-wide mb-2">簽退手續已完成</h2>
+        <p class="text-green-200 text-lg">感謝您的參與，辛苦了！<br>現在您可以直接關閉此網頁與視窗。</p>
+    </div>
+
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const form = document.getElementById('joinForm');
-            const loadingState = document.getElementById('loadingState');
+        const GOOGLE_APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxUVpEEYSaReyFSOVyBbfO9Nd-ecKAd2OlS7Vf6FKcDi182nV2BU7wsVPIWTXxfaPyjWg/exec";
+        const googleMeetUrl = "https://meet.google.com/kci-xjtu-dmr?hs=122";
+
+        let currentMode = 'signin';
+
+        function switchMode(mode) {
+            currentMode = mode;
+            const tabIn = document.getElementById('tabSignIn');
+            const tabOut = document.getElementById('tabSignOut');
+            const title = document.getElementById('modeTitle');
+            const btn = document.getElementById('submitBtn');
+            const consentText = document.getElementById('consentText');
             
-            const googleMeetUrl = "https://meet.google.com/kci-xjtu-dmr";
+            if(mode === 'signin') {
+                tabIn.className = "flex-1 py-2 text-center text-sm font-bold rounded-md bg-white text-blue-700 shadow transition-all";
+                tabOut.className = "flex-1 py-2 text-center text-sm font-bold rounded-md text-gray-500 hover:text-gray-700 transition-all";
+                title.innerText = "會議視訊簽到";
+                btn.className = "w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition-transform transform hover:-translate-y-0.5 mt-2 flex justify-center items-center";
+                btn.innerHTML = `<svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>拍攝簽到照並進入會議`;
+                consentText.innerHTML = `<strong class="text-red-600">【會議簽到與錄影同意】</strong><br>本人同意於簽到時拍攝大頭照存證，並同意於視訊會議期間進行同步全程錄影錄音。`;
+            } else {
+                tabOut.className = "flex-1 py-2 text-center text-sm font-bold rounded-md bg-white text-green-700 shadow transition-all";
+                tabIn.className = "flex-1 py-2 text-center text-sm font-bold rounded-md text-gray-500 hover:text-gray-700 transition-all";
+                title.innerText = "會議視訊簽退";
+                btn.className = "w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition-transform transform hover:-translate-y-0.5 mt-2 flex justify-center items-center";
+                btn.innerHTML = `<svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>拍攝簽退照並完成手續`;
+                consentText.innerHTML = `<strong class="text-green-700">【會議簽退紀錄】</strong><br>本人確認已完成本次會議，並同意拍攝簽退大頭照做為離場時間與身分之核實憑證。`;
+            }
+        }
 
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
+        const video = document.getElementById('webcam');
+        const photo = document.getElementById('capturedPhoto');
+        const cameraStatus = document.getElementById('cameraStatus');
+        let streamRef = null;
+
+        async function startCamera() {
+            try {
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    throw new Error("瀏覽器不支援相機功能");
+                }
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false });
+                video.srcObject = stream;
+                streamRef = stream;
+                cameraStatus.style.display = 'none';
+            } catch (err) {
+                console.error("相機存取失敗:", err);
+                let errorMsg = "無法存取相機";
+                if (err.name === 'NotFoundError' || err.message.includes('device not found')) {
+                    errorMsg = "找不到相機裝置";
+                } else if (err.name === 'NotAllowedError') {
+                    errorMsg = "未取得相機權限";
+                }
+                cameraStatus.innerHTML = `<span class='text-red-500 font-bold'>${errorMsg}</span><br><span class='text-xs mt-1 block text-gray-500'>（不影響報到，您仍可直接送出）</span>`;
+            }
+        }
+
+        window.addEventListener('load', startCamera);
+
+        function stopCamera() {
+            if (streamRef) streamRef.getTracks().forEach(track => track.stop());
+        }
+
+        function sendToBackend(postData) {
+            return fetch(GOOGLE_APP_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                cache: 'no-cache',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(postData)
+            }).catch(err => console.log('發送失敗:', err));
+        }
+
+        function finishFlow(base64Image, name, role, consent) {
+            const postData = {
+                action: currentMode === 'signin' ? '簽到' : '簽退',
+                name: name,
+                role: role,
+                consent: consent,
+                timestamp: new Date().toISOString(),
+                image: base64Image
+            };
+
+            sendToBackend(postData);
+            stopCamera();
+
+            setTimeout(() => {
+                document.getElementById('loadingOverlay').style.display = 'none';
                 
-                const userName = document.getElementById('userName').value.trim();
-                const userRole = document.getElementById('userRole').value;
-                const isConsent = document.getElementById('recordingConsent').checked;
+                if(currentMode === 'signin') {
+                    window.location.href = googleMeetUrl;
+                } else {
+                    document.getElementById('successOverlay').style.display = 'flex';
+                }
+            }, 1200);
+        }
 
-                if (!userName || !userRole || !isConsent) {
-                    return;
+        document.getElementById('joinForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('userName').value.trim();
+            const role = document.getElementById('userRole').value;
+            const consent = document.getElementById('recordConsent').checked;
+
+            if(name && role && consent) {
+                
+                if(currentMode === 'signout') {
+                    document.getElementById('loadingTitle').innerText = "正在處理簽退資料...";
+                    document.getElementById('loadingSubtitle').innerText = "（請稍候，資料加密傳輸中）";
                 }
 
-                form.style.display = 'none';
-                loadingState.classList.remove('hidden');
-                
+                document.getElementById('loadingOverlay').style.display = 'flex';
+                const btn = document.getElementById('submitBtn');
+                btn.style.display = 'none';
+
+                if (streamRef && video.readyState === 4) {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    photo.src = canvas.toDataURL('image/jpeg', 0.8);
+                    photo.style.display = 'block';
+                    video.style.display = 'none';
+                } else {
+                    video.style.display = 'none';
+                    cameraStatus.style.display = 'flex';
+                }
+
                 setTimeout(() => {
-                    document.getElementById('loadingText').innerHTML = 
-                        `歡迎，${userRole} ${userName}！<br>正在為您導向至會議室...`;
-                    
-                    window.location.href = googleMeetUrl;
-                    
-                }, 1500);
-            });
+                    html2canvas(document.getElementById('formArea'), {
+                        backgroundColor: "#f3f4f6",
+                        scale: 1.5,
+                        useCORS: true,
+                        allowTaint: true,
+                        logging: false
+                    }).then(canvas => {
+                        btn.style.display = 'flex';
+                        const base64Image = canvas.toDataURL('image/jpeg', 0.8);
+                        finishFlow(base64Image, name, role, consent);
+                    }).catch(err => {
+                        console.error('截圖失敗:', err);
+                        btn.style.display = 'flex';
+                        finishFlow('', name, role, consent);
+                    });
+                }, 100); 
+            }
         });
     </script>
 </body>
