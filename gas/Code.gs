@@ -7,7 +7,8 @@
  * 若 SPREADSHEET_ID 留空，會自動使用目前綁定的試算表（建議）
  */
 
-var SPREADSHEET_ID = ''; // 留空 = 綁定試算表；或貼網址列 /d/ 與 /edit 之間的 ID
+var SPREADSHEET_ID = '1gqA0iv17jE4FKEZUKVh5ngKnd57mU12RW0-md1fTjSo';
+// ↑ 請與試算表網址 /d/ 後面 ID 完全一致（大小寫含）
 
 function getSpreadsheet_() {
   if (SPREADSHEET_ID) {
@@ -83,13 +84,7 @@ function handleFormSubmit(data) {
   }
 
   var imageUrl = '';
-  if (data.image) {
-    imageUrl = saveImageToDrive_(
-      data.image,
-      (data.name || 'unknown') + '_' + (data.formType || data.action)
-    );
-  }
-
+  /* 先寫入試算表，截圖失敗也不影響紀錄 */
   sheet.appendRow([
     formatTaiwanTime_(data.timestamp),
     data.action || '',
@@ -98,8 +93,22 @@ function handleFormSubmit(data) {
     data.answerCount || (data.answers ? data.answers.length : 0),
     JSON.stringify(data.answers || []),
     data.pageUrl || '',
-    imageUrl
+    ''
   ]);
+
+  if (data.image) {
+    try {
+      imageUrl = saveImageToDrive_(
+        data.image,
+        (data.name || 'unknown') + '_' + (data.formType || data.action)
+      );
+      if (imageUrl) {
+        sheet.getRange(sheet.getLastRow(), 8).setValue(imageUrl);
+      }
+    } catch (imgErr) {
+      Logger.log('截圖儲存失敗（填答已寫入）: ' + imgErr);
+    }
+  }
 
   return jsonOut({ ok: true });
 }

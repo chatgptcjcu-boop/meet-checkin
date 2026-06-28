@@ -83,12 +83,21 @@
   }
 
   function sendToGas(payload) {
+    const body = JSON.stringify(payload);
+    /* sendBeacon 較適合跨域 POST；失敗時再試 fetch */
+    if (navigator.sendBeacon) {
+      const ok = navigator.sendBeacon(
+        GAS_URL,
+        new Blob([body], { type: 'text/plain;charset=utf-8' })
+      );
+      if (ok) return Promise.resolve();
+    }
     return fetch(GAS_URL, {
       method: 'POST',
       mode: 'no-cors',
       cache: 'no-cache',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(payload),
+      body,
     }).catch((err) => console.warn('GAS 送出:', err));
   }
 
@@ -150,12 +159,10 @@
     const filename = `宮廟管理師填答_${formType}_${memberName}_${taiwanDateStr(record.timestamp)}.json`;
     downloadJson(record, filename);
 
-    /* 傳 GAS 時若截圖過大易失敗，仍保留下載 JSON 內完整截圖 */
+    /* 傳 GAS：只送文字答案，不送截圖（JSON 備份仍含截圖） */
     const gasPayload = { ...record };
-    if (gasPayload.image && gasPayload.image.length > 800000) {
-      gasPayload.imageOmitted = true;
-      delete gasPayload.image;
-    }
+    delete gasPayload.image;
+    gasPayload.imageOmitted = true;
     sendToGas(gasPayload);
 
     try {
