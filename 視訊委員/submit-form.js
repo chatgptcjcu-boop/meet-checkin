@@ -96,6 +96,12 @@
     });
   }
 
+  window.printFormPdf = function () {
+    const ok = document.getElementById('submitSuccess');
+    if (ok) ok.style.display = 'none';
+    window.print();
+  };
+
   function showSubmitSuccess(memberName, formType) {
     const ok = document.getElementById('submitSuccess');
     if (ok) {
@@ -103,7 +109,9 @@
       document.getElementById('submitSuccessName').textContent = memberName;
       document.getElementById('submitSuccessType').textContent = formType;
     } else {
-      alert('寫入成功！填答紀錄已傳送至主辦單位試算表。');
+      alert(
+        '寫入成功！填答紀錄已傳送至主辦單位試算表。\n\n請使用瀏覽器「列印 → 另存 PDF」留存佐證。'
+      );
     }
   }
 
@@ -211,8 +219,12 @@
         <h3>填答紀錄已送出</h3>
         <p><strong id="submitSuccessName"></strong>｜<span id="submitSuccessType"></span></p>
         <p class="submit-success-note">已傳送至主辦單位 Google 試算表，並自動下載 JSON 備份至您的裝置。</p>
+        <p class="submit-success-pdf"><strong>請列印另存 PDF</strong>，作為與現場紙本相同的佐證資料留存（正文、附錄各存一份）。</p>
         <p class="submit-success-note">若另需附錄，請完成後同樣點「提交填答紀錄」。會議結束請至首頁簽退。</p>
-        <button type="button" onclick="document.getElementById('submitSuccess').style.display='none'">關閉</button>
+        <div class="submit-success-actions">
+          <button type="button" class="submit-print-btn" onclick="printFormPdf()">列印／存 PDF</button>
+          <button type="button" class="submit-close-btn" onclick="document.getElementById('submitSuccess').style.display='none'">關閉</button>
+        </div>
       </div>`;
     document.body.appendChild(success);
   });

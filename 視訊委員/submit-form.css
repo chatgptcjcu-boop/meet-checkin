@@ -60,22 +60,52 @@ body { padding-bottom: 4rem; }
   background: #fff;
   border-radius: 12px;
   padding: 1.5rem;
-  max-width: 22rem;
+  max-width: 26rem;
   text-align: center;
   color: #1e293b;
 }
 .submit-success-box h3 { margin: 0 0 0.5rem; color: #166534; }
 .submit-success-note { font-size: 0.85rem; color: #64748b; margin: 0.5rem 0; }
-.submit-success-box button {
-  margin-top: 0.75rem;
-  background: #2563eb;
+.submit-success-pdf {
+  font-size: 0.88rem;
+  color: #1e40af;
+  background: #eff6ff;
+  border: 1px solid #93c5fd;
+  border-radius: 8px;
+  padding: 0.65rem 0.75rem;
+  margin: 0.75rem 0;
+  line-height: 1.5;
+}
+.submit-success-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+.submit-print-btn {
+  background: #166534;
   color: #fff;
   border: none;
-  padding: 0.5rem 1.25rem;
+  padding: 0.55rem 1.25rem;
   border-radius: 8px;
   cursor: pointer;
   font-family: inherit;
+  font-weight: 600;
+  font-size: 0.95rem;
 }
+.submit-print-btn:hover { background: #15803d; }
+.submit-close-btn {
+  background: #e2e8f0;
+  color: #334155;
+  border: none;
+  padding: 0.55rem 1.25rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+.submit-close-btn:hover { background: #cbd5e1; }
 @media print {
   #submitBar, #submitOverlay, #submitSuccess { display: none !important; }
   body { padding-bottom: 0; }
