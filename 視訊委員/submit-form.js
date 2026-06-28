@@ -102,31 +102,26 @@
     window.print();
   };
 
-  function showSubmitSuccess(memberName, formType) {
+  function showSubmitSuccess(memberName, formType, dateStr) {
     const ok = document.getElementById('submitSuccess');
+    const hint = document.getElementById('submitPdfHint');
     if (ok) {
       ok.style.display = 'flex';
       document.getElementById('submitSuccessName').textContent = memberName;
       document.getElementById('submitSuccessType').textContent = formType;
+      if (hint) {
+        hint.textContent = `建議檔名：1150630_填答_${formType}_${memberName}_${dateStr}.pdf`;
+      }
     } else {
       alert(
-        '寫入成功！填答紀錄已傳送至主辦單位試算表。\n\n請使用瀏覽器「列印 → 另存 PDF」留存佐證。'
+        '寫入成功！填答紀錄已傳送至主辦單位試算表。\n\n請列印另存 PDF，簽名後 Line 傳給王芯庭助理 0956800579。'
       );
     }
   }
 
-  /** 檔名用台灣日期（避免 UTC 凌晨仍顯示前一日） */
+  /** 檔名用台灣日期（建議 PDF 檔名） */
   function taiwanDateStr(iso) {
     return new Date(iso).toLocaleDateString('sv-SE', { timeZone: 'Asia/Taipei' });
-  }
-
-  function downloadJson(data, filename) {
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = filename;
-    a.click();
-    URL.revokeObjectURL(a.href);
   }
 
   window.submitMeetingForm = async function (formType) {
@@ -143,22 +138,7 @@
     const overlay = document.getElementById('submitOverlay');
     if (overlay) overlay.style.display = 'flex';
 
-    let screenshot = '';
-    if (typeof html2canvas !== 'undefined') {
-      try {
-        const canvas = await html2canvas(root, {
-          backgroundColor: '#ffffff',
-          scale: 0.75,
-          useCORS: true,
-          logging: false,
-        });
-        screenshot = canvas.toDataURL('image/jpeg', 0.55);
-      } catch (e) {
-        console.warn('截圖失敗', e);
-      }
-    }
-
-    const record = {
+    const gasPayload = {
       action: formType,
       name: memberName,
       role: urlInfo.role,
@@ -167,28 +147,16 @@
       answerCount: answers.length,
       answers: answers,
       pageUrl: window.location.href,
-      image: screenshot,
     };
-
-    const filename = `宮廟管理師填答_${formType}_${memberName}_${taiwanDateStr(record.timestamp)}.json`;
-    downloadJson(record, filename);
-
-    /* 傳 GAS：只送文字答案，不送截圖（JSON 備份仍含截圖） */
-    const gasPayload = { ...record };
-    delete gasPayload.image;
-    gasPayload.imageOmitted = true;
 
     try {
       await sendToGas(gasPayload);
-      try {
-        localStorage.setItem(`meet-checkin-${formType}-${memberName}`, JSON.stringify(record));
-      } catch (e) {}
       if (overlay) overlay.style.display = 'none';
-      showSubmitSuccess(memberName, formType);
+      showSubmitSuccess(memberName, formType, taiwanDateStr(gasPayload.timestamp));
     } catch (error) {
       console.error('網路錯誤：', error);
       if (overlay) overlay.style.display = 'none';
-      alert('傳送失敗，請檢查網路連線。JSON 備份已下載至您的裝置。');
+      alert('傳送失敗，請檢查網路連線。您仍可列印本頁另存 PDF，簽名後 Line 傳給主辦單位。');
     }
   };
 
@@ -209,7 +177,7 @@
 
     const overlay = document.createElement('div');
     overlay.id = 'submitOverlay';
-    overlay.innerHTML = `<div class="submit-spinner"></div><p>正在打包填答紀錄並傳送…</p>`;
+    overlay.innerHTML = `<div class="submit-spinner"></div><p>正在傳送填答紀錄…</p>`;
     document.body.appendChild(overlay);
 
     const success = document.createElement('div');
@@ -218,9 +186,15 @@
       <div class="submit-success-box">
         <h3>填答紀錄已送出</h3>
         <p><strong id="submitSuccessName"></strong>｜<span id="submitSuccessType"></span></p>
-        <p class="submit-success-note">已傳送至主辦單位 Google 試算表，並自動下載 JSON 備份至您的裝置。</p>
-        <p class="submit-success-pdf"><strong>請列印另存 PDF</strong>，作為與現場紙本相同的佐證資料留存（正文、附錄各存一份）。</p>
-        <p class="submit-success-note">若另需附錄，請完成後同樣點「提交填答紀錄」。會議結束請至首頁簽退。</p>
+        <p class="submit-success-note">結構化答案已寫入主辦單位 Google 試算表。</p>
+        <p class="submit-success-pdf"><strong>請完成 PDF 與簽名</strong></p>
+        <ol class="submit-success-steps">
+          <li>點下方「列印／存 PDF」→ 目的地選「另存 PDF」</li>
+          <li>列印後於各章節<strong>簽名欄</strong>親簽（與現場紙本相同）</li>
+          <li>正文、附錄<strong>各一份</strong>，Line 傳給王芯庭助理 <strong>0956800579</strong></li>
+        </ol>
+        <p class="submit-success-filename" id="submitPdfHint"></p>
+        <p class="submit-success-note">附錄若尚未提交，請完成後同樣操作。會議結束請至首頁簽退。</p>
         <div class="submit-success-actions">
           <button type="button" class="submit-print-btn" onclick="printFormPdf()">列印／存 PDF</button>
           <button type="button" class="submit-close-btn" onclick="document.getElementById('submitSuccess').style.display='none'">關閉</button>
