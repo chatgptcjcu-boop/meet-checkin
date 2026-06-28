@@ -32,10 +32,7 @@ function getSpreadsheet_() {
 
 function doPost(e) {
   try {
-    if (!e || !e.postData || !e.postData.contents) {
-      return jsonOut({ ok: false, error: '缺少 postData.contents' });
-    }
-    var data = JSON.parse(e.postData.contents);
+    var data = parsePostData_(e);
     var action = data.action || '';
 
     if (action === '填答-正文' || action === '填答-附錄') {
@@ -48,6 +45,20 @@ function doPost(e) {
   } catch (err) {
     return jsonOut({ ok: false, error: String(err.message || err) });
   }
+}
+
+/** 支援 fetch/sendBeacon（postData）與 hidden form（parameter.payload） */
+function parsePostData_(e) {
+  if (!e) {
+    throw new Error('缺少事件物件');
+  }
+  if (e.postData && e.postData.contents) {
+    return JSON.parse(e.postData.contents);
+  }
+  if (e.parameter && e.parameter.payload) {
+    return JSON.parse(e.parameter.payload);
+  }
+  throw new Error('缺少 postData.contents 或 parameter.payload');
 }
 
 function handleSignInOut(data) {

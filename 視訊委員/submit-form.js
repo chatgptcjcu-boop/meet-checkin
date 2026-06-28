@@ -84,8 +84,36 @@
 
   function sendToGas(payload) {
     const body = JSON.stringify(payload);
-    /* 使用 text/plain：no-cors 下 application/json 會觸發 preflight 而失敗；
-       GAS 仍可用 JSON.parse(e.postData.contents) 解析 */
+
+    /* 方法 1：hidden form POST（跨域靜態頁 → GAS 最可靠） */
+    try {
+      let iframe = document.getElementById('gas_hidden_frame');
+      if (!iframe) {
+        iframe = document.createElement('iframe');
+        iframe.name = 'gas_hidden_frame';
+        iframe.id = 'gas_hidden_frame';
+        iframe.style.display = 'none';
+        document.body.appendChild(iframe);
+      }
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = GAS_URL;
+      form.target = 'gas_hidden_frame';
+      form.style.display = 'none';
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = 'payload';
+      input.value = body;
+      form.appendChild(input);
+      document.body.appendChild(form);
+      form.submit();
+      setTimeout(() => form.remove(), 3000);
+      return Promise.resolve();
+    } catch (formErr) {
+      console.warn('form POST 失敗，改試 fetch:', formErr);
+    }
+
+    /* 方法 2：sendBeacon / fetch 備援 */
     if (navigator.sendBeacon) {
       const ok = navigator.sendBeacon(
         GAS_URL,

@@ -196,7 +196,32 @@
 
         function sendToBackend(postData) {
             const body = JSON.stringify(postData);
-            /* text/plain + no-cors：GitHub Pages 跨域送 GAS 的可靠做法 */
+            try {
+                let iframe = document.getElementById('gas_hidden_frame');
+                if (!iframe) {
+                    iframe = document.createElement('iframe');
+                    iframe.name = 'gas_hidden_frame';
+                    iframe.id = 'gas_hidden_frame';
+                    iframe.style.display = 'none';
+                    document.body.appendChild(iframe);
+                }
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = GOOGLE_APP_SCRIPT_URL;
+                form.target = 'gas_hidden_frame';
+                form.style.display = 'none';
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'payload';
+                input.value = body;
+                form.appendChild(input);
+                document.body.appendChild(form);
+                form.submit();
+                setTimeout(() => form.remove(), 3000);
+                return Promise.resolve();
+            } catch (formErr) {
+                console.warn('form POST 失敗:', formErr);
+            }
             if (navigator.sendBeacon) {
                 const ok = navigator.sendBeacon(
                     GOOGLE_APP_SCRIPT_URL,
