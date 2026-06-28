@@ -92,6 +92,11 @@
     }).catch((err) => console.warn('GAS 送出:', err));
   }
 
+  /** 檔名用台灣日期（避免 UTC 凌晨仍顯示前一日） */
+  function taiwanDateStr(iso) {
+    return new Date(iso).toLocaleDateString('sv-SE', { timeZone: 'Asia/Taipei' });
+  }
+
   function downloadJson(data, filename) {
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const a = document.createElement('a');
@@ -142,7 +147,7 @@
       image: screenshot,
     };
 
-    const filename = `宮廟管理師填答_${formType}_${memberName}_${record.timestamp.slice(0, 10)}.json`;
+    const filename = `宮廟管理師填答_${formType}_${memberName}_${taiwanDateStr(record.timestamp)}.json`;
     downloadJson(record, filename);
 
     /* 傳 GAS 時若截圖過大易失敗，仍保留下載 JSON 內完整截圖 */
