@@ -83,51 +83,28 @@
   }
 
   function sendToGas(payload) {
-    const body = JSON.stringify(payload);
-
-    /* 方法 1：hidden form POST（跨域靜態頁 → GAS 最可靠） */
-    try {
-      let iframe = document.getElementById('gas_hidden_frame');
-      if (!iframe) {
-        iframe = document.createElement('iframe');
-        iframe.name = 'gas_hidden_frame';
-        iframe.id = 'gas_hidden_frame';
-        iframe.style.display = 'none';
-        document.body.appendChild(iframe);
-      }
-      const form = document.createElement('form');
-      form.method = 'POST';
-      form.action = GAS_URL;
-      form.target = 'gas_hidden_frame';
-      form.style.display = 'none';
-      const input = document.createElement('input');
-      input.type = 'hidden';
-      input.name = 'payload';
-      input.value = body;
-      form.appendChild(input);
-      document.body.appendChild(form);
-      form.submit();
-      setTimeout(() => form.remove(), 3000);
-      return Promise.resolve();
-    } catch (formErr) {
-      console.warn('form POST 失敗，改試 fetch:', formErr);
-    }
-
-    /* 方法 2：sendBeacon / fetch 備援 */
-    if (navigator.sendBeacon) {
-      const ok = navigator.sendBeacon(
-        GAS_URL,
-        new Blob([body], { type: 'text/plain;charset=utf-8' })
-      );
-      if (ok) return Promise.resolve();
-    }
     return fetch(GAS_URL, {
       method: 'POST',
       mode: 'no-cors',
       cache: 'no-cache',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body,
-    }).catch((err) => console.warn('GAS 送出:', err));
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8',
+      },
+      body: JSON.stringify(payload),
+    }).then(() => {
+      console.log('資料已送出！');
+    });
+  }
+
+  function showSubmitSuccess(memberName, formType) {
+    const ok = document.getElementById('submitSuccess');
+    if (ok) {
+      ok.style.display = 'flex';
+      document.getElementById('submitSuccessName').textContent = memberName;
+      document.getElementById('submitSuccessType').textContent = formType;
+    } else {
+      alert('寫入成功！填答紀錄已傳送至主辦單位試算表。');
+    }
   }
 
   /** 檔名用台灣日期（避免 UTC 凌晨仍顯示前一日） */
@@ -192,20 +169,18 @@
     const gasPayload = { ...record };
     delete gasPayload.image;
     gasPayload.imageOmitted = true;
-    sendToGas(gasPayload);
 
     try {
-      localStorage.setItem(`meet-checkin-${formType}-${memberName}`, JSON.stringify(record));
-    } catch (e) {}
-
-    if (overlay) overlay.style.display = 'none';
-    const ok = document.getElementById('submitSuccess');
-    if (ok) {
-      ok.style.display = 'flex';
-      document.getElementById('submitSuccessName').textContent = memberName;
-      document.getElementById('submitSuccessType').textContent = formType;
-    } else {
-      alert(`已提交填答紀錄（${formType}）\n委員：${memberName}\n已下載 JSON 備份，並傳送至主辦單位試算表。`);
+      await sendToGas(gasPayload);
+      try {
+        localStorage.setItem(`meet-checkin-${formType}-${memberName}`, JSON.stringify(record));
+      } catch (e) {}
+      if (overlay) overlay.style.display = 'none';
+      showSubmitSuccess(memberName, formType);
+    } catch (error) {
+      console.error('網路錯誤：', error);
+      if (overlay) overlay.style.display = 'none';
+      alert('傳送失敗，請檢查網路連線。JSON 備份已下載至您的裝置。');
     }
   };
 
