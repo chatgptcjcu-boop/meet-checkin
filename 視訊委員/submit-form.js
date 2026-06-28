@@ -4,7 +4,7 @@
  */
 (function () {
   const GAS_URL =
-    'https://script.google.com/macros/s/AKfycbxUVpEEYSaReyFSOVyBbfO9Nd-ecKAd2OlS7Vf6FKcDi182nV2BU7wsVPIWTXxfaPyjWg/exec';
+    'https://script.google.com/macros/s/AKfycbwYmxBxC34KK02UFW54hSX-VneckfVVm6rsTyEhCtCkamVvHmTf023EpmCydHyAsbV2WA/exec';
 
   function getMemberFromUrl() {
     const p = new URLSearchParams(window.location.search);
