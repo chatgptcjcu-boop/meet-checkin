@@ -195,12 +195,21 @@
         }
 
         function sendToBackend(postData) {
+            const body = JSON.stringify(postData);
+            /* text/plain + no-cors：GitHub Pages 跨域送 GAS 的可靠做法 */
+            if (navigator.sendBeacon) {
+                const ok = navigator.sendBeacon(
+                    GOOGLE_APP_SCRIPT_URL,
+                    new Blob([body], { type: 'text/plain;charset=utf-8' })
+                );
+                if (ok) return Promise.resolve();
+            }
             return fetch(GOOGLE_APP_SCRIPT_URL, {
                 method: 'POST',
                 mode: 'no-cors',
                 cache: 'no-cache',
                 headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify(postData)
+                body: body
             }).catch(err => console.log('發送失敗:', err));
         }
 

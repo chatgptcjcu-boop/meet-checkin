@@ -84,7 +84,8 @@
 
   function sendToGas(payload) {
     const body = JSON.stringify(payload);
-    /* sendBeacon 較適合跨域 POST；失敗時再試 fetch */
+    /* 使用 text/plain：no-cors 下 application/json 會觸發 preflight 而失敗；
+       GAS 仍可用 JSON.parse(e.postData.contents) 解析 */
     if (navigator.sendBeacon) {
       const ok = navigator.sendBeacon(
         GAS_URL,
