@@ -120,11 +120,11 @@
       try {
         const canvas = await html2canvas(root, {
           backgroundColor: '#ffffff',
-          scale: 1.2,
+          scale: 0.75,
           useCORS: true,
           logging: false,
         });
-        screenshot = canvas.toDataURL('image/jpeg', 0.75);
+        screenshot = canvas.toDataURL('image/jpeg', 0.55);
       } catch (e) {
         console.warn('截圖失敗', e);
       }
@@ -144,7 +144,14 @@
 
     const filename = `宮廟管理師填答_${formType}_${memberName}_${record.timestamp.slice(0, 10)}.json`;
     downloadJson(record, filename);
-    sendToGas(record);
+
+    /* 傳 GAS 時若截圖過大易失敗，仍保留下載 JSON 內完整截圖 */
+    const gasPayload = { ...record };
+    if (gasPayload.image && gasPayload.image.length > 800000) {
+      gasPayload.imageOmitted = true;
+      delete gasPayload.image;
+    }
+    sendToGas(gasPayload);
 
     try {
       localStorage.setItem(`meet-checkin-${formType}-${memberName}`, JSON.stringify(record));
