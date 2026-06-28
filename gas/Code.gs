@@ -8,27 +8,30 @@
  * 試算表 → 擴充功能 → Apps Script 貼上此檔（勿用獨立「未命名專案」）
  */
 
-var SPREADSHEET_ID = '1gqA0iv17jE4FKEZUKVh5ngKnd57mU12RW0-md1fTjSo';
-// ↑ 與試算表網址 /d/ 後 ID 完全一致（大小寫含）
+var SPREADSHEET_ID = '';
+// 留空 = 使用「試算表 → 擴充功能 → Apps Script」綁定的這張表（建議）
+// 若需手動指定，請從試算表網址 /d/ 與 /edit 之間完整複製，例如：
+// 1gqA0iv17jE4FKEzUKVh5ngKnd57mU12RW0-md1fTjSo  ← 注意 Z/z 大小寫
+
+function getSpreadsheet_() {
+  /* 綁定試算表的腳本：優先用 ActiveSpreadsheet（免填 ID） */
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  if (ss) {
+    return ss;
+  }
+  if (SPREADSHEET_ID) {
+    return SpreadsheetApp.openById(SPREADSHEET_ID);
+  }
+  throw new Error(
+    '找不到試算表。請從試算表開啟 Apps Script（擴充功能），或設定正確的 SPREADSHEET_ID'
+  );
+}
 
 var SIGN_SHEET_NAME = '工作表1';
 var FORM_SHEET_NAME = '填答紀錄';
 
 /** 與簽到試算表第 1 列標題一致 */
 var SIGN_HEADERS = ['報到時間', '姓名', '身份別', '錄影授權'];
-
-function getSpreadsheet_() {
-  if (SPREADSHEET_ID) {
-    return SpreadsheetApp.openById(SPREADSHEET_ID);
-  }
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
-  if (!ss) {
-    throw new Error(
-      '找不到試算表。請從試算表開 Apps Script，或設定 SPREADSHEET_ID'
-    );
-  }
-  return ss;
-}
 
 function doPost(e) {
   try {
@@ -191,6 +194,25 @@ function testFormSubmit() {
     answers: [{ title: '1-1 出席確認', fields: [{ label: '委員姓名', value: 'GAS填答測試' }] }],
     pageUrl: 'manual-test'
   })).getContent());
+}
+
+function testFormSubmitWeb() {
+  /* 模擬網頁 hidden form 的 parameter.payload 路徑 */
+  Logger.log(doPost({
+    parameter: {
+      payload: JSON.stringify({
+        action: '填答-正文',
+        name: '模擬網頁POST',
+        role: '評核委員',
+        formType: '填答-正文',
+        timestamp: new Date().toISOString(),
+        answerCount: 1,
+        answers: [{ title: '1-1 出席確認', fields: [{ label: '委員姓名', value: '模擬網頁POST' }] }],
+        pageUrl: 'https://chatgptcjcu-boop.github.io/meet-checkin/test',
+        imageOmitted: true
+      })
+    }
+  }).getContent());
 }
 
 function mockPost_(obj) {
