@@ -1,0 +1,82 @@
+/* 視訊填答 — 提交列與成功提示 */
+#submitBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #1e3a8a;
+  color: #fff;
+  z-index: 9000;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
+  padding: 0.65rem 1rem;
+}
+.submit-bar-inner {
+  max-width: 210mm;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+.submit-bar-label { font-size: 0.8rem; opacity: 0.9; flex: 1; min-width: 6rem; }
+.submit-btn {
+  background: #fbbf24;
+  color: #1e3a8a;
+  border: none;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 0.55rem 1.25rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.submit-btn:hover { background: #f59e0b; }
+.submit-back { color: #bfdbfe; font-size: 0.85rem; text-decoration: none; }
+.submit-back:hover { color: #fff; }
+body { padding-bottom: 4rem; }
+
+#submitOverlay,
+#submitSuccess {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  z-index: 10000;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+#submitOverlay { flex-direction: column; color: #fff; }
+.submit-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.submit-success-box {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  max-width: 22rem;
+  text-align: center;
+  color: #1e293b;
+}
+.submit-success-box h3 { margin: 0 0 0.5rem; color: #166534; }
+.submit-success-note { font-size: 0.85rem; color: #64748b; margin: 0.5rem 0; }
+.submit-success-box button {
+  margin-top: 0.75rem;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1.25rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+}
+@media print {
+  #submitBar, #submitOverlay, #submitSuccess { display: none !important; }
+  body { padding-bottom: 0; }
+}

@@ -120,7 +120,7 @@
     <div id="loadingOverlay" class="fixed inset-0 bg-blue-900 bg-opacity-95 z-50 flex flex-col items-center justify-center">
         <div class="spinner mb-4"></div>
         <h2 id="loadingTitle" class="text-xl text-white font-bold tracking-wide">正在完成簽到與加密傳輸...</h2>
-        <p id="loadingSubtitle" class="text-blue-200 text-sm mt-2">（完成後將為您開啟會議室）</p>
+        <p id="loadingSubtitle" class="text-blue-200 text-sm mt-2">（完成後將導向視訊委員專區與會議資料）</p>
     </div>
 
     <div id="successOverlay" class="fixed inset-0 bg-green-900 bg-opacity-95 z-50 flex flex-col items-center justify-center text-center px-4">
@@ -221,7 +221,8 @@
                 document.getElementById('loadingOverlay').style.display = 'none';
                 
                 if(currentMode === 'signin') {
-                    window.location.href = googleMeetUrl;
+                    const q = new URLSearchParams({ name: name, role: role });
+                    window.location.href = './視訊委員/index.html?' + q.toString();
                 } else {
                     document.getElementById('successOverlay').style.display = 'flex';
                 }
