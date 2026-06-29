@@ -29,6 +29,12 @@ body {
   z-index: 50;
 }
 .top-bar h1 { font-size: 0.95rem; margin: 0; flex: 1; min-width: 12rem; }
+.top-bar .version-tag {
+  font-size: 0.68rem;
+  opacity: 0.85;
+  font-weight: 400;
+  white-space: nowrap;
+}
 .top-bar button, .top-bar a.btn {
   background: #fff;
   color: var(--accent);
@@ -143,6 +149,23 @@ table.sheet tr:hover td { background: #fafafa; }
 .receipt .write { border-bottom: 1px solid #333; min-height: 1.4rem; margin-top: 0.15rem; }
 .receipt .sign { margin-top: 0.75rem; font-size: 0.82rem; }
 .legal { font-size: 0.68rem; color: #666; margin-top: 0.5rem; line-height: 1.45; }
+
+.version-bar {
+  text-align: center;
+  font-size: 0.72rem;
+  color: #64748b;
+  padding: 0.5rem 1rem;
+  border-top: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+.sync-banner {
+  background: #fef3c7;
+  border-bottom: 1px solid #fcd34d;
+  padding: 0.45rem 1rem;
+  font-size: 0.82rem;
+  text-align: center;
+  color: #92400e;
+}
 
 @media print {
   .top-bar, .no-print { display: none !important; }

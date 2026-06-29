@@ -11,6 +11,7 @@
 <body>
   <div class="top-bar no-print">
     <h1>宮廟管理師第一次評核委員會｜經費動態編列（115/6/30）</h1>
+    <span class="version-tag" id="topVersionTag"></span>
     <button type="button" id="btnSave">💾 儲存</button>
     <button type="button" id="btnExport">⬇ 匯出</button>
     <button type="button" id="btnImport">⬆ 匯入</button>
@@ -19,6 +20,8 @@
     <button type="button" onclick="window.print()">🖨 列印</button>
     <a class="btn" href="./member-fee-receipts.html">委員簽收單 →</a>
   </div>
+
+  <div id="syncBanner" class="sync-banner no-print" hidden></div>
 
   <div class="wrap">
     <div class="panel no-print" id="syncPanel">
@@ -126,6 +129,8 @@
       <div class="btn-row no-print"><button type="button" class="btn-sm" id="btnAddStaff">＋ 新增工作人員</button></div>
     </div>
   </div>
+
+  <div class="version-bar no-print" id="versionBar"></div>
 
   <script src="./expense-data.js"></script>
   <script src="./budget-dashboard.js"></script>
