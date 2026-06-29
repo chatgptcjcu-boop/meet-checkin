@@ -1,0 +1,238 @@
+/* 會議投影簡報｜現場＋視訊共用 */
+:root {
+  --bg: #0f172a;
+  --panel: #1e293b;
+  --accent: #fbbf24;
+  --accent2: #34d399;
+  --text: #f8fafc;
+  --muted: #94a3b8;
+  --line: #334155;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  font-family: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+}
+
+.deck { height: 100vh; height: 100dvh; position: relative; }
+
+.slide {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  padding: 3vh 4vw 5vh;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.slide.active {
+  display: flex;
+  opacity: 1;
+}
+
+.slide-header {
+  border-bottom: 3px solid var(--accent);
+  padding-bottom: 1.2vh;
+  margin-bottom: 2vh;
+  flex-shrink: 0;
+}
+.slide-header .org {
+  font-size: clamp(0.75rem, 1.4vw, 0.95rem);
+  color: var(--accent);
+  letter-spacing: 0.12em;
+  font-weight: 600;
+}
+.slide-header h2 {
+  font-size: clamp(1.4rem, 3.8vw, 2.6rem);
+  font-weight: 900;
+  line-height: 1.25;
+  margin-top: 0.3vh;
+}
+.slide-header .meta {
+  font-size: clamp(0.85rem, 1.6vw, 1.1rem);
+  color: var(--muted);
+  margin-top: 0.4vh;
+}
+
+.slide-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 0;
+  overflow: auto;
+}
+
+/* 封面 */
+.slide-welcome .slide-body {
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+.slide-welcome .main-title {
+  font-size: clamp(2rem, 5.5vw, 3.8rem);
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 1.5vh;
+}
+.slide-welcome .sub {
+  font-size: clamp(1rem, 2.2vw, 1.5rem);
+  color: var(--accent);
+  font-weight: 700;
+}
+.slide-welcome .tagline {
+  font-size: clamp(0.9rem, 1.8vw, 1.15rem);
+  color: var(--muted);
+  margin-top: 2vh;
+  max-width: 80vw;
+  line-height: 1.6;
+}
+
+.bullets {
+  list-style: none;
+  font-size: clamp(1rem, 2.2vw, 1.45rem);
+  line-height: 1.65;
+}
+.bullets li {
+  padding: 0.55vh 0 0.55vh 1.5em;
+  position: relative;
+}
+.bullets li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--accent2);
+  font-weight: 700;
+}
+.bullets strong { color: var(--accent); }
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2vw;
+  font-size: clamp(0.85rem, 1.7vw, 1.15rem);
+}
+@media (max-width: 900px) { .grid-2 { grid-template-columns: 1fr; } }
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1.5vh 1.5vw;
+}
+.card h3 {
+  font-size: clamp(0.95rem, 1.8vw, 1.2rem);
+  color: var(--accent);
+  margin-bottom: 0.8vh;
+  font-weight: 700;
+}
+
+table.agenda {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: clamp(0.82rem, 1.6vw, 1.1rem);
+}
+table.agenda th, table.agenda td {
+  border: 1px solid var(--line);
+  padding: 0.65em 0.85em;
+  text-align: left;
+}
+table.agenda th { background: var(--panel); color: var(--accent); }
+table.agenda tr.highlight td { background: rgb(52 211 153 / 0.12); border-color: var(--accent2); }
+table.agenda .sec { font-weight: 700; color: var(--accent2); }
+
+.scopes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8vh 2vw;
+  font-size: clamp(0.8rem, 1.5vw, 1.05rem);
+  line-height: 1.5;
+}
+@media (max-width: 900px) { .scopes { grid-template-columns: 1fr; } }
+.scopes .item {
+  background: var(--panel);
+  border-left: 4px solid var(--accent2);
+  padding: 0.6em 0.8em;
+  border-radius: 0 8px 8px 0;
+}
+.scopes .num { color: var(--accent); font-weight: 700; }
+
+.resolution {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 1.2vh 1.2vw;
+  margin-bottom: 1.2vh;
+  font-size: clamp(0.82rem, 1.55vw, 1.05rem);
+  line-height: 1.55;
+}
+.resolution .title { font-weight: 700; color: var(--accent); margin-bottom: 0.4vh; }
+
+.hint-box {
+  background: rgb(251 191 36 / 0.1);
+  border: 1px solid var(--accent);
+  border-radius: 10px;
+  padding: 1.2vh 1.2vw;
+  font-size: clamp(0.85rem, 1.6vw, 1.05rem);
+  margin-top: 1.5vh;
+  line-height: 1.6;
+}
+
+.link-row {
+  font-size: clamp(0.75rem, 1.4vw, 0.95rem);
+  color: var(--accent2);
+  word-break: break-all;
+  margin-top: 0.5vh;
+}
+
+/* 控制列 */
+.controls {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgb(15 23 42 / 0.92);
+  border-top: 1px solid var(--line);
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.78rem;
+  z-index: 100;
+  opacity: 0.2;
+  transition: opacity 0.2s;
+}
+.controls:hover, .controls:focus-within { opacity: 1; }
+.controls button, .controls select {
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.78rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+.controls .counter { color: var(--muted); margin-left: auto; }
+.controls .keys { color: var(--muted); font-size: 0.7rem; }
+
+.slide-counter {
+  position: fixed;
+  bottom: 1.2vh;
+  right: 1.5vw;
+  font-size: clamp(0.7rem, 1.2vw, 0.85rem);
+  color: var(--muted);
+  z-index: 50;
+  pointer-events: none;
+}
+
+@media print {
+  .controls, .slide-counter { display: none; }
+  .slide { display: none !important; page-break-after: always; position: relative; opacity: 1; }
+  .slide.active { display: flex !important; }
+}

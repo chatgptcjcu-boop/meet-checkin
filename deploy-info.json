@@ -1,6 +1,8 @@
 {
   "liveUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/",
   "onsiteUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/現場簽到/",
+  "meetingDisplayUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/meeting-display.html",
+  "meetingDisplayShortUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/meeting.html",
   "onsiteQrProjectorUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/onsite-projector.html",
   "onsiteQrPrintUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/onsite-qr-print.html",
   "onsiteQrShortUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/onsite-qr.html",
