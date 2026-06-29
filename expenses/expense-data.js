@@ -49,44 +49,11 @@ window.DEFAULT_STAFF = [
 ];
 
 window.STORAGE_KEY = 'meet-checkin-expenses-v1';
+
+/** 結構版本（不相容時阻擋匯入）；資料版本（同步比對用） */
 window.EXPENSE_SCHEMA_VERSION = 1;
-
-window.getExpenseVersionMeta = function (data) {
-  if (!data || typeof data !== 'object') {
-    return { version: 0, updatedAt: null, schemaVersion: 0 };
-  }
-  return {
-    version: Number.isFinite(data.version) ? data.version : 0,
-    updatedAt: data.updatedAt || null,
-    schemaVersion: Number.isFinite(data.schemaVersion) ? data.schemaVersion : 0,
-  };
-};
-
-window.fmtExpenseUpdatedAt = function (iso) {
-  if (!iso) return '（尚無紀錄）';
-  try {
-    return new Date(iso).toLocaleString('zh-TW', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false,
-    });
-  } catch (_) {
-    return iso;
-  }
-};
-
-window.compareExpenseVersions = function (a, b) {
-  const va = window.getExpenseVersionMeta(a);
-  const vb = window.getExpenseVersionMeta(b);
-  if (va.version !== vb.version) return va.version - vb.version;
-  if (va.updatedAt && vb.updatedAt) {
-    return new Date(va.updatedAt).getTime() - new Date(vb.updatedAt).getTime();
-  }
-  return 0;
-};
+window.EXPENSE_DATA_VERSION = '1.0.0';
+window.EXPENSE_UPDATED_DATE = '2026-06-30';
 
 window.fmtMoney = function (n) {
   return Math.round(n).toLocaleString('zh-TW');
@@ -94,4 +61,48 @@ window.fmtMoney = function (n) {
 
 window.eligibleCount = function () {
   return window.EXPENSE_MEMBERS.filter((m) => m.feeEligible && m.attendance !== '請假').length;
+};
+
+window.formatUpdatedDateZhTW = function (d) {
+  const dt = d instanceof Date ? d : new Date(d);
+  if (Number.isNaN(dt.getTime())) return '';
+  const roc = dt.getFullYear() - 1911;
+  return roc + '年' + (dt.getMonth() + 1) + '月' + dt.getDate() + '日';
+};
+
+window.compareDataVersions = function (a, b) {
+  const pa = String(a || '0').split('.').map(Number);
+  const pb = String(b || '0').split('.').map(Number);
+  for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+    const diff = (pa[i] || 0) - (pb[i] || 0);
+    if (diff) return diff > 0 ? 1 : -1;
+  }
+  return 0;
+};
+
+window.enrichExpenseState = function (state) {
+  const now = new Date();
+  return {
+    schemaVersion: window.EXPENSE_SCHEMA_VERSION,
+    dataVersion: window.EXPENSE_DATA_VERSION,
+    updatedAt: now.toISOString(),
+    updatedDate: window.formatUpdatedDateZhTW(now),
+    meta: state.meta,
+    rows: state.rows,
+    staff: state.staff,
+  };
+};
+
+window.renderExpenseVersionBar = function (containerId) {
+  const el = document.getElementById(containerId || 'versionBar');
+  if (!el) return;
+  let text = '資料版本 v' + window.EXPENSE_DATA_VERSION + '｜預設更新 ' + window.EXPENSE_UPDATED_DATE;
+  try {
+    const saved = JSON.parse(localStorage.getItem(window.STORAGE_KEY));
+    if (saved?.dataVersion && saved.dataVersion !== window.EXPENSE_DATA_VERSION) {
+      text += '｜本機 v' + saved.dataVersion;
+      if (saved.updatedDate) text += '（' + saved.updatedDate + '）';
+    }
+  } catch (_) {}
+  el.textContent = text;
 };
