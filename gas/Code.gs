@@ -88,14 +88,17 @@ function handleSignInOut(data) {
 
   var imageBlob = null;
   var imageUrl = '';
-  if (data.image) {
+  var imgData = data.image || data.photo || '';
+  if (imgData) {
     try {
       var fileBase = (data.name || 'unknown') + '_' + data.action;
-      imageUrl = saveImageToDrive_(data.image, fileBase);
-      imageBlob = imageBase64ToBlob_(data.image, fileBase + '.jpg');
+      imageUrl = saveImageToDrive_(imgData, fileBase);
+      imageBlob = imageBase64ToBlob_(imgData, fileBase + '.jpg');
     } catch (imgErr) {
       Logger.log('簽到截圖失敗（列已寫入）: ' + imgErr);
     }
+  } else {
+    Logger.log('簽到無截圖資料: ' + (data.name || ''));
   }
 
   try {

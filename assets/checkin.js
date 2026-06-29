@@ -1,6 +1,6 @@
 /**
  * 簽到共用：相機、截圖壓縮、GAS 送出
- * 與視訊委員填答相同：fetch + no-cors + postData.contents（勿用 form 欄位送大圖）
+ * 與視訊委員填答相同：fetch + no-cors + postData.contents
  */
 window.MeetCheckin = {
   GAS_URL:
@@ -8,7 +8,27 @@ window.MeetCheckin = {
   MEET_URL: 'https://meet.google.com/kci-xjtu-dmr?hs=122',
   streamRef: null,
 
-  /** 壓縮截圖，避免 POST 過大導致 GAS 收不到 */
+  /** 從 video 元素擷取小尺寸 JPEG（寄信附件備援，最可靠） */
+  captureWebcamJpeg(videoEl, maxW, quality) {
+    if (!videoEl || videoEl.readyState !== 4 || !videoEl.videoWidth) {
+      return '';
+    }
+    maxW = maxW || 640;
+    quality = quality || 0.62;
+    var w = videoEl.videoWidth;
+    var h = videoEl.videoHeight;
+    if (w > maxW) {
+      h = Math.round((h * maxW) / w);
+      w = maxW;
+    }
+    var canvas = document.createElement('canvas');
+    canvas.width = w;
+    canvas.height = h;
+    canvas.getContext('2d').drawImage(videoEl, 0, 0, w, h);
+    return canvas.toDataURL('image/jpeg', quality);
+  },
+
+  /** 壓縮截圖；失敗時保留原圖（若不太大） */
   compressImageDataUrl(dataUrl, maxW, quality) {
     maxW = maxW || 720;
     quality = quality || 0.55;
@@ -32,22 +52,32 @@ window.MeetCheckin = {
         resolve(canvas.toDataURL('image/jpeg', quality));
       };
       img.onerror = function () {
-        resolve('');
+        /* 壓縮失敗時勿丟棄，原圖若 < 900KB 仍送出 */
+        resolve(dataUrl.length < 900000 ? dataUrl : '');
       };
       img.src = dataUrl;
     });
   },
 
-  sendToBackend(postData) {
+  /** 合併表單截圖與鏡頭快照，確保至少有一張圖送到 GAS */
+  prepareImagesForSend(postData) {
     var self = this;
-    return self.compressImageDataUrl(postData.image).then(function (compressed) {
-      if (compressed) {
-        postData.image = compressed;
-      } else if (postData.image) {
-        delete postData.image;
+    var webcamShot = postData.photo || '';
+    var formShot = postData.image || '';
+    return self.compressImageDataUrl(formShot).then(function (compressed) {
+      postData.image = compressed || webcamShot || formShot || '';
+      delete postData.photo;
+      if (!postData.image) {
         postData.imageOmitted = true;
       }
-      var body = JSON.stringify(postData);
+      return postData;
+    });
+  },
+
+  sendToBackend(postData) {
+    var self = this;
+    return self.prepareImagesForSend(postData).then(function (ready) {
+      var body = JSON.stringify(ready);
       return fetch(self.GAS_URL, {
         method: 'POST',
         mode: 'no-cors',
@@ -108,12 +138,9 @@ window.MeetCheckin = {
   capturePhotoPreview() {
     const video = document.getElementById('webcam');
     const photo = document.getElementById('capturedPhoto');
-    if (this.streamRef && video.readyState === 4) {
-      const canvas = document.createElement('canvas');
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      canvas.getContext('2d').drawImage(video, 0, 0);
-      photo.src = canvas.toDataURL('image/jpeg', 0.7);
+    const shot = this.captureWebcamJpeg(video);
+    if (shot) {
+      photo.src = shot;
       photo.style.display = 'block';
       video.style.display = 'none';
     }
@@ -121,6 +148,8 @@ window.MeetCheckin = {
 
   submitWithScreenshot(formAreaId, postData, onDone) {
     const app = this;
+    const video = document.getElementById('webcam');
+    postData.photo = app.captureWebcamJpeg(video);
     app.capturePhotoPreview();
     const btn = document.getElementById('submitBtn');
     if (btn) btn.style.display = 'none';
@@ -141,8 +170,8 @@ window.MeetCheckin = {
           if (onDone) onDone(true);
         })
         .catch(function () {
+          /* html2canvas 失敗仍送鏡頭快照 */
           postData.image = '';
-          postData.imageOmitted = true;
           app.sendToBackend(postData).finally(function () {
             app.stopCamera();
             if (onDone) onDone(false);

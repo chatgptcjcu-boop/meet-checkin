@@ -120,7 +120,7 @@
   </div>
 
   <script src="../assets/members.js"></script>
-  <script src="../assets/checkin.js"></script>
+  <script src="../assets/checkin.js?v=2"></script>
   <script>
     const CHANNEL = '現場';
     let currentMode = 'signin';
@@ -286,6 +286,11 @@
         postData.title = selectedMember.title;
       }
 
+      var videoEl = guest
+        ? document.getElementById('guestWebcam')
+        : document.getElementById('webcam');
+      postData.photo = MeetCheckin.captureWebcamJpeg(videoEl);
+
       if (guest) {
         const gv = document.getElementById('guestWebcam');
         const gp = document.getElementById('guestCapturedPhoto');
@@ -314,7 +319,6 @@
           })
           .catch(() => {
             postData.image = '';
-            postData.imageOmitted = true;
             MeetCheckin.sendToBackend(postData).finally(() => {
               MeetCheckin.stopCamera();
               stopGuestCamera();
