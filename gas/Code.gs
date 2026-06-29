@@ -100,16 +100,20 @@ function handleSignInOut(data) {
         attachBlob = saved.blob;
         sheet.getRange(rowNum, 5).setValue(imageUrl);
       } else {
-        sheet.getRange(rowNum, 5).setValue('解碼失敗');
-        Logger.log('簽到截圖解碼失敗: ' + (data.name || ''));
+        sheet.getRange(rowNum, 5).setValue('解碼失敗' + (data.imageLen ? '(' + data.imageLen + ')' : ''));
+        Logger.log('簽到截圖解碼失敗: ' + (data.name || '') + ' len=' + (data.imageLen || 0));
       }
     } catch (imgErr) {
       sheet.getRange(rowNum, 5).setValue('上傳失敗');
       Logger.log('簽到截圖失敗: ' + imgErr);
     }
   } else {
-    sheet.getRange(rowNum, 5).setValue('無截圖');
-    Logger.log('簽到無截圖資料: ' + (data.name || ''));
+    var hint = '無截圖';
+    if (data.imageLen) {
+      hint += '(' + data.imageLen + '字元)';
+    }
+    sheet.getRange(rowNum, 5).setValue(hint);
+    Logger.log('簽到無截圖資料: ' + (data.name || '') + ' imageLen=' + (data.imageLen || 0));
   }
 
   try {

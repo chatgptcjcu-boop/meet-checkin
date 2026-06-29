@@ -79,7 +79,7 @@
   </div>
 
   <script src="../assets/members.js"></script>
-  <script src="../assets/checkin.js?v=3"></script>
+  <script src="../assets/checkin.js?v=4"></script>
   <script>
     const CHANNEL = '視訊';
     let currentMode = 'signin';
@@ -195,9 +195,10 @@
         title: m.title,
       };
 
-      MeetCheckin.submitWithScreenshot('formArea', postData, () => {
+      MeetCheckin.submitWithScreenshot('formArea', postData, function (ok) {
         document.getElementById('loadingOverlay').style.display = 'none';
         document.getElementById('submitBtn').style.display = 'block';
+        if (!ok) return;
         if (currentMode === 'signin') {
           const q = new URLSearchParams({ name: m.name, role: m.role });
           window.location.href = '../視訊委員/index.html?' + q.toString();
