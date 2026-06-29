@@ -19,5 +19,13 @@
     "簽到後導向 Google Meet，簽退顯示完成畫面",
     "現場簽到頁：委員名單點選姓名＋拍照簽到/簽退（/現場簽到/）"
   ],
-  "notes": "已移除 Meet URL 的 authuser=0。GAS 使用 no-cors 送出。無相機裝置時可優雅降級繼續報到。LINE 內建瀏覽器可能無法使用相機，建議提示使用者允許權限或改用 Safari/Chrome。"
+  "notes": "已移除 Meet URL 的 authuser=0。GAS 使用 no-cors 送出。無相機裝置時可優雅降級繼續報到。LINE 內建瀏覽器可能無法使用相機，建議提示使用者允許權限或改用 Safari/Chrome。",
+  "emailNotification": {
+    "enabled": true,
+    "recipient": "chatgpt.cjcu@gmail.com",
+    "subjectSignIn": "【報到成功】2026宮廟管理師會議 - {姓名}",
+    "subjectSignOut": "【簽退成功】2026宮廟管理師會議 - {姓名}",
+    "attachment": "簽到截圖 JPEG",
+    "gasRedeployRequired": "修改 gas/Code.gs 後，須至 Google 試算表 → 擴充功能 → Apps Script → 部署 → 管理部署 → 編輯 → 新版本 → 部署"
+  }
 }

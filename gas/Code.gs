@@ -30,6 +30,10 @@ function getSpreadsheet_() {
 var SIGN_SHEET_NAME = '工作表1';
 var FORM_SHEET_NAME = '填答紀錄';
 
+/** 簽到／簽退成功後寄送通知（與第一版相同） */
+var NOTIFY_EMAIL = 'chatgpt.cjcu@gmail.com';
+var MEETING_TITLE = '2026宮廟管理師會議';
+
 /** 與簽到試算表第 1 列標題一致 */
 var SIGN_HEADERS = ['報到時間', '姓名', '身份別', '錄影授權'];
 
@@ -67,20 +71,31 @@ function parsePostData_(e) {
 function handleSignInOut(data) {
   var ss = getSpreadsheet_();
   var sheet = getOrCreateSignSheet_(ss);
+  var timeStr = formatTaiwanTime_(data.timestamp);
 
   sheet.appendRow([
-    formatTaiwanTime_(data.timestamp),
+    timeStr,
     data.name || '',
     data.role || '',
     data.consent ? '已同意' : '未同意'
   ]);
 
+  var imageBlob = null;
+  var imageUrl = '';
   if (data.image) {
     try {
-      saveImageToDrive_(data.image, (data.name || 'unknown') + '_' + data.action);
+      var baseName = (data.name || 'unknown') + '_' + (data.action || '簽到');
+      imageUrl = saveImageToDrive_(data.image, baseName);
+      imageBlob = base64ToBlob_(data.image, baseName + '.jpg');
     } catch (imgErr) {
       Logger.log('簽到截圖失敗（列已寫入）: ' + imgErr);
     }
+  }
+
+  try {
+    sendSignEmail_(data, timeStr, imageBlob, imageUrl);
+  } catch (mailErr) {
+    Logger.log('寄信失敗（列已寫入）: ' + mailErr);
   }
 
   return jsonOut({ ok: true });
@@ -151,21 +166,71 @@ function formatTaiwanTime_(isoOrEmpty) {
   return Utilities.formatDate(d, 'Asia/Taipei', 'yyyy/M/d ahh:mm:ss');
 }
 
-function saveImageToDrive_(base64, filename) {
+function base64ToBlob_(base64, filename) {
   if (!base64 || base64.indexOf('data:image') !== 0) {
+    return null;
+  }
+  var parts = base64.split(',');
+  return Utilities.newBlob(
+    Utilities.base64Decode(parts[1]),
+    'image/jpeg',
+    filename
+  );
+}
+
+function saveImageToDrive_(base64, filename) {
+  var blob = base64ToBlob_(base64, filename + '_' + new Date().getTime() + '.jpg');
+  if (!blob) {
     return '';
   }
   var folderName = 'meet-checkin-截圖';
   var folders = DriveApp.getFoldersByName(folderName);
   var folder = folders.hasNext() ? folders.next() : DriveApp.createFolder(folderName);
-
-  var parts = base64.split(',');
-  var blob = Utilities.newBlob(
-    Utilities.base64Decode(parts[1]),
-    'image/jpeg',
-    filename + '_' + new Date().getTime() + '.jpg'
-  );
   return folder.createFile(blob).getUrl();
+}
+
+/**
+ * 寄送簽到／簽退通知信（主旨、內文格式與第一版一致，附截圖）
+ * 視訊簽到、現場簽到皆走 handleSignInOut → 此函式
+ */
+function sendSignEmail_(data, timeStr, imageBlob, imageUrl) {
+  if (!NOTIFY_EMAIL) {
+    return;
+  }
+
+  var action = data.action || '簽到';
+  var isSignIn = action === '簽到';
+  var subject = '【' + (isSignIn ? '報到成功' : '簽退成功') + '】' +
+    MEETING_TITLE + ' - ' + (data.name || '');
+
+  var bodyLines = [
+    '系統通知',
+    '',
+    (isSignIn ? '報到時間' : '簽退時間') + '：' + timeStr,
+    '與會姓名：' + (data.name || ''),
+    '身份別：' + (data.role || ''),
+    '錄影授權：' + (data.consent ? '已同意' : '未同意')
+  ];
+
+  if (data.source) {
+    bodyLines.push('簽到來源：' + data.source);
+  }
+  if (data.org) {
+    bodyLines.push('單位：' + data.org);
+  }
+  if (data.title) {
+    bodyLines.push('職稱：' + data.title);
+  }
+  if (imageUrl) {
+    bodyLines.push('', '截圖雲端備份：' + imageUrl);
+  }
+
+  var options = { name: '宮廟管理師會議報到系統' };
+  if (imageBlob) {
+    options.attachments = [imageBlob];
+  }
+
+  MailApp.sendEmail(NOTIFY_EMAIL, subject, bodyLines.join('\n'), options);
 }
 
 function jsonOut(obj) {
@@ -181,6 +246,17 @@ function testSignIn() {
     consent: true,
     timestamp: new Date().toISOString()
   })).getContent());
+}
+
+/** 在 Apps Script 編輯器執行此函式，測試寄信（不含截圖） */
+function testSignInEmail() {
+  sendSignEmail_({
+    action: '簽到',
+    name: '郵件測試',
+    role: '評核委員',
+    consent: true,
+    source: 'GAS測試'
+  }, formatTaiwanTime_(new Date().toISOString()), null, '');
 }
 
 function testFormSubmit() {
