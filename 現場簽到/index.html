@@ -302,20 +302,24 @@
       }
 
       setTimeout(() => {
-        html2canvas(document.getElementById(formId), { backgroundColor: '#fff', scale: 1.5, useCORS: true, logging: false })
+        html2canvas(document.getElementById(formId), { backgroundColor: '#fff', scale: 1, useCORS: true, logging: false })
           .then(canvas => {
-            postData.image = canvas.toDataURL('image/jpeg', 0.8);
-            MeetCheckin.sendToBackend(postData);
+            postData.image = canvas.toDataURL('image/jpeg', 0.65);
+            return MeetCheckin.sendToBackend(postData);
+          })
+          .then(() => {
             MeetCheckin.stopCamera();
             stopGuestCamera();
             finishSuccess(name, btnId);
           })
           .catch(() => {
             postData.image = '';
-            MeetCheckin.sendToBackend(postData);
-            MeetCheckin.stopCamera();
-            stopGuestCamera();
-            finishSuccess(name, btnId);
+            postData.imageOmitted = true;
+            MeetCheckin.sendToBackend(postData).finally(() => {
+              MeetCheckin.stopCamera();
+              stopGuestCamera();
+              finishSuccess(name, btnId);
+            });
           });
       }, 150);
     }

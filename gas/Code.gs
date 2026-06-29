@@ -255,6 +255,11 @@ function jsonOut(obj) {
     .setMimeType(ContentService.MimeType.JSON);
 }
 
+/** 瀏覽器開啟 /exec 可測試部署是否上線 */
+function doGet() {
+  return jsonOut({ ok: true, service: 'meet-checkin', time: new Date().toISOString() });
+}
+
 function testSignIn() {
   Logger.log(doPost(mockPost_({
     action: '簽到',
