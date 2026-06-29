@@ -19,6 +19,8 @@
   }
 
   function buildGate() {
+    if (document.getElementById('expense-auth-gate')) return;
+
     const gate = document.createElement('div');
     gate.id = 'expense-auth-gate';
     gate.innerHTML = `
@@ -60,7 +62,9 @@
         </form>
         <p class="hint">關閉瀏覽器分頁後需重新輸入密碼</p>
       </div>`;
-    document.body.appendChild(gate);
+
+    const root = document.body || document.documentElement;
+    root.appendChild(gate);
 
     const form = gate.querySelector('#expense-auth-form');
     const input = gate.querySelector('#expense-auth-pw');
@@ -73,19 +77,21 @@
       if (hash === PASS_HASH) {
         grant();
         gate.remove();
-        document.body.style.visibility = 'visible';
       } else {
         err.textContent = '密碼錯誤，請再試一次';
         input.value = '';
         input.focus();
       }
     });
+
+    input.focus();
   }
 
   if (authed()) return;
 
-  document.addEventListener('DOMContentLoaded', () => {
-    document.body.style.visibility = 'hidden';
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', buildGate);
+  } else {
     buildGate();
-  });
+  }
 })();
