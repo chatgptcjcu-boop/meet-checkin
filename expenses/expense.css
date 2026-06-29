@@ -6,6 +6,55 @@
   --warn: #b45309;
 }
 
+/* 本機版：紫色｜雲端版：青綠色 */
+body.expense-env-local {
+  --accent: #7c3aed;
+  background: #f5f3ff;
+}
+body.expense-env-cloud {
+  --accent: #0f766e;
+  background: #ecfdf5;
+}
+body.expense-env-local::before,
+body.expense-env-cloud::before {
+  content: '';
+  display: block;
+  height: 5px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 60;
+}
+body.expense-env-local::before { background: linear-gradient(90deg, #7c3aed, #a78bfa); }
+body.expense-env-cloud::before { background: linear-gradient(90deg, #0f766e, #14b8a6); }
+
+.top-bar .env-badge {
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 0.28rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border: 1.5px solid rgba(255, 255, 255, 0.55);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.panel.env-panel-local {
+  border-left: 5px solid #7c3aed;
+  background: linear-gradient(90deg, #faf5ff 0%, #fff 12%);
+}
+.panel.env-panel-cloud {
+  border-left: 5px solid #0f766e;
+  background: linear-gradient(90deg, #f0fdfa 0%, #fff 12%);
+}
+#syncEnv {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+body.expense-env-local #syncEnv { color: #6d28d9; }
+body.expense-env-cloud #syncEnv { color: #0f766e; }
+
 * { box-sizing: border-box; }
 body {
   font-family: 'Noto Sans TC', 'PingFang TC', sans-serif;

@@ -106,3 +106,63 @@ window.renderExpenseVersionBar = function (containerId) {
   } catch (_) {}
   el.textContent = text;
 };
+
+/** 判斷本機檔案或 GitHub Pages 雲端 */
+window.detectExpenseEnv = function () {
+  const host = location.hostname;
+  const protocol = location.protocol;
+  if (protocol === 'file:' || !host || host === 'localhost' || host === '127.0.0.1') return 'local';
+  return 'cloud';
+};
+
+window.getExpenseEnvInfo = function () {
+  const env = window.detectExpenseEnv();
+  if (env === 'local') {
+    return { env, label: '本機版', badge: '🖥 本機版', titlePrefix: '[本機] ', accent: '#7c3aed' };
+  }
+  return { env, label: '雲端版', badge: '☁ 雲端版', titlePrefix: '[雲端] ', accent: '#0f766e' };
+};
+
+window.applyExpenseEnvTheme = function () {
+  const info = window.getExpenseEnvInfo();
+  document.documentElement.classList.add('expense-env-' + info.env);
+  document.body.classList.add('expense-env-' + info.env);
+
+  if (!document.title.startsWith('[本機]') && !document.title.startsWith('[雲端]')) {
+    document.title = info.titlePrefix + document.title;
+  }
+
+  let themeMeta = document.querySelector('meta[name="theme-color"]');
+  if (!themeMeta) {
+    themeMeta = document.createElement('meta');
+    themeMeta.name = 'theme-color';
+    document.head.appendChild(themeMeta);
+  }
+  themeMeta.content = info.accent;
+
+  document.querySelectorAll('.top-bar').forEach((bar) => {
+    let badge = bar.querySelector('.env-badge');
+    if (!badge) {
+      badge = document.createElement('span');
+      badge.className = 'env-badge';
+      bar.insertBefore(badge, bar.firstChild);
+    }
+    badge.textContent = info.badge;
+    badge.title = info.env === 'local' ? '本機檔案／localhost' : 'GitHub Pages 線上版';
+  });
+
+  const syncPanel = document.getElementById('syncPanel');
+  if (syncPanel) {
+    syncPanel.classList.add('env-panel-' + info.env);
+    const envEl = document.getElementById('syncEnv');
+    if (envEl) {
+      envEl.textContent = '目前環境：' + info.label + (info.env === 'local' ? '（紫色標示）' : '（青綠色標示）');
+    }
+  }
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', window.applyExpenseEnvTheme);
+} else {
+  window.applyExpenseEnvTheme();
+}

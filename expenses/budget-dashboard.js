@@ -143,6 +143,7 @@
 
   function updateVersionUI(saved) {
     renderSyncBanner(saved);
+    applyExpenseEnvTheme();
     renderExpenseVersionBar();
     const topTag = document.getElementById('topVersionTag');
     if (topTag) topTag.textContent = 'v' + EXPENSE_DATA_VERSION;
