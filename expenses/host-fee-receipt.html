@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <title>計畫主持人費簽收單｜張祐倉</title>
+  <link rel="stylesheet" href="./expense.css">
+  <script src="./auth.js"></script>
+  <style>
+    .receipt-single { max-width: 720px; margin: 1rem auto; }
+    .receipt-single .receipt { border-width: 3px; padding: 1.25rem 1.5rem; }
+  </style>
+</head>
+<body>
+  <div class="top-bar no-print">
+    <h1>計畫主持人費簽收單｜張祐倉教授</h1>
+    <button type="button" onclick="window.print()">🖨 列印</button>
+    <a class="btn" href="./budget-dashboard.html">← 經費編列表</a>
+    <a class="btn" href="./member-fee-receipts.html">委員簽收單</a>
+  </div>
+
+  <div class="wrap receipt-single" id="hostReceipt"></div>
+
+  <script src="./expense-data.js"></script>
+  <script>
+    (function () {
+      const saved = (() => { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)); } catch (_) { return null; } })();
+      const meta = saved?.meta || {};
+      const h = EXPENSE_HOST;
+      const amount = meta.rateHost ?? 3000;
+      const hostDesc = meta.hostDesc || '宮廟管理師第一次評核委員會現場主持及會議引導（10:00–13:05）';
+      const meetingName = meta.meetingName || '宮廟管理師第一次評核委員會';
+      const meetingDate = meta.meetingDate || '115年6月30日';
+      const orgName = meta.orgName || '財團法人臺灣道教文化學院（臺灣道法總會）教育委員會';
+      const planName = meta.planName || '2026宮廟管理師職能基準 iCAP推動與職能導向課程發展';
+
+      document.getElementById('hostReceipt').innerHTML = `
+        <div class="receipt">
+          <h3>計畫主持人費簽收單</h3>
+          <p class="meta">${orgName}<br>計畫：${planName}</p>
+          <p class="meta"><strong>會議：</strong>${meetingName}｜${meetingDate}</p>
+          <p class="meta"><strong>姓名：</strong>${h.name}　<strong>職稱：</strong>${h.title}</p>
+          <p class="meta"><strong>服務單位：</strong>${h.org}</p>
+          <p class="meta"><strong>工作內容：</strong>${hostDesc}</p>
+          <div class="line" style="margin-top:0.75rem"><span>計畫主持人費</span><span>NT$ ${fmtMoney(amount)}</span></div>
+          <div class="line total"><span>合計應領金額</span><span>NT$ ${fmtMoney(amount)}</span></div>
+          <div class="field">身分證字號<div class="write"></div></div>
+          <div class="field">匯款銀行／分行<div class="write"></div></div>
+          <div class="field">銀行帳號<div class="write"></div></div>
+          <div class="field">戶名（須與身分證同名）<div class="write"></div></div>
+          <p class="legal">
+            本人確認已擔任上述會議之計畫主持人，完成開場說明、議程引導及會議統整等工作；
+            同意依計畫書主持工作項目及勞動部補助計畫經費編列與核銷規定支領主持費。
+            本人以計畫主持人身分支領本費用，不另支領評核委員出席費。
+            所填資料正確，供核銷及匯款使用。
+          </p>
+          <div class="sign">
+            主持人簽名：________________　　日期：115 / 6 / 30<br><br>
+            主辦單位承辦：________________　　會計審核：________________
+          </div>
+        </div>`;
+    })();
+  </script>
+</body>
+</html>

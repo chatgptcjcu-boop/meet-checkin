@@ -1,0 +1,155 @@
+/* 會議經費與委員費用簽收 */
+:root {
+  --border: #cbd5e1;
+  --accent: #1e3a5f;
+  --green: #047857;
+  --warn: #b45309;
+}
+
+* { box-sizing: border-box; }
+body {
+  font-family: 'Noto Sans TC', 'PingFang TC', sans-serif;
+  background: #f1f5f9;
+  margin: 0;
+  font-size: 11pt;
+  line-height: 1.55;
+  color: #111;
+}
+
+.top-bar {
+  background: var(--accent);
+  color: #fff;
+  padding: 0.65rem 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.top-bar h1 { font-size: 0.95rem; margin: 0; flex: 1; min-width: 12rem; }
+.top-bar button, .top-bar a.btn {
+  background: #fff;
+  color: var(--accent);
+  border: none;
+  padding: 0.4rem 0.85rem;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+.wrap { max-width: 1200px; margin: 0 auto; padding: 1rem; }
+
+.note {
+  background: #fffbeb;
+  border: 1px solid #fcd34d;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+.note strong { color: var(--warn); }
+
+.panel {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 1px 8px rgb(0 0 0 / 0.06);
+  padding: 1rem 1.1rem;
+  margin-bottom: 1rem;
+}
+.panel h2 {
+  font-size: 1rem;
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 0.35rem;
+  margin: 0 0 0.75rem;
+}
+
+table.sheet {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+table.sheet th, table.sheet td {
+  border: 1px solid var(--border);
+  padding: 0.4rem 0.5rem;
+  vertical-align: middle;
+}
+table.sheet th { background: #eef2f7; font-weight: 600; text-align: left; }
+table.sheet input, table.sheet select {
+  width: 100%;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  padding: 0.3rem 0.4rem;
+  font-size: 0.85rem;
+  font-family: inherit;
+}
+table.sheet input[type="number"] { text-align: right; }
+table.sheet .num { text-align: right; font-weight: 600; white-space: nowrap; }
+table.sheet .subtotal-row td { background: #f0fdf4; font-weight: 700; }
+table.sheet .grand-row td { background: #1e3a5f; color: #fff; font-weight: 700; font-size: 0.95rem; }
+table.sheet tr:hover td { background: #fafafa; }
+
+.btn-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.5rem 0; }
+.btn-sm {
+  background: #e2e8f0;
+  border: none;
+  padding: 0.35rem 0.7rem;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+.btn-sm.primary { background: var(--green); color: #fff; }
+.btn-sm.danger { background: #fee2e2; color: #991b1b; }
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.65rem;
+  margin-top: 0.75rem;
+}
+.summary-card {
+  background: #f8fafc;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.65rem 0.75rem;
+  text-align: center;
+}
+.summary-card .label { font-size: 0.75rem; color: #64748b; }
+.summary-card .val { font-size: 1.15rem; font-weight: 800; color: var(--accent); margin-top: 0.2rem; }
+
+/* 委員簽收單 */
+.receipt-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1rem;
+}
+.receipt {
+  border: 2px solid #333;
+  padding: 0.85rem 1rem;
+  background: #fff;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+.receipt.skip { opacity: 0.45; border-style: dashed; }
+.receipt h3 { font-size: 0.95rem; margin: 0 0 0.35rem; border-bottom: 1px solid #ccc; padding-bottom: 0.3rem; }
+.receipt .meta { font-size: 0.78rem; color: #555; margin-bottom: 0.5rem; }
+.receipt .line { display: flex; justify-content: space-between; font-size: 0.85rem; padding: 0.2rem 0; border-bottom: 1px dotted #ddd; }
+.receipt .line.total { font-weight: 800; border-bottom: 2px solid #333; margin-top: 0.35rem; padding-top: 0.35rem; }
+.receipt .field { margin: 0.45rem 0; font-size: 0.82rem; }
+.receipt .write { border-bottom: 1px solid #333; min-height: 1.4rem; margin-top: 0.15rem; }
+.receipt .sign { margin-top: 0.75rem; font-size: 0.82rem; }
+.legal { font-size: 0.68rem; color: #666; margin-top: 0.5rem; line-height: 1.45; }
+
+@media print {
+  .top-bar, .no-print { display: none !important; }
+  body { background: #fff; }
+  .wrap { max-width: none; padding: 0; }
+  .panel { box-shadow: none; border: none; padding: 0; }
+  .receipt-grid { display: block; }
+  .receipt { page-break-after: always; margin-bottom: 0; }
+  .receipt:last-child { page-break-after: auto; }
+}

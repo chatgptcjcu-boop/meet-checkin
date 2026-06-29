@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <title>評核委員｜出席費及審查費簽收單</title>
+  <link rel="stylesheet" href="./expense.css">
+  <script src="./auth.js"></script>
+</head>
+<body>
+  <div class="top-bar no-print">
+    <h1>評核委員｜出席費及審查費簽收單（115/6/30）</h1>
+    <button type="button" onclick="window.print()">🖨 列印全部</button>
+    <a class="btn" href="./host-fee-receipt.html">主持費簽收單</a>
+    <a class="btn" href="./budget-dashboard.html">← 經費編列表</a>
+  </div>
+
+  <div class="wrap">
+    <div class="note no-print">
+      請委員確認金額後<strong>親簽</strong>，並填寫身分證字號、銀行帳號供匯款核銷。
+      金額連動「經費編列表」設定；請假或不支費者標示為灰色。
+    </div>
+    <div class="receipt-grid" id="receiptGrid"></div>
+  </div>
+
+  <script src="./expense-data.js"></script>
+  <script>
+    (function () {
+      const grid = document.getElementById('receiptGrid');
+      const saved = (() => { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)); } catch (_) { return null; } })();
+      const meta = saved?.meta || {};
+      const att = meta.rateAttendance ?? 2500;
+      const rev = meta.rateReview ?? 1830;
+      const reviewDesc = meta.reviewDesc || '宮廟管理師職能基準及課程架構審查（填答手冊正文＋附錄）1件';
+      const meetingName = meta.meetingName || '宮廟管理師第一次評核委員會';
+      const meetingDate = meta.meetingDate || '115年6月30日';
+      const orgName = meta.orgName || '財團法人臺灣道教文化學院（臺灣道法總會）教育委員會';
+      const planName = meta.planName || '2026宮廟管理師職能基準 iCAP推動與職能導向課程發展';
+
+      EXPENSE_MEMBERS.forEach((m) => {
+        const skip = !m.feeEligible || m.attendance === '請假';
+        const attAmt = skip ? 0 : att;
+        const revAmt = skip ? 0 : rev;
+        const total = attAmt + revAmt;
+        const div = document.createElement('div');
+        div.className = 'receipt' + (skip ? ' skip' : '');
+        div.innerHTML = `
+          <h3>出席費及審查費簽收單</h3>
+          <p class="meta">${orgName}<br>計畫：${planName}</p>
+          <p class="meta"><strong>會議：</strong>${meetingName}｜${meetingDate}</p>
+          <p class="meta"><strong>姓名：</strong>${m.name}　<strong>身份：</strong>${m.role}　<strong>出席：</strong>${m.attendance}</p>
+          <p class="meta"><strong>服務單位：</strong>${m.org}　${m.title}</p>
+          ${skip ? `<p class="meta" style="color:#b45309"><strong>※ ${m.feeNote || '不支費'}</strong></p>` : ''}
+          <div class="line"><span>出席費（每次會議上限2,500元）</span><span>NT$ ${fmtMoney(attAmt)}</span></div>
+          <div class="line"><span>審查費（${reviewDesc}）</span><span>NT$ ${fmtMoney(revAmt)}</span></div>
+          <div class="line total"><span>合計應領金額</span><span>NT$ ${fmtMoney(total)}</span></div>
+          <div class="field">身分證字號<div class="write"></div></div>
+          <div class="field">匯款銀行／分行<div class="write"></div></div>
+          <div class="field">銀行帳號<div class="write"></div></div>
+          <div class="field">戶名（須與身分證同名）<div class="write"></div></div>
+          <p class="legal">
+            本人確認上述會議確實出席（或視訊全程參與），並已完成職能基準及課程架構審查填答；
+            同意依行政院「中央政府各機關學校出席費及稿費支給要點」及勞動部補助計畫經費編列與核銷規定支領費用。
+            所填資料正確，供核銷及匯款使用。
+          </p>
+          <div class="sign">
+            委員簽名：________________　　日期：115 / 6 / 30<br><br>
+            主辦單位承辦：________________　　會計審核：________________
+          </div>`;
+        grid.appendChild(div);
+      });
+    })();
+  </script>
+</body>
+</html>

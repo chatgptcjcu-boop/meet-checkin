@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>第一次評核委員會｜經費動態編列表</title>
+  <link rel="stylesheet" href="./expense.css">
+  <script src="./auth.js"></script>
+</head>
+<body>
+  <div class="top-bar no-print">
+    <h1>宮廟管理師第一次評核委員會｜經費動態編列（115/6/30）</h1>
+    <button type="button" id="btnSave">💾 儲存</button>
+    <button type="button" id="btnExport">⬇ 匯出</button>
+    <button type="button" id="btnImport">⬆ 匯入</button>
+    <input type="file" id="importFile" accept="application/json,.json" hidden>
+    <button type="button" id="btnReset">↺ 還原預設</button>
+    <button type="button" onclick="window.print()">🖨 列印</button>
+    <a class="btn" href="./member-fee-receipts.html">委員簽收單 →</a>
+  </div>
+
+  <div class="wrap">
+    <div class="note no-print">
+      <strong>編列依據（請核銷時備查）：</strong>
+      勞動部「一般常用經費編列標準及結報應行注意事項」；
+      行政院「中央政府各機關學校出席費及稿費支給要點」—
+      <strong>出席費</strong>每次會議上限新臺幣 <strong>2,500</strong> 元；
+      <strong>審查費</strong>（稿費）中文按件 <strong>1,220～1,830</strong> 元。
+      受補助計畫機關學校人員出席本計畫相關會議，<strong>不得</strong>另支出席費。
+      本表可即時修改單價／數量，按「儲存」保留於本機瀏覽器。
+    </div>
+
+    <div class="panel">
+      <h2>一、會議基本資料</h2>
+      <table class="sheet">
+        <tr><th style="width:18%">計畫名稱</th><td><input id="planName" value="2026宮廟管理師職能基準 iCAP推動與職能導向課程發展"></td></tr>
+        <tr><th>會議名稱</th><td><input id="meetingName" value="宮廟管理師第一次評核委員會"></td></tr>
+        <tr><th>會議日期</th><td><input id="meetingDate" value="115年6月30日（10:00–13:05）"></td></tr>
+        <tr><th>執行單位</th><td><input id="orgName" value="財團法人臺灣道教文化學院（臺灣道法總會）教育委員會"></td></tr>
+      </table>
+    </div>
+
+    <div class="panel">
+      <h2>二、業務費／會務費用明細（可增刪列）</h2>
+      <div class="btn-row no-print">
+        <button type="button" class="btn-sm primary" id="btnAddRow">＋ 新增列</button>
+        <button type="button" class="btn-sm" id="btnSyncFees">同步委員費人數</button>
+      </div>
+      <table class="sheet" id="budgetTable">
+        <thead>
+          <tr>
+            <th style="width:3%">#</th>
+            <th style="width:22%">費用項目</th>
+            <th style="width:12%">經費類別</th>
+            <th style="width:10%">單價（元）</th>
+            <th style="width:8%">數量</th>
+            <th style="width:8%">單位</th>
+            <th style="width:10%">總金額</th>
+            <th>備註／核銷要件</th>
+            <th class="no-print" style="width:4%"></th>
+          </tr>
+        </thead>
+        <tbody id="budgetBody"></tbody>
+        <tfoot>
+          <tr class="subtotal-row"><td colspan="6" class="num">業務費小計</td><td class="num" id="subtotalBiz">0</td><td colspan="2"></td></tr>
+          <tr class="subtotal-row"><td colspan="6" class="num">委員費＋計畫主持費小計</td><td class="num" id="subtotalFees">0</td><td colspan="2"></td></tr>
+          <tr class="grand-row"><td colspan="6" class="num">本次會議預估支出合計</td><td class="num" id="grandTotal">0</td><td colspan="2"></td></tr>
+        </tfoot>
+      </table>
+      <div class="summary-grid" id="summaryCards"></div>
+    </div>
+
+    <div class="panel">
+      <h2>三、委員費用支給標準（連動簽收單）</h2>
+      <table class="sheet">
+        <tr>
+          <th>出席費（元／人次）</th>
+          <td><input type="number" id="rateAttendance" value="2500" min="0" max="2500" step="100"></td>
+          <th>審查費（元／件）</th>
+          <td><input type="number" id="rateReview" value="1830" min="1220" max="1830" step="10"></td>
+        </tr>
+        <tr>
+          <th>審查內容說明</th>
+          <td colspan="3"><input id="reviewDesc" value="宮廟管理師職能基準及課程架構審查（填答手冊正文＋附錄）1件"></td>
+        </tr>
+        <tr>
+          <th>計畫主持人費（元／式）</th>
+          <td><input type="number" id="rateHost" value="3000" min="0" step="100"></td>
+          <th>主持人</th>
+          <td>張祐倉（教育委員會主任委員）</td>
+        </tr>
+        <tr>
+          <th>主持工作說明</th>
+          <td colspan="3"><input id="hostDesc" value="宮廟管理師第一次評核委員會現場主持及會議引導（10:00–13:05）"></td>
+        </tr>
+        <tr>
+          <th>應支委員人數</th>
+          <td id="feeHeadcount">—</td>
+          <th>預估委員費合計</th>
+          <td id="feePreview">—</td>
+        </tr>
+      </table>
+      <p class="no-print" style="font-size:0.82rem;color:#64748b;margin-top:0.5rem">
+        <a href="./host-fee-receipt.html">→ 張祐倉教授主持費簽收單</a>
+      </p>
+    </div>
+
+    <div class="panel">
+      <h2>四、工作人員與工讀生（本次會議）</h2>
+      <table class="sheet" id="staffTable">
+        <thead>
+          <tr><th>姓名／職稱</th><th>工作內容</th><th>時數</th><th>時薪</th><th>交通費</th><th>小計</th></tr>
+        </thead>
+        <tbody id="staffBody"></tbody>
+      </table>
+      <div class="btn-row no-print"><button type="button" class="btn-sm" id="btnAddStaff">＋ 新增工作人員</button></div>
+    </div>
+  </div>
+
+  <script src="./expense-data.js"></script>
+  <script src="./budget-dashboard.js"></script>
+</body>
+</html>
