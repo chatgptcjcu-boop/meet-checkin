@@ -34,8 +34,8 @@ function getSpreadsheet_() {
 var SIGN_SHEET_NAME = '工作表1';
 var FORM_SHEET_NAME = '填答紀錄';
 
-/** 與簽到試算表第 1 列標題一致 */
-var SIGN_HEADERS = ['報到時間', '姓名', '身份別', '錄影授權'];
+/** 與簽到試算表第 1 列標題一致（第 5 欄可核對截圖是否上傳） */
+var SIGN_HEADERS = ['報到時間', '姓名', '身份別', '錄影授權', '截圖連結'];
 
 /* ═══════════════════════════════════════════════════════════════
  * 簽到驗證 — 寄信通知（新增，不影響填答）
@@ -83,28 +83,44 @@ function handleSignInOut(data) {
     timeStr,
     data.name || '',
     data.role || '',
-    data.consent ? '已同意' : '未同意'
+    data.consent ? '已同意' : '未同意',
+    ''
   ]);
+  var rowNum = sheet.getLastRow();
 
-  var imageBlob = null;
+  var attachBlob = null;
   var imageUrl = '';
   var imgData = data.image || data.photo || '';
+
   if (imgData) {
     try {
-      var fileBase = (data.name || 'unknown') + '_' + data.action;
-      imageUrl = saveImageToDrive_(imgData, fileBase);
-      imageBlob = imageBase64ToBlob_(imgData, fileBase + '.jpg');
+      var saved = saveSignImage_(imgData);
+      if (saved) {
+        imageUrl = saved.url;
+        attachBlob = saved.blob;
+        sheet.getRange(rowNum, 5).setValue(imageUrl);
+      } else {
+        sheet.getRange(rowNum, 5).setValue('解碼失敗');
+        Logger.log('簽到截圖解碼失敗: ' + (data.name || ''));
+      }
     } catch (imgErr) {
-      Logger.log('簽到截圖失敗（列已寫入）: ' + imgErr);
+      sheet.getRange(rowNum, 5).setValue('上傳失敗');
+      Logger.log('簽到截圖失敗: ' + imgErr);
     }
   } else {
+    sheet.getRange(rowNum, 5).setValue('無截圖');
     Logger.log('簽到無截圖資料: ' + (data.name || ''));
   }
 
   try {
-    sendSignEmail_(data, timeStr, imageBlob, imageUrl);
+    sendSignEmail_(data, timeStr, attachBlob, imageUrl);
   } catch (mailErr) {
-    Logger.log('寄信失敗（列已寫入）: ' + mailErr);
+    Logger.log('寄信含附件失敗，改寄純文字: ' + mailErr);
+    try {
+      sendSignEmail_(data, timeStr, null, imageUrl);
+    } catch (mailErr2) {
+      Logger.log('寄信失敗: ' + mailErr2);
+    }
   }
 
   return jsonOut({ ok: true });
@@ -167,6 +183,8 @@ function getOrCreateSignSheet_(ss) {
   }
   if (sheet.getLastRow() === 0) {
     sheet.appendRow(SIGN_HEADERS);
+  } else if (sheet.getLastColumn() < 5) {
+    sheet.getRange(1, 5).setValue('截圖連結');
   }
   return sheet;
 }
@@ -177,6 +195,23 @@ function formatTaiwanTime_(isoOrEmpty) {
     d = new Date();
   }
   return Utilities.formatDate(d, 'Asia/Taipei', 'yyyy/M/d ahh:mm:ss');
+}
+
+/** 簽到專用：存 Drive 並回傳檔案 blob 供寄信附件（檔名純英文） */
+function saveSignImage_(base64) {
+  var ts = Utilities.formatDate(new Date(), 'Asia/Taipei', 'yyyyMMdd_HHmmss');
+  var blob = imageBase64ToBlob_(base64, 'checkin_' + ts + '.jpg');
+  if (!blob) {
+    return null;
+  }
+  var folderName = 'meet-checkin-截圖';
+  var folders = DriveApp.getFoldersByName(folderName);
+  var folder = folders.hasNext() ? folders.next() : DriveApp.createFolder(folderName);
+  var file = folder.createFile(blob);
+  return {
+    url: file.getUrl(),
+    blob: file.getBlob()
+  };
 }
 
 function saveImageToDrive_(base64, filename) {
@@ -273,7 +308,21 @@ function testSignIn() {
   })).getContent());
 }
 
-/** 編輯器執行此函式，快速測試寄信（不需從網頁簽到） */
+/** 編輯器執行：測試寄信＋附件（確認 MailApp 附件是否正常） */
+function testSignInEmailWithImage() {
+  var tinyJpeg =
+    'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxISEhUQEhIVFhUVFRUVFRUVFRUWFxUXFhUYHSggGBolGxUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKDg0OGxAQGy0lHyUtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAAEAAQMBIgACEQEDEQH/xAAbAAACAwEBAQAAAAAAAAAAAAADBAECBQYAB//EAD0QAAIBAwMCBQMDAwQDAgcAAAECAwAEERIhMQVBBhMiUWEycYGRoQcjQrHB0fAVJGLh8SQzQ1Jyc//EABQBAQAAAAAAAAAAAAAAAAAAAAD/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwDdwAP/2Q==';
+  var saved = saveSignImage_(tinyJpeg);
+  sendSignEmail_({
+    action: '簽到',
+    name: '附件測試',
+    role: '評核委員',
+    consent: true,
+    source: 'GAS測試'
+  }, formatTaiwanTime_(new Date().toISOString()), saved ? saved.blob : null, saved ? saved.url : '');
+}
+
+/** 編輯器執行此函式，快速測試寄信（不含截圖） */
 function testSignInEmail() {
   sendSignEmail_({
     action: '簽到',

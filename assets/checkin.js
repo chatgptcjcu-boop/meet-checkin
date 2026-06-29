@@ -1,6 +1,6 @@
 /**
- * 簽到共用：相機、截圖壓縮、GAS 送出
- * 與視訊委員填答相同：fetch + no-cors + postData.contents
+ * 簽到共用：相機擷圖、GAS 送出
+ * 寄信附件以鏡頭 JPEG 為主（小檔、穩定），不依賴 html2canvas 送後端
  */
 window.MeetCheckin = {
   GAS_URL:
@@ -8,13 +8,13 @@ window.MeetCheckin = {
   MEET_URL: 'https://meet.google.com/kci-xjtu-dmr?hs=122',
   streamRef: null,
 
-  /** 從 video 元素擷取小尺寸 JPEG（寄信附件備援，最可靠） */
+  /** 擷取鏡頭 JPEG（寬 480px，約 30–80KB，適合 GAS 與寄信附件） */
   captureWebcamJpeg(videoEl, maxW, quality) {
     if (!videoEl || videoEl.readyState !== 4 || !videoEl.videoWidth) {
       return '';
     }
-    maxW = maxW || 640;
-    quality = quality || 0.62;
+    maxW = maxW || 480;
+    quality = quality || 0.58;
     var w = videoEl.videoWidth;
     var h = videoEl.videoHeight;
     if (w > maxW) {
@@ -28,70 +28,21 @@ window.MeetCheckin = {
     return canvas.toDataURL('image/jpeg', quality);
   },
 
-  /** 壓縮截圖；失敗時保留原圖（若不太大） */
-  compressImageDataUrl(dataUrl, maxW, quality) {
-    maxW = maxW || 720;
-    quality = quality || 0.55;
-    return new Promise(function (resolve) {
-      if (!dataUrl || dataUrl.indexOf('data:image') !== 0) {
-        resolve('');
-        return;
-      }
-      var img = new Image();
-      img.onload = function () {
-        var w = img.width;
-        var h = img.height;
-        if (w > maxW) {
-          h = Math.round((h * maxW) / w);
-          w = maxW;
-        }
-        var canvas = document.createElement('canvas');
-        canvas.width = w;
-        canvas.height = h;
-        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-        resolve(canvas.toDataURL('image/jpeg', quality));
-      };
-      img.onerror = function () {
-        /* 壓縮失敗時勿丟棄，原圖若 < 900KB 仍送出 */
-        resolve(dataUrl.length < 900000 ? dataUrl : '');
-      };
-      img.src = dataUrl;
-    });
-  },
-
-  /** 合併表單截圖與鏡頭快照，確保至少有一張圖送到 GAS */
-  prepareImagesForSend(postData) {
-    var self = this;
-    var webcamShot = postData.photo || '';
-    var formShot = postData.image || '';
-    return self.compressImageDataUrl(formShot).then(function (compressed) {
-      postData.image = compressed || webcamShot || formShot || '';
-      delete postData.photo;
-      if (!postData.image) {
-        postData.imageOmitted = true;
-      }
-      return postData;
-    });
-  },
-
   sendToBackend(postData) {
-    var self = this;
-    return self.prepareImagesForSend(postData).then(function (ready) {
-      var body = JSON.stringify(ready);
-      return fetch(self.GAS_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        cache: 'no-cache',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: body,
-      }).catch(function () {
-        if (navigator.sendBeacon) {
-          navigator.sendBeacon(
-            self.GAS_URL,
-            new Blob([body], { type: 'text/plain;charset=utf-8' })
-          );
-        }
-      });
+    var body = JSON.stringify(postData);
+    return fetch(this.GAS_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      cache: 'no-cache',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: body,
+    }).catch(function () {
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon(
+          window.MeetCheckin.GAS_URL,
+          new Blob([body], { type: 'text/plain;charset=utf-8' })
+        );
+      }
     });
   },
 
@@ -114,7 +65,7 @@ window.MeetCheckin = {
       cameraStatus.innerHTML =
         "<span class='text-red-500 font-bold'>" +
         msg +
-        "</span><br><span class='text-xs mt-1 block'>（不影響簽到，仍可送出）</span>";
+        "</span><br><span class='text-xs mt-1 block'>（請允許相機以附簽到照片）</span>";
     }
   },
 
@@ -129,54 +80,61 @@ window.MeetCheckin = {
     const video = document.getElementById('webcam');
     const photo = document.getElementById('capturedPhoto');
     const cameraStatus = document.getElementById('cameraStatus');
+    if (!video) return;
     video.style.display = 'block';
-    photo.style.display = 'none';
-    cameraStatus.style.display = 'flex';
-    cameraStatus.innerHTML = '正在存取相機…<br>（請點擊允許）';
+    if (photo) photo.style.display = 'none';
+    if (cameraStatus) {
+      cameraStatus.style.display = 'flex';
+      cameraStatus.innerHTML = '正在存取相機…<br>（請點擊允許）';
+    }
   },
 
   capturePhotoPreview() {
     const video = document.getElementById('webcam');
     const photo = document.getElementById('capturedPhoto');
     const shot = this.captureWebcamJpeg(video);
-    if (shot) {
+    if (shot && photo) {
       photo.src = shot;
       photo.style.display = 'block';
       video.style.display = 'none';
     }
+    return shot;
   },
 
-  submitWithScreenshot(formAreaId, postData, onDone) {
+  /**
+   * 簽到送出：先擷取鏡頭照 → 寫入 postData.image → 送 GAS
+   * videoEl 可傳 '#webcam' 元素或 '#guestWebcam'
+   */
+  submitSignIn(videoEl, postData, onDone) {
     const app = this;
-    const video = document.getElementById('webcam');
-    postData.photo = app.captureWebcamJpeg(video);
-    app.capturePhotoPreview();
-    const btn = document.getElementById('submitBtn');
+    const video =
+      typeof videoEl === 'string'
+        ? document.querySelector(videoEl)
+        : videoEl || document.getElementById('webcam');
+
+    const shot = app.captureWebcamJpeg(video);
+    if (!shot) {
+      alert('無法擷取鏡頭畫面，請確認已允許相機權限後再試。');
+      if (onDone) onDone(false);
+      return Promise.resolve();
+    }
+
+    postData.image = shot;
+    if (video && video.id === 'webcam') {
+      app.capturePhotoPreview();
+    }
+
+    const btn = document.getElementById('submitBtn') || document.getElementById('guestSubmitBtn');
     if (btn) btn.style.display = 'none';
 
-    setTimeout(function () {
-      html2canvas(document.getElementById(formAreaId), {
-        backgroundColor: '#ffffff',
-        scale: 1,
-        useCORS: true,
-        logging: false,
-      })
-        .then(function (canvas) {
-          postData.image = canvas.toDataURL('image/jpeg', 0.65);
-          return app.sendToBackend(postData);
-        })
-        .then(function () {
-          app.stopCamera();
-          if (onDone) onDone(true);
-        })
-        .catch(function () {
-          /* html2canvas 失敗仍送鏡頭快照 */
-          postData.image = '';
-          app.sendToBackend(postData).finally(function () {
-            app.stopCamera();
-            if (onDone) onDone(false);
-          });
-        });
-    }, 150);
+    return app.sendToBackend(postData).then(function () {
+      app.stopCamera();
+      if (onDone) onDone(true);
+    });
+  },
+
+  /** 相容舊呼叫：視訊簽到頁 submitWithScreenshot */
+  submitWithScreenshot(formAreaId, postData, onDone) {
+    return this.submitSignIn(document.getElementById('webcam'), postData, onDone);
   },
 };

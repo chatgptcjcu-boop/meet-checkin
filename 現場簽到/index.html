@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>現場簽到｜宮廟管理師第一次評核委員會</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <link rel="stylesheet" href="../assets/checkin.css">
 </head>
 <body class="bg-slate-100 min-h-screen font-sans">
@@ -120,7 +119,7 @@
   </div>
 
   <script src="../assets/members.js"></script>
-  <script src="../assets/checkin.js?v=2"></script>
+  <script src="../assets/checkin.js?v=3"></script>
   <script>
     const CHANNEL = '現場';
     let currentMode = 'signin';
@@ -253,27 +252,27 @@
     }
 
     function submitCheckin(guest) {
-      let name, role, consent, formId, btnId;
+      let name, role, consent, btnId;
+      let videoEl;
       if (guest) {
         name = document.getElementById('guestName').value.trim();
         role = document.getElementById('guestRole').value + '（現場）';
         consent = document.getElementById('guestConsent').checked;
-        formId = 'guestFormArea';
         btnId = 'guestSubmitBtn';
+        videoEl = document.getElementById('guestWebcam');
         if (!name || !document.getElementById('guestRole').value) { alert('請填寫姓名與身份別'); return; }
       } else {
         if (!selectedMember) return;
         name = selectedMember.name;
         role = selectedMember.role + '（現場）';
         consent = document.getElementById('recordConsent').checked;
-        formId = 'formArea';
         btnId = 'submitBtn';
+        videoEl = document.getElementById('webcam');
       }
       if (!consent) { alert('請勾選同意事項'); return; }
 
       document.getElementById('loadingTitle').textContent = currentMode === 'signin' ? '正在傳送簽到資料…' : '正在傳送簽退資料…';
       document.getElementById('loadingOverlay').style.display = 'flex';
-      document.getElementById(btnId).style.display = 'none';
 
       const postData = {
         action: currentMode === 'signin' ? '簽到' : '簽退',
@@ -286,46 +285,15 @@
         postData.title = selectedMember.title;
       }
 
-      var videoEl = guest
-        ? document.getElementById('guestWebcam')
-        : document.getElementById('webcam');
-      postData.photo = MeetCheckin.captureWebcamJpeg(videoEl);
-
-      if (guest) {
-        const gv = document.getElementById('guestWebcam');
-        const gp = document.getElementById('guestCapturedPhoto');
-        if (guestStreamRef && gv.readyState === 4) {
-          const c = document.createElement('canvas');
-          c.width = gv.videoWidth; c.height = gv.videoHeight;
-          c.getContext('2d').drawImage(gv, 0, 0);
-          gp.src = c.toDataURL('image/jpeg', 0.8);
-          gp.style.display = 'block';
-          gv.style.display = 'none';
+      MeetCheckin.submitSignIn(videoEl, postData, function (ok) {
+        if (guest) stopGuestCamera();
+        document.getElementById('loadingOverlay').style.display = 'none';
+        if (ok) {
+          finishSuccess(name, btnId);
+        } else {
+          document.getElementById(btnId).style.display = 'block';
         }
-      } else {
-        MeetCheckin.capturePhotoPreview();
-      }
-
-      setTimeout(() => {
-        html2canvas(document.getElementById(formId), { backgroundColor: '#fff', scale: 1, useCORS: true, logging: false })
-          .then(canvas => {
-            postData.image = canvas.toDataURL('image/jpeg', 0.65);
-            return MeetCheckin.sendToBackend(postData);
-          })
-          .then(() => {
-            MeetCheckin.stopCamera();
-            stopGuestCamera();
-            finishSuccess(name, btnId);
-          })
-          .catch(() => {
-            postData.image = '';
-            MeetCheckin.sendToBackend(postData).finally(() => {
-              MeetCheckin.stopCamera();
-              stopGuestCamera();
-              finishSuccess(name, btnId);
-            });
-          });
-      }, 150);
+      });
     }
 
     function finishSuccess(name, btnId) {
