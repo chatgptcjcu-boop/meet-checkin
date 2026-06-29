@@ -49,6 +49,44 @@ window.DEFAULT_STAFF = [
 ];
 
 window.STORAGE_KEY = 'meet-checkin-expenses-v1';
+window.EXPENSE_SCHEMA_VERSION = 1;
+
+window.getExpenseVersionMeta = function (data) {
+  if (!data || typeof data !== 'object') {
+    return { version: 0, updatedAt: null, schemaVersion: 0 };
+  }
+  return {
+    version: Number.isFinite(data.version) ? data.version : 0,
+    updatedAt: data.updatedAt || null,
+    schemaVersion: Number.isFinite(data.schemaVersion) ? data.schemaVersion : 0,
+  };
+};
+
+window.fmtExpenseUpdatedAt = function (iso) {
+  if (!iso) return '（尚無紀錄）';
+  try {
+    return new Date(iso).toLocaleString('zh-TW', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    });
+  } catch (_) {
+    return iso;
+  }
+};
+
+window.compareExpenseVersions = function (a, b) {
+  const va = window.getExpenseVersionMeta(a);
+  const vb = window.getExpenseVersionMeta(b);
+  if (va.version !== vb.version) return va.version - vb.version;
+  if (va.updatedAt && vb.updatedAt) {
+    return new Date(va.updatedAt).getTime() - new Date(vb.updatedAt).getTime();
+  }
+  return 0;
+};
 
 window.fmtMoney = function (n) {
   return Math.round(n).toLocaleString('zh-TW');

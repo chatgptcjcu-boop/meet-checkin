@@ -23,6 +23,12 @@
       </div>
     </div>
     <p class="note">本區含委員身分與經費資料，請勿轉傳連結與密碼給非授權人員。</p>
+    <p class="note" style="background:#f8fafc;border-color:#cbd5e1" id="schemaVersionNote"></p>
   </div>
+  <script src="./expense-data.js"></script>
+  <script>
+    document.getElementById('schemaVersionNote').textContent =
+      '經費資料格式版本：' + window.EXPENSE_SCHEMA_VERSION + '（匯出 JSON 含版本號與更新時間，便於本機與線上同步）';
+  </script>
 </body>
 </html>

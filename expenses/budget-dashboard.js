@@ -10,8 +10,14 @@
     return null;
   }
 
-  function buildState() {
+  function buildState(bumpVersion) {
+    const saved = loadState();
+    const prev = getExpenseVersionMeta(saved);
+    const now = new Date().toISOString();
     return {
+      schemaVersion: EXPENSE_SCHEMA_VERSION,
+      version: bumpVersion ? Math.max(prev.version, 0) + 1 : prev.version,
+      updatedAt: bumpVersion || !saved?.updatedAt ? now : saved.updatedAt,
       meta: {
         planName: document.getElementById('planName').value,
         meetingName: document.getElementById('meetingName').value,
@@ -28,18 +34,43 @@
     };
   }
 
+  function exportFilename(state) {
+    const meta = getExpenseVersionMeta(state);
+    const dateStr = meta.updatedAt
+      ? meta.updatedAt.slice(0, 10)
+      : new Date().toISOString().slice(0, 10);
+    return 'meet-checkin-expenses-v' + meta.version + '-' + dateStr + '.json';
+  }
+
+  function updateSyncPanel(state) {
+    const versionEl = document.getElementById('syncVersion');
+    const updatedEl = document.getElementById('syncUpdated');
+    if (!versionEl || !updatedEl) return;
+    const meta = getExpenseVersionMeta(state);
+    if (!state) {
+      versionEl.textContent = '本機版本：尚未儲存（預設資料，版本 0）';
+      updatedEl.textContent = '最後更新：（尚無紀錄）';
+      return;
+    }
+    versionEl.textContent = '本機版本：' + meta.version + '（格式 v' + meta.schemaVersion + '）';
+    updatedEl.textContent = '最後更新：' + fmtExpenseUpdatedAt(meta.updatedAt);
+  }
+
   function saveState() {
-    const state = buildState();
+    const state = buildState(true);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    alert('已儲存至本機瀏覽器');
+    updateSyncPanel(state);
+    alert('已儲存至本機瀏覽器（版本 ' + state.version + '）');
   }
 
   function exportState() {
-    const raw = localStorage.getItem(STORAGE_KEY) || JSON.stringify(buildState());
-    const blob = new Blob([raw], { type: 'application/json' });
+    const saved = loadState();
+    const state = buildState(false);
+    if (!saved) state.updatedAt = new Date().toISOString();
+    const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'meet-checkin-expenses-' + new Date().toISOString().slice(0, 10) + '.json';
+    a.download = exportFilename(state);
     a.click();
     URL.revokeObjectURL(a.href);
   }
@@ -50,6 +81,32 @@
       try {
         const data = JSON.parse(reader.result);
         if (!data || typeof data !== 'object') throw new Error('invalid');
+
+        const imported = getExpenseVersionMeta(data);
+        if (imported.schemaVersion > EXPENSE_SCHEMA_VERSION) {
+          alert('無法匯入：檔案格式版本（' + imported.schemaVersion + '）較新，請先更新頁面程式。');
+          return;
+        }
+
+        const current = loadState();
+        const local = getExpenseVersionMeta(current);
+        const cmp = compareExpenseVersions(data, current);
+
+        let msg = '匯入檔：版本 ' + imported.version + '，' + fmtExpenseUpdatedAt(imported.updatedAt) + '\n';
+        if (current) {
+          msg += '本機：版本 ' + local.version + '，' + fmtExpenseUpdatedAt(local.updatedAt) + '\n\n';
+          if (cmp > 0) {
+            msg += '匯入檔較新。確定匯入？';
+          } else if (cmp < 0) {
+            msg += '⚠ 匯入檔較舊，將覆蓋較新的本機資料。仍要繼續？';
+          } else {
+            msg += '版本相同。匯入將覆蓋本機資料。仍要繼續？';
+          }
+        } else {
+          msg += '\n確定匯入？';
+        }
+        if (!confirm(msg)) return;
+
         localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
         location.reload();
       } catch (_) {
@@ -250,6 +307,7 @@
     document.getElementById('btnAddStaff').onclick = () => addStaff({ name: '', role: '', hours: 0, hourly: 200, transport: 0 });
     syncFeeRows();
     recalc();
+    updateSyncPanel(saved);
   }
 
   init();
