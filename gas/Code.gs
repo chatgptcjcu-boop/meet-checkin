@@ -6,9 +6,13 @@
  *   執行身分：我 ｜ 存取權：任何人（含匿名）
  *
  * 試算表 → 擴充功能 → Apps Script 貼上此檔（勿用獨立「未命名專案」）
+ *
+ * ── 架構說明 ──
+ * • 填答-正文 / 填答-附錄 → handleFormSubmit（視訊委員職能填答，勿異動）
+ * • 簽到 / 簽退           → handleSignInOut（驗證簽到＋試算表＋Drive＋寄信通知）
  */
 
-var SPREADSHEET_ID = '';
+var SPREADSHEET_ID = '1gqA0iv17jE4FKEzUKVh5ngKnd57mU12RW0-md1fTjSo';
 // 留空 = 使用「試算表 → 擴充功能 → Apps Script」綁定的這張表（建議）
 // 若需手動指定，請從試算表網址 /d/ 與 /edit 之間完整複製，例如：
 // 1gqA0iv17jE4FKEzUKVh5ngKnd57mU12RW0-md1fTjSo  ← 注意 Z/z 大小寫
@@ -30,12 +34,14 @@ function getSpreadsheet_() {
 var SIGN_SHEET_NAME = '工作表1';
 var FORM_SHEET_NAME = '填答紀錄';
 
-/** 簽到／簽退成功後寄送通知（與第一版相同） */
-var NOTIFY_EMAIL = 'chatgpt.cjcu@gmail.com';
-var MEETING_TITLE = '2026宮廟管理師會議';
-
 /** 與簽到試算表第 1 列標題一致 */
 var SIGN_HEADERS = ['報到時間', '姓名', '身份別', '錄影授權'];
+
+/* ═══════════════════════════════════════════════════════════════
+ * 簽到驗證 — 寄信通知（新增，不影響填答）
+ * ═══════════════════════════════════════════════════════════════ */
+var NOTIFY_EMAIL = 'chatgpt.cjcu@gmail.com';
+var MEETING_TITLE = '2026宮廟管理師會議';
 
 function doPost(e) {
   try {
@@ -84,9 +90,9 @@ function handleSignInOut(data) {
   var imageUrl = '';
   if (data.image) {
     try {
-      var baseName = (data.name || 'unknown') + '_' + (data.action || '簽到');
-      imageUrl = saveImageToDrive_(data.image, baseName);
-      imageBlob = base64ToBlob_(data.image, baseName + '.jpg');
+      var fileBase = (data.name || 'unknown') + '_' + data.action;
+      imageUrl = saveImageToDrive_(data.image, fileBase);
+      imageBlob = imageBase64ToBlob_(data.image, fileBase + '.jpg');
     } catch (imgErr) {
       Logger.log('簽到截圖失敗（列已寫入）: ' + imgErr);
     }
@@ -100,6 +106,10 @@ function handleSignInOut(data) {
 
   return jsonOut({ ok: true });
 }
+
+/* ═══════════════════════════════════════════════════════════════
+ * 視訊委員填答 — 以下區塊維持原架構，勿異動
+ * ═══════════════════════════════════════════════════════════════ */
 
 function handleFormSubmit(data) {
   var ss = getSpreadsheet_();
@@ -166,7 +176,25 @@ function formatTaiwanTime_(isoOrEmpty) {
   return Utilities.formatDate(d, 'Asia/Taipei', 'yyyy/M/d ahh:mm:ss');
 }
 
-function base64ToBlob_(base64, filename) {
+function saveImageToDrive_(base64, filename) {
+  if (!base64 || base64.indexOf('data:image') !== 0) {
+    return '';
+  }
+  var folderName = 'meet-checkin-截圖';
+  var folders = DriveApp.getFoldersByName(folderName);
+  var folder = folders.hasNext() ? folders.next() : DriveApp.createFolder(folderName);
+
+  var parts = base64.split(',');
+  var blob = Utilities.newBlob(
+    Utilities.base64Decode(parts[1]),
+    'image/jpeg',
+    filename + '_' + new Date().getTime() + '.jpg'
+  );
+  return folder.createFile(blob).getUrl();
+}
+
+/** 僅供簽到寄信附件使用，不影響 saveImageToDrive_ */
+function imageBase64ToBlob_(base64, filename) {
   if (!base64 || base64.indexOf('data:image') !== 0) {
     return null;
   }
@@ -178,20 +206,9 @@ function base64ToBlob_(base64, filename) {
   );
 }
 
-function saveImageToDrive_(base64, filename) {
-  var blob = base64ToBlob_(base64, filename + '_' + new Date().getTime() + '.jpg');
-  if (!blob) {
-    return '';
-  }
-  var folderName = 'meet-checkin-截圖';
-  var folders = DriveApp.getFoldersByName(folderName);
-  var folder = folders.hasNext() ? folders.next() : DriveApp.createFolder(folderName);
-  return folder.createFile(blob).getUrl();
-}
-
 /**
- * 寄送簽到／簽退通知信（主旨、內文格式與第一版一致，附截圖）
- * 視訊簽到、現場簽到皆走 handleSignInOut → 此函式
+ * 簽到／簽退驗證通知信（與第一版相同：主旨含姓名、內文含時間／身份、附截圖）
+ * 僅由 handleSignInOut 呼叫，不影響填答流程。
  */
 function sendSignEmail_(data, timeStr, imageBlob, imageUrl) {
   if (!NOTIFY_EMAIL) {
@@ -248,7 +265,7 @@ function testSignIn() {
   })).getContent());
 }
 
-/** 在 Apps Script 編輯器執行此函式，測試寄信（不含截圖） */
+/** 編輯器執行此函式，快速測試寄信（不需從網頁簽到） */
 function testSignInEmail() {
   sendSignEmail_({
     action: '簽到',
