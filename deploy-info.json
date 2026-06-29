@@ -1,5 +1,6 @@
 {
   "liveUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/",
+  "onsiteUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/現場簽到/",
   "targetUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/",
   "provider": "GitHub Pages",
   "deployedAt": "2026-06-23T06:10:00+08:00",
@@ -15,7 +16,8 @@
     "前置鏡頭大頭照擷取",
     "html2canvas 表單截圖",
     "GAS 後端送出（姓名、身份、動作、時間戳、截圖）",
-    "簽到後導向 Google Meet，簽退顯示完成畫面"
+    "簽到後導向 Google Meet，簽退顯示完成畫面",
+    "現場簽到頁：委員名單點選姓名＋拍照簽到/簽退（/現場簽到/）"
   ],
   "notes": "已移除 Meet URL 的 authuser=0。GAS 使用 no-cors 送出。無相機裝置時可優雅降級繼續報到。LINE 內建瀏覽器可能無法使用相機，建議提示使用者允許權限或改用 Safari/Chrome。"
 }
