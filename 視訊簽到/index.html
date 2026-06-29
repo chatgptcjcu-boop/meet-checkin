@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>視訊簽到｜宮廟管理師第一次評核委員會</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <link rel="stylesheet" href="../assets/checkin.css">
+</head>
+<body class="bg-slate-100 min-h-screen font-sans">
+
+  <header class="bg-blue-900 text-white border-b-4 border-yellow-500 sticky top-0 z-20 shadow-md">
+    <div class="max-w-2xl mx-auto px-4 py-4 text-center">
+      <a href="../" class="text-blue-300 text-xs hover:text-white">← 返回會議入口</a>
+      <p class="text-yellow-300 text-sm font-semibold mt-2">視訊簽到</p>
+      <h1 class="text-xl font-bold">宮廟管理師｜第一次評核委員會</h1>
+    </div>
+  </header>
+
+  <main id="listView" class="max-w-2xl mx-auto px-4 py-6">
+    <div class="flex bg-slate-200 rounded-xl p-1 mb-5 shadow-inner">
+      <button type="button" id="tabSignIn" class="flex-1 py-2.5 text-sm font-bold rounded-lg bg-white text-blue-700 shadow">簽到（進場）</button>
+      <button type="button" id="tabSignOut" class="flex-1 py-2.5 text-sm font-bold rounded-lg text-slate-500">簽退（離場）</button>
+    </div>
+
+    <p id="listHint" class="text-center text-slate-600 text-sm mb-4">
+      視訊出席者請從<strong class="text-blue-700">委員名單點選您的姓名</strong>，拍照簽到後進入視訊會議室。
+    </p>
+
+    <input type="search" id="searchBox" placeholder="搜尋姓名…" class="w-full mb-4 px-4 py-3 rounded-xl border border-slate-300 bg-white shadow-sm" oninput="renderList()">
+
+    <section class="mb-5">
+      <h2 class="text-sm font-bold text-blue-800 mb-2">評核委員（視訊）</h2>
+      <div id="committeeList" class="space-y-2"></div>
+    </section>
+    <section class="mb-6">
+      <h2 class="text-sm font-bold text-blue-800 mb-2">其他名單成員</h2>
+      <p class="text-xs text-slate-400 mb-2 px-1">若您以視訊方式出席但標示為現場，亦可點選簽到。</p>
+      <div id="observerList" class="space-y-2"></div>
+    </section>
+
+    <p class="text-center text-xs text-slate-400">
+      現場出席請至 <a href="../現場簽到/" class="text-blue-600 underline">現場簽到</a>
+    </p>
+  </main>
+
+  <main id="checkinPanel" class="max-w-md mx-auto px-4 py-6">
+    <button type="button" onclick="backToList()" class="text-blue-700 font-semibold text-sm mb-4">← 返回名單</button>
+    <div id="formArea" class="bg-white rounded-2xl shadow-lg border p-6">
+      <div class="text-center mb-4">
+        <p id="panelModeLabel" class="text-xs font-bold text-blue-600 mb-1">視訊簽到</p>
+        <h2 id="selectedName" class="text-2xl font-bold"></h2>
+        <p id="selectedMeta" class="text-sm text-slate-500 mt-1"></p>
+      </div>
+      <div class="text-center mb-4">
+        <div class="video-container shadow-sm">
+          <video id="webcam" autoplay playsinline></video>
+          <img id="capturedPhoto" alt="大頭照">
+          <div id="cameraStatus" class="absolute inset-0 flex items-center justify-center text-xs text-slate-500 p-3 bg-slate-100 text-center">正在存取相機…</div>
+        </div>
+      </div>
+      <label class="flex items-start gap-3 mb-4 text-sm">
+        <input type="checkbox" id="recordConsent" class="mt-1 w-5 h-5">
+        <span id="consentText"></span>
+      </label>
+      <button type="button" id="submitBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl">拍攝並完成</button>
+    </div>
+  </main>
+
+  <div id="loadingOverlay" class="fixed inset-0 bg-blue-900/95 z-50 flex flex-col items-center justify-center">
+    <div class="spinner mb-4"></div>
+    <h2 id="loadingTitle" class="text-xl text-white font-bold">正在傳送…</h2>
+    <p id="loadingSubtitle" class="text-blue-200 text-sm mt-2">完成後將導向視訊委員專區</p>
+  </div>
+  <div id="successOverlay" class="fixed inset-0 bg-green-900/95 z-50 flex flex-col items-center justify-center text-center px-6">
+    <h2 id="successTitle" class="text-3xl text-white font-bold mb-2">簽退完成</h2>
+    <p id="successMsg" class="text-green-200 text-lg mb-6"></p>
+    <button type="button" onclick="backToList(true)" class="bg-white text-green-800 font-bold px-6 py-3 rounded-xl">返回名單</button>
+  </div>
+
+  <script src="../assets/members.js"></script>
+  <script src="../assets/checkin.js"></script>
+  <script>
+    const CHANNEL = '視訊';
+    let currentMode = 'signin';
+    let selectedMember = null;
+
+    function canVideoCheckin(m) {
+      return m.attendance !== '請假';
+    }
+
+    function memberCard(m, group, index) {
+      const ok = canVideoCheckin(m);
+      const isPrimary = isVideoMember(m);
+      const hint = !ok ? '已請假，無法簽到' : (!isPrimary ? '非視訊編制，確認後仍可簽到' : '');
+      return `<button type="button" data-group="${group}" data-index="${index}" class="member-btn w-full text-left bg-white rounded-xl border p-4 shadow-sm flex justify-between gap-3 ${ok ? 'hover:border-blue-400 hover:bg-blue-50' : ''}" ${ok ? '' : 'disabled'}>
+        <div><div class="font-bold text-lg">${m.name}</div><div class="text-sm text-slate-500 truncate">${m.org}｜${m.title}</div>${hint ? '<div class="text-xs text-amber-600 mt-1">'+hint+'</div>' : ''}</div>
+        <div>${attendanceBadge(m.attendance)}</div></button>`;
+    }
+
+    function renderList() {
+      const q = (document.getElementById('searchBox').value || '').trim();
+      const f = m => !q || [m.name,m.org,m.title].some(s => s.includes(q));
+      const videoCommittee = MEMBER_ROSTER.committee.map((m,i)=>({m,i})).filter(({m})=>f(m) && isVideoMember(m));
+      const others = [
+        ...MEMBER_ROSTER.committee.map((m,i)=>({m,i,group:'committee'})).filter(({m})=>f(m) && !isVideoMember(m)),
+        ...MEMBER_ROSTER.observers.map((m,i)=>({m,i,group:'observers'})),
+      ].filter(({m})=>f(m));
+
+      document.getElementById('committeeList').innerHTML = videoCommittee.map(({m,i})=>memberCard(m,'committee',i)).join('') ||
+        '<p class="text-slate-400 text-sm text-center py-3">（無標示視訊之委員）</p>';
+      document.getElementById('observerList').innerHTML = others.map(({m,i,group})=>memberCard(m,group,i)).join('') ||
+        '<p class="text-slate-400 text-sm text-center py-3">無符合</p>';
+    }
+
+    document.addEventListener('click', e => {
+      const btn = e.target.closest('.member-btn[data-group]:not(:disabled)');
+      if (!btn) return;
+      selectMember(MEMBER_ROSTER[btn.dataset.group][parseInt(btn.dataset.index,10)]);
+    });
+
+    document.getElementById('tabSignIn').onclick = () => switchMode('signin');
+    document.getElementById('tabSignOut').onclick = () => switchMode('signout');
+    document.getElementById('submitBtn').onclick = submitCheckin;
+
+    function switchMode(mode) {
+      currentMode = mode;
+      const si = document.getElementById('tabSignIn');
+      const so = document.getElementById('tabSignOut');
+      const hint = document.getElementById('listHint');
+      const sub = document.getElementById('loadingSubtitle');
+      if (mode === 'signin') {
+        si.className = 'flex-1 py-2.5 text-sm font-bold rounded-lg bg-white text-blue-700 shadow';
+        so.className = 'flex-1 py-2.5 text-sm font-bold rounded-lg text-slate-500';
+        hint.innerHTML = '請從<strong class="text-blue-700">委員名單點選您的姓名</strong>，拍照簽到後進入視訊會議室。';
+        sub.textContent = '完成後將導向視訊委員專區';
+      } else {
+        so.className = 'flex-1 py-2.5 text-sm font-bold rounded-lg bg-white text-green-700 shadow';
+        si.className = 'flex-1 py-2.5 text-sm font-bold rounded-lg text-slate-500';
+        hint.innerHTML = '請點選姓名完成<strong class="text-green-700">視訊簽退</strong>。';
+        sub.textContent = '感謝您的參與';
+      }
+      updateConsent();
+    }
+
+    function updateConsent() {
+      const signIn = currentMode === 'signin';
+      document.getElementById('panelModeLabel').textContent = signIn ? '視訊簽到' : '視訊簽退';
+      document.getElementById('consentText').innerHTML = signIn
+        ? '<strong class="text-red-600">【視訊簽到與錄影同意】</strong><br>本人同意拍攝大頭照存證，並同意視訊會議期間同步錄影錄音。'
+        : '<strong class="text-green-700">【視訊簽退】</strong><br>本人確認已完成會議，同意拍攝簽退大頭照。';
+      document.getElementById('submitBtn').textContent = signIn ? '拍攝簽到照並進入會議' : '拍攝並完成簽退';
+    }
+
+    function selectMember(m) {
+      selectedMember = m;
+      document.getElementById('selectedName').textContent = m.name;
+      document.getElementById('selectedMeta').textContent = `${m.role}｜${m.org}｜${m.title}`;
+      document.getElementById('recordConsent').checked = false;
+      document.getElementById('listView').style.display = 'none';
+      document.getElementById('checkinPanel').style.display = 'block';
+      updateConsent();
+      MeetCheckin.resetCameraUI();
+      MeetCheckin.startCamera();
+      window.scrollTo(0,0);
+    }
+
+    function backToList(fromSuccess) {
+      if (fromSuccess) document.getElementById('successOverlay').style.display = 'none';
+      document.getElementById('loadingOverlay').style.display = 'none';
+      document.getElementById('listView').style.display = 'block';
+      document.getElementById('checkinPanel').style.display = 'none';
+      selectedMember = null;
+      MeetCheckin.stopCamera();
+      MeetCheckin.resetCameraUI();
+      document.getElementById('submitBtn').style.display = 'block';
+    }
+
+    function submitCheckin() {
+      if (!selectedMember) return;
+      const consent = document.getElementById('recordConsent').checked;
+      if (!consent) { alert('請勾選同意事項'); return; }
+
+      const m = selectedMember;
+      document.getElementById('loadingOverlay').style.display = 'flex';
+
+      const postData = {
+        action: currentMode === 'signin' ? '簽到' : '簽退',
+        name: m.name,
+        role: m.role + '（視訊）',
+        consent,
+        timestamp: new Date().toISOString(),
+        source: CHANNEL + '簽到',
+        org: m.org,
+        title: m.title,
+      };
+
+      MeetCheckin.submitWithScreenshot('formArea', postData, () => {
+        document.getElementById('loadingOverlay').style.display = 'none';
+        document.getElementById('submitBtn').style.display = 'block';
+        if (currentMode === 'signin') {
+          const q = new URLSearchParams({ name: m.name, role: m.role });
+          window.location.href = '../視訊委員/index.html?' + q.toString();
+        } else {
+          document.getElementById('successTitle').textContent = '簽退完成';
+          document.getElementById('successMsg').textContent = m.name + '，感謝您的參與！';
+          document.getElementById('successOverlay').style.display = 'flex';
+        }
+      });
+    }
+
+    switchMode('signin');
+    renderList();
+  </script>
+</body>
+</html>

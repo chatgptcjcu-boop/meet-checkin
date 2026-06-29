@@ -1,400 +1,335 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>現場簽到｜宮廟管理師第一次評核委員會</title>
-    <meta property="og:title" content="現場委員簽到／簽退">
-    <meta property="og:description" content="請點選您的姓名，拍攝大頭照完成現場簽到或簽退。">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <style>
-        .video-container { position: relative; width: 100%; max-width: 220px; margin: 0 auto; border-radius: 0.75rem; overflow: hidden; background: #e5e7eb; border: 2px solid #cbd5e1; }
-        #webcam { width: 100%; height: 165px; object-fit: cover; transform: scaleX(-1); }
-        #capturedPhoto { display: none; width: 100%; height: 165px; object-fit: cover; transform: scaleX(-1); }
-        .member-btn { transition: all 0.15s ease; }
-        .member-btn:active:not(:disabled) { transform: scale(0.98); }
-        .member-btn:disabled { opacity: 0.45; cursor: not-allowed; }
-        #checkinPanel { display: none; }
-        #loadingOverlay, #successOverlay { display: none; }
-        .spinner { border: 4px solid rgba(255,255,255,0.3); border-radius: 50%; border-top: 4px solid #fff; width: 40px; height: 40px; animation: spin 1s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>現場簽到｜宮廟管理師第一次評核委員會</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <link rel="stylesheet" href="../assets/checkin.css">
 </head>
 <body class="bg-slate-100 min-h-screen font-sans">
 
-    <header class="bg-blue-900 text-white border-b-4 border-yellow-500 sticky top-0 z-20 shadow-md">
-        <div class="max-w-2xl mx-auto px-4 py-5 text-center">
-            <p class="text-yellow-300 text-sm font-semibold tracking-wide mb-1">臺灣道法總會－教育委員會</p>
-            <h1 class="text-xl md:text-2xl font-bold leading-snug">宮廟管理師｜第一次評核委員會</h1>
-            <p class="text-blue-200 text-sm mt-1">115年6月30日｜現場簽到專區</p>
-        </div>
-    </header>
+  <header class="bg-blue-900 text-white border-b-4 border-yellow-500 sticky top-0 z-20 shadow-md">
+    <div class="max-w-2xl mx-auto px-4 py-4 text-center">
+      <a href="../" class="text-blue-300 text-xs hover:text-white">← 返回會議入口</a>
+      <p class="text-yellow-300 text-sm font-semibold mt-2">現場簽到</p>
+      <h1 class="text-xl font-bold">宮廟管理師｜第一次評核委員會</h1>
+    </div>
+  </header>
 
-    <!-- 名單頁 -->
-    <main id="listView" class="max-w-2xl mx-auto px-4 py-6">
-        <div class="flex bg-slate-200 rounded-xl p-1 mb-5 shadow-inner">
-            <button type="button" id="tabSignIn" onclick="switchMode('signin')"
-                class="flex-1 py-2.5 text-center text-sm font-bold rounded-lg bg-white text-blue-700 shadow transition-all">
-                現場簽到（進場）
-            </button>
-            <button type="button" id="tabSignOut" onclick="switchMode('signout')"
-                class="flex-1 py-2.5 text-center text-sm font-bold rounded-lg text-slate-500 hover:text-slate-700 transition-all">
-                現場簽退（離場）
-            </button>
-        </div>
-
-        <p id="listHint" class="text-center text-slate-600 text-sm mb-4">
-            請在下方名單<strong class="text-blue-700">點選您的姓名</strong>，接著拍攝大頭照完成簽到。
-        </p>
-
-        <div class="relative mb-4">
-            <input type="search" id="searchBox" placeholder="搜尋姓名…"
-                class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white shadow-sm"
-                oninput="renderList()">
-            <svg class="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-            </svg>
-        </div>
-
-        <section class="mb-6">
-            <h2 class="text-sm font-bold text-blue-800 uppercase tracking-wider mb-2 px-1">評核委員</h2>
-            <div id="committeeList" class="space-y-2"></div>
-        </section>
-
-        <section class="mb-6">
-            <h2 class="text-sm font-bold text-emerald-800 uppercase tracking-wider mb-2 px-1">列席人員</h2>
-            <div id="observerList" class="space-y-2"></div>
-        </section>
-
-        <p class="text-center text-xs text-slate-400 mt-8">
-            視訊委員請使用
-            <a href="../index.html" class="text-blue-600 underline">視訊簽到入口</a>
-            ｜
-            <a href="宮廟管理師-評核委員聯絡資訊.pdf" class="text-blue-600 underline" target="_blank">委員名單 PDF</a>
-        </p>
-    </main>
-
-    <!-- 簽到面板 -->
-    <main id="checkinPanel" class="max-w-md mx-auto px-4 py-6">
-        <button type="button" onclick="backToList()"
-            class="flex items-center text-blue-700 font-semibold text-sm mb-4 hover:text-blue-900">
-            <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-            返回名單
-        </button>
-
-        <div id="formArea" class="bg-white rounded-2xl shadow-lg border border-slate-200 p-6">
-            <div class="text-center mb-5">
-                <p id="panelModeLabel" class="text-xs font-bold text-blue-600 tracking-wider mb-1">現場簽到</p>
-                <h2 id="selectedName" class="text-2xl font-bold text-slate-800"></h2>
-                <p id="selectedMeta" class="text-sm text-slate-500 mt-1"></p>
-            </div>
-
-            <div class="text-center mb-4">
-                <div class="video-container shadow-sm">
-                    <video id="webcam" autoplay playsinline></video>
-                    <img id="capturedPhoto" alt="大頭照">
-                    <div id="cameraStatus" class="absolute inset-0 flex items-center justify-center text-xs text-slate-500 p-3 bg-slate-100 text-center">
-                        正在存取相機…<br>（請點擊允許）
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 mb-4">
-                <label class="flex items-start gap-3 cursor-pointer">
-                    <input type="checkbox" id="recordConsent" required class="mt-1 w-5 h-5 text-blue-600 rounded">
-                    <span id="consentText" class="text-sm text-slate-700 leading-relaxed">
-                        <strong class="text-red-600">【現場簽到同意】</strong><br>
-                        本人同意拍攝大頭照存證，並確認出席本次評核委員會議。
-                    </span>
-                </label>
-            </div>
-
-            <button type="button" id="submitBtn" onclick="submitCheckin()"
-                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl shadow-md flex items-center justify-center gap-2 transition">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                拍攝並完成簽到
-            </button>
-        </div>
-    </main>
-
-    <div id="loadingOverlay" class="fixed inset-0 bg-blue-900/95 z-50 flex flex-col items-center justify-center">
-        <div class="spinner mb-4"></div>
-        <h2 id="loadingTitle" class="text-xl text-white font-bold">正在傳送簽到資料…</h2>
-        <p id="loadingSubtitle" class="text-blue-200 text-sm mt-2">請稍候</p>
+  <!-- 名單 -->
+  <main id="listView" class="max-w-2xl mx-auto px-4 py-6">
+    <div class="flex bg-slate-200 rounded-xl p-1 mb-5 shadow-inner">
+      <button type="button" id="tabSignIn" class="flex-1 py-2.5 text-sm font-bold rounded-lg bg-white text-emerald-700 shadow">簽到（進場）</button>
+      <button type="button" id="tabSignOut" class="flex-1 py-2.5 text-sm font-bold rounded-lg text-slate-500">簽退（離場）</button>
     </div>
 
-    <div id="successOverlay" class="fixed inset-0 bg-green-900/95 z-50 flex flex-col items-center justify-center text-center px-6">
-        <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mb-6">
-            <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+    <p id="listHint" class="text-center text-slate-600 text-sm mb-4">
+      請從<strong class="text-emerald-700">委員名單點選您的姓名</strong>，拍照完成簽到。
+    </p>
+
+    <input type="search" id="searchBox" placeholder="搜尋姓名…" class="w-full mb-4 px-4 py-3 rounded-xl border border-slate-300 bg-white shadow-sm" oninput="renderList()">
+
+    <section class="mb-5">
+      <h2 class="text-sm font-bold text-blue-800 mb-2">評核委員</h2>
+      <div id="committeeList" class="space-y-2"></div>
+    </section>
+    <section class="mb-6">
+      <h2 class="text-sm font-bold text-emerald-800 mb-2">列席人員</h2>
+      <div id="observerList" class="space-y-2"></div>
+    </section>
+
+    <!-- 其他現場人員 -->
+    <section class="bg-white rounded-2xl border-2 border-dashed border-slate-300 p-5 mb-6">
+      <h2 class="font-bold text-slate-800 mb-1">其他現場人員</h2>
+      <p class="text-sm text-slate-500 mb-4">不在上述名單者，請選身份別、填中文姓名後簽到。</p>
+      <button type="button" id="openGuestBtn" class="w-full bg-slate-700 hover:bg-slate-800 text-white font-bold py-3 rounded-xl">
+        其他現場人員簽到 →
+      </button>
+    </section>
+  </main>
+
+  <!-- 名單成員簽到 -->
+  <main id="checkinPanel" class="max-w-md mx-auto px-4 py-6">
+    <button type="button" onclick="backToList()" class="text-emerald-700 font-semibold text-sm mb-4">← 返回名單</button>
+    <div id="formArea" class="bg-white rounded-2xl shadow-lg border p-6">
+      <div class="text-center mb-4">
+        <p id="panelModeLabel" class="text-xs font-bold text-emerald-600 mb-1">現場簽到</p>
+        <h2 id="selectedName" class="text-2xl font-bold"></h2>
+        <p id="selectedMeta" class="text-sm text-slate-500 mt-1"></p>
+      </div>
+      <div class="text-center mb-4">
+        <div class="video-container shadow-sm">
+          <video id="webcam" autoplay playsinline></video>
+          <img id="capturedPhoto" alt="大頭照">
+          <div id="cameraStatus" class="absolute inset-0 flex items-center justify-center text-xs text-slate-500 p-3 bg-slate-100 text-center">正在存取相機…</div>
         </div>
-        <h2 id="successTitle" class="text-3xl text-white font-bold mb-2">簽到完成</h2>
-        <p id="successMsg" class="text-green-200 text-lg mb-6"></p>
-        <button type="button" onclick="backToList(true)" class="bg-white text-green-800 font-bold px-6 py-3 rounded-xl shadow">返回名單</button>
+      </div>
+      <label class="flex items-start gap-3 mb-4 text-sm">
+        <input type="checkbox" id="recordConsent" class="mt-1 w-5 h-5">
+        <span id="consentText"></span>
+      </label>
+      <button type="button" id="submitBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl">拍攝並完成</button>
     </div>
+  </main>
 
-    <script>
-        const GOOGLE_APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwYmxBxC34KK02UFW54hSX-VneckfVVm6rsTyEhCtCkamVvHmTf023EpmCydHyAsbV2WA/exec";
+  <!-- 其他現場人員 -->
+  <main id="guestPanel" class="max-w-md mx-auto px-4 py-6">
+    <button type="button" onclick="backToList()" class="text-emerald-700 font-semibold text-sm mb-4">← 返回名單</button>
+    <div id="guestFormArea" class="bg-white rounded-2xl shadow-lg border p-6">
+      <div class="text-center mb-4">
+        <p id="guestModeLabel" class="text-xs font-bold text-slate-600 mb-1">其他現場人員</p>
+        <h2 class="text-lg font-bold text-slate-800">手動登記簽到</h2>
+      </div>
+      <div class="text-center mb-4">
+        <div class="video-container shadow-sm">
+          <video id="guestWebcam" autoplay playsinline></video>
+          <img id="guestCapturedPhoto" alt="大頭照" style="display:none;width:100%;height:165px;object-fit:cover;transform:scaleX(-1)">
+          <div id="guestCameraStatus" class="absolute inset-0 flex items-center justify-center text-xs text-slate-500 p-3 bg-slate-100 text-center">正在存取相機…</div>
+        </div>
+      </div>
+      <div class="space-y-3 mb-4">
+        <div>
+          <label class="block text-sm font-semibold mb-1">真實中文姓名 <span class="text-red-500">*</span></label>
+          <input type="text" id="guestName" class="w-full px-4 py-3 rounded-lg border" placeholder="例如：王小明" required>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold mb-1">身份別 <span class="text-red-500">*</span></label>
+          <select id="guestRole" class="w-full px-4 py-3 rounded-lg border bg-white" required>
+            <option value="" disabled selected>請選擇身份</option>
+          </select>
+        </div>
+      </div>
+      <label class="flex items-start gap-3 mb-4 text-sm">
+        <input type="checkbox" id="guestConsent" class="mt-1 w-5 h-5">
+        <span id="guestConsentText"></span>
+      </label>
+      <button type="button" id="guestSubmitBtn" class="w-full bg-slate-700 hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl">拍攝並完成</button>
+    </div>
+  </main>
 
-        const MEMBERS = {
-            committee: [
-                { name: "林清淇", org: "內政部宗教禮制司", title: "前司長", role: "召集委員", attendance: "出席" },
-                { name: "吳永猛", org: "臺灣法教會／文化大學", title: "前理事長／前副校長", role: "評核委員", attendance: "視訊" },
-                { name: "薄喬萍", org: "義守大學", title: "前院長", role: "評核委員", attendance: "出席" },
-                { name: "李樑堅", org: "義守大學", title: "前副校長", role: "評核委員", attendance: "視訊" },
-                { name: "鄭卜五", org: "高雄師範大學", title: "教授", role: "評核委員", attendance: "視訊" },
-                { name: "鄭志明", org: "輔仁大學", title: "教授", role: "評核委員", attendance: "視訊" },
-                { name: "陳美華", org: "台灣宗教學會", title: "前理事長", role: "評核委員", attendance: "出席" },
-                { name: "高超文", org: "木柵指南宮", title: "主任委員", role: "評核委員", attendance: "出席" },
-                { name: "鄭詠紜", org: "臺灣道法總會", title: "不分區會長", role: "評核委員", attendance: "出席" },
-                { name: "王世任", org: "承天宮", title: "興建主任委員", role: "評核委員", attendance: "出席" },
-                { name: "詹博雅", org: "凌霄寶殿武龍宮", title: "顧問", role: "評核委員", attendance: "出席" },
-                { name: "郭昭廷", org: "開封宮包公廟", title: "前主任委員", role: "評核委員", attendance: "出席" },
-                { name: "黃國彰", org: "中華關聖文化世界弘揚協會", title: "理事長", role: "評核委員", attendance: "出席" },
-                { name: "黃志華", org: "五里林護天府", title: "主任委員", role: "評核委員", attendance: "出席" },
-                { name: "蔡鴻祺", org: "中華世界全民念佛會", title: "會長", role: "評核委員", attendance: "出席" },
-                { name: "洪家祥", org: "如魚得水顧問公司", title: "總經理", role: "評核委員", attendance: "請假" }
-            ],
-            observers: [
-                { name: "陳瑞宏", org: "臺灣道法總會", title: "總會長", role: "列席人員", attendance: "出席" },
-                { name: "張聰明", org: "臺灣道法總會", title: "監事長", role: "列席人員", attendance: "出席" },
-                { name: "陳昭良", org: "臺灣道法總會", title: "副監事長", role: "列席人員", attendance: "出席" },
-                { name: "黃子瑜", org: "臺灣道法總會", title: "北區會長", role: "列席人員", attendance: "出席" },
-                { name: "郭益富", org: "臺灣道法總會", title: "東區會長", role: "列席人員", attendance: "出席" },
-                { name: "張祐倉", org: "臺灣道法總會", title: "主任委員", role: "列席人員", attendance: "出席" },
-                { name: "黃發保", org: "臺灣道法總會", title: "秘書長", role: "列席人員", attendance: "出席" },
-                { name: "楊成林", org: "臺灣道法總會", title: "副秘書長", role: "列席人員", attendance: "出席" },
-                { name: "王芯庭", org: "臺灣道法總會", title: "助理", role: "列席人員", attendance: "出席" }
-            ]
-        };
+  <div id="loadingOverlay" class="fixed inset-0 bg-blue-900/95 z-50 flex flex-col items-center justify-center">
+    <div class="spinner mb-4"></div>
+    <h2 id="loadingTitle" class="text-xl text-white font-bold">正在傳送…</h2>
+  </div>
+  <div id="successOverlay" class="fixed inset-0 bg-green-900/95 z-50 flex flex-col items-center justify-center text-center px-6">
+    <h2 id="successTitle" class="text-3xl text-white font-bold mb-2">完成</h2>
+    <p id="successMsg" class="text-green-200 text-lg mb-6"></p>
+    <button type="button" onclick="backToList(true)" class="bg-white text-green-800 font-bold px-6 py-3 rounded-xl">返回名單</button>
+  </div>
 
-        let currentMode = 'signin';
-        let selectedMember = null;
-        let streamRef = null;
+  <script src="../assets/members.js"></script>
+  <script src="../assets/checkin.js"></script>
+  <script>
+    const CHANNEL = '現場';
+    let currentMode = 'signin';
+    let selectedMember = null;
+    let guestStreamRef = null;
+    let isGuest = false;
 
-        const video = document.getElementById('webcam');
-        const photo = document.getElementById('capturedPhoto');
-        const cameraStatus = document.getElementById('cameraStatus');
+    function memberCard(m, group, index) {
+      const ok = isOnsiteMember(m);
+      const hint = !ok ? (m.attendance === '請假' ? '已請假' : '請至視訊簽到入口') : '';
+      return `<button type="button" data-group="${group}" data-index="${index}" class="member-btn w-full text-left bg-white rounded-xl border p-4 shadow-sm flex justify-between gap-3 ${ok ? 'hover:border-emerald-400 hover:bg-emerald-50' : ''}" ${ok ? '' : 'disabled'}>
+        <div><div class="font-bold text-lg">${m.name}</div><div class="text-sm text-slate-500 truncate">${m.org}｜${m.title}</div>${hint ? '<div class="text-xs text-slate-400 mt-1">'+hint+'</div>' : ''}</div>
+        <div>${attendanceBadge(m.attendance)}</div></button>`;
+    }
 
-        function isOnsite(m) {
-            return m.attendance === '出席';
+    function renderList() {
+      const q = (document.getElementById('searchBox').value || '').trim();
+      const f = m => !q || [m.name,m.org,m.title].some(s => s.includes(q));
+      const cl = MEMBER_ROSTER.committee.map((m,i)=>({m,i})).filter(({m})=>f(m));
+      const ol = MEMBER_ROSTER.observers.map((m,i)=>({m,i})).filter(({m})=>f(m));
+      document.getElementById('committeeList').innerHTML = cl.map(({m,i})=>memberCard(m,'committee',i)).join('') || '<p class="text-slate-400 text-sm text-center py-3">無符合</p>';
+      document.getElementById('observerList').innerHTML = ol.map(({m,i})=>memberCard(m,'observers',i)).join('') || '<p class="text-slate-400 text-sm text-center py-3">無符合</p>';
+    }
+
+    document.addEventListener('click', e => {
+      const btn = e.target.closest('.member-btn[data-group]:not(:disabled)');
+      if (!btn) return;
+      selectMember(MEMBER_ROSTER[btn.dataset.group][parseInt(btn.dataset.index,10)]);
+    });
+
+    document.getElementById('tabSignIn').onclick = () => switchMode('signin');
+    document.getElementById('tabSignOut').onclick = () => switchMode('signout');
+    document.getElementById('openGuestBtn').onclick = openGuest;
+    document.getElementById('submitBtn').onclick = () => submitCheckin(false);
+    document.getElementById('guestSubmitBtn').onclick = () => submitCheckin(true);
+
+    GUEST_ROLES.forEach(r => {
+      const o = document.createElement('option');
+      o.value = r; o.textContent = r;
+      document.getElementById('guestRole').appendChild(o);
+    });
+
+    function switchMode(mode) {
+      currentMode = mode;
+      const si = document.getElementById('tabSignIn');
+      const so = document.getElementById('tabSignOut');
+      const hint = document.getElementById('listHint');
+      if (mode === 'signin') {
+        si.className = 'flex-1 py-2.5 text-sm font-bold rounded-lg bg-white text-emerald-700 shadow';
+        so.className = 'flex-1 py-2.5 text-sm font-bold rounded-lg text-slate-500';
+        hint.innerHTML = '請從<strong class="text-emerald-700">委員名單點選您的姓名</strong>，或下方登記其他現場人員。';
+      } else {
+        so.className = 'flex-1 py-2.5 text-sm font-bold rounded-lg bg-white text-green-700 shadow';
+        si.className = 'flex-1 py-2.5 text-sm font-bold rounded-lg text-slate-500';
+        hint.innerHTML = '請點選姓名或登記其他現場人員，完成<strong class="text-green-700">簽退</strong>。';
+      }
+      updateConsent();
+    }
+
+    function updateConsent() {
+      const signIn = currentMode === 'signin';
+      document.getElementById('panelModeLabel').textContent = signIn ? '現場簽到' : '現場簽退';
+      document.getElementById('guestModeLabel').textContent = signIn ? '其他現場人員簽到' : '其他現場人員簽退';
+      const c = signIn
+        ? '<strong class="text-red-600">【現場簽到同意】</strong><br>本人同意拍攝大頭照存證，並確認出席本次會議。'
+        : '<strong class="text-green-700">【現場簽退】</strong><br>本人確認已完成會議，同意拍攝簽退大頭照。';
+      document.getElementById('consentText').innerHTML = c;
+      document.getElementById('guestConsentText').innerHTML = c;
+      document.getElementById('submitBtn').textContent = signIn ? '拍攝並完成簽到' : '拍攝並完成簽退';
+      document.getElementById('guestSubmitBtn').textContent = signIn ? '拍攝並完成簽到' : '拍攝並完成簽退';
+    }
+
+    function selectMember(m) {
+      isGuest = false;
+      selectedMember = m;
+      document.getElementById('selectedName').textContent = m.name;
+      document.getElementById('selectedMeta').textContent = `${m.role}｜${m.org}｜${m.title}`;
+      document.getElementById('recordConsent').checked = false;
+      document.getElementById('listView').style.display = 'none';
+      document.getElementById('checkinPanel').style.display = 'block';
+      document.getElementById('guestPanel').style.display = 'none';
+      updateConsent();
+      MeetCheckin.resetCameraUI();
+      MeetCheckin.startCamera();
+      window.scrollTo(0,0);
+    }
+
+    function openGuest() {
+      isGuest = true;
+      selectedMember = null;
+      document.getElementById('guestName').value = '';
+      document.getElementById('guestRole').value = '';
+      document.getElementById('guestConsent').checked = false;
+      document.getElementById('listView').style.display = 'none';
+      document.getElementById('checkinPanel').style.display = 'none';
+      document.getElementById('guestPanel').style.display = 'block';
+      updateConsent();
+      startGuestCamera();
+      window.scrollTo(0,0);
+    }
+
+    async function startGuestCamera() {
+      const video = document.getElementById('guestWebcam');
+      const st = document.getElementById('guestCameraStatus');
+      try {
+        guestStreamRef = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
+        video.srcObject = guestStreamRef;
+        st.style.display = 'none';
+      } catch (e) {
+        st.innerHTML = '<span class="text-red-500 font-bold">無法存取相機</span><br><span class="text-xs">仍可送出</span>';
+      }
+    }
+
+    function stopGuestCamera() {
+      if (guestStreamRef) { guestStreamRef.getTracks().forEach(t=>t.stop()); guestStreamRef = null; }
+    }
+
+    function backToList(fromSuccess) {
+      if (fromSuccess) document.getElementById('successOverlay').style.display = 'none';
+      document.getElementById('loadingOverlay').style.display = 'none';
+      document.getElementById('listView').style.display = 'block';
+      document.getElementById('checkinPanel').style.display = 'none';
+      document.getElementById('guestPanel').style.display = 'none';
+      selectedMember = null;
+      MeetCheckin.stopCamera();
+      stopGuestCamera();
+      MeetCheckin.resetCameraUI();
+      document.getElementById('submitBtn').style.display = 'block';
+      document.getElementById('guestSubmitBtn').style.display = 'block';
+    }
+
+    function submitCheckin(guest) {
+      let name, role, consent, formId, btnId;
+      if (guest) {
+        name = document.getElementById('guestName').value.trim();
+        role = document.getElementById('guestRole').value + '（現場）';
+        consent = document.getElementById('guestConsent').checked;
+        formId = 'guestFormArea';
+        btnId = 'guestSubmitBtn';
+        if (!name || !document.getElementById('guestRole').value) { alert('請填寫姓名與身份別'); return; }
+      } else {
+        if (!selectedMember) return;
+        name = selectedMember.name;
+        role = selectedMember.role + '（現場）';
+        consent = document.getElementById('recordConsent').checked;
+        formId = 'formArea';
+        btnId = 'submitBtn';
+      }
+      if (!consent) { alert('請勾選同意事項'); return; }
+
+      document.getElementById('loadingTitle').textContent = currentMode === 'signin' ? '正在傳送簽到資料…' : '正在傳送簽退資料…';
+      document.getElementById('loadingOverlay').style.display = 'flex';
+      document.getElementById(btnId).style.display = 'none';
+
+      const postData = {
+        action: currentMode === 'signin' ? '簽到' : '簽退',
+        name, role, consent,
+        timestamp: new Date().toISOString(),
+        source: CHANNEL + '簽到',
+      };
+      if (!guest && selectedMember) {
+        postData.org = selectedMember.org;
+        postData.title = selectedMember.title;
+      }
+
+      if (guest) {
+        const gv = document.getElementById('guestWebcam');
+        const gp = document.getElementById('guestCapturedPhoto');
+        if (guestStreamRef && gv.readyState === 4) {
+          const c = document.createElement('canvas');
+          c.width = gv.videoWidth; c.height = gv.videoHeight;
+          c.getContext('2d').drawImage(gv, 0, 0);
+          gp.src = c.toDataURL('image/jpeg', 0.8);
+          gp.style.display = 'block';
+          gv.style.display = 'none';
         }
+      } else {
+        MeetCheckin.capturePhotoPreview();
+      }
 
-        function attendanceBadge(att) {
-            if (att === '出席') return '<span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">出席</span>';
-            if (att === '請假') return '<span class="text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded-full font-medium">請假</span>';
-            return '<span class="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-medium">視訊</span>';
-        }
+      setTimeout(() => {
+        html2canvas(document.getElementById(formId), { backgroundColor: '#fff', scale: 1.5, useCORS: true, logging: false })
+          .then(canvas => {
+            postData.image = canvas.toDataURL('image/jpeg', 0.8);
+            MeetCheckin.sendToBackend(postData);
+            MeetCheckin.stopCamera();
+            stopGuestCamera();
+            finishSuccess(name, btnId);
+          })
+          .catch(() => {
+            postData.image = '';
+            MeetCheckin.sendToBackend(postData);
+            MeetCheckin.stopCamera();
+            stopGuestCamera();
+            finishSuccess(name, btnId);
+          });
+      }, 150);
+    }
 
-        function memberCard(m, group, index) {
-            const onsite = isOnsite(m);
-            const disabled = !onsite;
-            const hint = disabled
-                ? (m.attendance === '請假' ? '已請假，無法簽到' : '視訊委員請用視訊簽到入口')
-                : '';
-            return `<button type="button" data-group="${group}" data-index="${index}" class="member-btn w-full text-left bg-white rounded-xl border border-slate-200 p-4 shadow-sm hover:border-blue-400 hover:shadow-md flex items-center justify-between gap-3 ${disabled ? '' : 'hover:bg-blue-50'}"
-                ${disabled ? 'disabled title="' + hint + '"' : ''}>
-                <div class="min-w-0">
-                    <div class="font-bold text-slate-800 text-lg">${m.name}</div>
-                    <div class="text-sm text-slate-500 truncate">${m.org}｜${m.title}</div>
-                    ${disabled ? '<div class="text-xs text-slate-400 mt-1">' + hint + '</div>' : ''}
-                </div>
-                <div class="flex-shrink-0">${attendanceBadge(m.attendance)}</div>
-            </button>`;
-        }
+    function finishSuccess(name, btnId) {
+      document.getElementById('loadingOverlay').style.display = 'none';
+      document.getElementById('successTitle').textContent = currentMode === 'signin' ? '簽到完成' : '簽退完成';
+      document.getElementById('successMsg').textContent = name + '，感謝您的參與！';
+      document.getElementById('successOverlay').style.display = 'flex';
+      document.getElementById(btnId).style.display = 'block';
+    }
 
-        function renderList() {
-            const q = (document.getElementById('searchBox').value || '').trim();
-            const filter = m => !q || m.name.includes(q) || m.org.includes(q) || m.title.includes(q);
-
-            const committeeFiltered = MEMBERS.committee.map((m, i) => ({ m, i })).filter(({ m }) => filter(m));
-            const observerFiltered = MEMBERS.observers.map((m, i) => ({ m, i })).filter(({ m }) => filter(m));
-
-            document.getElementById('committeeList').innerHTML =
-                committeeFiltered.map(({ m, i }) => memberCard(m, 'committee', i)).join('') ||
-                '<p class="text-slate-400 text-sm text-center py-4">無符合的委員</p>';
-
-            document.getElementById('observerList').innerHTML =
-                observerFiltered.map(({ m, i }) => memberCard(m, 'observers', i)).join('') ||
-                '<p class="text-slate-400 text-sm text-center py-4">無符合的人員</p>';
-        }
-
-        document.addEventListener('click', function(e) {
-            const btn = e.target.closest('.member-btn[data-group]:not(:disabled)');
-            if (!btn) return;
-            const group = btn.dataset.group;
-            const index = parseInt(btn.dataset.index, 10);
-            selectMember(MEMBERS[group][index]);
-        });
-
-        function switchMode(mode) {
-            currentMode = mode;
-            const tabIn = document.getElementById('tabSignIn');
-            const tabOut = document.getElementById('tabSignOut');
-            const hint = document.getElementById('listHint');
-
-            if (mode === 'signin') {
-                tabIn.className = "flex-1 py-2.5 text-center text-sm font-bold rounded-lg bg-white text-blue-700 shadow transition-all";
-                tabOut.className = "flex-1 py-2.5 text-center text-sm font-bold rounded-lg text-slate-500 hover:text-slate-700 transition-all";
-                hint.innerHTML = '請在下方名單<strong class="text-blue-700">點選您的姓名</strong>，接著拍攝大頭照完成簽到。';
-            } else {
-                tabOut.className = "flex-1 py-2.5 text-center text-sm font-bold rounded-lg bg-white text-green-700 shadow transition-all";
-                tabIn.className = "flex-1 py-2.5 text-center text-sm font-bold rounded-lg text-slate-500 hover:text-slate-700 transition-all";
-                hint.innerHTML = '請在下方名單<strong class="text-green-700">點選您的姓名</strong>，接著拍攝大頭照完成簽退。';
-            }
-            updatePanelMode();
-        }
-
-        function updatePanelMode() {
-            const label = document.getElementById('panelModeLabel');
-            const btn = document.getElementById('submitBtn');
-            const consent = document.getElementById('consentText');
-            if (currentMode === 'signin') {
-                label.textContent = '現場簽到';
-                label.className = 'text-xs font-bold text-blue-600 tracking-wider mb-1';
-                btn.className = 'w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl shadow-md flex items-center justify-center gap-2 transition';
-                btn.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>拍攝並完成簽到';
-                consent.innerHTML = '<strong class="text-red-600">【現場簽到同意】</strong><br>本人同意拍攝大頭照存證，並確認出席本次評核委員會議。';
-            } else {
-                label.textContent = '現場簽退';
-                label.className = 'text-xs font-bold text-green-600 tracking-wider mb-1';
-                btn.className = 'w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 rounded-xl shadow-md flex items-center justify-center gap-2 transition';
-                btn.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/></svg>拍攝並完成簽退';
-                consent.innerHTML = '<strong class="text-green-700">【現場簽退紀錄】</strong><br>本人確認已完成本次會議，同意拍攝簽退大頭照做為離場憑證。';
-            }
-        }
-
-        function selectMember(m) {
-            selectedMember = m;
-            document.getElementById('selectedName').textContent = m.name;
-            document.getElementById('selectedMeta').textContent = m.role + '｜' + m.org + '｜' + m.title;
-            document.getElementById('recordConsent').checked = false;
-            updatePanelMode();
-            document.getElementById('listView').style.display = 'none';
-            document.getElementById('checkinPanel').style.display = 'block';
-            window.scrollTo(0, 0);
-            startCamera();
-        }
-
-        function backToList(fromSuccess) {
-            if (fromSuccess) document.getElementById('successOverlay').style.display = 'none';
-            document.getElementById('loadingOverlay').style.display = 'none';
-            document.getElementById('checkinPanel').style.display = 'none';
-            document.getElementById('listView').style.display = 'block';
-            selectedMember = null;
-            stopCamera();
-            video.style.display = 'block';
-            photo.style.display = 'none';
-            cameraStatus.style.display = 'flex';
-            cameraStatus.innerHTML = '正在存取相機…<br>（請點擊允許）';
-            document.getElementById('submitBtn').style.display = 'flex';
-        }
-
-        async function startCamera() {
-            try {
-                if (!navigator.mediaDevices?.getUserMedia) throw new Error('不支援相機');
-                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
-                video.srcObject = stream;
-                streamRef = stream;
-                cameraStatus.style.display = 'none';
-            } catch (err) {
-                let msg = '無法存取相機';
-                if (err.name === 'NotAllowedError') msg = '未取得相機權限';
-                else if (err.name === 'NotFoundError') msg = '找不到相機裝置';
-                cameraStatus.innerHTML = `<span class="text-red-500 font-bold">${msg}</span><br><span class="text-xs mt-1 block">（不影響簽到，仍可送出）</span>`;
-            }
-        }
-
-        function stopCamera() {
-            if (streamRef) { streamRef.getTracks().forEach(t => t.stop()); streamRef = null; }
-        }
-
-        function sendToBackend(postData) {
-            const body = JSON.stringify(postData);
-            try {
-                let iframe = document.getElementById('gas_hidden_frame');
-                if (!iframe) {
-                    iframe = document.createElement('iframe');
-                    iframe.name = iframe.id = 'gas_hidden_frame';
-                    iframe.style.display = 'none';
-                    document.body.appendChild(iframe);
-                }
-                const form = document.createElement('form');
-                form.method = 'POST';
-                form.action = GOOGLE_APP_SCRIPT_URL;
-                form.target = 'gas_hidden_frame';
-                form.style.display = 'none';
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = 'payload';
-                input.value = body;
-                form.appendChild(input);
-                document.body.appendChild(form);
-                form.submit();
-                setTimeout(() => form.remove(), 3000);
-            } catch (e) {
-                if (navigator.sendBeacon) navigator.sendBeacon(GOOGLE_APP_SCRIPT_URL, new Blob([body], { type: 'text/plain;charset=utf-8' }));
-            }
-        }
-
-        function submitCheckin() {
-            if (!selectedMember) return;
-            const consent = document.getElementById('recordConsent').checked;
-            if (!consent) { alert('請勾選同意事項'); return; }
-
-            const m = selectedMember;
-            document.getElementById('loadingTitle').textContent = currentMode === 'signin' ? '正在傳送簽到資料…' : '正在傳送簽退資料…';
-            document.getElementById('loadingOverlay').style.display = 'flex';
-            document.getElementById('submitBtn').style.display = 'none';
-
-            if (streamRef && video.readyState === 4) {
-                const canvas = document.createElement('canvas');
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-                canvas.getContext('2d').drawImage(video, 0, 0);
-                photo.src = canvas.toDataURL('image/jpeg', 0.8);
-                photo.style.display = 'block';
-                video.style.display = 'none';
-            }
-
-            setTimeout(() => {
-                html2canvas(document.getElementById('formArea'), {
-                    backgroundColor: '#ffffff', scale: 1.5, useCORS: true, logging: false
-                }).then(canvas => {
-                    const postData = {
-                        action: currentMode === 'signin' ? '簽到' : '簽退',
-                        name: m.name,
-                        role: m.role + '（現場）',
-                        consent: consent,
-                        timestamp: new Date().toISOString(),
-                        image: canvas.toDataURL('image/jpeg', 0.8),
-                        source: '現場簽到',
-                        org: m.org,
-                        title: m.title
-                    };
-                    sendToBackend(postData);
-                    stopCamera();
-                    setTimeout(() => {
-                        document.getElementById('loadingOverlay').style.display = 'none';
-                        document.getElementById('successTitle').textContent = currentMode === 'signin' ? '簽到完成' : '簽退完成';
-                        document.getElementById('successMsg').textContent = m.name + '，感謝您的參與！';
-                        document.getElementById('successOverlay').style.display = 'flex';
-                    }, 1000);
-                }).catch(() => {
-                    sendToBackend({
-                        action: currentMode === 'signin' ? '簽到' : '簽退',
-                        name: m.name, role: m.role + '（現場）', consent, timestamp: new Date().toISOString(), image: '', source: '現場簽到'
-                    });
-                    stopCamera();
-                    document.getElementById('loadingOverlay').style.display = 'none';
-                    document.getElementById('successTitle').textContent = currentMode === 'signin' ? '簽到完成' : '簽退完成';
-                    document.getElementById('successMsg').textContent = m.name + '，感謝您的參與！';
-                    document.getElementById('successOverlay').style.display = 'flex';
-                });
-            }, 150);
-        }
-
-        renderList();
-    </script>
+    switchMode('signin');
+    renderList();
+  </script>
 </body>
 </html>

@@ -1,31 +1,26 @@
 {
   "liveUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/",
   "onsiteUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/現場簽到/",
-  "targetUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/",
+  "videoUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/視訊簽到/",
+  "memberZoneUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/視訊委員/",
   "provider": "GitHub Pages",
-  "deployedAt": "2026-06-23T06:10:00+08:00",
-  "status": "live",
-  "localCommit": "544170b",
-  "previousCommit": "77e0583",
-  "sourceFile": "/Users/user1/Downloads/code_artifact (2).html",
-  "repository": "https://github.com/chatgptcjcu-boop/meet-checkin",
-  "updateInstructions": "1. 編輯 /Users/user1/Projects/meet-checkin/index.html。2. cd /Users/user1/Projects/meet-checkin && git add index.html && git commit -m \"更新報到頁\" && git push。3. GitHub Pages 約 1–3 分鐘自動更新。",
-  "deployScript": "/Users/user1/Projects/meet-checkin/deploy-github-pages.sh",
+  "architecture": {
+    "entry": "單一入口 index.html — 選現場或視訊",
+    "sharedRoster": "assets/members.js — 評核委員＋列席，兩通道共用",
+    "onsite": "現場簽到 — 名單點選（出席）＋其他現場人員（身份別＋姓名）",
+    "video": "視訊簽到 — 名單點選（視訊）→ 簽到後導向視訊委員專區",
+    "forms": "視訊委員專區 — 會議資料與填答（簽到後進入）"
+  },
   "features": [
-    "簽到/簽退雙模式切換",
-    "前置鏡頭大頭照擷取",
-    "html2canvas 表單截圖",
-    "GAS 後端送出（姓名、身份、動作、時間戳、截圖）",
-    "簽到後導向 Google Meet，簽退顯示完成畫面",
-    "現場簽到頁：委員名單點選姓名＋拍照簽到/簽退（/現場簽到/）"
+    "單一入口分流：現場簽到 / 視訊簽到",
+    "共用委員名單 assets/members.js",
+    "現場：名單點選 + 其他現場人員手動登記",
+    "視訊：名單點選 → 拍照 → 視訊委員專區",
+    "簽到/簽退雙模式、截圖、GAS 試算表、寄信通知"
   ],
-  "notes": "已移除 Meet URL 的 authuser=0。GAS 使用 no-cors 送出。無相機裝置時可優雅降級繼續報到。LINE 內建瀏覽器可能無法使用相機，建議提示使用者允許權限或改用 Safari/Chrome。",
   "emailNotification": {
     "enabled": true,
     "recipient": "chatgpt.cjcu@gmail.com",
-    "subjectSignIn": "【報到成功】2026宮廟管理師會議 - {姓名}",
-    "subjectSignOut": "【簽退成功】2026宮廟管理師會議 - {姓名}",
-    "attachment": "簽到截圖 JPEG",
-    "gasRedeployRequired": "修改 gas/Code.gs 後，須至 Google 試算表 → 擴充功能 → Apps Script → 部署 → 管理部署 → 編輯 → 新版本 → 部署"
+    "gasRedeployRequired": "修改 gas/Code.gs 後須重新部署 Apps Script"
   }
 }
