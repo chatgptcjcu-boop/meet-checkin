@@ -1,6 +1,9 @@
 {
   "liveUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/",
   "onsiteUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/現場簽到/",
+  "onsiteQrProjectorUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/現場簽到/投影.html",
+  "onsiteQrPrintUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/現場簽到/qr-print.html",
+  "onsiteQrShortUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/onsite-qr.html",
   "videoUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/視訊簽到/",
   "memberZoneUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/視訊委員/",
   "provider": "GitHub Pages",
