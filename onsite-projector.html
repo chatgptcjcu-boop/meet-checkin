@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>現場簽到 QR｜投影用</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%;
+      font-family: 'Noto Sans TC', 'PingFang TC', sans-serif;
+      background: #fff;
+      color: #0f172a;
+      overflow: hidden;
+    }
+    .stage {
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      align-items: center;
+      justify-items: center;
+      padding: 2.5vh 4vw;
+      gap: 2vh;
+      text-align: center;
+    }
+    .org { font-size: clamp(1rem, 2.2vw, 1.35rem); color: #475569; letter-spacing: 0.15em; font-weight: 500; }
+    h1 { font-size: clamp(1.6rem, 4.5vw, 3rem); font-weight: 900; line-height: 1.25; margin-top: 0.5vh; }
+    .date { font-size: clamp(1.1rem, 2.8vw, 1.75rem); font-weight: 700; color: #047857; margin-top: 0.5vh; }
+    .qr-block { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .qr-wrap {
+      border: 6px solid #047857;
+      border-radius: 20px;
+      padding: clamp(12px, 2vw, 24px);
+      background: #fff;
+      box-shadow: 0 8px 40px rgb(4 120 87 / 0.15);
+    }
+    .qr-wrap img {
+      display: block;
+      width: clamp(220px, 42vmin, 520px);
+      height: clamp(220px, 42vmin, 520px);
+    }
+    .scan { font-size: clamp(1.4rem, 3.5vw, 2.5rem); font-weight: 900; color: #047857; margin-top: 2vh; }
+    .steps { font-size: clamp(0.95rem, 2vw, 1.35rem); line-height: 1.65; color: #334155; max-width: 90vw; }
+    .steps strong { color: #047857; }
+    .hint { font-size: clamp(0.8rem, 1.5vw, 1rem); color: #94a3b8; margin-top: 1vh; }
+    .toolbar {
+      position: fixed; top: 0; right: 0; padding: 0.5rem;
+      display: flex; gap: 0.35rem; opacity: 0.25; transition: opacity 0.2s; z-index: 10;
+    }
+    .toolbar:hover { opacity: 1; }
+    .toolbar a, .toolbar button {
+      font-size: 0.72rem; padding: 0.35rem 0.65rem; border-radius: 6px;
+      border: 1px solid #cbd5e1; background: #f8fafc; color: #334155;
+      text-decoration: none; cursor: pointer; font-family: inherit;
+    }
+    @media print { .toolbar { display: none; } .stage { min-height: auto; padding: 15mm; } }
+  </style>
+</head>
+<body>
+  <div class="toolbar no-print">
+    <a href="./onsite-qr-print.html">列印版</a>
+    <a href="./現場簽到/">簽到頁</a>
+    <button type="button" onclick="document.documentElement.requestFullscreen?.()">全螢幕</button>
+  </div>
+  <div class="stage">
+    <header>
+      <p class="org">臺灣道法總會｜教育委員會</p>
+      <h1>宮廟管理師｜第一次評核委員會</h1>
+      <p class="date">115年6月30日｜現場簽到</p>
+    </header>
+    <div class="qr-block">
+      <div class="qr-wrap">
+        <img src="./assets/onsite-qrcode.png" alt="現場簽到 QR Code" width="520" height="520">
+      </div>
+      <p class="scan">請掃描 QR Code 完成簽到</p>
+    </div>
+    <footer>
+      <p class="steps">
+        <strong>評核委員</strong>：名單點選姓名　｜
+        <strong>其他現場人員</strong>：選身份別 → 填姓名 → 拍照
+      </p>
+      <p class="hint">會議結束請再次掃描完成簽退</p>
+    </footer>
+  </div>
+</body>
+</html>
