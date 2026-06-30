@@ -29,19 +29,21 @@
   }
 
   function saveState() {
-    const state = enrichExpenseState(buildState());
+    const saved = loadState();
+    const state = enrichExpenseState(buildState(), { previousDataVersion: saved?.dataVersion });
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     updateVersionUI(state);
-    alert('已儲存至本機瀏覽器（v' + state.dataVersion + '）');
+    alert('已儲存（版本 ' + state.dataVersion + '）');
   }
 
   function exportState() {
-    const state = enrichExpenseState(buildState());
+    const saved = loadState();
+    const state = enrichExpenseState(buildState(), { previousDataVersion: saved?.dataVersion });
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'meet-checkin-expenses-v' + state.dataVersion + '-' + new Date().toISOString().slice(0, 10) + '.json';
+    a.download = 'meet-checkin-expenses-' + state.dataVersion + '.json';
     a.click();
     URL.revokeObjectURL(a.href);
     updateVersionUI(state);
@@ -55,13 +57,13 @@
         meta: { ...saved.meta, ...data.meta },
         rows: saved.rows,
         staff: saved.staff,
-      });
+      }, { previousDataVersion: saved?.dataVersion });
     } else {
       next = enrichExpenseState({
         meta: data.meta,
         rows: data.rows,
         staff: data.staff,
-      });
+      }, { previousDataVersion: saved?.dataVersion });
     }
     localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
     location.reload();
@@ -85,12 +87,15 @@
         const saved = loadState();
         const localVersion = saved?.dataVersion ?? '（無）';
         const localDate = saved?.updatedDate ?? '（無）';
-        let msg = '匯入檔：v' + importVersion + '（' + importDate + '）\n';
-        msg += '本頁預設：v' + EXPENSE_DATA_VERSION + '（' + EXPENSE_UPDATED_DATE + '）\n';
-        if (saved) msg += '本機儲存：v' + localVersion + '（' + localDate + '）\n';
+        let msg = '匯入檔：' + importVersion + '（' + importDate + '）\n';
+        msg += '本頁範本：' + EXPENSE_PAGE_RELEASE + '（' + EXPENSE_PAGE_RELEASE_DATE + '）\n';
+        if (saved) msg += '本機儲存：' + localVersion + '（' + localDate + '）\n';
 
-        const versionDiff = compareDataVersions(importVersion, EXPENSE_DATA_VERSION) !== 0
-          || importSchema < EXPENSE_SCHEMA_VERSION;
+        const cmpImportVsLocal = saved ? compareDataVersions(importVersion, localVersion) : 0;
+        const isLegacy = !parseDataVersion(importVersion);
+        const versionDiff = isLegacy
+          || importSchema < EXPENSE_SCHEMA_VERSION
+          || (saved && cmpImportVsLocal !== 0);
 
         if (versionDiff) {
           msg += '\n⚠ 版本或結構與目前預設不同。\n';
@@ -128,8 +133,8 @@
     const issues = [];
     if (!saved.dataVersion) {
       issues.push('本機資料無版本資訊，建議按「儲存」或「匯出」更新');
-    } else if (saved.dataVersion !== EXPENSE_DATA_VERSION) {
-      issues.push('本機 v' + saved.dataVersion + ' 與預設 v' + EXPENSE_DATA_VERSION + ' 不同，建議匯出／匯入同步');
+    } else if (!parseDataVersion(saved.dataVersion)) {
+      issues.push('本機為舊版格式（' + saved.dataVersion + '），建議重新儲存以產生新版本號');
     } else if ((saved.schemaVersion ?? 0) < EXPENSE_SCHEMA_VERSION) {
       issues.push('本機結構版本較舊，建議重新儲存以升級');
     }
@@ -146,18 +151,18 @@
     applyExpenseEnvTheme();
     renderExpenseVersionBar();
     const topTag = document.getElementById('topVersionTag');
-    if (topTag) topTag.textContent = 'v' + EXPENSE_DATA_VERSION;
+    if (topTag) topTag.textContent = saved?.dataVersion || '未儲存';
 
     const versionEl = document.getElementById('syncVersion');
     const updatedEl = document.getElementById('syncUpdated');
     if (!versionEl || !updatedEl) return;
     if (!saved) {
-      versionEl.textContent = '本機版本：尚未儲存（預設 v' + EXPENSE_DATA_VERSION + '）';
+      versionEl.textContent = '本機版本：尚未儲存（按儲存後產生 日期-時間-流水號）';
       updatedEl.textContent = '最後更新：（尚無紀錄）';
       return;
     }
-    versionEl.textContent = '本機資料：v' + (saved.dataVersion || '（舊格式）') + '｜格式 schema v' + (saved.schemaVersion ?? 0);
-    updatedEl.textContent = '最後更新：' + (saved.updatedDate || (saved.updatedAt ? saved.updatedAt.slice(0, 16).replace('T', ' ') : '（尚無紀錄）'));
+    versionEl.textContent = '本機資料：' + (saved.dataVersion || '（舊格式）') + '｜格式 schema v' + (saved.schemaVersion ?? 0);
+    updatedEl.textContent = '最後更新：' + (saved.updatedDate || (saved.updatedAt ? formatUpdatedDateTimeZhTW(saved.updatedAt) : '（尚無紀錄）'));
   }
 
   function collectRows() {

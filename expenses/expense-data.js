@@ -50,10 +50,10 @@ window.DEFAULT_STAFF = [
 
 window.STORAGE_KEY = 'meet-checkin-expenses-v1';
 
-/** 結構版本（不相容時阻擋匯入）；資料版本（同步比對用） */
+/** 結構版本（不相容時阻擋匯入）；頁面範本標記 */
 window.EXPENSE_SCHEMA_VERSION = 1;
-window.EXPENSE_DATA_VERSION = '1.0.0';
-window.EXPENSE_UPDATED_DATE = '2026-06-30';
+window.EXPENSE_PAGE_RELEASE = '1.0.0';
+window.EXPENSE_PAGE_RELEASE_DATE = '2026-06-30';
 
 window.fmtMoney = function (n) {
   return Math.round(n).toLocaleString('zh-TW');
@@ -63,6 +63,10 @@ window.eligibleCount = function () {
   return window.EXPENSE_MEMBERS.filter((m) => m.feeEligible && m.attendance !== '請假').length;
 };
 
+window.pad2 = function (n) {
+  return String(n).padStart(2, '0');
+};
+
 window.formatUpdatedDateZhTW = function (d) {
   const dt = d instanceof Date ? d : new Date(d);
   if (Number.isNaN(dt.getTime())) return '';
@@ -70,23 +74,55 @@ window.formatUpdatedDateZhTW = function (d) {
   return roc + '年' + (dt.getMonth() + 1) + '月' + dt.getDate() + '日';
 };
 
-window.compareDataVersions = function (a, b) {
-  const pa = String(a || '0').split('.').map(Number);
-  const pb = String(b || '0').split('.').map(Number);
-  for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
-    const diff = (pa[i] || 0) - (pb[i] || 0);
-    if (diff) return diff > 0 ? 1 : -1;
+window.formatUpdatedDateTimeZhTW = function (d) {
+  const dt = d instanceof Date ? d : new Date(d);
+  if (Number.isNaN(dt.getTime())) return '';
+  const date = window.formatUpdatedDateZhTW(dt);
+  const time = window.pad2(dt.getHours()) + ':' + window.pad2(dt.getMinutes()) + ':' + window.pad2(dt.getSeconds());
+  return date + ' ' + time;
+};
+
+/** 版本格式：YYYYMMDD-HHmmss-NNNN（日期＋時間＋4碼流水號） */
+window.parseDataVersion = function (v) {
+  const m = String(v || '').match(/^(\d{8})-(\d{6})-(\d{4})$/);
+  if (!m) return null;
+  return { date: m[1], time: m[2], serial: parseInt(m[3], 10) };
+};
+
+window.nextDataVersion = function (previousVersion) {
+  const now = new Date();
+  const date = '' + now.getFullYear() + window.pad2(now.getMonth() + 1) + window.pad2(now.getDate());
+  const time = window.pad2(now.getHours()) + window.pad2(now.getMinutes()) + window.pad2(now.getSeconds());
+  let serial = 1;
+  const prev = window.parseDataVersion(previousVersion);
+  if (prev && prev.date === date && prev.time === time) {
+    serial = Math.min(9999, prev.serial + 1);
   }
+  return date + '-' + time + '-' + String(serial).padStart(4, '0');
+};
+
+window.compareDataVersions = function (a, b) {
+  const na = window.normalizeDataVersion(a);
+  const nb = window.normalizeDataVersion(b);
+  if (na < nb) return -1;
+  if (na > nb) return 1;
   return 0;
 };
 
-window.enrichExpenseState = function (state) {
+window.normalizeDataVersion = function (v) {
+  if (!v) return '';
+  if (window.parseDataVersion(v)) return String(v);
+  return '0-legacy-' + String(v);
+};
+
+window.enrichExpenseState = function (state, opts) {
   const now = new Date();
+  const previous = opts?.previousDataVersion;
   return {
     schemaVersion: window.EXPENSE_SCHEMA_VERSION,
-    dataVersion: window.EXPENSE_DATA_VERSION,
+    dataVersion: window.nextDataVersion(previous),
     updatedAt: now.toISOString(),
-    updatedDate: window.formatUpdatedDateZhTW(now),
+    updatedDate: window.formatUpdatedDateTimeZhTW(now),
     meta: state.meta,
     rows: state.rows,
     staff: state.staff,
@@ -96,12 +132,11 @@ window.enrichExpenseState = function (state) {
 window.renderExpenseVersionBar = function (containerId) {
   const el = document.getElementById(containerId || 'versionBar');
   if (!el) return;
-  let text = '資料版本 v' + window.EXPENSE_DATA_VERSION + '｜預設更新 ' + window.EXPENSE_UPDATED_DATE;
+  let text = '頁面範本 ' + window.EXPENSE_PAGE_RELEASE + '｜發布 ' + window.EXPENSE_PAGE_RELEASE_DATE;
   try {
     const saved = JSON.parse(localStorage.getItem(window.STORAGE_KEY));
-    if (saved?.dataVersion && saved.dataVersion !== window.EXPENSE_DATA_VERSION) {
-      text += '｜本機 v' + saved.dataVersion;
-      if (saved.updatedDate) text += '（' + saved.updatedDate + '）';
+    if (saved?.dataVersion) {
+      text += '｜本機儲存 ' + saved.dataVersion;
     }
   } catch (_) {}
   el.textContent = text;
