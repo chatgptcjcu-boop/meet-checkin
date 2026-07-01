@@ -15,12 +15,12 @@
 
 | 應 commit | 不應 commit |
 |-----------|-------------|
-| `08-評核委員會/`、`09-教材編審委員會/` | `.cursor/`（已在 .gitignore） |
+| `08-evaluation-committee/`、`09-editorial-committee/` | `.cursor/`（已在 .gitignore） |
 | `dashboard.html`、`SYNC-WORKFLOW.md` | `.zerodeploy-claim-token` |
 | `config/`、`docs/`、`scripts/` | 委員掃描 PDF（含個資，放本機或加密雲端） |
 | HTML 模板、議程、進度 JSON | Google 試算表金鑰、GAS 私密 token |
 
-**委員掃描檔：** 建議放 `08-評核委員會/1150630-資料彙整/members/*/scans/` 本機，或另用 Google Drive／加密資料夾；**勿 push 含個資 PDF 至公開 repo**。
+**委員掃描檔：** 建議放 `08-evaluation-committee/1150630-data-compilation/members/*/scans/` 本機，或另用 Google Drive／加密資料夾；**勿 push 含個資 PDF 至公開 repo**。
 
 ## 換機器開始工作（標準流程）
 
@@ -71,5 +71,5 @@ git pull origin main
 ## 相關連結
 
 - 專案儀表板：[`dashboard.html`](dashboard.html)
-- 評核委員會：[`08-評核委員會/index.html`](08-評核委員會/index.html)
-- 教材編審委員會：[`09-教材編審委員會/index.html`](09-教材編審委員會/index.html)
+- 評核委員會：[`08-evaluation-committee/index.html`](08-evaluation-committee/index.html)
+- 教材編審委員會：[`09-editorial-committee/index.html`](09-editorial-committee/index.html)

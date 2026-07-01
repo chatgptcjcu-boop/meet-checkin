@@ -37,7 +37,7 @@ meet-checkin/
 │   └── apply-event-config.js
 ├── index.html              ← 簽到／簽退
 ├── gas/Code.gs             ← 試算表後端
-├── 視訊委員/               ← 委員專區 + 填答手冊
+├── remote-members/               ← 委員專區 + 填答手冊
 ├── scripts/sync-config.js
 ├── docs/
 │   ├── SETUP.md

@@ -36,7 +36,7 @@ node scripts/sync-config.js
 Repository → Settings → Pages → Branch: **main** / **/**
 
 ```bash
-git add config/ index.html 視訊委員/
+git add config/ index.html remote-members/
 git commit -m "設定新活動"
 git push origin main
 ```
@@ -50,7 +50,7 @@ git push origin main
 
 ## 6. 自訂填答內容
 
-複製 `視訊委員/填答手冊-正文.html` 修改題目，或保留範本僅改封面（已由 config 注入）。
+複製 `remote-members/填答手冊-正文.html` 修改題目，或保留範本僅改封面（已由 config 注入）。
 
 ---
 

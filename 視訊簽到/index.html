@@ -40,7 +40,7 @@
     </section>
 
     <p class="text-center text-xs text-slate-400">
-      現場出席請至 <a href="../現場簽到/" class="text-blue-600 underline">現場簽到</a>
+      現場出席請至 <a href="../onsite-checkin-legacy/" class="text-blue-600 underline">onsite-checkin-legacy</a>
     </p>
   </main>
 
@@ -70,7 +70,7 @@
   <div id="loadingOverlay" class="fixed inset-0 bg-blue-900/95 z-50 flex flex-col items-center justify-center">
     <div class="spinner mb-4"></div>
     <h2 id="loadingTitle" class="text-xl text-white font-bold">正在傳送…</h2>
-    <p id="loadingSubtitle" class="text-blue-200 text-sm mt-2">完成後將導向視訊委員專區</p>
+    <p id="loadingSubtitle" class="text-blue-200 text-sm mt-2">完成後將導向remote-members專區</p>
   </div>
   <div id="successOverlay" class="fixed inset-0 bg-green-900/95 z-50 flex flex-col items-center justify-center text-center px-6">
     <h2 id="successTitle" class="text-3xl text-white font-bold mb-2">簽退完成</h2>
@@ -133,7 +133,7 @@
         si.className = 'flex-1 py-2.5 text-sm font-bold rounded-lg bg-white text-blue-700 shadow';
         so.className = 'flex-1 py-2.5 text-sm font-bold rounded-lg text-slate-500';
         hint.innerHTML = '請從<strong class="text-blue-700">委員名單點選您的姓名</strong>，拍照簽到後進入視訊會議室。';
-        sub.textContent = '完成後將導向視訊委員專區';
+        sub.textContent = '完成後將導向remote-members專區';
       } else {
         so.className = 'flex-1 py-2.5 text-sm font-bold rounded-lg bg-white text-green-700 shadow';
         si.className = 'flex-1 py-2.5 text-sm font-bold rounded-lg text-slate-500';
@@ -201,7 +201,7 @@
         if (!ok) return;
         if (currentMode === 'signin') {
           const q = new URLSearchParams({ name: m.name, role: m.role });
-          window.location.href = '../視訊委員/index.html?' + q.toString();
+          window.location.href = '../remote-members/index.html?' + q.toString();
         } else {
           document.getElementById('successTitle').textContent = '簽退完成';
           document.getElementById('successMsg').textContent = m.name + '，感謝您的參與！';

@@ -11,7 +11,7 @@
   },
   "workstreams": {
     "evaluation": {
-      "id": "08-評核委員會",
+      "id": "08-evaluation-committee",
       "name": "評核委員會",
       "meetingsTotal": 4,
       "meetings": [
@@ -20,17 +20,17 @@
           "title": "職能基準共構",
           "dateRoc": "115/06/30",
           "dateIso": "2026-06-30",
-          "folder": "08-評核委員會/1150630",
+          "folder": "08-evaluation-committee/1150630",
           "status": "completed",
           "phases": ["Phase0 身分確認", "Phase1 問題共構", "Phase2 T1-T7", "Phase3 任務背書", "Phase4 86單元", "Phase5 決議"],
           "outputs": ["icapV75 附錄十一", "資料彙整區待掃描"]
         },
         {
           "n": 2,
-          "title": "ABCD 教學目標與評量設計",
+          "title": "ABCD 教學目標與assessment-design",
           "dateRoc": "115/08/30",
           "dateIso": "2026-08-30",
-          "folder": "08-評核委員會/1150830",
+          "folder": "08-evaluation-committee/1150830",
           "status": "preparing",
           "phases": ["Phase0 身分確認", "Phase1 第一次回顧", "Phase2 86優先序", "Phase3 ABCD", "Phase4 評量", "Phase5 決議"],
           "outputs": ["icapV75 附錄十二（預定）"]
@@ -40,7 +40,7 @@
           "title": "教材大綱審查",
           "dateRoc": "115/10/25",
           "dateIso": "2026-10-25",
-          "folder": "08-評核委員會/1151025",
+          "folder": "08-evaluation-committee/1151025",
           "status": "planned",
           "phases": ["待規劃"],
           "outputs": ["附錄十三（預定）"]
@@ -50,7 +50,7 @@
           "title": "送審前總驗收",
           "dateRoc": "115/11/29",
           "dateIso": "2026-11-29",
-          "folder": "08-評核委員會/1151129",
+          "folder": "08-evaluation-committee/1151129",
           "status": "planned",
           "phases": ["待規劃"],
           "outputs": ["iCAP 送審包"]
@@ -58,7 +58,7 @@
       ]
     },
     "editorial": {
-      "id": "09-教材編審委員會",
+      "id": "09-editorial-committee",
       "name": "教材編審委員會",
       "meetingsTotal": 4,
       "meetings": [
@@ -67,7 +67,7 @@
           "title": "編審流程 Demo 示範",
           "dateRoc": "115/07/30",
           "dateIso": "2026-07-30",
-          "folder": "09-教材編審委員會/1150730-M1-Demo示範",
+          "folder": "09-editorial-committee/1150730-m1-demo",
           "status": "preparing",
           "phases": ["Phase0 身分單元", "Phase1 職能內容", "Phase2 ABCD", "Phase3 學習單", "Phase4 評量三類", "Phase5 協作建檔"],
           "outputs": ["委員理解編審全流程", "示範單元 M1-1.1 完稿"]
@@ -77,7 +77,7 @@
           "title": "單元認領與分工",
           "dateRoc": "115/10/18",
           "dateIso": "2026-10-18",
-          "folder": "09-教材編審委員會/1151018-M2-單元認領",
+          "folder": "09-editorial-committee/1151018-m2-unit-claim",
           "status": "planned",
           "phases": ["86單元認領", "主筆/協作指派", "交稿時程", "平台帳號開通"],
           "outputs": ["單元認領矩陣", "交稿里程碑"]
@@ -87,7 +87,7 @@
           "title": "協作審閱中期檢核",
           "dateRoc": "115/11/15",
           "dateIso": "2026-11-15",
-          "folder": "09-教材編審委員會/1151115-M3-協作審閱",
+          "folder": "09-editorial-committee/1151115-m3-collaborative-review",
           "status": "planned",
           "phases": ["進度盤點", "同儕審閱", "主審回饋", "修訂版確認"],
           "outputs": ["各模組中期稿", "審閱意見彙整"]
@@ -97,7 +97,7 @@
           "title": "定稿驗收",
           "dateRoc": "115/12/20",
           "dateIso": "2026-12-20",
-          "folder": "09-教材編審委員會/1151220-M4-定稿驗收",
+          "folder": "09-editorial-committee/1151220-m4-final-acceptance",
           "status": "planned",
           "phases": ["全冊對照職能基準", "評量一致性", "定稿簽核", "移交出版/上架"],
           "outputs": ["180hr 教材定稿", "評量工具包"]

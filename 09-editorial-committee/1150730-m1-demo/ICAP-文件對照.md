@@ -1,0 +1,34 @@
+# 勞動部 iCAP 專案文件 × Demo Phase 對照表
+
+> 本 Demo 依評核委員會 Phase 0–5 系統化結構，對齊 iCAP 職能導向課程發展文件架構。
+
+| # | Demo 必備項目 | Phase | 本 repo 文件 | iCAP／勞動部文件（對照） |
+|---|---------------|-------|--------------|-------------------------|
+| 1 | **教學內容** | Phase 1 | `02-phase1-content-and-steps.html` §1-1 | 課程單元內容大綱、單元教學內容 |
+| 2 | **教學步驟** | Phase 1 | `02-phase1-content-and-steps.html` §1-2 | 教學流程／單元進度表 |
+| 3 | **教學目標** | Phase 2 | `03-phase2-abcd-objectives.html` | ABCD 教學目標轉換表 |
+| 4 | **教學方式** | Phase 3 | `04-phase3-methods-and-worksheets.html` §3-1 | 教學策略、教學方法 |
+| 5 | **教學學習單** | Phase 3 | `1150730-handouts/instructor-worksheet.html` 叁章 | 學員學習單、活動單 |
+| 6 | **學習單產出** | Phase 3 | 講師學習單 叁-3、Phase 3 §3-3 | 學習成果、課後產出 |
+| 7 | **評量－考古題** | Phase 4 | `assessment-design/01-archaeology-question-template.html` | 筆試題庫、歷屆試題風格 |
+| 8 | **評量－勾選建檔** | Phase 4 | `assessment-design/02-checklist-archive.html` | 行為指標檢核、職能檢核表 |
+| 9 | **評量－分數與觀察** | Phase 4 | `assessment-design/03-scoring-observation.html` | Rubrics、觀察紀錄、評分規準 |
+| 10 | **全流程執行** | Phase 5 | `06-phase5-archive-and-handoff.html` | 教材編審、定稿、送審流程 |
+
+## 與評核委員會銜接
+
+| 評核委員會產出 | Demo 使用方式 |
+|----------------|---------------|
+| 86 單元架構（1150630） | Phase 1 定位 M1-1.1 |
+| ABCD 決議（1150830，若已完成） | Phase 2 依據 |
+| 行為指標 42 項 | 評量勾選建檔對照 |
+| 模組主審認領 | M2 認領會分工 |
+
+## 現場發放對照（同 08 結構）
+
+| 08 評核委員會 | 09 教材編審 Demo |
+|---------------|------------------|
+| 委員閱讀須知 | 講師閱讀須知 |
+| 主席主持手冊 | 主持者教學腳本 |
+| 委員填答手冊 | 講師學習單 |
+| Phase 0–5 內部模板 | Phase 0–5 內部模板 |

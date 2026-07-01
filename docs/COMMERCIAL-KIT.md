@@ -26,7 +26,7 @@ meet-checkin-kit/                    ← 可販售的乾淨模板 repo
 │   └── README.md
 ├── public/                          ← 未來可選：與 instances 分離
 │   ├── index.html                   ← 簽到
-│   └── member/                      ← 視訊委員專區
+│   └── member/                      ← remote-members專區
 ├── gas/
 │   └── Code.gs
 ├── templates/
@@ -57,7 +57,7 @@ meet-checkin-kit/                    ← 可販售的乾淨模板 repo
 |------|------|
 | **定價** | **NT$ 1,980**（早鳥 NT$ 990） |
 | **交付** | GitHub repo 存取、config 模板、gas/Code.gs、範例填答手冊、SETUP 文件、Cursor Skill |
-| **適合** | 會偶爦辦視訊委員會、有 IT 同仁能跟文件操作 |
+| **適合** | 會偶爦辦remote-members會、有 IT 同仁能跟文件操作 |
 | **不含** | 代部署、客製題目、代操 GAS |
 
 ### Standard｜代設定上線

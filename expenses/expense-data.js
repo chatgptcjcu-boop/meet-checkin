@@ -44,8 +44,8 @@ window.DEFAULT_BUDGET_ROWS = [
 
 window.DEFAULT_STAFF = [
   { name: '王芯庭', role: '會議助理／紀錄', hours: 6, hourly: 0, transport: 0, note: '計畫人員（不另支出席費）' },
-  { name: '工讀生A', role: '現場簽到、會務', hours: 6, hourly: 200, transport: 150, note: '' },
-  { name: '工讀生B', role: '現場簽到、會務', hours: 6, hourly: 200, transport: 150, note: '' },
+  { name: '工讀生A', role: 'onsite-checkin-legacy、會務', hours: 6, hourly: 200, transport: 150, note: '' },
+  { name: '工讀生B', role: 'onsite-checkin-legacy、會務', hours: 6, hourly: 200, transport: 150, note: '' },
 ];
 
 window.STORAGE_KEY = 'meet-checkin-expenses-v1';

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>onsite-checkin-legacy QR Code｜列印用</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Noto Sans TC', 'PingFang TC', sans-serif;
+      background: #e2e8f0;
+      color: #111;
+    }
+    .print-bar {
+      background: #1e293b;
+      color: #fff;
+      text-align: center;
+      padding: 0.65rem 1rem;
+      font-size: 0.85rem;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .print-bar a, .print-bar button {
+      margin-left: 0.5rem;
+      padding: 0.4rem 1rem;
+      border: none;
+      border-radius: 6px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.85rem;
+      text-decoration: none;
+      display: inline-block;
+      background: #fff;
+      color: #1e293b;
+    }
+    .sheet {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 1rem auto 2rem;
+      background: #fff;
+      box-shadow: 0 4px 24px rgb(0 0 0 / 0.12);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 18mm 15mm;
+      text-align: center;
+    }
+    .org { font-size: 0.95rem; color: #475569; letter-spacing: 0.12em; margin-bottom: 0.5rem; }
+    h1 { font-size: 1.65rem; font-weight: 900; line-height: 1.35; margin-bottom: 0.35rem; }
+    .date { font-size: 1.1rem; font-weight: 700; color: #047857; margin-bottom: 1.5rem; }
+    .qr-wrap {
+      border: 4px solid #047857;
+      border-radius: 16px;
+      padding: 10mm;
+      margin-bottom: 1.25rem;
+    }
+    .qr-wrap img { display: block; width: 68mm; height: 68mm; }
+    .scan-title { font-size: 1.35rem; font-weight: 900; color: #047857; margin-bottom: 0.75rem; }
+    .steps {
+      text-align: left;
+      max-width: 150mm;
+      margin: 0 auto 1rem;
+      font-size: 0.95rem;
+      line-height: 1.75;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 10px;
+      padding: 0.85rem 1.1rem;
+    }
+    .steps ol { padding-left: 1.25rem; }
+    .url { font-size: 0.72rem; color: #64748b; word-break: break-all; max-width: 160mm; }
+    .footer { margin-top: 1rem; font-size: 0.78rem; color: #94a3b8; }
+    @media print {
+      body { background: #fff; }
+      .print-bar { display: none; }
+      .sheet { margin: 0; box-shadow: none; width: 100%; min-height: auto; }
+      @page { size: A4 portrait; margin: 12mm; }
+    }
+  </style>
+</head>
+<body>
+  <div class="print-bar no-print">
+    onsite-checkin-legacy QR Code｜列印用
+    <a href="./投影.html">投影版</a>
+    <button type="button" onclick="window.print()">🖨 列印</button>
+  </div>
+  <div class="sheet">
+    <p class="org">臺灣道法總會｜教育委員會</p>
+    <h1>宮廟管理師<br>第一次評核委員會</h1>
+    <p class="date">115年6月30日｜onsite-checkin-legacy</p>
+    <div class="qr-wrap">
+      <img src="../assets/onsite-checkin-legacy-qrcode.png" alt="onsite-checkin-legacy QR Code" width="400" height="400">
+    </div>
+    <p class="scan-title">請掃描 QR Code 完成簽到</p>
+    <div class="steps">
+      <strong>簽到方式</strong>
+      <ol>
+        <li>用手機相機或 LINE 掃描上方 QR Code</li>
+        <li><strong>評核委員</strong>：從名單點選您的姓名</li>
+        <li><strong>其他現場人員</strong>：選身份別 → 填中文姓名 → 拍照</li>
+        <li>完成後請依工作人員引導就座</li>
+      </ol>
+    </div>
+    <p class="url">https://chatgptcjcu-boop.github.io/meet-checkin/onsite-checkin-legacy/</p>
+    <p class="footer">會議結束請再次掃描完成簽退</p>
+  </div>
+</body>
+</html>

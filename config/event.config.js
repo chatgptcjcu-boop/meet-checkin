@@ -37,7 +37,7 @@ window.EVENT_CONFIG = {
   },
   "signIn": {
     "roles": ["評核委員", "專家顧問", "專案工作人員", "列席人員"],
-    "memberPortalPath": "./視訊委員/index.html"
+    "memberPortalPath": "./remote-members/index.html"
   },
   "seo": {
     "checkInPageTitle": "臺灣道法總會－教育委員會 會議報到與簽退",

@@ -1,28 +1,28 @@
 {
   "liveUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/",
-  "onsiteUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/現場簽到/",
+  "onsiteUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/onsite-checkin-legacy/",
   "onsitePrintUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/onsite-print/",
-  "onsitePrintLegacyUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/現場印製/index.html",
+  "onsitePrintLegacyUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/onsite-print-legacy/index.html",
   "meetingDisplayUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/meeting-display.html",
   "meetingDisplayShortUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/meeting.html",
   "onsiteQrProjectorUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/onsite-projector.html",
   "onsiteQrPrintUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/onsite-qr-print.html",
   "onsiteQrShortUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/onsite-qr.html",
   "videoUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/視訊簽到/",
-  "memberZoneUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/視訊委員/",
+  "memberZoneUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/remote-members/",
   "provider": "GitHub Pages",
   "architecture": {
     "entry": "單一入口 index.html — 選現場或視訊",
     "sharedRoster": "assets/members.js — 評核委員＋列席，兩通道共用",
-    "onsite": "現場簽到 — 名單點選（出席）＋其他現場人員（身份別＋姓名）",
-    "video": "視訊簽到 — 名單點選（視訊）→ 簽到後導向視訊委員專區",
-    "forms": "視訊委員專區 — 會議資料與填答（簽到後進入）"
+    "onsite": "onsite-checkin-legacy — 名單點選（出席）＋其他現場人員（身份別＋姓名）",
+    "video": "視訊簽到 — 名單點選（視訊）→ 簽到後導向remote-members專區",
+    "forms": "remote-members專區 — 會議資料與填答（簽到後進入）"
   },
   "features": [
-    "單一入口分流：現場簽到 / 視訊簽到",
+    "單一入口分流：onsite-checkin-legacy / 視訊簽到",
     "共用委員名單 assets/members.js",
     "現場：名單點選 + 其他現場人員手動登記",
-    "視訊：名單點選 → 拍照 → 視訊委員專區",
+    "視訊：名單點選 → 拍照 → remote-members專區",
     "簽到/簽退雙模式、截圖、GAS 試算表、寄信通知"
   ],
   "emailNotification": {

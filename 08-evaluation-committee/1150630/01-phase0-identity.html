@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phase 0｜身分確認｜委員填答表</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans TC', sans-serif; background: #f8fafc; }
+    .content-box { background: #fff; border-radius: 0.75rem; box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1); padding: 2rem 2.5rem; max-width: 52rem; margin: 1.5rem auto; }
+    .section-title { font-size: 1.35rem; font-weight: 700; border-left: 4px solid #b91c1c; padding-left: 1rem; margin: 1.25rem 0 1rem; }
+    .q-block { border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1rem 1.25rem; margin-bottom: 0.75rem; background: #fafafa; }
+    .q-id { color: #b91c1c; font-weight: 700; font-size: 0.85rem; }
+    .q-title { font-weight: 600; margin: 0.25rem 0 0.5rem; }
+    .q-hint { font-size: 0.8rem; color: #6b7280; margin-bottom: 0.5rem; }
+    .field label { display: block; font-size: 0.875rem; color: #374151; margin-bottom: 0.25rem; margin-top: 0.5rem; }
+    .field input[type=text], .field input[type=tel], .field input[type=email], .field textarea { width: 100%; border: 1px solid #d1d5db; border-radius: 0.375rem; padding: 0.5rem 0.75rem; font-size: 0.9rem; }
+    .field textarea { min-height: 2.5rem; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .opts { display: flex; flex-wrap: wrap; gap: 1rem; margin: 0.5rem 0; }
+    .opts label { display: flex; align-items: center; gap: 0.35rem; font-size: 0.9rem; }
+    .nav a { margin-right: 0.5rem; color: #b91c1c; font-size: 0.85rem; }
+    .alert { background: #fef3c7; border: 1px solid #f59e0b; border-radius: 0.5rem; padding: 0.75rem 1rem; font-size: 0.85rem; color: #92400e; margin-bottom: 1.25rem; }
+    @media print { .nav, .alert { display: none; } body { background: #fff; } .content-box { box-shadow: none; } }
+  </style>
+</head>
+<body>
+  <div class="content-box">
+    <nav class="nav mb-4"><a href="index.html">← 索引</a> <a href="02-phase1-problem-framing.html">Phase 1 →</a></nav>
+
+    <div class="text-center mb-6">
+      <h1 class="text-xl font-bold">Phase 0｜身分確認與會議定位</h1>
+      <p class="text-sm text-gray-500">10:00–10:15｜iCAP 2.2.3 利害關係人參與｜附錄一更新</p>
+    </div>
+
+    <div class="alert">
+      <strong>會議定位：</strong>今日任務是「第一次」將各位實務經驗整理為宮廟管理師職能基準共識，並回填計畫書附錄。非審查已完成報告，而是共構 Analysis 階段產出。
+    </div>
+
+    <h2 class="section-title">P0-1～P0-4｜基本資料</h2>
+
+    <div class="q-block">
+      <div class="q-id">P0-1</div>
+      <div class="q-title">出席確認</div>
+      <div class="grid-2">
+        <div class="field"><label>委員姓名</label><input type="text"></div>
+        <div class="field"><label>服務單位／宮廟全銜</label><input type="text"></div>
+        <div class="field"><label>職稱</label><input type="text" placeholder="例：總幹事、主委、秘書"></div>
+        <div class="field"><label>聯絡電話</label><input type="tel"></div>
+        <div class="field"><label>Email（選填）</label><input type="email"></div>
+        <div class="field"><label>出席方式</label><input type="text" placeholder="現場／視訊"></div>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-id">P0-2</div>
+      <div class="q-title">代表身分（可複選）</div>
+      <div class="opts">
+        <label><input type="checkbox"> 佛教寺院</label>
+        <label><input type="checkbox"> 道教宮廟</label>
+        <label><input type="checkbox"> 民間信仰／媽祖系</label>
+        <label><input type="checkbox"> 財團法人型宗教組織</label>
+        <label><input type="checkbox"> 登記寺廟</label>
+        <label><input type="checkbox"> 學術單位</label>
+        <label><input type="checkbox"> 政府／公部門</label>
+        <label><input type="checkbox"> 其他：<input type="text" style="width:8rem;border:1px solid #ccc;border-radius:4px;padding:2px 6px"></label>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-id">P0-3</div>
+      <div class="q-title">寺廟／組織規模</div>
+      <div class="opts">
+        <label><input type="radio" name="p0-3"> 大型（信眾/年度預算大）</label>
+        <label><input type="radio" name="p0-3"> 中型</label>
+        <label><input type="radio" name="p0-3"> 中小型地方廟</label>
+        <label><input type="radio" name="p0-3"> 不適用（非宮廟代表）</label>
+      </div>
+      <div class="field"><label>所在縣市</label><input type="text"></div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-id">P0-4</div>
+      <div class="q-title">宗教事務管理年資</div>
+      <div class="q-hint">iCAP 要求參與訂定者，3 年以上實務經驗者宜占 60% 以上</div>
+      <div class="field"><label>年資（年）</label><input type="text" placeholder="例：15"></div>
+      <div class="opts">
+        <label><input type="radio" name="p0-4"> ≥ 3 年（資深）</label>
+        <label><input type="radio" name="p0-4"> &lt; 3 年</label>
+      </div>
+    </div>
+
+    <h2 class="section-title">P0-5～P0-7｜利益衝突與會議理解</h2>
+
+    <div class="q-block">
+      <div class="q-id">P0-5</div>
+      <div class="q-title">利益衝突聲明</div>
+      <div class="opts">
+        <label><input type="radio" name="p0-5"> 無利益衝突</label>
+        <label><input type="radio" name="p0-5"> 有，說明如下</label>
+      </div>
+      <div class="field"><label>說明（若無請填「無」）</label><textarea placeholder="例：本人服務之宮廟為本計畫協力單位…"></textarea></div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-id">P0-6</div>
+      <div class="q-title">會議目的理解</div>
+      <div class="opts">
+        <label><input type="radio" name="p0-6"> 我了解今日是「共構職能基準 Analysis 階段」，非從零制定也非單純審查教材</label>
+      </div>
+      <div class="opts">
+        <label><input type="radio" name="p0-6b"> 我了解填答將回填 icap 計畫書附錄十一（第一次評核委員會紀錄）</label>
+      </div>
+      <div class="field"><label>需澄清事項（可填無）</label><textarea></textarea></div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-id">P0-7</div>
+      <div class="q-title">職能語言入門自評</div>
+      <div class="q-hint">用一句話說明您理解的「職能基準」是什麼（測試入門，無標準答案）</div>
+      <div class="field"><textarea rows="2" placeholder="例：宮廟管理人員應具備的專業能力標準…"></textarea></div>
+      <div class="opts">
+        <label>過去是否接觸 iCAP／職能基準？</label>
+        <label><input type="radio" name="p0-7b"> 是</label>
+        <label><input type="radio" name="p0-7b"> 否</label>
+      </div>
+    </div>
+
+    <div class="border-t-2 border-red-800 pt-4 mt-6">
+      <p class="text-sm text-gray-700">本人確認以上資料正確，同意列名於本次評核委員會出席名單（附錄一更新）。</p>
+      <div class="grid grid-cols-2 gap-4 text-sm mt-3">
+        <div>委員簽名：________________</div>
+        <div>簽到時間：115/06/30 _____:_____</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
