@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>填答手冊（正文）｜視訊線上版｜宮廟管理師第一次評核委員會</title>
+  <title>填答手冊（正文）｜視訊線上版</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     :root { --border: #999; --light: #f5f5f5; }
@@ -72,9 +72,9 @@
 <nav class="nav"><a href="./index.html">← 返回索引</a> · <a href="./閱讀須知.html">閱讀須知</a> · <a href="./填答手冊-附錄.html">附錄冊</a></nav>
 <div class="cover">
 <h1>填答手冊（正文）｜視訊線上版</h1>
-<p class="date">宮廟管理師｜第一次評核委員會</p>
-<p class="date">115年6月30日</p>
-<p class="org">臺灣道法總會｜職能基準共構會議</p>
+<p class="date" data-event="event.title"></p>
+<p class="date" data-event="event.dateRoc"></p>
+<p class="org"><span data-event="org.name"></span>｜<span data-event="org.meetingSubtitle"></span></p>
 <div class="hint">
 <strong>填寫說明</strong>
 <ul style="margin:0.5rem 0 0;padding-left:1.2rem;text-align:left;">
@@ -550,9 +550,13 @@
 <p class="page-footer">— 正文完 —｜附錄請見《委員填答手冊-附錄》</p>
 </div>
 </div>
-  <link rel="stylesheet" href="./submit-form.css?v=20260629e">
-  <script src="./submit-form.js?v=20260629e"></script>
+  <link rel="stylesheet" href="./submit-form.css?v=20260630a">
+  <script src="../config/event.config.js"></script>
+  <script src="../config/apply-event-config.js"></script>
+  <script src="./submit-form.js?v=20260630a"></script>
   <script>
+    MeetCheckinConfig.init();
+    document.title = '填答手冊（正文）｜視訊線上版｜' + MeetCheckinConfig.getByPath('event.shortTitle');
     (function () {
       const p = new URLSearchParams(location.search);
       const name = p.get('name');

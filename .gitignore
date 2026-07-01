@@ -1,2 +1,6 @@
 # 僅供本機使用，勿上傳
 _local/
+.DS_Store
+.cursor/
+.zerodeploy-claim-token
+*.local

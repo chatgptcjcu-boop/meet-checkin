@@ -1,0 +1,20 @@
+{
+  "meetingId": "1150630",
+  "meetingTitle": "宮廟管理師｜第一次評核委員會",
+  "meetingDate": "115年6月30日",
+  "chair": "張祐倉",
+  "compileStatus": "待掃描上傳",
+  "members": [
+    { "id": "M01", "folder": "M01-委員姓名待填", "name": "（待填）", "unit": "", "role": "評核委員", "attendance": "現場", "scanStatus": "待上傳", "phasesComplete": [] },
+    { "id": "M02", "folder": "M02-委員姓名待填", "name": "（待填）", "unit": "", "role": "評核委員", "attendance": "現場", "scanStatus": "待上傳", "phasesComplete": [] },
+    { "id": "M03", "folder": "M03-委員姓名待填", "name": "（待填）", "unit": "", "role": "評核委員", "attendance": "現場", "scanStatus": "待上傳", "phasesComplete": [] },
+    { "id": "M04", "folder": "M04-委員姓名待填", "name": "（待填）", "unit": "", "role": "評核委員", "attendance": "現場", "scanStatus": "待上傳", "phasesComplete": [] },
+    { "id": "M05", "folder": "M05-委員姓名待填", "name": "（待填）", "unit": "", "role": "評核委員", "attendance": "現場", "scanStatus": "待上傳", "phasesComplete": [] },
+    { "id": "M06", "folder": "M06-委員姓名待填", "name": "（待填）", "unit": "", "role": "評核委員", "attendance": "現場", "scanStatus": "待上傳", "phasesComplete": [] },
+    { "id": "M07", "folder": "M07-委員姓名待填", "name": "（待填）", "unit": "", "role": "評核委員", "attendance": "現場", "scanStatus": "待上傳", "phasesComplete": [] },
+    { "id": "M08", "folder": "M08-委員姓名待填", "name": "（待填）", "unit": "", "role": "評核委員", "attendance": "現場", "scanStatus": "待上傳", "phasesComplete": [] },
+    { "id": "M09", "folder": "M09-委員姓名待填", "name": "（待填）", "unit": "", "role": "評核委員", "attendance": "現場", "scanStatus": "待上傳", "phasesComplete": [] },
+    { "id": "M10", "folder": "M10-委員姓名待填", "name": "（待填）", "unit": "", "role": "評核委員", "attendance": "現場", "scanStatus": "待上傳", "phasesComplete": [] }
+  ],
+  "notes": "請依實際出席委員數調整：刪除多餘 M0x 資料夾，或複製 _TEMPLATE 新增。視訊委員請在 attendance 標註「視訊」。"
+}

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>線上協作教材撰寫平台｜占位設定</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans TC', sans-serif; background: #f8fafc; padding: 1.5rem; }
+    .box { max-width: 48rem; margin: 0 auto; background: #fff; border-radius: 0.75rem; padding: 2rem; }
+    h1 { font-size: 1.2rem; border-left: 4px solid #1e40af; padding-left: 0.75rem; }
+    .placeholder { background: #fef3c7; border: 1px dashed #f59e0b; border-radius: 0.5rem; padding: 1rem; margin: 1rem 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin: 1rem 0; }
+    th, td { border: 1px solid #e5e7eb; padding: 0.45rem 0.5rem; }
+    th { background: #eff6ff; }
+    a { color: #1e40af; }
+    code { background: #f3f4f6; padding: 0.1rem 0.3rem; font-size: 0.8rem; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <p><a href="../index.html">← 教材編審委員會</a></p>
+    <h1>線上協作教材撰寫平台</h1>
+    <p style="font-size:0.9rem;color:#6b7280;">委員認領單元後，於此平台共寫教材。Demo 會議將現場示範操作。</p>
+
+    <div class="placeholder">
+      <strong>⚠ 待設定實際 URL</strong><br>
+      請將下方占位連結替換為實際共用資料夾或協作空間，並 <code>git commit + push</code> 同步至另一台電腦。
+    </div>
+
+    <table>
+      <thead><tr><th>項目</th><th>占位</th><th>說明</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>教材根目錄</td>
+          <td><a href="#" onclick="alert('請設定 Google 共用資料夾 URL');return false;">（待設定）Google Drive 資料夾</a></td>
+          <td>86 單元各一文件，子資料夾依 M1–M8</td>
+        </tr>
+        <tr>
+          <td>示範單元 M1-1.1</td>
+          <td><a href="#" onclick="alert('請建立並貼上文件連結');return false;">（待設定）M1-1.1 協作文件</a></td>
+          <td>Demo 會議使用</td>
+        </tr>
+        <tr>
+          <td>單元模板</td>
+          <td><a href="../教材單元/M1-1.1-示範單元/單元模板.html">本 repo 內 HTML 模板</a></td>
+          <td>複製至協作平台或對照填寫</td>
+        </tr>
+        <tr>
+          <td>進度追蹤</td>
+          <td><a href="../單元認領矩陣.html">單元認領矩陣</a></td>
+          <td>主筆更新狀態欄</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 style="font-size:1rem;">文件命名規則</h2>
+    <ul style="font-size:0.9rem;">
+      <li><code>{單元代碼}-{單元簡稱}-{主筆姓名}</code>，例：<code>M2-1.2-光明燈帳務-王小明</code></li>
+      <li>修訂版加後綴 <code>-v2</code>、<code>-v3</code></li>
+      <li>定稿加 <code>-FINAL</code>，並在認領矩陣標記「定稿」</li>
+    </ul>
+
+    <h2 style="font-size:1rem;">權限建議</h2>
+    <ul style="font-size:0.9rem;">
+      <li>主辦／編輯召集人：管理員</li>
+      <li>單元主筆：編輯者</li>
+      <li>其他委員：評論者或檢視者（依平台而定）</li>
+    </ul>
+  </div>
+</body>
+</html>

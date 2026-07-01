@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phase 1｜問題共構｜委員填答表</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans TC', sans-serif; background: #f8fafc; }
+    .content-box { background: #fff; border-radius: 0.75rem; box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1); padding: 2rem 2.5rem; max-width: 52rem; margin: 1.5rem auto; }
+    .section-title { font-size: 1.35rem; font-weight: 700; border-left: 4px solid #b91c1c; padding-left: 1rem; margin-bottom: 1.25rem; }
+    .q-block { border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1rem 1.25rem; margin-bottom: 1rem; background: #fafafa; }
+    .q-id { color: #b91c1c; font-weight: 700; font-size: 0.85rem; }
+    .q-title { font-weight: 600; margin: 0.25rem 0 0.5rem; }
+    .q-hint { font-size: 0.8rem; color: #6b7280; margin-bottom: 0.75rem; }
+    .field label { display: block; font-size: 0.875rem; color: #374151; margin-bottom: 0.25rem; margin-top: 0.5rem; }
+    .field input[type=text], .field textarea { width: 100%; border: 1px solid #d1d5db; border-radius: 0.375rem; padding: 0.5rem 0.75rem; font-size: 0.9rem; }
+    .field textarea { min-height: 3.5rem; }
+    .opts { display: flex; flex-wrap: wrap; gap: 1rem; margin: 0.5rem 0; }
+    .opts label { display: flex; align-items: center; gap: 0.35rem; font-size: 0.9rem; }
+    .member-bar { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin-bottom: 1.5rem; padding: 1rem; background: #fef2f2; border-radius: 0.5rem; border: 1px solid #fecaca; }
+    .nav a { margin-right: 0.5rem; color: #b91c1c; font-size: 0.85rem; }
+    @media print { .nav { display: none; } body { background: #fff; } .content-box { box-shadow: none; } }
+  </style>
+</head>
+<body>
+  <div class="content-box">
+    <nav class="nav mb-4"><a href="01-Phase0-身分確認.html">← Phase 0</a> <a href="index.html">索引</a> <a href="03-Phase2-T1-T7.html">Phase 2 →</a></nav>
+
+    <div class="text-center mb-6">
+      <h1 class="text-xl font-bold">Phase 1｜問題共構（需求面）</h1>
+      <p class="text-sm text-gray-500">對照：icapV74 表 1-1｜iCAP 指標 1.1–1.2</p>
+    </div>
+
+    <div class="member-bar">
+      <div class="field"><label>委員姓名</label><input type="text" placeholder=""></div>
+      <div class="field"><label>服務單位／宮廟</label><input type="text" placeholder=""></div>
+      <div class="field"><label>出席方式</label><input type="text" placeholder="現場／視訊"></div>
+      <div class="field"><label>填答日期</label><input type="text" placeholder="115/06/30"></div>
+    </div>
+
+    <h2 class="section-title">引導說明（主持人用）</h2>
+    <p class="text-sm text-gray-600 mb-6">請各委員用 1 分鐘分享：「最近 2 年宮廟管理最頭痛的一件事。」再逐題填答。答案將回填附錄十（焦點座談決議）。</p>
+
+    <!-- P1-1 -->
+    <div class="q-block">
+      <div class="q-id">P1-1</div>
+      <div class="q-title">人才斷層與接班問題</div>
+      <div class="q-hint">思路點：表 1-1「世代交替、缺乏年輕專業人才」</div>
+      <div class="opts">
+        <label><input type="radio" name="p1-1"> 嚴重</label>
+        <label><input type="radio" name="p1-1"> 一般</label>
+        <label><input type="radio" name="p1-1"> 無此問題</label>
+      </div>
+      <div class="field"><label>佐證案例（必填）</label><textarea placeholder="例：管委會平均年齡 65+，無 40 歲以下接班人…"></textarea></div>
+    </div>
+
+    <!-- P1-2 -->
+    <div class="q-block">
+      <div class="q-id">P1-2</div>
+      <div class="q-title">法規遵循壓力</div>
+      <div class="q-hint">思路點：《財團法人法》《監督寺廟條例》《辦理寺廟登記須知》</div>
+      <div class="opts">
+        <label><input type="radio" name="p1-2"> 是，曾遇事件</label>
+        <label><input type="radio" name="p1-2"> 否</label>
+      </div>
+      <div class="field"><label>事件或壓力說明（必填）</label><textarea placeholder="例：登記文件不全、消防稽查、財報申報…"></textarea></div>
+    </div>
+
+    <!-- P1-3 -->
+    <div class="q-block">
+      <div class="q-id">P1-3</div>
+      <div class="q-title">財務透明與社會信任</div>
+      <div class="q-hint">思路點：→ 對應 T2 寺廟財務治理</div>
+      <div class="opts">
+        <label><input type="radio" name="p1-3"> 曾被質疑帳目</label>
+        <label><input type="radio" name="p1-3"> 未曾，但感到壓力</label>
+        <label><input type="radio" name="p1-3"> 無此困擾</label>
+      </div>
+      <div class="field"><label>如何處理或目前做法</label><textarea placeholder=""></textarea></div>
+    </div>
+
+    <!-- P1-4 -->
+    <div class="q-block">
+      <div class="q-id">P1-4</div>
+      <div class="q-title">數位轉型與年輕信眾</div>
+      <div class="q-hint">思路點：→ 對應 T3 儀典數位弘法、T4 品牌弘揚</div>
+      <div class="opts">
+        <label><input type="radio" name="p1-4"> 明顯感到年輕信眾減少</label>
+        <label><input type="radio" name="p1-4"> 無明顯變化</label>
+        <label><input type="radio" name="p1-4"> 已有數位作為</label>
+      </div>
+      <div class="field"><label>已嘗試的數位做法（若有）</label><textarea placeholder="例：FB、LINE、直播法會…"></textarea></div>
+    </div>
+
+    <!-- P1-5 -->
+    <div class="q-block">
+      <div class="q-id">P1-5</div>
+      <div class="q-title">活動安全與危機事件</div>
+      <div class="q-hint">思路點：→ 對應 T7 安全管理與危機應變</div>
+      <div class="opts">
+        <label><input type="radio" name="p1-5"> 遇過（繞境／法會／火災／輿情）</label>
+        <label><input type="radio" name="p1-5"> 未曾，但擔心</label>
+        <label><input type="radio" name="p1-5"> 無</label>
+      </div>
+      <div class="field"><label>事件簡述（必填其一情境）</label><textarea placeholder=""></textarea></div>
+    </div>
+
+    <!-- P1-6 -->
+    <div class="q-block">
+      <div class="q-id">P1-6</div>
+      <div class="q-title">問題優先排序 Top 3</div>
+      <div class="q-hint">產出：附錄十「三大挑戰」統計來源</div>
+      <div class="field"><label>第一優先</label><input type="text" placeholder=""></div>
+      <div class="field"><label>第二優先</label><input type="text" placeholder=""></div>
+      <div class="field"><label>第三優先</label><input type="text" placeholder=""></div>
+      <div class="field"><label>一句話總結：為何需要「宮廟管理師」職能基準？</label><textarea placeholder=""></textarea></div>
+    </div>
+
+    <div class="border-t pt-4 mt-6 text-sm text-gray-500">
+      <p>委員簽名：________________　　完成時間：________________</p>
+    </div>
+  </div>
+</body>
+</html>

@@ -54,8 +54,8 @@
     <div class="cover">
       <p class="org">委員填答手冊｜附錄冊</p>
       <h1>附錄：86 課程單元必要度標記表</h1>
-      <p class="date">宮廟管理師｜第一次評核委員會</p>
-      <p class="date">115年6月30日</p>
+      <p class="date" data-event="event.title"></p>
+      <p class="date" data-event="event.dateRoc"></p>
       <div class="member-line field"><label>委員姓名</label><input type="text" class="online-input" id="coverName" style="max-width:14rem"></div>
       <div class="hint">
         <strong>填寫說明</strong>
@@ -1126,9 +1126,13 @@
       <p class="page-footer">— 附錄完 —</p>
     </div>
   </div>
-  <link rel="stylesheet" href="./submit-form.css?v=20260629e">
-  <script src="./submit-form.js?v=20260629e"></script>
+  <link rel="stylesheet" href="./submit-form.css?v=20260630a">
+  <script src="../config/event.config.js"></script>
+  <script src="../config/apply-event-config.js"></script>
+  <script src="./submit-form.js?v=20260630a"></script>
   <script>
+    MeetCheckinConfig.init();
+    document.title = '填答手冊（附錄）｜' + MeetCheckinConfig.getByPath('event.shortTitle');
     (function () {
       const p = new URLSearchParams(location.search);
       const name = p.get('name');

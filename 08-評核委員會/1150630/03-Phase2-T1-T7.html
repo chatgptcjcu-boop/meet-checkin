@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phase 2｜T1–T7 確認｜委員填答表</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans TC', sans-serif; background: #f8fafc; }
+    .content-box { background: #fff; border-radius: 0.75rem; box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1); padding: 2rem 2.5rem; max-width: 52rem; margin: 1.5rem auto; }
+    .section-title { font-size: 1.35rem; font-weight: 700; border-left: 4px solid #b91c1c; padding-left: 1rem; margin: 1.5rem 0 1rem; }
+    .q-block { border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1rem 1.25rem; margin-bottom: 0.75rem; background: #fafafa; }
+    .q-id { color: #b91c1c; font-weight: 700; font-size: 0.85rem; }
+    .q-title { font-weight: 600; margin: 0.25rem 0 0.35rem; }
+    .q-hint { font-size: 0.78rem; color: #6b7280; margin-bottom: 0.5rem; }
+    .reveal { font-size: 0.8rem; color: #991b1b; background: #fef2f2; padding: 0.35rem 0.5rem; border-radius: 0.25rem; display: inline-block; margin-bottom: 0.5rem; }
+    .field label { display: block; font-size: 0.875rem; color: #374151; margin-bottom: 0.25rem; margin-top: 0.4rem; }
+    .field input[type=text], .field textarea { width: 100%; border: 1px solid #d1d5db; border-radius: 0.375rem; padding: 0.5rem 0.75rem; font-size: 0.9rem; }
+    .field textarea { min-height: 2.5rem; }
+    .opts { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 0.35rem 0; }
+    .opts label { display: flex; align-items: center; gap: 0.35rem; font-size: 0.875rem; }
+    .member-bar { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin-bottom: 1rem; padding: 1rem; background: #fef2f2; border-radius: 0.5rem; border: 1px solid #fecaca; }
+    .nav a { margin-right: 0.5rem; color: #b91c1c; font-size: 0.85rem; }
+    @media print { .nav { display: none; } .reveal { border: 1px solid #ccc; } }
+  </style>
+</head>
+<body>
+  <div class="content-box">
+    <nav class="nav mb-4"><a href="02-Phase1-問題共構.html">← Phase 1</a> <a href="index.html">索引</a> <a href="04-Phase3-任務背書.html">Phase 3 →</a></nav>
+
+    <div class="text-center mb-6">
+      <h1 class="text-xl font-bold">Phase 2｜七大職責 T1–T7 確認</h1>
+      <p class="text-sm text-gray-500">對照：表 2-2｜iCAP 3.1 產出項目｜產出：決議 #2</p>
+    </div>
+
+    <div class="member-bar">
+      <div class="field"><label>委員姓名</label><input type="text"></div>
+      <div class="field"><label>服務單位</label><input type="text"></div>
+    </div>
+
+    <p class="text-sm text-gray-600 mb-4">先回答開放問題，主持人 reveal 對應 T 後，再填確認欄。</p>
+
+    <!-- P2-1 ~ P2-7 開放 + reveal -->
+    <div class="q-block">
+      <div class="q-id">P2-1</div>
+      <div class="q-title">法人登記、章程、管委會——誰在處理？</div>
+      <span class="reveal">→ T1 寺廟法人治理與登記事務</span>
+      <div class="opts">
+        <label><input type="radio" name="p2-1a"> 有專人/SOP</label>
+        <label><input type="radio" name="p2-1a"> 有但混亂</label>
+        <label><input type="radio" name="p2-1a"> 缺</label>
+      </div>
+      <div class="field"><label>應由誰負責？</label><input type="text"></div>
+      <div class="field"><label>確認 T1 為必要職責範疇</label>
+        <div class="opts">
+          <label><input type="radio" name="p2-1b"> 同意</label>
+          <label><input type="radio" name="p2-1b"> 需調整</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-id">P2-2</div>
+      <div class="q-title">香油錢、光明燈、特色帳務怎麼管？</div>
+      <span class="reveal">→ T2 寺廟財務治理與廟產法物管理</span>
+      <div class="opts">
+        <label><input type="radio" name="p2-2a"> 有 SOP</label>
+        <label><input type="radio" name="p2-2a"> 沒有，痛點明顯</label>
+      </div>
+      <div class="field"><label>痛點說明</label><textarea></textarea></div>
+      <div class="opts">
+        <label><input type="radio" name="p2-2b"> 同意 T2</label>
+        <label><input type="radio" name="p2-2b"> 需調整</label>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-id">P2-3</div>
+      <div class="q-title">年度法會、儀典誰規劃？</div>
+      <span class="reveal">→ T3 宗教儀典規劃與科儀傳承</span>
+      <div class="opts">
+        <label><input type="radio" name="p2-3a"> 流程清楚</label>
+        <label><input type="radio" name="p2-3a"> 混亂/靠經驗</label>
+      </div>
+      <div class="opts">
+        <label><input type="radio" name="p2-3b"> 同意 T3</label>
+        <label><input type="radio" name="p2-3b"> 需調整</label>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-id">P2-4</div>
+      <div class="q-title">古蹟、文物、文化資產誰管？</div>
+      <span class="reveal">→ T4 宗教文化資產保存與品牌弘揚</span>
+      <div class="opts">
+        <label><input type="radio" name="p2-4a"> 有專人</label>
+        <label><input type="radio" name="p2-4a"> 無專人</label>
+        <label><input type="radio" name="p2-4a"> 有文資法壓力</label>
+      </div>
+      <div class="opts">
+        <label><input type="radio" name="p2-4b"> 同意 T4</label>
+        <label><input type="radio" name="p2-4b"> 需調整</label>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-id">P2-5</div>
+      <div class="q-title">信眾抱怨、服務品質誰處理？</div>
+      <span class="reveal">→ T5 信眾服務與宗教倫理關懷</span>
+      <div class="opts">
+        <label><input type="radio" name="p2-5a"> 有機制</label>
+        <label><input type="radio" name="p2-5a"> 沒有</label>
+      </div>
+      <div class="opts">
+        <label><input type="radio" name="p2-5b"> 同意 T5</label>
+        <label><input type="radio" name="p2-5b"> 需調整</label>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-id">P2-6</div>
+      <div class="q-title">公益、長照、社區協力有在做嗎？</div>
+      <span class="reveal">→ T6 寺廟公益參與與社會協力</span>
+      <div class="opts">
+        <label><input type="radio" name="p2-6a"> 持續做</label>
+        <label><input type="radio" name="p2-6a"> 想做不會做</label>
+        <label><input type="radio" name="p2-6a"> 未涉及</label>
+      </div>
+      <div class="opts">
+        <label><input type="radio" name="p2-6b"> 同意 T6</label>
+        <label><input type="radio" name="p2-6b"> 需調整</label>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-id">P2-7</div>
+      <div class="q-title">火災、繞境、輿情、訴訟遇過嗎？</div>
+      <span class="reveal">→ T7 宗教場域安全管理與危機應變</span>
+      <div class="opts">
+        <label><input type="radio" name="p2-7a"> 遇過</label>
+        <label><input type="radio" name="p2-7a"> 沒有但擔心</label>
+      </div>
+      <div class="field"><label>簡述</label><textarea></textarea></div>
+      <div class="opts">
+        <label><input type="radio" name="p2-7b"> 同意 T7</label>
+        <label><input type="radio" name="p2-7b"> 需調整</label>
+      </div>
+    </div>
+
+    <h2 class="section-title">P2-8～P2-14｜各 T「最該會的一件事」</h2>
+    <p class="text-sm text-gray-600 mb-3">若訓練一位 LV3 宮廟管理師，各範疇最關鍵能力為何？（將對照表 2-2 工作任務）</p>
+
+    <div class="q-block"><div class="q-id">P2-8</div><div class="q-title">T1 最該會的一件事</div><div class="field"><textarea placeholder="例：能獨立完成寺廟登記文件備齊…"></textarea></div></div>
+    <div class="q-block"><div class="q-id">P2-9</div><div class="q-title">T2 最該會的一件事</div><div class="field"><textarea placeholder="例：光明燈帳務與功德芳名錄…"></textarea></div></div>
+    <div class="q-block"><div class="q-id">P2-10</div><div class="q-title">T3 最該會的一件事</div><div class="field"><textarea></textarea></div></div>
+    <div class="q-block"><div class="q-id">P2-11</div><div class="q-title">T4 最該會的一件事</div><div class="field"><textarea></textarea></div></div>
+    <div class="q-block"><div class="q-id">P2-12</div><div class="q-title">T5 最該會的一件事</div><div class="field"><textarea></textarea></div></div>
+    <div class="q-block"><div class="q-id">P2-13</div><div class="q-title">T6 最該會的一件事</div><div class="field"><textarea></textarea></div></div>
+    <div class="q-block"><div class="q-id">P2-14</div><div class="q-title">T7 最該會的一件事</div><div class="field"><textarea></textarea></div></div>
+
+    <div class="q-block bg-red-50 border-red-200">
+      <div class="q-title">Phase 2 總確認</div>
+      <div class="opts">
+        <label><input type="radio" name="p2-all"> 確認 T1–T7 七大職責範疇</label>
+        <label><input type="radio" name="p2-all"> 保留意見（說明）</label>
+      </div>
+      <div class="field"><label>保留意見說明</label><textarea></textarea></div>
+    </div>
+
+    <p class="text-sm text-gray-500 mt-4">委員簽名：________________</p>
+  </div>
+</body>
+</html>

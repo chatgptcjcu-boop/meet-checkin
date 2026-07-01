@@ -3,8 +3,32 @@
  * formType: '填答-正文' | '填答-附錄'
  */
 (function () {
-  const GAS_URL =
-    'https://script.google.com/macros/s/AKfycbwYmxBxC34KK02UFW54hSX-VneckfVVm6rsTyEhCtCkamVvHmTf023EpmCydHyAsbV2WA/exec';
+  function cfg() {
+    return window.EVENT_CONFIG || {};
+  }
+
+  function gasUrl() {
+    return cfg().backend?.gasWebAppUrl || '';
+  }
+
+  function contactDisplay() {
+    return window.MeetCheckinConfig
+      ? window.MeetCheckinConfig.contactDisplay()
+      : [cfg().contact?.name, cfg().contact?.phone].filter(Boolean).join(' ');
+  }
+
+  function contactLineShort() {
+    var c = cfg().contact || {};
+    return (c.channel || 'Line') + ' 傳給 ' + contactDisplay();
+  }
+
+  function pdfFilenameHint(formType, memberName, dateStr) {
+    if (window.MeetCheckinConfig) {
+      return '建議檔名：' + window.MeetCheckinConfig.buildPdfFilename(formType, memberName, dateStr);
+    }
+    var prefix = cfg().event?.dateFilePrefix || 'event';
+    return '建議檔名：' + prefix + '_填答_' + formType + '_' + memberName + '_' + dateStr + '.pdf';
+  }
 
   function getMemberFromUrl() {
     const p = new URLSearchParams(window.location.search);
@@ -83,7 +107,7 @@
   }
 
   function sendToGas(payload) {
-    return fetch(GAS_URL, {
+    return fetch(gasUrl(), {
       method: 'POST',
       mode: 'no-cors',
       cache: 'no-cache',
@@ -110,11 +134,11 @@
       document.getElementById('submitSuccessName').textContent = memberName;
       document.getElementById('submitSuccessType').textContent = formType;
       if (hint) {
-        hint.textContent = `建議檔名：1150630_填答_${formType}_${memberName}_${dateStr}.pdf`;
+        hint.textContent = pdfFilenameHint(formType, memberName, dateStr);
       }
     } else {
       alert(
-        '寫入成功！填答紀錄已傳送至主辦單位試算表。\n\n請列印另存 PDF，簽名後 Line 傳給王芯庭助理 0956800579。'
+        '寫入成功！填答紀錄已傳送至主辦單位試算表。\n\n請列印另存 PDF，簽名後 ' + contactLineShort() + '。'
       );
     }
   }
@@ -156,7 +180,7 @@
     } catch (error) {
       console.error('網路錯誤：', error);
       if (overlay) overlay.style.display = 'none';
-      alert('傳送失敗，請檢查網路連線。您仍可列印本頁另存 PDF，簽名後 Line 傳給主辦單位。');
+      alert('傳送失敗，請檢查網路連線。您仍可列印本頁另存 PDF，簽名後 ' + contactLineShort() + '。');
     }
   };
 
@@ -164,6 +188,10 @@
   document.addEventListener('DOMContentLoaded', () => {
     const formType = document.body.dataset.formType;
     if (!formType) return;
+
+    if (window.MeetCheckinConfig) MeetCheckinConfig.apply(document);
+
+    const contact = contactDisplay();
 
     const bar = document.createElement('div');
     bar.id = 'submitBar';
@@ -191,7 +219,7 @@
         <ol class="submit-success-steps">
           <li>點下方「列印／存 PDF」→ 目的地選「另存 PDF」</li>
           <li>列印後於各章節<strong>簽名欄</strong>親簽（與現場紙本相同）</li>
-          <li>正文、附錄<strong>各一份</strong>，Line 傳給王芯庭助理 <strong>0956800579</strong></li>
+          <li>正文、附錄<strong>各一份</strong>，${(cfg().contact?.channel || 'Line')} 傳給 <strong>${contact}</strong></li>
         </ol>
         <p class="submit-success-filename" id="submitPdfHint"></p>
         <p class="submit-success-note">附錄若尚未提交，請完成後同樣操作。會議結束請至首頁簽退。</p>
