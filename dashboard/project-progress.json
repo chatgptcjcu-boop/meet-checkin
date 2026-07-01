@@ -1,7 +1,13 @@
 {
   "project": "2026宮廟管理師職能基準 iCAP推動與職能導向課程發展",
   "org": "臺灣道法總會－教育委員會",
-  "lastUpdated": "2026-07-01",
+  "lastUpdated": "2026-07-02",
+  "recentWork": [
+    "評核／編審路徑改為英文 kebab-case（09-editorial-committee、08-evaluation-committee）",
+    "730 Demo 投影簡報修正 CSS 路徑並抽出共用 meeting-display.js",
+    "視訊簽到目錄改為 video-checkin；remote-members 填答檔名英文化",
+    "新增 url-and-locale-standards、meeting-display-deck Cursor skills"
+  ],
   "sync": {
     "remote": "https://github.com/chatgptcjcu-boop/meet-checkin.git",
     "branch": "main",
@@ -33,7 +39,7 @@
           "folder": "08-evaluation-committee/1150830",
           "status": "preparing",
           "phases": ["Phase0 身分確認", "Phase1 第一次回顧", "Phase2 86優先序", "Phase3 ABCD", "Phase4 評量", "Phase5 決議"],
-          "outputs": ["icapV75 附錄十二（預定）"]
+          "outputs": ["icapV75 附錄十二（預定）", "1150830-prep 文件草案"]
         },
         {
           "n": 3,
@@ -70,7 +76,7 @@
           "folder": "09-editorial-committee/1150730-m1-demo",
           "status": "preparing",
           "phases": ["Phase0 身分單元", "Phase1 職能內容", "Phase2 ABCD", "Phase3 學習單", "Phase4 評量三類", "Phase5 協作建檔"],
-          "outputs": ["委員理解編審全流程", "示範單元 M1-1.1 完稿"]
+          "outputs": ["委員理解編審全流程", "示範單元 M1-1.1 完稿", "logic-chain / teaching-chain 投影簡報"]
         },
         {
           "n": 2,
