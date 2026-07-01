@@ -119,6 +119,14 @@ html, body {
 }
 @media (max-width: 900px) { .grid-2 { grid-template-columns: 1fr; } }
 
+.grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1.5vw;
+  font-size: clamp(0.82rem, 1.55vw, 1.05rem);
+}
+@media (max-width: 900px) { .grid-3 { grid-template-columns: 1fr; } }
+
 .card {
   background: var(--panel);
   border: 1px solid var(--line);
@@ -188,6 +196,48 @@ table.agenda .sec { font-weight: 700; color: var(--accent2); }
   color: var(--accent2);
   word-break: break-all;
   margin-top: 0.5vh;
+}
+
+/* 邏輯鏈／教學鏈流程（與評核會投影同色：金＋綠） */
+.chain-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: 78vw;
+  margin: 0 auto;
+}
+.chain-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75vw;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--accent2);
+  border-radius: 0 8px 8px 0;
+  padding: 0.75vh 1vw;
+  font-size: clamp(0.82rem, 1.55vw, 1.08rem);
+  line-height: 1.5;
+}
+.chain-step .lid {
+  font-weight: 700;
+  color: var(--accent);
+  min-width: 2.8em;
+  flex-shrink: 0;
+}
+.chain-step.highlight {
+  border-left-color: var(--accent);
+  background: rgb(251 191 36 / 0.08);
+}
+.chain-step.demo-step {
+  border-left-color: var(--accent);
+  background: rgb(52 211 153 / 0.08);
+}
+.chain-arrow {
+  text-align: center;
+  color: var(--accent2);
+  font-size: 1.25rem;
+  padding: 0.35vh 0;
+  line-height: 1;
 }
 
 /* 控制列 */

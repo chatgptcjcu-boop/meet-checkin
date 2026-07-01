@@ -3,47 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>投影簡報｜M1-1.1 教學鏈｜下午 Demo 前置</title>
+  <title>會議投影｜M1-1.1 教學鏈｜下午 Demo 前置</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../../../assets/meeting-display.css">
-  <style>
-    .deck-unit { --accent: #93c5fd; --accent2: #3b82f6; }
-    .chain-flow { display: flex; flex-direction: column; gap: 0.45vh; max-width: 76vw; margin: 0 auto; }
-    .chain-step {
-      display: flex; align-items: center; gap: 1vw;
-      background: var(--panel); border: 1px solid var(--line);
-      border-left: 5px solid var(--accent2); border-radius: 0 10px 10px 0;
-      padding: 0.75vh 1.1vw; font-size: clamp(0.78rem, 1.45vw, 1.02rem);
-    }
-    .chain-step .lid { font-weight: 900; color: var(--accent); min-width: 3.2em; font-size: 0.9em; }
-    .chain-step.highlight { border-left-color: var(--accent); background: rgb(59 130 246 / 0.15); }
-    .chain-arrow { text-align: center; color: var(--accent2); font-size: 1.1rem; line-height: 1; }
-    .seg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8vw; font-size: clamp(0.75rem, 1.35vw, 0.95rem); }
-    @media (max-width: 900px) { .seg-grid { grid-template-columns: 1fr; } }
-    .seg-card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 0.8vh 1vw; border-top: 3px solid var(--accent2); }
-    .seg-card h4 { margin: 0 0 0.4vh; color: var(--accent); font-size: 1em; }
-    .tpo-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1vw; }
-    @media (max-width: 900px) { .tpo-grid { grid-template-columns: 1fr; } }
-    .tpo-grid .card { border-top: 3px solid var(--accent2); }
-    table.agenda td:first-child { width: 18%; font-weight: 700; color: var(--accent); }
-    .macro-link { font-size: clamp(0.78rem, 1.3vw, 0.92rem); color: #94a3b8; margin-top: 1.5vh; }
-  </style>
 </head>
 <body>
-  <div class="deck deck-unit" id="deck">
+  <div class="deck" id="deck">
 
     <section class="slide slide-welcome active" data-id="welcome">
       <div class="slide-body">
-        <p class="org" style="font-size:clamp(0.9rem,2vw,1.1rem);letter-spacing:.15em;margin-bottom:2vh">臺灣道法總會｜下午 Demo 前置</p>
+        <p class="org" style="font-size:clamp(0.9rem,2vw,1.1rem);color:#fbbf24;letter-spacing:.15em;margin-bottom:2vh">臺灣道法總會｜教育委員會</p>
         <h1 class="main-title">M1-1.1<br>教學鏈說明</h1>
-        <p class="sub">緒論－為何寺廟需要法律定位？｜2 小時單元</p>
-        <p class="tagline">上午：L2→L6 宏觀邏輯鏈<br>現在：單元級教學鏈（動手前必看）<br>接著：Phase 0–5 帶做</p>
+        <p class="sub">115年7月30日（週三）｜13:50–14:10</p>
+        <p class="tagline">緒論－為何寺廟需要法律定位？｜2 小時單元<br>上午：L2→L6 宏觀邏輯鏈｜現在：單元級教學鏈｜接著：Phase 0–5 帶做</p>
       </div>
     </section>
 
     <section class="slide" data-id="why">
       <div class="slide-header">
-        <p class="org">WHY TEACHING CHAIN</p>
+        <p class="org">OPENING</p>
         <h2>為什麼動手前要先講「教學鏈」？</h2>
         <p class="meta">上午看懂「單元從哪來」→ 現在看懂「單元怎麼串」</p>
       </div>
@@ -62,16 +40,16 @@
       <div class="slide-header">
         <p class="org">MACRO → MICRO</p>
         <h2>從上午邏輯鏈到下午教學鏈</h2>
+        <p class="meta">同一條鏈，不同放大倍率</p>
       </div>
       <div class="slide-body">
         <div class="chain-flow">
-          <div class="chain-step" style="border-left-color:#5eead4"><span class="lid">上午</span>L2 需求 → L3 範疇 T1 → L4 T/P/O → L5 KSA → L6 86 單元地圖</div>
+          <div class="chain-step"><span class="lid">上午</span>L2 需求 → L3 範疇 → L4 T/P/O → L5 KSA → L6 86 單元地圖</div>
           <div class="chain-arrow">↓ 聚焦一格</div>
           <div class="chain-step highlight"><span class="lid">現在</span>M1-1.1 教學鏈：四段內容 × 職能對位 × 學習單 × 評量</div>
           <div class="chain-arrow">↓ 帶做</div>
-          <div class="chain-step"><span class="lid">下午</span>Phase 0–5：您親手走完編審文件包</div>
+          <div class="chain-step demo-step"><span class="lid">下午</span>Phase 0–5：您親手走完編審文件包</div>
         </div>
-        <p class="macro-link">複習上午：<a href="邏輯鏈投影簡報.html" style="color:#93c5fd">邏輯鏈投影簡報</a>（L2–L6）</p>
       </div>
     </section>
 
@@ -79,11 +57,12 @@
       <div class="slide-header">
         <p class="org">UNIT POSITION</p>
         <h2>M1-1.1 在課程地圖哪裡？</h2>
+        <p class="meta">對照第一次評核委員會 Phase 4｜86 單元架構</p>
       </div>
       <div class="slide-body">
         <ul class="bullets">
           <li><strong>模組 M1</strong> 寺廟組織治理與法規遵循（20hr／9 單元）</li>
-          <li><strong>範疇 T1</strong> 組織治理｜第一章：寺廟的法人地位與治理</li>
+          <li><strong>範疇一</strong> 寺廟法人治理與登記事務｜第一章：寺廟的法人地位與治理</li>
           <li><strong>86 單元碼 M1-1.1</strong>｜icap 講義章節 <strong>M1-1-1</strong>（2hr）</li>
           <li>標題：緒論－為何寺廟需要法律定位？</li>
           <li>前置：無（M1 模組緒論）｜後續：M1-1.2 管理／董事委員會</li>
@@ -94,26 +73,26 @@
 
     <section class="slide" data-id="tpo">
       <div class="slide-header">
-        <p class="org">T / P / O</p>
-        <h2>本單元職能對位（L4 落地）</h2>
+        <p class="org">L4｜COMPETENCY</p>
+        <h2>本單元職能對位（T / P / O）</h2>
         <p class="meta">來源：icap-TextBookM1｜完稿範例 v1.0</p>
       </div>
       <div class="slide-body">
-        <div class="tpo-grid">
+        <div class="grid-2">
           <div class="card">
-            <h3>T 工作任務</h3>
+            <h3>① 工作任務 T</h3>
             <p><strong>T1.1</strong><br>執行宗教法人登記與章程管理</p>
           </div>
           <div class="card">
-            <h3>P 行為指標</h3>
+            <h3>② 行為指標 P</h3>
             <p><strong>P1.1.1</strong> 召開信徒大會、製作會議紀錄<br><strong>P1.1.2</strong> 草擬章程修訂內容</p>
           </div>
-          <div class="card">
-            <h3>O 任務產出</h3>
+          <div class="card" style="grid-column:1/-1">
+            <h3>③ 任務產出 O</h3>
             <p><strong>O1.1.1</strong> 宗教法人會議紀錄<br><strong>O1.1.2</strong> 章程修訂草案</p>
           </div>
         </div>
-        <p style="margin-top:1.5vh;font-size:clamp(0.8rem,1.4vw,0.95rem);color:#cbd5e1">KSA 內涵：K01 組織運作、K25–K27 法規實務、A02 誠實正直、S28 登記文件能力</p>
+        <div class="hint-box">KSA 內涵：K01 組織運作、K25–K27 法規實務、A02 誠實正直、S28 登記文件能力</div>
       </div>
     </section>
 
@@ -124,11 +103,11 @@
         <p class="meta">meet-checkin 一個單元（2hr）＝ icap 四個子單元</p>
       </div>
       <div class="slide-body">
-        <div class="seg-grid">
-          <div class="seg-card"><h4>1.1.1 緒論</h4>時事破題、法人概念、法律定位觀念</div>
-          <div class="seg-card"><h4>1.1.2 財團法人</h4>定義、要件、優缺點</div>
-          <div class="seg-card"><h4>1.1.3 登記寺廟</h4>法令依據、要件、優缺點</div>
-          <div class="seg-card"><h4>1.1.4 綜合案例</h4>比較表、情境研討、型態選擇</div>
+        <div class="scopes" style="grid-template-columns: 1fr 1fr;">
+          <div class="item"><span class="num">1.1.1</span>　緒論：時事破題、法人概念、法律定位觀念</div>
+          <div class="item"><span class="num">1.1.2</span>　財團法人：定義、要件、優缺點</div>
+          <div class="item"><span class="num">1.1.3</span>　登記寺廟：法令依據、要件、優缺點</div>
+          <div class="item"><span class="num">1.1.4</span>　綜合案例：比較表、情境研討、型態選擇</div>
         </div>
         <div class="hint-box" style="margin-top:1.5vh">下午 Phase 1 帶填的「教學步驟表」，就是這 4×25min＋評量 20min。</div>
       </div>
@@ -215,7 +194,7 @@
           <div class="chain-arrow">↓</div>
           <div class="chain-step" data-step="5"><span class="lid">⑤</span>學習單與產出（M1-TA-1.1）</div>
           <div class="chain-arrow">↓</div>
-          <div class="chain-step" data-step="6"><span class="lid">⑥</span>評量三表（考古題／勾選建檔／分數觀察）</div>
+          <div class="chain-step demo-step" data-step="6"><span class="lid">⑥</span>評量三表（考古題／勾選建檔／分數觀察）</div>
         </div>
       </div>
     </section>
@@ -224,6 +203,7 @@
       <div class="slide-header">
         <p class="org">PHASE MAP</p>
         <h2>教學鏈 ↔ Phase 0–5</h2>
+        <p class="meta">對照下午帶做流程</p>
       </div>
       <div class="slide-body">
         <table class="agenda">
@@ -237,13 +217,13 @@
             <tr><td>5</td><td>歸檔銜接</td><td>M2 認領預告</td></tr>
           </tbody>
         </table>
-        <p class="macro-link">完稿對照：<a href="../DEMO-單元/M1-1.1/完稿範例.html" style="color:#93c5fd">M1-1.1 完稿範例 v1.0</a></p>
+        <div class="hint-box">完稿對照：M1-1.1 完稿範例 v1.0（Phase 帶做時開啟）</div>
       </div>
     </section>
 
     <section class="slide slide-welcome" data-id="start-phase0">
       <div class="slide-body">
-        <p class="org" style="font-size:clamp(0.9rem,2vw,1.1rem);letter-spacing:.15em;margin-bottom:2vh">START HANDS-ON</p>
+        <p class="org" style="font-size:clamp(0.9rem,2vw,1.1rem);color:#fbbf24;letter-spacing:.15em;margin-bottom:2vh">START HANDS-ON</p>
         <h1 class="main-title" style="font-size:clamp(1.7rem,4.2vw,2.8rem)">現在開始 Phase 0</h1>
         <p class="sub">請領取《講師學習單》｜打開 Phase 0 投影</p>
         <p class="tagline" style="margin-top:3vh">
@@ -263,10 +243,10 @@
     <button type="button" id="btnNext">下一頁 ▶</button>
     <select id="slideSelect" aria-label="選擇投影片"></select>
     <button type="button" id="btnFs">全螢幕</button>
+    <a href="../../../../meeting-display.html" style="color:#94a3b8;font-size:0.78rem;text-decoration:none">630評核會</a>
     <a href="index.html" style="color:#94a3b8;font-size:0.78rem;text-decoration:none">導覽索引</a>
-    <a href="邏輯鏈投影簡報.html" style="color:#5eead4;font-size:0.78rem;text-decoration:none">上午邏輯鏈</a>
     <span class="counter" id="counterCtrl">1 / 13</span>
-    <span class="keys">← → 空白鍵｜9=教學鏈總圖</span>
+    <span class="keys">← → 或空白鍵切換</span>
   </div>
 
   <script>
