@@ -2,22 +2,283 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <title>完稿範例｜M1-1.1（待 Demo 後整理）</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>完稿範例｜M1-1.1 緒論－為何寺廟需要法律定位？</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Noto Sans TC', sans-serif; max-width: 40rem; margin: 2rem auto; padding: 1.5rem; line-height: 1.65; }
-    .pending { background: #fef3c7; border: 1px solid #fbbf24; border-radius: 0.5rem; padding: 1rem; margin: 1rem 0; }
-    a { color: #1e40af; }
-    h1 { font-size: 1.2rem; }
+    body { font-family: 'Noto Sans TC', sans-serif; background: #f0f4f8; margin: 0; font-size: 10.5pt; line-height: 1.65; color: #111; }
+    .content-box { background: #fff; border-radius: 0.75rem; box-shadow: 0 4px 12px rgb(0 0 0 / 0.08); padding: 2rem 2.5rem; max-width: 52rem; margin: 1.5rem auto; }
+    .section-title { font-size: 1.2rem; font-weight: 700; border-left: 4px solid #1e40af; padding-left: 0.75rem; margin: 1.5rem 0 0.75rem; color: #1e3a5f; }
+    .section-title:first-of-type { margin-top: 0; }
+    .meta-bar { background: #eff6ff; border: 1px solid #93c5fd; border-radius: 0.5rem; padding: 0.85rem 1rem; font-size: 0.88rem; margin-bottom: 1.25rem; }
+    .meta-bar strong { color: #1e40af; }
+    .icap-tag { display: inline-block; font-size: 0.68rem; background: #dbeafe; color: #1e40af; padding: 0.1rem 0.4rem; border-radius: 0.2rem; margin-left: 0.35rem; font-weight: 600; }
+    .block { border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 0.85rem 1rem; margin-bottom: 0.65rem; background: #fafafa; }
+    .block-id { color: #1e40af; font-weight: 700; font-size: 0.82rem; margin-bottom: 0.35rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin: 0.5rem 0; }
+    th, td { border: 1px solid #d1d5db; padding: 0.4rem 0.55rem; vertical-align: top; }
+    th { background: #eff6ff; text-align: left; }
+    .nav a { color: #1e40af; font-size: 0.85rem; margin-right: 0.75rem; text-decoration: none; }
+    .nav a:hover { text-decoration: underline; }
+    .draft-badge { display: inline-block; background: #fef3c7; color: #92400e; font-size: 0.72rem; padding: 0.15rem 0.5rem; border-radius: 0.25rem; font-weight: 600; margin-left: 0.5rem; }
+    .q-box { border: 1px solid #e5e7eb; border-radius: 0.35rem; padding: 0.75rem; margin: 0.6rem 0; background: #fff; }
+    .q-num { font-weight: 700; color: #1e40af; margin-bottom: 0.35rem; }
+    ul.compact { margin: 0.35rem 0; padding-left: 1.25rem; }
+    ul.compact li { margin: 0.2rem 0; }
+    .footnote { font-size: 0.78rem; color: #6b7280; margin-top: 1.5rem; padding-top: 0.75rem; border-top: 1px solid #e5e7eb; }
+    @media print {
+      body { background: #fff; }
+      .content-box { box-shadow: none; max-width: none; margin: 0; padding: 12mm 15mm; }
+      .nav { display: none; }
+      .block, .q-box { break-inside: avoid; }
+    }
   </style>
 </head>
 <body>
-  <p><a href="index.html">← M1-1.1 走讀索引</a></p>
-  <h1>M1-1.1 完稿範例</h1>
-  <div class="pending">
-    <strong>待 115/07/30 Demo 後撰寫</strong><br>
-    主辦將現場共填的教學內容、ABCD、學習單、評量三表整理為正式範例，供 M2 認領單元時參考。可貼於協作平台並連結至此。
+  <div class="content-box">
+    <nav class="nav mb-4">
+      <a href="index.html">← M1-1.1 走讀索引</a>
+      <a href="單元模板.html">空白模板</a>
+      <a href="../../index.html">Demo Phase 索引</a>
+    </nav>
+
+    <div class="text-center mb-6">
+      <h1 class="text-xl font-bold text-gray-900">M1-1.1｜緒論－為何寺廟需要法律定位？</h1>
+      <p class="text-sm text-blue-800 font-semibold mt-1">完稿範例（主辦草稿 v0.1）<span class="draft-badge">供 Demo 投影／M2 認領參考</span></p>
+    </div>
+
+    <!-- 單元定位 -->
+    <h2 class="section-title">〇、單元定位與職能對應 <span class="icap-tag">iCAP 單元大綱</span></h2>
+    <div class="meta-bar">
+      <table style="margin:0;border:none;">
+        <tr><th style="width:22%;border:none;background:transparent;">單元代碼</th><td style="border:none;">M1-1.1</td></tr>
+        <tr><th style="border:none;background:transparent;">所屬模組</th><td style="border:none;">M1 寺廟組織治理與法規遵循（20hr／9 單元）</td></tr>
+        <tr><th style="border:none;background:transparent;">建議時數</th><td style="border:none;">120 分鐘（2 小時）</td></tr>
+        <tr><th style="border:none;background:transparent;">前置單元</th><td style="border:none;">無（本模組緒論）</td></tr>
+        <tr><th style="border:none;background:transparent;">後續單元</th><td style="border:none;">M1-1.2 執行中樞－管理／董事委員會的定位與職責</td></tr>
+        <tr><th style="border:none;background:transparent;">對應職能</th><td style="border:none;">T1 組織治理基礎｜範疇：理解宮廟組織之法律身分與治理意義</td></tr>
+        <tr><th style="border:none;background:transparent;">主筆（草稿）</th><td style="border:none;">教材編審委員會主辦（Demo 示範用）</td></tr>
+      </table>
+    </div>
+    <p><strong>單元定位：</strong>本單元為 M1 模組之緒論，協助學員（宮廟管理人員、幹部、志工領袖）理解「法律定位」不是行政負擔，而是保障財產、人事與信眾權益的基礎。學員將認識寺廟常見三種組織型態，並能初步判斷所屬宮廟現況，作為後續治理與法規單元之前置知識。</p>
+
+    <!-- 教學內容 -->
+    <h2 class="section-title">一、教學內容（五段式） <span class="icap-tag">iCAP #1</span></h2>
+
+    <div class="block">
+      <div class="block-id">1-1-1 緒論／導入（10min）</div>
+      <p>以「您的宮廟有登記證嗎？放在哪裡？」破冰，引出多數廟務幹部熟悉儀軌卻不熟悉組織身分的現象。說明本課程 180 小時職能導向訓練之目的：讓管理「有章可循、有證可查、有責可究」。</p>
+    </div>
+    <div class="block">
+      <div class="block-id">1-1-2 核心概念（25min）</div>
+      <ul class="compact">
+        <li><strong>法律定位</strong>：指宮廟在法令上被歸類為何種組織，以及由此產生之權利義務。</li>
+        <li><strong>三型態對照</strong>：
+          <ol class="compact">
+            <li><strong>寺廟</strong>（依《宗教團體法》完成寺廟登記）</li>
+            <li><strong>宗教財團法人</strong>（依《民法》財團法人規定設立）</li>
+            <li><strong>管理組織／未完整登記之宮廟</strong>（仍依習俗運作，但財產與責任歸屬較不明確）</li>
+          </ol>
+        </li>
+        <li><strong>為何重要</strong>：財產名義、捐贈收據、聘僱關係、對外契約、政府補助與稅務，皆與組織型態連動。</li>
+      </ul>
+    </div>
+    <div class="block">
+      <div class="block-id">1-1-3 案例／故事（20min）</div>
+      <p><strong>案例 A（登記寺廟）：</strong>某府城媽祖宮完成寺廟登記，土地以寺廟名義登記，管理委員會依法改選，捐贈可開立正式收據。</p>
+      <p><strong>案例 B（財團法人）：</strong>某名山道院改設宗教財團法人，設董事會、監事，財務須送會計師查核，但可依法申請專案計畫。</p>
+      <p><strong>案例 C（未完整登記）：</strong>某鄉野小廟長年由「管理委員會」口頭運作，遇土地被占用時，因權屬不清難以主張權利。</p>
+      <p class="text-sm text-gray-600">※ 講師可替換為在地廟宇實例；重點在「型態不同 → 權責不同」。</p>
+    </div>
+    <div class="block">
+      <div class="block-id">1-1-4 演練活動（30min）</div>
+      <p>分組完成<strong>《組織型態對照表》</strong>：三欄（寺廟／宗教財團法人／管理組織）× 五列（設立依據、財產歸屬、治理機關、對外代表、常見風險）。各組分享 1 項「以前不知道」的差異。</p>
+    </div>
+    <div class="block">
+      <div class="block-id">1-1-5 總結（15min）</div>
+      <p>金句帶回：<strong>「先搞清楚自己是誰，才能管好這座廟。」</strong>預告 M1-1.2 將進入管理委員會／董事會的具體職責。進行形成性測驗（選擇題 2 題）。</p>
+    </div>
+
+    <!-- 教學步驟 -->
+    <h2 class="section-title">二、教學步驟（120min） <span class="icap-tag">iCAP #2</span></h2>
+    <table>
+      <thead>
+        <tr><th>序</th><th>時間</th><th>分鐘</th><th>步驟</th><th>內容段</th><th>教學方式</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>0'–10'</td><td>10</td><td>簽到、破冰提問、說明單元目標</td><td>緒論</td><td>問答、投影</td></tr>
+        <tr><td>2</td><td>10'–35'</td><td>25</td><td>講解三型態＋法律定位五項影響</td><td>核心概念</td><td>講述、投影片</td></tr>
+        <tr><td>3</td><td>35'–55'</td><td>20</td><td>三則案例分組閱讀、代表分享</td><td>案例</td><td>案例討論</td></tr>
+        <tr><td>4</td><td>55'–85'</td><td>30</td><td>填寫《組織型態對照表》、小組報告</td><td>演練</td><td>小組活動、學習單</td></tr>
+        <tr><td>5</td><td>85'–110'</td><td>25</td><td>重點回顧、形成性測驗、自評勾選建檔</td><td>總結</td><td>測驗、自評</td></tr>
+        <tr><td>6</td><td>110'–120'</td><td>10</td><td>Q&A、布置課後作業（帶回登記證影本或章程摘要）</td><td>—</td><td>問答</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ABCD -->
+    <h2 class="section-title">三、教學目標（ABCD） <span class="icap-tag">iCAP #3</span></h2>
+    <p class="text-sm text-gray-600 mb-2">完成本單元後，學員應能達成下列可評量之具體目標（B 欄均使用可觀察動詞）：</p>
+    <table>
+      <thead>
+        <tr><th style="width:6%">#</th><th style="width:14%">A 對象</th><th style="width:28%">B 行為</th><th style="width:26%">C 條件</th><th style="width:26%">D 標準</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>完成本單元之宮廟管理人員</td>
+          <td><strong>說明</strong>寺廟、宗教財團法人、管理組織三型態之主要差異</td>
+          <td>依《組織型態對照表》五個向度（設立依據、財產、治理、代表、風險）</td>
+          <td>每型態至少正確說明 2 項，整體正確率 ≥80%</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>完成本單元之宮廟管理人員</td>
+          <td><strong>判斷</strong>所屬宮廟目前最接近之組織型態，並<strong>指出</strong>1 項待改善之處</td>
+          <td>依課堂提供之登記證、章程摘要或管理組織實際運作描述</td>
+          <td>型態判斷正確，且改善項與法律定位或治理相關</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>完成本單元之宮廟管理人員</td>
+          <td><strong>列舉</strong>「完成法律定位」對宮廟治理之 3 項具體好處</td>
+          <td>不限輔助資料，課堂結束前口頭或書面作答</td>
+          <td>3 項中至少 2 項符合講義重點（財產、稅務、契約、人事、信眾權益等）</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- 教學方式 -->
+    <h2 class="section-title">四、教學方式 <span class="icap-tag">iCAP #4</span></h2>
+    <table>
+      <tr><th style="width:22%">方式</th><th>說明</th><th style="width:14%">時間占比</th></tr>
+      <tr><td>講述</td><td>三型態概念、法律定位五項影響</td><td>約 30%</td></tr>
+      <tr><td>案例討論</td><td>三則廟務案例分組閱讀</td><td>約 17%</td></tr>
+      <tr><td>小組活動</td><td>完成《組織型態對照表》</td><td>約 25%</td></tr>
+      <tr><td>形成性測驗</td><td>選擇題＋自評勾選</td><td>約 20%</td></tr>
+      <tr><td>問答</td><td>課末答疑、布置課後作業</td><td>約 8%</td></tr>
+    </table>
+
+    <!-- 學習單 -->
+    <h2 class="section-title">五、學習單設計與產出 <span class="icap-tag">iCAP #5 #6</span></h2>
+    <div class="block">
+      <div class="block-id">5-1 課中學習單：《組織型態對照表》</div>
+      <p>學員於演練階段填寫，欄位包含：</p>
+      <ul class="compact">
+        <li>宮廟名稱、目前自判型態（勾選）</li>
+        <li>三型態 × 五向度比較（設立依據／財產歸屬／治理機關／對外代表／常見風險）</li>
+        <li>「我的宮廟最像哪一型？為什麼？」（簡答 100 字內）</li>
+      </ul>
+    </div>
+    <div class="block">
+      <div class="block-id">5-2 課後產出：《法律定位初評小記》</div>
+      <p>學員課後 7 日內帶回下列資料之一，並撰寫 1 頁小記：</p>
+      <ul class="compact">
+        <li>寺廟登記證影本，或宗教財團法人登記簿謄本摘要，或管理組織運作說明</li>
+        <li>小記欄位：① 目前型態判斷　② 1 項優點　③ 1 項風險　④ 建議下一步（如：清查章程、補登記）</li>
+      </ul>
+      <p class="text-sm text-gray-600">產出由主講或管理委員會收存，作為 M1-1.2 討論治理架構之前置資料。</p>
+    </div>
+
+    <!-- 評量 -->
+    <h2 class="section-title">六、評量方式 <span class="icap-tag">iCAP #7 #8 #9</span></h2>
+
+    <h3 style="font-size:1rem;color:#1e40af;margin:1rem 0 0.5rem;">6-1 考古題風格試題（總結性／筆試）</h3>
+    <div class="q-box">
+      <div class="q-num">選擇題 1（10 分）</div>
+      <p>下列何者<strong>不屬於</strong>本單元所稱「寺廟常見三型態」之一？</p>
+      <ul class="compact">
+        <li>(A) 依《宗教團體法》完成登記之寺廟</li>
+        <li>(B) 宗教財團法人</li>
+        <li>(C) 依《公司法》設立之股份有限公司</li>
+        <li>(D) 未完整依法登記之管理組織</li>
+      </ul>
+      <p class="text-sm"><strong>答案：</strong>(C)｜<strong>解析：</strong>股份有限公司為營利法人，非本單元宗教組織型態。</p>
+    </div>
+    <div class="q-box">
+      <div class="q-num">選擇題 2（10 分）</div>
+      <p>關於「法律定位」對宮廟管理之影響，下列敘述何者<strong>最正確</strong>？</p>
+      <ul class="compact">
+        <li>(A) 只要香火鼎盛，法律定位與管理無關</li>
+        <li>(B) 組織型態決定財產名義、對外契約與治理責任</li>
+        <li>(C) 所有宮廟皆須改設宗教財團法人</li>
+        <li>(D) 管理組織型態之財產權屬最為明確</li>
+      </ul>
+      <p class="text-sm"><strong>答案：</strong>(B)</p>
+    </div>
+    <div class="q-box">
+      <div class="q-num">簡答題 1（20 分）— 對應 ABCD 目標 #2</div>
+      <p>請依您所屬（或假想）之宮廟，說明其最接近之組織型態，並指出 1 項因法律定位不清可能產生之風險，以及 1 項建議改善作為。</p>
+      <p class="text-sm"><strong>評分規準：</strong>型態判斷合理（8 分）＋風險具體（6 分）＋改善可行（6 分）。</p>
+    </div>
+
+    <h3 style="font-size:1rem;color:#1e40af;margin:1.25rem 0 0.5rem;">6-2 勾選建檔表（行為指標檢核）</h3>
+    <table>
+      <thead>
+        <tr><th>序</th><th>行為指標（對應 ABCD-B）</th><th>已達成</th><th>部分</th><th>未達成</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>能說明三型態在「財產歸屬」上之差異</td><td>☑</td><td>□</td><td>□</td></tr>
+        <tr><td>2</td><td>能說明三型態在「治理機關」上之差異</td><td>☑</td><td>□</td><td>□</td></tr>
+        <tr><td>3</td><td>能判斷所屬宮廟最接近之組織型態</td><td>□</td><td>☑</td><td>□</td></tr>
+        <tr><td>4</td><td>能列舉完成法律定位之 2 項以上好處</td><td>☑</td><td>□</td><td>□</td></tr>
+        <tr><td>5</td><td>能完成《組織型態對照表》並交件</td><td>☑</td><td>□</td><td>□</td></tr>
+      </tbody>
+    </table>
+    <p class="text-sm text-gray-600">※ 上表為<strong>範例建檔</strong>（學員張○○），實際現場由講師／觀察者勾選。建檔方式：☑ 紙本歸檔　□ 試算表登錄　□ 學習平台紀錄</p>
+
+    <h3 style="font-size:1rem;color:#1e40af;margin:1.25rem 0 0.5rem;">6-3 分數與觀察評量表（Rubrics 2 級示範）</h3>
+    <table>
+      <thead>
+        <tr><th>評量向度</th><th>達標（2 分）</th><th>待加強（1 分）</th><th>得分</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>說明組織型態差異</strong><br><small>ABCD #1</small></td>
+          <td>能正確說明三型態至少各 2 項差異</td>
+          <td>僅能說明部分型態或內容有誤</td>
+          <td>2</td>
+        </tr>
+        <tr>
+          <td><strong>案例應用</strong><br><small>ABCD #2</small></td>
+          <td>能連結自身或案例廟務實務</td>
+          <td>流於抽象、無法對應現況</td>
+          <td>2</td>
+        </tr>
+        <tr>
+          <td><strong>學習單產出</strong><br><small>對照表＋小記</small></td>
+          <td>對照表完整、小記具體可行</td>
+          <td>缺漏欄位或未交課後小記</td>
+          <td>1</td>
+        </tr>
+      </tbody>
+    </table>
+    <p><strong>總分：</strong>5 / 6（及格線：≥4）｜<strong>觀察紀錄（質性）：</strong>學員能參與案例討論，對「管理組織」與「登記寺廟」差異有明顯頓悟；建議課後協助取得登記證影本以完成目標 #2。</p>
+
+    <!-- 參考與修訂 -->
+    <h2 class="section-title">七、參考資料</h2>
+    <ul class="compact">
+      <li>《宗教團體法》（及配套寺廟登記相關規定）</li>
+      <li>《民法》關於財團法人與捐助章程之規定（摘要講義）</li>
+      <li>內政部宗教及禮制司—寺廟登記與宗教財團法人設立說明（官方懶人包連結，由主辦更新 URL）</li>
+      <li>宮廟管理師職能基準 icapV75 附錄—M1 模組行為指標（待評核委員會定稿後連結）</li>
+    </ul>
+
+    <h2 class="section-title">八、修訂紀錄</h2>
+    <table>
+      <thead><tr><th>日期</th><th>版本</th><th>修訂者</th><th>摘要</th></tr></thead>
+      <tbody>
+        <tr><td>115/07/01</td><td>v0.1-draft</td><td>教材編審主辦</td><td>Demo 用完稿範例草稿，供 115/07/30 示範與 M2 認領參考</td></tr>
+        <tr><td>115/07/30</td><td>v0.2</td><td>（待 Demo 後）</td><td>整合現場講師共填內容、修正案例與法規引用</td></tr>
+      </tbody>
+    </table>
+
+    <p class="footnote">
+      本文件對齊 <a href="../../ICAP-文件對照.md">ICAP 文件對照表</a> 十項架構｜
+      空白模板：<a href="單元模板.html">單元模板.html</a>｜
+      評量附錄：<a href="../../評量設計/index.html">評量設計三表</a><br>
+      Version: M1-1.1-v0.1-draft｜臺灣道法總會｜教材編審委員會
+    </p>
   </div>
-  <p style="font-size:0.9rem;color:#666;">審閱前可先參考 <a href="單元模板.html">單元模板</a> 欄位結構。</p>
 </body>
 </html>
