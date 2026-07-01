@@ -50,7 +50,7 @@ git push origin main
 
 ## 6. 自訂填答內容
 
-複製 `remote-members/填答手冊-正文.html` 修改題目，或保留範本僅改封面（已由 config 注入）。
+複製 `remote-members/handbook-body.html` 修改題目，或保留範本僅改封面（已由 config 注入）。
 
 ---
 
