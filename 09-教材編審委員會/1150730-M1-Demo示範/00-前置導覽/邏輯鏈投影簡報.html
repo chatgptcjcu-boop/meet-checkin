@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>投影簡報｜職能邏輯鏈 L1→L6｜教材編審 Demo 前置</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../../../assets/meeting-display.css">
+  <style>
+    .deck-editorial { --accent: #5eead4; --accent2: #2dd4bf; }
+    .chain-flow { display: flex; flex-direction: column; gap: 0.5vh; max-width: 72vw; margin: 0 auto; }
+    .chain-step {
+      display: flex; align-items: center; gap: 1vw;
+      background: var(--panel); border: 1px solid var(--line);
+      border-left: 5px solid var(--accent2); border-radius: 0 10px 10px 0;
+      padding: 0.9vh 1.2vw; font-size: clamp(0.82rem, 1.55vw, 1.08rem);
+    }
+    .chain-step .lid { font-weight: 900; color: var(--accent); min-width: 2.5em; }
+    .chain-step.highlight { border-left-color: var(--accent); background: rgb(45 212 191 / 0.12); }
+    .chain-arrow { text-align: center; color: var(--accent2); font-size: 1.2rem; line-height: 1; }
+    .chain-step.demo-step { border-left-color: #60a5fa; background: rgb(96 165 250 / 0.1); }
+    .tpo-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.2vw; }
+    @media (max-width: 900px) { .tpo-grid { grid-template-columns: 1fr; } }
+    .tpo-grid .card { border-top: 3px solid var(--accent2); }
+    .ksa-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1vw; font-size: clamp(0.8rem, 1.5vw, 1rem); }
+    @media (max-width: 900px) { .ksa-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="deck deck-editorial" id="deck">
+
+    <!-- 0 封面 -->
+    <section class="slide slide-welcome active" data-id="welcome">
+      <div class="slide-body">
+        <p class="org" style="font-size:clamp(0.9rem,2vw,1.1rem);letter-spacing:.15em;margin-bottom:2vh">臺灣道法總會｜教育委員會</p>
+        <h1 class="main-title">教材編審 Demo<br>前置導覽</h1>
+        <p class="sub">115年7月30日｜職能導向課程品質審查邏輯鏈</p>
+        <p class="tagline">上午：走完整條思維鏈（L1→L6）<br>下午：帶做 M1-1.1 教學單元設計（Phase 0–5）</p>
+      </div>
+    </section>
+
+    <!-- 1 開場白：為何在這裡 -->
+    <section class="slide" data-id="why">
+      <div class="slide-header">
+        <p class="org">OPENING</p>
+        <h2>為什麼要先坐在這裡？</h2>
+        <p class="meta">如同第一次評核委員會開場——先說清楚「我們為何而聚」</p>
+      </div>
+      <div class="slide-body">
+        <ul class="bullets">
+          <li>第一次<strong>評核委員會</strong>：委員用實務經驗，共構職能基準與 86 單元課程地圖</li>
+          <li>今天<strong>教材編審 Demo</strong>：講師要學會，如何把已定的職能「寫成可教的單元」</li>
+          <li>多數講師<strong>未修過 iCAP 職能導向課程</strong>——下午直接寫單元會不知道 ABCD 從哪來</li>
+          <li>所以上午這 90 分鐘：<strong>先走一整圈邏輯鏈</strong>，下午才動手做</li>
+        </ul>
+        <div class="hint-box">您的實務經驗仍是核心。上午是「對位」，下午是「動手」。</div>
+      </div>
+    </section>
+
+    <!-- 2 上午 vs 下午 -->
+    <section class="slide" data-id="am-pm">
+      <div class="slide-header">
+        <p class="org">TODAY'S FLOW</p>
+        <h2>今日兩段式</h2>
+        <p class="meta">不發散｜同一條鏈｜同一個宮廟管理師專案</p>
+      </div>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card">
+            <h3>上午｜邏輯鏈導覽（約 90min）</h3>
+            <p>產業需求 → 範疇 → T/P/O → KSA → 課程地圖 → 單元定位<br><em style="color:#94a3b8">問：這一格單元從哪裡來？</em></p>
+          </div>
+          <div class="card">
+            <h3>下午｜M1-1.1 單元 Demo（2hr）</h3>
+            <p>教學內容、步驟、ABCD、學習單、評量三表<br><em style="color:#94a3b8">問：這一格單元怎麼寫完整？</em></p>
+          </div>
+        </div>
+        <div class="hint-box" style="margin-top:2vh">下午<strong>不再重開範疇會議</strong>——假設 T/P/O 已由評核委員會定案。</div>
+      </div>
+    </section>
+
+    <!-- 3 邏輯鏈總圖（全覽） -->
+    <section class="slide" data-id="chain-all" data-chain="all">
+      <div class="slide-header">
+        <p class="org">LOGIC CHAIN OVERVIEW</p>
+        <h2>職能導向課程品質審查｜邏輯鏈總圖</h2>
+        <p class="meta">勞動部 iCAP 思維｜L1→L6 → 下午單元設計</p>
+      </div>
+      <div class="slide-body">
+        <div class="chain-flow" id="chainFlowAll">
+          <div class="chain-step" data-step="l2"><span class="lid">L2</span>產業需求分析</div>
+          <div class="chain-arrow">↓</div>
+          <div class="chain-step" data-step="l3"><span class="lid">L3</span>定義範疇（七大範疇 T1–T7）</div>
+          <div class="chain-arrow">↓</div>
+          <div class="chain-step" data-step="l4"><span class="lid">L4</span>工作任務 T → 行為指標 P → 任務產出 O</div>
+          <div class="chain-arrow">↓</div>
+          <div class="chain-step" data-step="l5"><span class="lid">L5</span>知識 K｜技能 S｜態度 A</div>
+          <div class="chain-arrow">↓</div>
+          <div class="chain-step" data-step="l6"><span class="lid">L6</span>教學發展：課程地圖（86 單元）→ 教學單元</div>
+          <div class="chain-arrow">↓</div>
+          <div class="chain-step demo-step"><span class="lid">PM</span>單元設計 Demo：內容、ABCD、學習單、評量</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 L2 產業需求 -->
+    <section class="slide" data-id="l2" data-chain="l2">
+      <div class="slide-header">
+        <p class="org">L2｜INDUSTRY NEEDS</p>
+        <h2>產業需求分析</h2>
+        <p class="meta">icap 指標 1.1–1.2｜評核委員會 Phase1 問題共構</p>
+      </div>
+      <div class="slide-body">
+        <ul class="bullets">
+          <li>從<strong>宮廟管理痛點</strong>出發，不是從教科書目錄出發</li>
+          <li>第一次評核會問：「最近兩年最頭痛的一件事？」</li>
+          <li>例：廟產登記私人名下 → 繼承糾紛、資產流失</li>
+          <li>→ 轉成<strong>職能缺口</strong>：具備法人登記與財產治理能力</li>
+        </ul>
+        <div class="hint-box">請講師學習單 L2：用一句話寫出自己宮廟的需求。</div>
+      </div>
+    </section>
+
+    <!-- 5 L3 範疇 -->
+    <section class="slide" data-id="l3" data-chain="l3">
+      <div class="slide-header">
+        <p class="org">L3｜SCOPE</p>
+        <h2>定義範疇（T1–T7）</h2>
+        <p class="meta">不把需求散成無法管理的清單</p>
+      </div>
+      <div class="slide-body">
+        <div class="scopes">
+          <div class="item"><span class="num">T1</span>　組織治理與法人登記</div>
+          <div class="item"><span class="num">T2</span>　人事與志工管理</div>
+          <div class="item"><span class="num">T3</span>　財務治理</div>
+          <div class="item"><span class="num">T4</span>　資產與文資</div>
+          <div class="item"><span class="num">T5</span>　儀典活動</div>
+          <div class="item"><span class="num">T6</span>　對外與公益</div>
+          <div class="item"><span class="num">T7</span>　資訊與數位</div>
+        </div>
+        <div class="hint-box" style="margin-top:1.5vh"><strong>M1-1.1 在這裡：</strong>模組 M1 × 範疇 T1 × 緒論單元</div>
+      </div>
+    </section>
+
+    <!-- 6 L4 T/P/O -->
+    <section class="slide" data-id="l4" data-chain="l4">
+      <div class="slide-header">
+        <p class="org">L4｜T → P → O</p>
+        <h2>工作任務｜行為指標｜任務產出</h2>
+        <p class="meta">三欄必須對齊｜下午 ABCD 的 B、D 從 P 來</p>
+      </div>
+      <div class="slide-body">
+        <div class="tpo-grid">
+          <div class="card">
+            <h3>T 工作任務</h3>
+            <p>工作者<strong>要做什麼事</strong><br><br>T1.1 執行宗教法人登記與章程管理</p>
+          </div>
+          <div class="card">
+            <h3>P 行為指標</h3>
+            <p>做到什麼程度、<strong>可觀察</strong><br><br>P1.1.1 能依據宗教法規，召開信徒大會並製作符合主管機關要求之會議紀錄</p>
+          </div>
+          <div class="card">
+            <h3>O 任務產出</h3>
+            <p>最後<strong>交出什麼成品</strong><br><br>O1.1.1 宗教法人會議紀錄</p>
+          </div>
+        </div>
+        <div class="hint-box">來源：icap-zhineng-jizhun 正式講義｜M1-1.1.1 緒論單元</div>
+      </div>
+    </section>
+
+    <!-- 7 L5 KSA -->
+    <section class="slide" data-id="l5" data-chain="l5">
+      <div class="slide-header">
+        <p class="org">L5｜K · S · A</p>
+        <h2>知識｜技能｜態度</h2>
+        <p class="meta">T/P/O 定好，才問「要教什麼」</p>
+      </div>
+      <div class="slide-body">
+        <div class="ksa-grid">
+          <div class="card"><h3>K 知識</h3><p>寺廟、宗教財團法人、管理組織三型態之差異與法規</p></div>
+          <div class="card"><h3>S 技能</h3><p>填寫組織型態比較表、判斷所屬型態、指出待改善處</p></div>
+          <div class="card"><h3>A 態度</h3><p>重視廟產合法登記、願意推動組織治理與法治觀</p></div>
+        </div>
+        <div class="hint-box">教學內容「五段式」= 在課堂中鋪陳 K、S、A</div>
+      </div>
+    </section>
+
+    <!-- 8 L6 課程地圖 -->
+    <section class="slide" data-id="l6" data-chain="l6">
+      <div class="slide-header">
+        <p class="org">L6｜COURSE MAP</p>
+        <h2>課程地圖 → 教學單元</h2>
+        <p class="meta">180 小時｜8 模組｜86 單元｜每格 2 小時</p>
+      </div>
+      <div class="slide-body">
+        <ul class="bullets">
+          <li><strong>課程地圖</strong>：第一次評核會決議四——86 單元架構已確認</li>
+          <li><strong>教學單元設計</strong>：內容大綱、教學步驟、ABCD、學習單、評量 ← <strong>下午 Demo</strong></li>
+          <li>今日示範格：<strong>M1-1.1</strong> 緒論－為何寺廟需要法律定位？</li>
+          <li>icap 講義對位：M1-1.1.1～1.4（4×25min = 2hr）</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 9 與評核會銜接 -->
+    <section class="slide" data-id="bridge">
+      <div class="slide-header">
+        <p class="org">BRIDGE</p>
+        <h2>與第一次評核委員會的銜接</h2>
+        <p class="meta">上午每一格，都有評核會產出可對照</p>
+      </div>
+      <div class="slide-body">
+        <table class="agenda">
+          <thead><tr><th>邏輯鏈</th><th>評核會產出</th><th>下午 Demo</th></tr></thead>
+          <tbody>
+            <tr><td>產業需求</td><td>Phase1 問題共構</td><td>M1-1.1 案例</td></tr>
+            <tr><td>範疇 T1–T7</td><td>Phase2 背書</td><td>M1 屬 T1</td></tr>
+            <tr><td>T / P / O</td><td>Phase3 + icapV75</td><td>ABCD 對位</td></tr>
+            <tr><td>課程地圖</td><td>Phase4 86 單元</td><td>M1-1.1 定位</td></tr>
+            <tr><td>單元設計</td><td>—</td><td><strong>今日帶做</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 10 下午預告 -->
+    <section class="slide" data-id="pm-demo">
+      <div class="slide-header">
+        <p class="org">AFTERNOON DEMO</p>
+        <h2>休息後，我們做什麼？</h2>
+        <p class="meta">Phase 0–5｜M1-1.1 完稿範例 v1.0（icap 正式講義）</p>
+      </div>
+      <div class="slide-body">
+        <table class="agenda">
+          <thead><tr><th>Phase</th><th>內容</th></tr></thead>
+          <tbody>
+            <tr><td>0</td><td>身分確認、Demo 定位</td></tr>
+            <tr><td>1</td><td>教學內容、教學步驟</td></tr>
+            <tr><td>2</td><td>ABCD 教學目標（現場共填）</td></tr>
+            <tr><td>3</td><td>教學方式、學習單與產出</td></tr>
+            <tr><td>4</td><td>評量：考古題、勾選建檔、分數觀察</td></tr>
+            <tr><td>5</td><td>歸檔、協作平台、M2 認領預告</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 11 發學習單 -->
+    <section class="slide slide-welcome" data-id="start">
+      <div class="slide-body">
+        <p class="org" style="font-size:clamp(0.9rem,2vw,1.1rem);letter-spacing:.15em;margin-bottom:2vh">LET'S BEGIN</p>
+        <h1 class="main-title" style="font-size:clamp(1.8rem,4.5vw,3rem)">開始走邏輯鏈</h1>
+        <p class="sub">請領取《講師導覽學習單》</p>
+        <p class="tagline" style="margin-top:3vh">
+          主持者請依腳本帶領 L2→L6<br>
+          可用 ← → 或空白鍵回到「邏輯鏈總圖」複習<br>
+          結束後休息 15 分鐘 → 下午 Demo
+        </p>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="slide-counter" id="counter">1 / 12</div>
+
+  <div class="controls no-print">
+    <button type="button" id="btnPrev">◀ 上一頁</button>
+    <button type="button" id="btnNext">下一頁 ▶</button>
+    <select id="slideSelect" aria-label="選擇投影片"></select>
+    <button type="button" id="btnFs">全螢幕</button>
+    <a href="index.html" style="color:#94a3b8;font-size:0.78rem;text-decoration:none">導覽索引</a>
+    <span class="counter" id="counterCtrl">1 / 12</span>
+    <span class="keys">← → 空白鍵｜3=總圖</span>
+  </div>
+
+  <script>
+    (function () {
+      const slides = Array.from(document.querySelectorAll('.slide'));
+      const select = document.getElementById('slideSelect');
+      const counter = document.getElementById('counter');
+      const counterCtrl = document.getElementById('counterCtrl');
+      let idx = 0;
+
+      const labels = [
+        '封面', '為何在此', '上午下午', '邏輯鏈總圖', 'L2 產業需求', 'L3 範疇',
+        'L4 TPO', 'L5 KSA', 'L6 課程地圖', '評核會銜接', '下午預告', '開始'
+      ];
+
+      slides.forEach((s, i) => {
+        const opt = document.createElement('option');
+        opt.value = i;
+        opt.textContent = (i + 1) + '. ' + labels[i];
+        select.appendChild(opt);
+      });
+
+      function highlightChain() {
+        const step = slides[idx].dataset.chain;
+        document.querySelectorAll('#chainFlowAll .chain-step').forEach((el) => {
+          el.classList.toggle('highlight', step && step !== 'all' && el.dataset.step === step);
+        });
+      }
+
+      function show(i) {
+        idx = Math.max(0, Math.min(slides.length - 1, i));
+        slides.forEach((s, j) => s.classList.toggle('active', j === idx));
+        select.value = idx;
+        const t = (idx + 1) + ' / ' + slides.length;
+        counter.textContent = t;
+        counterCtrl.textContent = t;
+        highlightChain();
+      }
+
+      document.getElementById('btnPrev').onclick = () => show(idx - 1);
+      document.getElementById('btnNext').onclick = () => show(idx + 1);
+      select.onchange = () => show(Number(select.value));
+      document.getElementById('btnFs').onclick = () => document.documentElement.requestFullscreen?.();
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+          e.preventDefault();
+          show(idx + 1);
+        } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+          e.preventDefault();
+          show(idx - 1);
+        } else if (e.key === 'Home') show(0);
+        else if (e.key === 'End') show(slides.length - 1);
+        else if (e.key === '3') show(3);
+      });
+
+      show(0);
+    })();
+  </script>
+</body>
+</html>
