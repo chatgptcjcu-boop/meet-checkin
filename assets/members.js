@@ -1,6 +1,6 @@
 /**
  * 宮廟管理師第一次評核委員會 — 共用委員名單
- * onsite-checkin-legacy、視訊簽到皆引用此檔，勿分開維護。
+ * onsite-checkin-legacy、video-checkin 皆引用此檔，勿分開維護。
  */
 window.MEMBER_ROSTER = {
   meetingTitle: '2026宮廟管理師職能基準 iCAP推動與職能導向課程發展',
