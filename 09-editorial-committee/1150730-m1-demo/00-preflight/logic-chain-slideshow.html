@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>會議投影｜職能邏輯鏈 L1→L6｜教材編審 Demo 前置</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../../../assets/meeting-display.css">
+  <link rel="stylesheet" href="../../../assets/meeting-display.css">
 </head>
 <body>
   <div class="deck" id="deck">
@@ -238,68 +238,27 @@
     <button type="button" id="btnNext">下一頁 ▶</button>
     <select id="slideSelect" aria-label="選擇投影片"></select>
     <button type="button" id="btnFs">全螢幕</button>
-    <a href="../../../../meeting-display.html" style="color:#94a3b8;font-size:0.78rem;text-decoration:none">630評核會</a>
+    <a href="../../../meeting-display.html" style="color:#94a3b8;font-size:0.78rem;text-decoration:none">630評核會</a>
     <a href="index.html" style="color:#94a3b8;font-size:0.78rem;text-decoration:none">導覽索引</a>
     <span class="counter" id="counterCtrl">1 / 12</span>
     <span class="keys">← → 或空白鍵切換</span>
   </div>
 
+  <script src="../../../assets/meeting-display.js"></script>
   <script>
-    (function () {
-      const slides = Array.from(document.querySelectorAll('.slide'));
-      const select = document.getElementById('slideSelect');
-      const counter = document.getElementById('counter');
-      const counterCtrl = document.getElementById('counterCtrl');
-      let idx = 0;
-
-      const labels = [
+    MeetingDisplay.init({
+      labels: [
         '封面', '為何在此', '上午下午', '邏輯鏈總圖', 'L2 產業需求', 'L3 七大範疇',
         'L4 TPO', 'L5 KSA', 'L6 課程架構', '評核會銜接', '下午預告', '開始'
-      ];
-
-      slides.forEach((s, i) => {
-        const opt = document.createElement('option');
-        opt.value = i;
-        opt.textContent = (i + 1) + '. ' + labels[i];
-        select.appendChild(opt);
-      });
-
-      function highlightChain() {
+      ],
+      hotkeys: { '3': 3 },
+      onShow: function (idx, slides) {
         const step = slides[idx].dataset.chain;
-        document.querySelectorAll('#chainFlowAll .chain-step').forEach((el) => {
+        document.querySelectorAll('#chainFlowAll .chain-step').forEach(function (el) {
           el.classList.toggle('highlight', step && step !== 'all' && el.dataset.step === step);
         });
       }
-
-      function show(i) {
-        idx = Math.max(0, Math.min(slides.length - 1, i));
-        slides.forEach((s, j) => s.classList.toggle('active', j === idx));
-        select.value = idx;
-        const t = (idx + 1) + ' / ' + slides.length;
-        counter.textContent = t;
-        counterCtrl.textContent = t;
-        highlightChain();
-      }
-
-      document.getElementById('btnPrev').onclick = () => show(idx - 1);
-      document.getElementById('btnNext').onclick = () => show(idx + 1);
-      select.onchange = () => show(Number(select.value));
-      document.getElementById('btnFs').onclick = () => document.documentElement.requestFullscreen?.();
-
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
-          e.preventDefault();
-          show(idx + 1);
-        } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-          e.preventDefault();
-          show(idx - 1);
-        } else if (e.key === 'Home') show(0);
-        else if (e.key === 'End') show(slides.length - 1);
-        else if (e.key === '3') show(3);
-      });
-
-      show(0);
-    })();
+    });
   </script>
 </body>
 </html>

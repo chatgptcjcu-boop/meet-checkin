@@ -78,7 +78,9 @@
 | 檔案 | 用途 |
 |------|------|
 | `index.html` | 導覽總入口、邏輯鏈圖 |
-| `01-l1-l6-logic-chain.html` | 投影＋講師跟填 |
+| `logic-chain-slideshow.html` | **上午主投影**（meeting-display 模板，←→ 切頁） |
+| `m1-1-1-teaching-chain-slideshow.html` | **下午開場主投影**（13:50 教學鏈說明） |
+| `01-l1-l6-logic-chain.html` | 講師自讀走讀（可捲動，**非主投影**） |
 | `facilitator-preflight-script.html` | 分鐘級話術 |
 | `instructor-preflight-worksheet.html` | 學員紙本／PDF |
 | `ICAP-quality-chain-reference.md` | 勞動部文件章節表 |

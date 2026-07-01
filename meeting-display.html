@@ -275,66 +275,21 @@
     <span class="keys">← → 或空白鍵切換</span>
   </div>
 
+  <script src="./assets/meeting-display.js"></script>
   <script>
-    (function () {
-      const slides = Array.from(document.querySelectorAll('.slide'));
-      const select = document.getElementById('slideSelect');
-      const counter = document.getElementById('counter');
-      const counterCtrl = document.getElementById('counterCtrl');
-      let idx = 0;
-
-      const labels = [
+    MeetingDisplay.init({
+      labels: [
         '封面', '會議目的', '職能三層', '議程總覽', '簽到連線',
         '壹 簽到', '貳 現況需求', '叁 七大範疇', '肆 工作任務',
         '伍 課程架構', '陸 決議表決', '散會'
-      ];
-
-      slides.forEach((s, i) => {
-        const opt = document.createElement('option');
-        opt.value = i;
-        opt.textContent = (i + 1) + '. ' + labels[i];
-        select.appendChild(opt);
-      });
-
-      function highlightAgenda() {
+      ],
+      onShow: function (idx, slides) {
         const id = slides[idx].dataset.agenda;
-        document.querySelectorAll('#agendaTable tbody tr').forEach((tr) => {
+        document.querySelectorAll('#agendaTable tbody tr').forEach(function (tr) {
           tr.classList.toggle('highlight', id && tr.dataset.goto === id);
         });
       }
-
-      function show(i) {
-        idx = Math.max(0, Math.min(slides.length - 1, i));
-        slides.forEach((s, j) => s.classList.toggle('active', j === idx));
-        select.value = idx;
-        const t = (idx + 1) + ' / ' + slides.length;
-        counter.textContent = t;
-        counterCtrl.textContent = t;
-        highlightAgenda();
-      }
-
-      document.getElementById('btnPrev').onclick = () => show(idx - 1);
-      document.getElementById('btnNext').onclick = () => show(idx + 1);
-      select.onchange = () => show(Number(select.value));
-      document.getElementById('btnFs').onclick = () => document.documentElement.requestFullscreen?.();
-
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
-          e.preventDefault();
-          show(idx + 1);
-        } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-          e.preventDefault();
-          show(idx - 1);
-        } else if (e.key === 'Home') show(0);
-        else if (e.key === 'End') show(slides.length - 1);
-        else if (e.key >= '1' && e.key <= '9') {
-          const n = Number(e.key) - 1;
-          if (n < slides.length) show(n);
-        }
-      });
-
-      show(0);
-    })();
+    });
   </script>
 </body>
 </html>
