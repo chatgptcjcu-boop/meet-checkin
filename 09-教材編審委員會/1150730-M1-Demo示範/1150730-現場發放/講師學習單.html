@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>講師學習單｜115/07/30 教材編審 Demo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --border: #999; --light: #f5f5f5; --blue: #1e40af; }
+    body { font-family: 'Noto Sans TC', sans-serif; background: #f8fafc; margin: 0; font-size: 10pt; line-height: 1.5; color: #111; }
+    .doc { max-width: 210mm; margin: 0 auto; background: #fff; }
+    .cover { padding: 24mm 20mm; text-align: center; page-break-after: always; border-bottom: 2px solid #333; }
+    .cover h1 { font-size: 1.4rem; margin: 0 0 0.5rem; }
+    .cover .date { font-size: 1rem; color: #333; font-weight: 600; }
+    .cover .org { font-size: 0.85rem; color: #666; margin-top: 1.5rem; }
+    .cover .hint { margin-top: 2rem; font-size: 0.85rem; text-align: left; border: 1px solid var(--border); padding: 0.75rem 1rem; background: var(--light); }
+    .section { padding: 12mm 18mm; page-break-before: always; }
+    .section:first-of-type { page-break-before: auto; }
+    .sec-title { font-size: 1.15rem; font-weight: 700; border-bottom: 2px solid var(--blue); padding-bottom: 0.35rem; margin: 0 0 1rem; color: var(--blue); }
+    .sec-sub { font-size: 0.85rem; color: #555; margin: -0.5rem 0 1rem; }
+    .q { border: 1px solid var(--border); padding: 0.6rem 0.75rem; margin-bottom: 0.6rem; background: #fafafa; break-inside: avoid; }
+    .q-title { font-weight: 600; margin-bottom: 0.35rem; }
+    .q-hint { font-size: 0.78rem; color: #666; margin-bottom: 0.35rem; }
+    .opts { display: flex; flex-wrap: wrap; gap: 0.6rem 1rem; margin: 0.35rem 0; }
+    .opts label { display: flex; align-items: center; gap: 0.3rem; font-size: 0.88rem; }
+    .field { margin-top: 0.4rem; }
+    .field label { display: block; font-size: 0.82rem; color: #333; margin-bottom: 0.15rem; }
+    .write-line { border-bottom: 1px solid #333; min-height: 1.4rem; margin: 0.25rem 0; }
+    .write-box { border: 1px solid #333; min-height: 3rem; margin: 0.25rem 0; }
+    .write-box.tall { min-height: 4.5rem; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem 1rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin: 0.5rem 0; }
+    th, td { border: 1px solid var(--border); padding: 0.35rem 0.4rem; vertical-align: top; }
+    th { background: #eff6ff; }
+    .sign-block { border-top: 2px solid #333; margin-top: 1rem; padding-top: 0.75rem; font-size: 0.88rem; }
+    .sign-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.5rem; }
+    .nav { font-size: 0.8rem; padding: 0.5rem 18mm; }
+    .nav a { color: #555; }
+    .icap-tag { font-size: 0.72rem; background: #dbeafe; color: var(--blue); padding: 0.1rem 0.35rem; border-radius: 0.2rem; }
+    @media print {
+      @page { size: A4; margin: 12mm 15mm; }
+      body { background: #fff; }
+      .doc { max-width: none; }
+      .nav { display: none; }
+      .section { padding: 10mm 15mm; }
+      .q { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <div class="doc">
+    <nav class="nav"><a href="index.html">← 返回索引</a> · <a href="講師閱讀須知.html">閱讀須知</a></nav>
+
+    <div class="cover">
+      <h1>講師學習單</h1>
+      <p class="date">教材編審 Demo 示範｜示範單元 M1-1.1</p>
+      <p class="date">115年7月30日｜14:00–16:00</p>
+      <p class="org">臺灣道法總會｜教材編審委員會</p>
+      <div class="hint">
+        <strong>填寫說明</strong>
+        <ul style="margin:0.5rem 0 0;padding-left:1.2rem;text-align:left;">
+          <li>請依序填寫：壹 → 貳 → 叁 → 肆 → 伍 → 陸（對應 Phase 0–5）</li>
+          <li>今日以 M1-1.1「緒論－為何寺廟需要法律定位？」為示範</li>
+          <li>案例欄請填寫您的廟務經驗；會議結束前交回工作人員</li>
+        </ul>
+      </div>
+      <div class="sign-grid" style="margin-top:2rem;text-align:left;">
+        <div>講師姓名：________________________</div>
+        <div>服務單位／宮廟：________________________</div>
+      </div>
+    </div>
+
+    <div class="section" id="sec1">
+      <h2 class="sec-title">壹、身分確認與 Demo 定位</h2>
+      <p class="sec-sub">14:00–14:10｜Phase 0 <span class="icap-tag">iCAP 利害關係人</span></p>
+      <div class="q">
+        <div class="q-title">0-1　基本資料</div>
+        <div class="grid-2">
+          <div class="field"><label>講師姓名</label><div class="write-line"></div></div>
+          <div class="field"><label>服務單位／宮廟全銜</label><div class="write-line"></div></div>
+          <div class="field"><label>職稱</label><div class="write-line"></div></div>
+          <div class="field"><label>聯絡電話</label><div class="write-line"></div></div>
+          <div class="field"><label>Email（選填）</label><div class="write-line"></div></div>
+          <div class="field"><label>出席方式</label><div class="write-line"></div></div>
+        </div>
+      </div>
+      <div class="q">
+        <div class="q-title">0-2　教材編審經驗</div>
+        <div class="opts">
+          <label><input type="radio" name="exp"> 第一次參與職能導向教材編審</label>
+          <label><input type="radio" name="exp"> 曾參與傳統教材編寫</label>
+          <label><input type="radio" name="exp"> 曾修 iCAP 相關課程</label>
+        </div>
+      </div>
+      <div class="q">
+        <div class="q-title">0-3　今日 Demo 目的理解（請勾選）</div>
+        <div class="opts" style="flex-direction:column;align-items:flex-start;">
+          <label><input type="checkbox"> 我了解今日是「帶做一個單元流程」，非寫完整 180 小時教材</label>
+          <label><input type="checkbox"> 我了解示範單元為 M1-1.1</label>
+          <label><input type="checkbox"> 我了解會後將認領單元並於協作平台共寫</label>
+        </div>
+      </div>
+      <div class="sign-block">簽名：________________　日期：115/07/30</div>
+    </div>
+
+    <div class="section" id="sec2">
+      <h2 class="sec-title">貳、教學內容與教學步驟</h2>
+      <p class="sec-sub">14:10–14:35｜Phase 1 <span class="icap-tag">iCAP #1 #2</span></p>
+      <div class="q">
+        <div class="q-title">1-1　教學內容（五段式）｜M1-1.1</div>
+        <div class="field"><label>1-1-1 緒論／導入</label><div class="write-box"></div></div>
+        <div class="field"><label>1-1-2 核心概念</label><div class="write-box"></div></div>
+        <div class="field"><label>1-1-3 案例／故事（必填）</label><div class="write-box tall"></div></div>
+        <div class="field"><label>1-1-4 演練活動</label><div class="write-box"></div></div>
+        <div class="field"><label>1-1-5 總結</label><div class="write-box"></div></div>
+      </div>
+      <div class="q">
+        <div class="q-title">1-2　教學步驟（120min 時間軸）</div>
+        <table>
+          <thead><tr><th>序</th><th>時間</th><th>分鐘</th><th>步驟</th><th>對應內容段</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>0'–10'</td><td>10</td><td><div class="write-line"></div></td><td>緒論</td></tr>
+            <tr><td>2</td><td>10'–35'</td><td>25</td><td><div class="write-line"></div></td><td>核心概念</td></tr>
+            <tr><td>3</td><td>35'–55'</td><td>20</td><td><div class="write-line"></div></td><td>案例</td></tr>
+            <tr><td>4</td><td>55'–85'</td><td>30</td><td><div class="write-line"></div></td><td>演練</td></tr>
+            <tr><td>5</td><td>85'–110'</td><td>25</td><td><div class="write-line"></div></td><td>總結</td></tr>
+            <tr><td>6</td><td>110'–120'</td><td>10</td><td><div class="write-line"></div></td><td>Q&A</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="q">
+        <div class="q-title">1-3　分享：您的單元最難教哪一段？</div>
+        <div class="write-box tall"></div>
+      </div>
+    </div>
+
+    <div class="section" id="sec3">
+      <h2 class="sec-title">叁、教學目標（ABCD）</h2>
+      <p class="sec-sub">14:35–14:55｜Phase 2 <span class="icap-tag">iCAP #3</span></p>
+      <div class="q">
+        <div class="q-title">2-1　M1-1.1 學習目標（現場共填）</div>
+        <table>
+          <tr><th style="width:18%">A 對象</th><td><div class="write-box"></div></td></tr>
+          <tr><th>B 行為</th><td><div class="write-box"></div></td></tr>
+          <tr><th>C 條件</th><td><div class="write-box"></div></td></tr>
+          <tr><th>D 標準</th><td><div class="write-box"></div></td></tr>
+        </table>
+      </div>
+      <div class="q">
+        <div class="q-title">2-2　自評：B 欄是否可評量？</div>
+        <div class="opts">
+          <label><input type="radio" name="abcd"> 是，可對照 Rubrics 評分</label>
+          <label><input type="radio" name="abcd"> 否，需再修訂</label>
+        </div>
+        <div class="write-line"></div>
+      </div>
+    </div>
+
+    <div class="section" id="sec4">
+      <h2 class="sec-title">肆、教學方式、學習單與產出</h2>
+      <p class="sec-sub">14:55–15:20｜Phase 3 <span class="icap-tag">iCAP #4 #5 #6</span></p>
+      <div class="q">
+        <div class="q-title">3-1　教學方式（可複選）</div>
+        <div class="opts">
+          <label><input type="checkbox"> 講述</label>
+          <label><input type="checkbox"> 案例討論</label>
+          <label><input type="checkbox"> 小組活動</label>
+          <label><input type="checkbox"> 實作演練</label>
+        </div>
+        <div class="field"><label>各方式約佔時間比例</label><div class="write-box"></div></div>
+      </div>
+      <div class="q">
+        <div class="q-title">3-2　學習單設計（課中填寫）</div>
+        <div class="write-box tall"></div>
+      </div>
+      <div class="q">
+        <div class="q-title">3-3　學習單產出（課後帶走）</div>
+        <div class="write-box tall"></div>
+      </div>
+    </div>
+
+    <div class="section" id="sec5">
+      <h2 class="sec-title">伍、評量方式設計</h2>
+      <p class="sec-sub">15:20–15:50｜Phase 4 <span class="icap-tag">iCAP #7 #8 #9</span></p>
+      <p class="q-hint">完整表格請填附錄《評量設計三表》。</p>
+      <div class="q">
+        <div class="q-title">4-1　考古題（2 選擇＋1 簡答）</div>
+        <div class="field"><label>選擇題 1</label><div class="write-box"></div></div>
+        <div class="field"><label>選擇題 2</label><div class="write-box"></div></div>
+        <div class="field"><label>簡答題 1</label><div class="write-box tall"></div></div>
+      </div>
+      <div class="q">
+        <div class="q-title">4-2　勾選建檔（行為指標）</div>
+        <div class="write-box tall"></div>
+      </div>
+      <div class="q">
+        <div class="q-title">4-3　分數與觀察（Rubrics 2 級）</div>
+        <table>
+          <thead><tr><th>等級</th><th>描述</th><th>分數</th></tr></thead>
+          <tbody>
+            <tr><td>達標</td><td><div class="write-line"></div></td><td><div class="write-line"></div></td></tr>
+            <tr><td>待加強</td><td><div class="write-line"></div></td><td><div class="write-line"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section" id="sec6">
+      <h2 class="sec-title">陸、產出歸檔與下次銜接</h2>
+      <p class="sec-sub">15:50–16:00｜Phase 5 <span class="icap-tag">iCAP #10</span></p>
+      <div class="q">
+        <div class="q-title">5-1　完整編審流程理解（請勾選）</div>
+        <div class="opts" style="flex-direction:column;align-items:flex-start;">
+          <label><input type="checkbox"> Demo → 單元認領（M2）</label>
+          <label><input type="checkbox"> 線上協作共寫 → 中期審閱（M3）</label>
+          <label><input type="checkbox"> 定稿驗收（M4）→ 送審／出版</label>
+        </div>
+      </div>
+      <div class="q">
+        <div class="q-title">5-2　協作平台帳號／連結（選填）</div>
+        <div class="write-line"></div>
+      </div>
+      <div class="sign-block">
+        <p>我已完成今日 Demo 學習單填寫，並理解後續認領與協作流程。</p>
+        <p>簽名：________________　日期：115/07/30</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
