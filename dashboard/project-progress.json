@@ -65,11 +65,11 @@
         {
           "n": 1,
           "title": "編審流程 Demo 示範",
-          "dateRoc": "115/09/20",
-          "dateIso": "2026-09-20",
-          "folder": "09-教材編審委員會/1150920-M1-Demo示範",
+          "dateRoc": "115/07/30",
+          "dateIso": "2026-07-30",
+          "folder": "09-教材編審委員會/1150730-M1-Demo示範",
           "status": "preparing",
-          "phases": ["Demo1 教材架構", "Demo2 ABCD撰寫", "Demo3 評量設計", "Demo4 協作平台操作", "單元認領預告"],
+          "phases": ["Phase0 身分單元", "Phase1 職能內容", "Phase2 ABCD", "Phase3 學習單", "Phase4 評量三類", "Phase5 協作建檔"],
           "outputs": ["委員理解編審全流程", "示範單元 M1-1.1 完稿"]
         },
         {
