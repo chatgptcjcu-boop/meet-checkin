@@ -25,7 +25,7 @@ window.EVENT_CONFIG = {
     "sessionBadge": "第一次評核委員委員會議 ｜ 2026/06/30"
   },
   "backend": {
-    "gasWebAppUrl": "https://script.google.com/macros/s/AKfycbwYmxBxC34KK02UFW54hSX-VneckfVVm6rsTyEhCtCkamVvHmTf023EpmCydHyAsbV2WA/exec"
+    "gasWebAppUrl": "https://script.google.com/macros/s/AKfycbykvuVah_z6HcUTqIg1Yc9Z5wM3JoDwdZURoA-M2FmE04xXoJHuCJOiffpRh2l7Bfc93w/exec"
   },
   "meet": {
     "url": "https://meet.google.com/kci-xjtu-dmr?hs=122"
