@@ -6,6 +6,48 @@
   <title>會議投影｜職能邏輯鏈 L1→L6｜教材編審 Demo 前置</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../../assets/meeting-display.css">
+  <style>
+    /* 邏輯鏈總圖：左流程 + 右白話旁白（雙欄對齊） */
+    .chain-pair {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+      column-gap: 1.6vw;
+      align-items: stretch;
+      width: 100%;
+      max-width: 94vw;
+      margin: 0 auto;
+    }
+    .chain-pair .chain-step { margin: 0; }
+    .chain-pair .chain-arrow { grid-column: 1; }
+    .chain-pair .cn-spacer { grid-column: 2; }
+    .cn-head {
+      font-size: clamp(0.72rem, 1.35vw, 0.95rem);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding-bottom: 0.6vh;
+      margin-bottom: 0.3vh;
+      border-bottom: 1px solid var(--line);
+    }
+    .cn-head.flow { color: var(--accent); }
+    .cn-head.note { color: var(--accent2); }
+    .cn-note {
+      display: flex;
+      align-items: center;
+      background: rgb(52 211 153 / 0.06);
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      padding: 0.6vh 1vw;
+      font-size: clamp(0.8rem, 1.5vw, 1.06rem);
+      line-height: 1.5;
+      color: var(--text);
+    }
+    .cn-note b { color: var(--accent2); font-weight: 700; }
+    .cn-note.demo {
+      background: rgb(251 191 36 / 0.08);
+      border: 1px solid var(--accent);
+    }
+    .cn-note.demo b { color: var(--accent); }
+  </style>
 </head>
 <body>
   <div class="deck" id="deck">
@@ -64,18 +106,37 @@
         <p class="meta">勞動部 iCAP 思維｜L2→L6 → 下午單元設計</p>
       </div>
       <div class="slide-body">
-        <div class="chain-flow" id="chainFlowAll">
+        <div class="chain-pair" id="chainFlowAll">
+          <div class="cn-head flow">邏輯鏈流程</div>
+          <div class="cn-head note">白話解說（給每一位管理者）</div>
+
           <div class="chain-step" data-step="l2"><span class="lid">L2</span>產業需求分析</div>
+          <div class="cn-note">先問廟裡最近最頭痛的事是什麼，<b>從真實痛點出發</b>，不是照課本目錄走。</div>
           <div class="chain-arrow">↓</div>
+          <div class="cn-spacer"></div>
+
           <div class="chain-step" data-step="l3"><span class="lid">L3</span>定義範疇（七大範疇 T1–T7）</div>
+          <div class="cn-note">把一大堆問題<b>分成七大類</b>才管得動，像把雜物分櫃收好、各歸各位。</div>
           <div class="chain-arrow">↓</div>
+          <div class="cn-spacer"></div>
+
           <div class="chain-step" data-step="l4"><span class="lid">L4</span>工作任務 T → 行為指標 P → 任務產出 O</div>
+          <div class="cn-note">要<b>做的事(T)</b>、做到什麼程度<b>看得出來(P)</b>、最後<b>交出什麼成品(O)</b>，三者對齊。</div>
           <div class="chain-arrow">↓</div>
+          <div class="cn-spacer"></div>
+
           <div class="chain-step" data-step="l5"><span class="lid">L5</span>知識 K｜技能 S｜態度 A</div>
+          <div class="cn-note">這件事要教什麼？要<b>知道的(K)</b>、要<b>會做的(S)</b>、要有的<b>態度(A)</b>——這才是上課內容。</div>
           <div class="chain-arrow">↓</div>
+          <div class="cn-spacer"></div>
+
           <div class="chain-step" data-step="l6"><span class="lid">L6</span>教學發展：課程地圖（86 單元）→ 教學單元</div>
+          <div class="cn-note">把整套能力<b>拆成 86 格課</b>，每格約 2 小時；今天就示範其中一格怎麼教。</div>
           <div class="chain-arrow">↓</div>
+          <div class="cn-spacer"></div>
+
           <div class="chain-step demo-step"><span class="lid">PM</span>單元設計 Demo：內容、ABCD、學習單、評量</div>
+          <div class="cn-note demo">這一格課到底<b>怎麼教</b>：寫內容、定目標(ABCD)、做學習單、出考題，一次備齊。</div>
         </div>
       </div>
     </section>
