@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>列印索引｜115/07/30 教材編審 Demo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --accent: #1e3a5f; --border: #cbd5e1; --muted: #64748b; }
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background: #e8ecf0;
+      margin: 0;
+      font-size: 10.5pt;
+      line-height: 1.55;
+      color: #111;
+    }
+    .doc { max-width: 210mm; margin: 0 auto; background: #fff; }
+    .cover {
+      padding: 18mm 20mm 14mm;
+      border-bottom: 3px solid var(--accent);
+      page-break-after: always;
+    }
+    .cover h1 { font-size: 1.45rem; margin: 0 0 0.35rem; color: var(--accent); }
+    .cover .sub { font-weight: 600; color: #1e40af; margin: 0 0 1rem; }
+    .cover .meta { font-size: 0.9rem; color: var(--muted); }
+    .tips {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 0.4rem;
+      padding: 0.85rem 1rem;
+      margin-top: 1rem;
+      font-size: 0.88rem;
+    }
+    .tips h2 { font-size: 0.95rem; margin: 0 0 0.5rem; }
+    .tips ul { margin: 0; padding-left: 1.2rem; }
+    .body { padding: 14mm 20mm 18mm; }
+    .section-title {
+      font-size: 1rem;
+      font-weight: 700;
+      border-left: 4px solid var(--accent);
+      padding-left: 0.6rem;
+      margin: 1.25rem 0 0.65rem;
+      page-break-after: avoid;
+    }
+    .section-title:first-child { margin-top: 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin-bottom: 0.5rem; }
+    th, td { border: 1px solid var(--border); padding: 0.45rem 0.5rem; vertical-align: top; }
+    th { background: #eff6ff; text-align: left; font-weight: 600; }
+    .chk { width: 1.1rem; height: 1.1rem; vertical-align: middle; }
+    .copies { white-space: nowrap; font-weight: 600; color: var(--accent); }
+    a { color: #1e40af; word-break: break-all; }
+    .note { font-size: 0.8rem; color: var(--muted); margin-top: 0.75rem; }
+    .no-print { padding: 0.75rem 20mm 0; font-size: 0.85rem; }
+    @media print {
+      body { background: #fff; }
+      .no-print { display: none; }
+      tr { break-inside: avoid; }
+      a { color: #111; text-decoration: none; }
+      a::after { content: " (" attr(href) ")"; font-size: 0.75rem; color: #555; }
+    }
+  </style>
+</head>
+<body>
+  <div class="doc">
+    <p class="no-print"><a href="index.html">← 現場發放索引</a> · <a href="rehearsal-runbook.html">彩排手冊</a></p>
+
+    <header class="cover">
+      <h1>115/07/30 Demo｜列印索引</h1>
+      <p class="sub">教材編審委員會第一次示範｜列印清單與份數建議</p>
+      <p class="meta">臺灣道法總會｜教育委員會｜示範單元 M1-1.1<br>上午 10:00–11:30 邏輯鏈導覽 ＋ 下午 13:50–16:10 教學鏈與 Phase 0–5</p>
+      <div class="tips">
+        <h2>列印提示</h2>
+        <ul>
+          <li><strong>紙張：</strong>A4（210×297mm）</li>
+          <li><strong>雙面：</strong>講師學習單、主持腳本建議雙面以節省紙張；評量附錄可單面方便書寫</li>
+          <li><strong>瀏覽器：</strong>Chrome 或 Edge → 列印 → 邊界「預設」或「最小」→ 勾選「背景圖形」若表格框線消失</li>
+          <li><strong>份數 N：</strong>以下「× N」= 預估講師人數；主持者腳本各 1–2 份</li>
+          <li><strong>彩排：</strong>列印前先開連結預覽；正式列印後請勾選右欄 □ 確認</li>
+        </ul>
+      </div>
+    </header>
+
+    <div class="body">
+      <h2 class="section-title">一、講師用（每人必印）</h2>
+      <table>
+        <thead>
+          <tr><th style="width:8%">□</th><th style="width:28%">項目</th><th style="width:12%">份數</th><th>說明與連結</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="checkbox" class="chk" aria-label="講師閱讀須知"></td>
+            <td><strong>講師閱讀須知</strong></td>
+            <td class="copies">× N</td>
+            <td>下午開場前 5 分鐘發放<br><a href="instructor-reading-guide.html">instructor-reading-guide.html</a>（約 1 頁）</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" class="chk" aria-label="上午導覽學習單"></td>
+            <td><strong>講師導覽學習單</strong><br><span style="font-size:0.8rem;color:#64748b">上午 L0–L6</span></td>
+            <td class="copies">× N</td>
+            <td>上午邏輯鏈導覽用<br><a href="../00-preflight/instructor-preflight-worksheet.html">00-preflight/instructor-preflight-worksheet.html</a>（約 2 頁）</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" class="chk" aria-label="下午講師學習單"></td>
+            <td><strong>講師學習單</strong><br><span style="font-size:0.8rem;color:#64748b">下午 Phase 0–5</span></td>
+            <td class="copies">× N</td>
+            <td>下午 Demo 主學習單，建議雙面<br><a href="instructor-worksheet.html">instructor-worksheet.html</a>（約 8 頁）</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 class="section-title">二、評量附錄（Phase 4 用，每人 1 套）</h2>
+      <table>
+        <thead>
+          <tr><th style="width:8%">□</th><th style="width:28%">項目</th><th style="width:12%">份數</th><th>說明與連結</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="checkbox" class="chk" aria-label="考古題範本"></td>
+            <td><strong>01 考古題範本</strong></td>
+            <td class="copies">× N</td>
+            <td><a href="../assessment-design/01-archaeology-question-template.html">assessment-design/01-archaeology-question-template.html</a></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" class="chk" aria-label="勾選建檔表"></td>
+            <td><strong>02 勾選建檔表</strong></td>
+            <td class="copies">× N</td>
+            <td><a href="../assessment-design/02-checklist-archive.html">assessment-design/02-checklist-archive.html</a></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" class="chk" aria-label="分數與觀察"></td>
+            <td><strong>03 分數與觀察評量表</strong></td>
+            <td class="copies">× N</td>
+            <td><a href="../assessment-design/03-scoring-observation.html">assessment-design/03-scoring-observation.html</a></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" class="chk" aria-label="評量三表合併"></td>
+            <td><strong>三表合併列印（可選）</strong></td>
+            <td class="copies">× N</td>
+            <td>依序開啟三個 HTML 後「列印全部」或合併 PDF<br><a href="../assessment-design/index.html">assessment-design/index.html</a></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 class="section-title">三、主持者專用（勿發放講師）</h2>
+      <table>
+        <thead>
+          <tr><th style="width:8%">□</th><th style="width:28%">項目</th><th style="width:12%">份數</th><th>說明與連結</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="checkbox" class="chk" aria-label="上午主持腳本"></td>
+            <td><strong>主持者導覽腳本</strong><br><span style="font-size:0.8rem;color:#64748b">上午 90min</span></td>
+            <td class="copies">× 2</td>
+            <td>邏輯鏈 L0–L7 分鐘話術與投影頁對照<br><a href="../00-preflight/facilitator-preflight-script.html">00-preflight/facilitator-preflight-script.html</a></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" class="chk" aria-label="下午主持腳本"></td>
+            <td><strong>主持者教學腳本</strong><br><span style="font-size:0.8rem;color:#64748b">下午 140min</span></td>
+            <td class="copies">× 2</td>
+            <td>教學鏈 20min ＋ Phase 0–5 話術<br><a href="facilitator-teaching-script.html">facilitator-teaching-script.html</a></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" class="chk" aria-label="彩排手冊"></td>
+            <td><strong>彩排手冊</strong></td>
+            <td class="copies">× 1</td>
+            <td>分鐘表、投影切換、技術檢查（建議平板閱讀，可選印 1 份）<br><a href="rehearsal-runbook.html">rehearsal-runbook.html</a></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 class="section-title">四、可選列印（主持者參考／備用）</h2>
+      <table>
+        <thead>
+          <tr><th style="width:8%">□</th><th style="width:28%">項目</th><th style="width:12%">份數</th><th>說明與連結</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="checkbox" class="chk" aria-label="Phase模板"></td>
+            <td><strong>Phase 0–5 走讀頁</strong></td>
+            <td class="copies">× 0–1</td>
+            <td>下午投影用，通常不需紙本；彩排可印 1 套備查<br>
+              <a href="../01-phase0-identity.html">01-phase0</a> ·
+              <a href="../02-phase1-content-and-steps.html">02-phase1</a> ·
+              <a href="../03-phase2-abcd-objectives.html">03-phase2</a> ·
+              <a href="../04-phase3-methods-and-worksheets.html">04-phase3</a> ·
+              <a href="../05-phase4-assessment-design.html">05-phase4</a> ·
+              <a href="../06-phase5-archive-and-handoff.html">06-phase5</a>
+            </td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" class="chk" aria-label="M1完稿範例"></td>
+            <td><strong>M1-1.1 完稿範例</strong></td>
+            <td class="copies">× 0–N</td>
+            <td>上午 L4 可切換投影；講師參考可選印<br><a href="../demo-units/M1-1.1/final-sample.html">demo-units/M1-1.1/final-sample.html</a></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" class="chk" aria-label="評量建檔表"></td>
+            <td><strong>評量工具建檔表</strong></td>
+            <td class="copies">× 1</td>
+            <td>會後整理用<br><a href="../worksheets/assessment-tool-archive.html">worksheets/assessment-tool-archive.html</a></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 class="section-title">五、現場不列印（僅投影／數位）</h2>
+      <ul style="font-size:0.88rem;margin:0;padding-left:1.25rem;">
+        <li>上午邏輯鏈簡報：<a href="../00-preflight/logic-chain-slideshow.html">logic-chain-slideshow.html</a>（12 頁）</li>
+        <li>下午教學鏈簡報：<a href="../00-preflight/m1-1-1-teaching-chain-slideshow.html">m1-1-1-teaching-chain-slideshow.html</a>（13 頁）</li>
+        <li>Demo Phase 索引：<a href="../index.html">1150730-m1-demo/index.html</a></li>
+        <li>協作平台（Phase 5）：見彩排手冊占位區</li>
+      </ul>
+
+      <p class="note">本頁為數位列印索引；實際列印與裝訂由主辦現場完成。更新日期：115/07/02。</p>
+    </div>
+  </div>
+</body>
+</html>

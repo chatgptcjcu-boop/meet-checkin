@@ -10,6 +10,10 @@
     .sub { text-align: center; color: #1e40af; font-weight: 600; margin-bottom: 1.5rem; }
     h2 { font-size: 1rem; border-left: 4px solid #1e40af; padding-left: 0.5rem; margin: 1.25rem 0 0.5rem; }
     .highlight { background: #eff6ff; padding: 0.75rem 1rem; border-radius: 0.5rem; margin: 1rem 0; }
+    @media print {
+      body { margin: 0; padding: 12mm; max-width: none; }
+      .highlight { break-inside: avoid; }
+    }
   </style>
 </head>
 <body>

@@ -93,9 +93,15 @@
 
 ## 會前準備清單
 
-- [ ] 列印：`1150730-handouts/instructor-worksheet.html`（每人 1 份）
-- [ ] 列印：`assessment-design/` 三表（可合併為附錄）
-- [ ] 主持者：`facilitator-teaching-script.html`
+> **數位套件（已備妥）：** [列印索引](1150730-handouts/print-index.html)｜[彩排手冊](1150730-handouts/rehearsal-runbook.html)
+
+- [x] 數位：列印索引 `1150730-handouts/print-index.html`（全項目清單＋份數建議）
+- [x] 數位：彩排手冊 `1150730-handouts/rehearsal-runbook.html`（分鐘表＋投影切換）
+- [ ] 實體列印：`1150730-handouts/instructor-worksheet.html`（每人 1 份）
+- [ ] 實體列印：`00-preflight/instructor-preflight-worksheet.html`（上午每人 1 份）
+- [ ] 實體列印：`assessment-design/` 三表（可合併為附錄）
+- [ ] 實體列印：主持者 `facilitator-preflight-script.html`（上午）、`facilitator-teaching-script.html`（下午）
+- [ ] 彩排：依彩排手冊走完上午邏輯鏈＋下午教學鏈與 Phase 0–5
 - [ ] 投影：`00-preflight/m1-1-1-teaching-chain-slideshow.html`（下午開場）、Phase 索引、M1-1.1 模板、協作平台
 - [ ] 評核會 ABCD 摘要（若已有）
 

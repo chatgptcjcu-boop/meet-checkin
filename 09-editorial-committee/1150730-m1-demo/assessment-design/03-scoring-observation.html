@@ -11,6 +11,10 @@
     th, td { border: 1px solid #333; padding: 0.4rem; vertical-align: top; }
     th { background: #eff6ff; }
     .write { min-height: 2rem; border-bottom: 1px dashed #ccc; }
+    @media print {
+      body { margin: 0; padding: 12mm; max-width: none; }
+      table { break-inside: avoid; }
+    }
   </style>
 </head>
 <body>

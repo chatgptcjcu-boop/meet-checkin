@@ -12,6 +12,10 @@
     th { background: #eff6ff; }
     td.left { text-align: left; }
     .note { font-size: 0.85rem; color: #666; margin-top: 1rem; }
+    @media print {
+      body { margin: 0; padding: 12mm; max-width: none; }
+      table { break-inside: avoid; }
+    }
   </style>
 </head>
 <body>

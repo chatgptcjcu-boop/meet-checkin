@@ -3,10 +3,11 @@
   "org": "臺灣道法總會－教育委員會",
   "lastUpdated": "2026-07-02",
   "recentWork": [
+    "730 Demo 新增列印索引 print-index.html 與彩排手冊 rehearsal-runbook.html",
+    "1150730-handouts 索引加入列印／彩排卡片；AGENDA 數位準備項標記完成",
     "評核／編審路徑改為英文 kebab-case（09-editorial-committee、08-evaluation-committee）",
     "730 Demo 投影簡報修正 CSS 路徑並抽出共用 meeting-display.js",
-    "視訊簽到目錄改為 video-checkin；remote-members 填答檔名英文化",
-    "新增 url-and-locale-standards、meeting-display-deck Cursor skills"
+    "視訊簽到目錄改為 video-checkin；remote-members 填答檔名英文化"
   ],
   "sync": {
     "remote": "https://github.com/chatgptcjcu-boop/meet-checkin.git",
