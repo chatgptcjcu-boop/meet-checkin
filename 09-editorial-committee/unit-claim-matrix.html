@@ -2,46 +2,338 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <title>86 單元認領矩陣｜教材編審</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>86 單元認領矩陣｜教材編審委員會</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Noto Sans TC', sans-serif; background: #f8fafc; padding: 1rem; font-size: 0.75rem; }
-    .box { max-width: 72rem; margin: 0 auto; background: #fff; border-radius: 0.5rem; padding: 1.5rem; }
-    h1 { font-size: 1.15rem; border-left: 4px solid #1e40af; padding-left: 0.6rem; }
-    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-    th, td { border: 1px solid #e5e7eb; padding: 0.3rem 0.35rem; text-align: center; }
-    th { background: #eff6ff; position: sticky; top: 0; }
-    td.code { text-align: left; font-weight: 600; white-space: nowrap; }
-    td.title { text-align: left; max-width: 12rem; }
-    .pending { color: #9ca3af; font-style: italic; }
-    .legend { font-size: 0.8rem; margin: 0.75rem 0; }
-    .legend span { margin-right: 1rem; }
-    a { color: #1e40af; }
+    :root { --blue:#1e40af; --blue-dark:#1e3a5f; }
+    * { box-sizing: border-box; }
+    body { font-family: 'Noto Sans TC', sans-serif; background: #f0f4f8; margin: 0; padding: 1.5rem 1rem; color:#1f2937; }
+    .box { max-width: 78rem; margin: 0 auto; background: #fff; border-radius: 0.75rem; box-shadow: 0 4px 12px rgb(0 0 0 / 0.08); padding: 1.75rem 2rem; }
+    .nav-top a { color: var(--blue); font-size: 0.85rem; text-decoration:none; }
+    .nav-top a:hover { text-decoration:underline; }
+    h1 { font-size: 1.5rem; margin: 0.5rem 0 0.25rem; color: var(--blue-dark); border-left: 5px solid var(--blue); padding-left: 0.75rem; }
+    .sub { color: #6b7280; font-size: 0.9rem; margin: 0 0 1.25rem 0; }
+
+    .summary { display:flex; flex-wrap:wrap; gap:0.75rem; margin-bottom:1rem; }
+    .stat { flex:1 1 8rem; background:#eff6ff; border:1px solid #bfdbfe; border-radius:0.5rem; padding:0.6rem 0.9rem; text-align:center; }
+    .stat b { display:block; font-size:1.4rem; color:var(--blue); line-height:1.2; }
+    .stat span { font-size:0.72rem; color:#6b7280; }
+    #claimedStat b { color:#047857; }
+
+    .legend { font-size: 0.8rem; margin: 0.75rem 0 0.25rem; color:#374151; }
+    .legend span { margin-right: 1.25rem; white-space:nowrap; }
+    .toolbar { display:flex; flex-wrap:wrap; gap:0.5rem; align-items:center; margin:0.75rem 0 0.25rem; }
+    .btn { font-family:inherit; font-size:0.78rem; border:1px solid var(--blue); background:#fff; color:var(--blue); border-radius:0.4rem; padding:0.35rem 0.75rem; cursor:pointer; }
+    .btn:hover { background:#eff6ff; }
+    .btn.warn { border-color:#b91c1c; color:#b91c1c; }
+    .btn.warn:hover { background:#fef2f2; }
+    .hint { font-size:0.75rem; color:#6b7280; }
+
+    .table-wrap { overflow-x:auto; margin-top:0.75rem; border:1px solid #e5e7eb; border-radius:0.5rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+    th, td { border: 1px solid #e5e7eb; padding: 0.35rem 0.5rem; text-align: center; vertical-align: middle; }
+    thead th { background: #1e3a5f; color:#fff; position: sticky; top: 0; z-index:2; font-weight:600; }
+    td.code { text-align: left; font-weight: 700; white-space: nowrap; color:var(--blue-dark); }
+    td.title { text-align: left; }
+    tr.module-row td { background:#dbeafe; color:var(--blue-dark); font-weight:700; text-align:left; font-size:0.85rem; position:sticky; left:0; }
+    tr.module-row .mhours { float:right; font-weight:500; color:#374151; font-size:0.78rem; }
+    tbody tr:not(.module-row):hover { background:#f8fafc; }
+    .editable { min-width:5rem; cursor:text; outline:none; }
+    .editable:empty::before { content:'待認領'; color:#c4c7cd; font-style:italic; }
+    .editable.review:empty::before { content:'待指派'; }
+    .editable:focus { background:#fffbeb; box-shadow: inset 0 0 0 2px #fbbf24; }
+    td.title .editable:empty::before { content:''; }
+
+    select.status { font-family:inherit; font-size:0.75rem; border:1px solid #d1d5db; border-radius:0.3rem; padding:0.15rem 0.25rem; background:#fff; }
+    tr[data-status="done"] { background:#f0fdf4; }
+    tr[data-status="done"] td.code { color:#047857; }
+    tr[data-status="review"] { background:#fefce8; }
+    tr[data-status="writing"] { background:#eff6ff; }
+    .demo-badge { display:inline-block; font-size:0.68rem; background:#dcfce7; color:#047857; border:1px solid #86efac; border-radius:0.25rem; padding:0.05rem 0.35rem; margin-left:0.35rem; }
+    a.samplelink { color:#047857; font-size:0.72rem; }
+    .footnote { font-size: 0.78rem; color: #9ca3af; margin-top: 1.25rem; line-height:1.6; }
   </style>
 </head>
 <body>
   <div class="box">
-    <p><a href="index.html">← 教材編審委員會</a> · <a href="collaboration-platform/index.html">協作平台</a></p>
+    <nav class="nav-top">
+      <a href="index.html">← 教材編審委員會</a> ·
+      <a href="1151018-m2-unit-claim/index.html">第二次會議（M2 認領）</a> ·
+      <a href="collaboration-platform/index.html">協作平台</a> ·
+      <a href="../dashboard.html">專案儀表板</a>
+    </nav>
     <h1>86 單元認領矩陣</h1>
-    <p class="legend">
-      <span><strong>主筆</strong>：負責撰寫</span>
-      <span><strong>協作</strong>：共同編輯</span>
-      <span><strong>狀態</strong>：未開始／撰寫中／審閱中／定稿</span>
-    </p>
-    <p style="font-size:0.85rem;color:#6b7280;">第二次編審會議（M2）現場填寫。目前為占位，完整 86 列可自 <code>08-evaluation-committee/1150630/units-86.json</code> 展開。</p>
+    <p class="sub">臺灣道法總會－教育委員會｜宮廟管理師 180 小時教材共編｜8 模組 / 86 單元</p>
 
-    <table>
-      <thead>
-        <tr><th>代碼</th><th>單元名稱</th><th>模組</th><th>主筆</th><th>協作</th><th>協作文件連結</th><th>狀態</th></tr>
-      </thead>
-      <tbody id="unitsBody">
-        <tr><td class="code">M1-1.1</td><td class="title">緒論－為何寺廟需要法律定位？</td><td>M1</td><td class="pending">主辦 Demo</td><td class="pending">—</td><td><a href="collaboration-platform/index.html">待設定</a></td><td>示範中</td></tr>
-        <tr><td class="code">M1-1.2</td><td class="title">執行中樞－管理/董事委員會的定位與職責</td><td>M1</td><td class="pending">待認領</td><td class="pending">—</td><td class="pending">—</td><td>未開始</td></tr>
-        <tr><td class="code">M1-1.3</td><td class="title">會後作業－會議記錄的標準格式與重點</td><td>M1</td><td class="pending">待認領</td><td class="pending">—</td><td class="pending">—</td><td>未開始</td></tr>
-        <tr><td colspan="7" style="text-align:center;color:#6b7280;padding:1rem;">… 其餘 83 單元於 M2 會議展開或由 Agent 自 units-86.json 產生完整表 …</td></tr>
-      </tbody>
-    </table>
-    <p style="font-size:0.8rem;color:#9ca3af;margin-top:1rem;">更新認領後請 commit 本檔並 push，另一台電腦即可見。</p>
+    <div class="summary">
+      <div class="stat"><b>86</b><span>總單元數</span></div>
+      <div class="stat"><b>8</b><span>模組</span></div>
+      <div class="stat"><b>180</b><span>總時數（小時）</span></div>
+      <div class="stat" id="claimedStat"><b id="claimedCount">0</b><span>已認領主筆</span></div>
+      <div class="stat"><b id="doneCount">0</b><span>已定稿</span></div>
+    </div>
+
+    <p class="legend">
+      <span><strong>主筆委員</strong>：負責撰寫</span>
+      <span><strong>協作委員</strong>：共同編輯</span>
+      <span><strong>審查委員</strong>：內容審閱</span>
+      <span><strong>狀態</strong>：未開始／撰寫中／審閱中／已定稿</span>
+    </p>
+
+    <div class="toolbar">
+      <button class="btn" id="saveBtn">💾 儲存至本機瀏覽器</button>
+      <button class="btn" id="exportBtn">⬇ 匯出 JSON（回傳編審召集人）</button>
+      <button class="btn warn" id="clearBtn">清除本機暫存</button>
+      <span class="hint" id="saveHint">現場填寫會自動存到本機瀏覽器；正式登錄請編輯本檔後 commit &amp; push。</span>
+    </div>
+
+    <div class="table-wrap">
+      <table id="matrix">
+        <thead>
+          <tr>
+            <th style="width:5.5rem">單元碼</th>
+            <th>單元名稱</th>
+            <th style="width:7rem">主筆委員</th>
+            <th style="width:7rem">協作委員</th>
+            <th style="width:7rem">審查委員</th>
+            <th style="width:6rem">狀態</th>
+          </tr>
+        </thead>
+        <tbody id="unitsBody"><!-- rows generated by script --></tbody>
+      </table>
+    </div>
+
+    <p class="footnote">
+      資料來源：<code>08-evaluation-committee/1150630/units-86.json</code>（630 評鑑委員會確認之課程架構）。<br>
+      模組時數為課綱總時數；本表未逐單元標示時數（來源檔未提供單元級時數）。<br>
+      示範單元 <strong>M1-1.1</strong> 已由主辦完成 Demo，可參考
+      <a class="samplelink" href="textbook-units/m1-1-1-demo-unit/final-sample.html">完稿範例</a> 與
+      <a class="samplelink" href="textbook-units/m1-1-1-demo-unit/unit-template.html">空白模板</a>。<br>
+      填寫方式：直接點各儲存格輸入委員姓名、選擇狀態；完成後可「儲存至本機」或「匯出 JSON」交回召集人正式登錄。
+    </p>
   </div>
+
+  <script>
+    const MODULES = [
+      { id: 1, name: "模組一｜寺廟組織治理與法規遵循", hours: 20, units: [
+        ["M1-1.1","緒論－為何寺廟需要法律定位？"],
+        ["M1-1.2","執行中樞－管理/董事委員會的定位與職責"],
+        ["M1-1.3","會後作業－會議記錄的標準格式與重點"],
+        ["M1-2.1","文件盤點－信徒名冊與會議紀錄"],
+        ["M1-2.2","財務條款－財產保管、運用與會計制度"],
+        ["M1-2.3","負責人變更－事由與程序"],
+        ["M1-3.1","志工面談技巧－了解動機與期待"],
+        ["M1-3.2","排班的原則－公平性與輪替性"],
+        ["M1-3.3","建立志工服務倫理守則"]
+      ]},
+      { id: 2, name: "模組二｜宗教捐獻財務與文資管理", hours: 20, units: [
+        ["M2-1.1","借貸法則與會計要素"],
+        ["M2-1.2","光明燈、安太歲之帳務處理"],
+        ["M2-1.3","功德芳名錄製作實務"],
+        ["M2-2.1","不動產清冊的製作與應用"],
+        ["M2-2.2","動產盤點的方法與紀錄"],
+        ["M2-2.3","實作：從流水帳到決算書"],
+        ["M2-3.1","《文資法》中的資產類別"],
+        ["M2-3.2","傳統修復工法與匠師倫理簡介"],
+        ["M2-3.3","修復及再利用計畫的內容"]
+      ]},
+      { id: 3, name: "模組三｜宗教儀典與數位弘法", hours: 30, units: [
+        ["M3-1.1","佛道教核心儀典比較"],
+        ["M3-1.2","實作－製作年度行事曆草案"],
+        ["M3-1.3","實作－設計一場祝壽儀式SOP"],
+        ["M3-1.4","實作－編列一場法會預算"],
+        ["M3-1.5","合作前的評估與洽談"],
+        ["M3-1.6","儀典前的風險評估"],
+        ["M3-2.1","何謂「宮廟品牌」？"],
+        ["M3-2.2","實作－規劃一個月份的內容行事曆"],
+        ["M3-2.3","手機剪輯APP實作"],
+        ["M3-2.4","實作－撰寫一場線上法會企劃書"],
+        ["M3-2.5","LINE官方帳號的價值與建立"],
+        ["M3-2.6","廣告受眾設定與預算編列"],
+        ["M3-3.1","合作模式與廠商尋找"],
+        ["M3-3.2","AI文案生成工具的應用"],
+        ["M3-3.3","實作－草擬合作企劃書"]
+      ]},
+      { id: 4, name: "模組四｜信眾服務與宗教關懷", hours: 30, units: [
+        ["M4-1.1","從信眾體驗看服務品質"],
+        ["M4-1.2","實作練習"],
+        ["M4-1.3","撰寫標準答案"],
+        ["M4-1.4","引導與協助身障信眾"],
+        ["M4-1.5","實作－設計信眾服務滿意度問卷"],
+        ["M4-2.1","同理心：不只是「聽」，更是「懂」"],
+        ["M4-2.2","社會福利資源的轉介"],
+        ["M4-2.3","LEARN模式詳解"],
+        ["M4-2.4","情境演練與同儕回饋"],
+        ["M4-2.5","不實指控的澄清與應對"],
+        ["M4-3.1","寺廟的警示與公告"],
+        ["M4-3.2","實作－撰寫活動企劃書"],
+        ["M4-3.3","實作－規劃課程大綱"],
+        ["M4-3.4","實作－撰寫公益計畫書"],
+        ["M4-3.5","實作－製作社區資源地圖"]
+      ]},
+      { id: 5, name: "模組五｜文資保存與在地共生", hours: 30, units: [
+        ["M5-1.1","何謂文化資產？"],
+        ["M5-1.2","建立文物清冊與檔案"],
+        ["M5-1.3","所有權人的權利與義務"],
+        ["M5-1.4","主管機關與審議會"],
+        ["M5-1.5","保存現況與修復建議"],
+        ["M5-2.1","實作：設計一份學習單"],
+        ["M5-2.2","依不同對象調整活動內容"],
+        ["M5-2.3","實作：企劃一場寺廟走讀活動"],
+        ["M5-2.4","互動技巧的應用"],
+        ["M5-2.5","如何設計回饋問卷"],
+        ["M5-3.1","分析利害關係人的影響力與關聯性"],
+        ["M5-3.2","合作模式：資源交換與共同舉辦活動"],
+        ["M5-3.3","作為物資發放站的規劃"],
+        ["M5-3.4","參與社區防災演練"],
+        ["M5-3.5","任務分工：人力與物資調度"]
+      ]},
+      { id: 6, name: "模組六｜宗教活動安全與危機管理", hours: 20, units: [
+        ["M6-1.1","其他災害風險：地震、颱風、淹水"],
+        ["M6-1.2","實作－撰寫簡易風險評估報告"],
+        ["M6-1.3","實作－撰寫火災緊急應變計畫大綱"],
+        ["M6-2.1","人潮疏導與管制措施"],
+        ["M6-2.2","交通維持計畫的申請"],
+        ["M6-3.1","危機的生命週期"],
+        ["M6-3.2","事實與觀點的區辨"],
+        ["M6-3.3","「艦橋理論」的應用"],
+        ["M6-3.4","內部溝通的重要性"],
+        ["M6-3.5","如何與律師有效溝通"]
+      ]},
+      { id: 7, name: "模組七｜專題實作：繞境專案與宗教公益", hours: 18, units: [
+        ["M7-1.1","專案企劃書核心架構"],
+        ["M7-1.2","交通維持計畫的法規與撰寫"],
+        ["M7-1.3","分組實作：企劃書內容撰寫"],
+        ["M7-2.1","SMART原則與服務目標設定"],
+        ["M7-2.2","公益方案預算編列與資源盤點"],
+        ["M7-2.3","分組實作：方案設計書撰寫"],
+        ["M7-3.1","分組實作：專題報告內文撰寫"],
+        ["M7-3.2","報告中的圖表選擇與應用"],
+        ["M7-3.3","同儕互評與最終修正"]
+      ]},
+      { id: 8, name: "模組八｜專題發表與總結", hours: 12, units: [
+        ["M8-1.1","口頭發表技巧實戰"],
+        ["M8-1.2","專題發表 (第一、二組)"],
+        ["M8-2.1","專家綜合講評與同儕互評"],
+        ["M8-2.2","結業式與未來展望"]
+      ]}
+    ];
+
+    const STATUSES = [
+      ["none","未開始"],
+      ["writing","撰寫中"],
+      ["review","審閱中"],
+      ["done","已定稿"]
+    ];
+    const STORAGE_KEY = "editorial-unit-claim-matrix-v1";
+
+    function esc(s){ return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+    function buildRows() {
+      const tbody = document.getElementById('unitsBody');
+      let html = '';
+      MODULES.forEach(m => {
+        html += `<tr class="module-row"><td colspan="6">${esc(m.name)}<span class="mhours">${m.hours} 小時 · ${m.units.length} 單元</span></td></tr>`;
+        m.units.forEach(([code, title]) => {
+          const isDemo = code === 'M1-1.1';
+          const demoBadge = isDemo ? ' <span class="demo-badge">✅ Demo 完稿範例</span>' : '';
+          const defaultLead = isDemo ? '主辦示範' : '';
+          const defaultStatus = isDemo ? 'done' : 'none';
+          const statusOpts = STATUSES.map(([v,l]) => `<option value="${v}"${v===defaultStatus?' selected':''}>${l}</option>`).join('');
+          html += `<tr data-code="${code}" data-status="${defaultStatus}">
+            <td class="code">${code}</td>
+            <td class="title">${esc(title)}${demoBadge}</td>
+            <td><div class="editable" data-field="lead" contenteditable="true">${defaultLead}</div></td>
+            <td><div class="editable" data-field="collab" contenteditable="true"></div></td>
+            <td><div class="editable review" data-field="review" contenteditable="true"></div></td>
+            <td><select class="status" data-field="status">${statusOpts}</select></td>
+          </tr>`;
+        });
+      });
+      tbody.innerHTML = html;
+    }
+
+    function collect() {
+      const data = {};
+      document.querySelectorAll('#unitsBody tr[data-code]').forEach(tr => {
+        const code = tr.dataset.code;
+        data[code] = {
+          lead: tr.querySelector('[data-field="lead"]').textContent.trim(),
+          collab: tr.querySelector('[data-field="collab"]').textContent.trim(),
+          review: tr.querySelector('[data-field="review"]').textContent.trim(),
+          status: tr.querySelector('[data-field="status"]').value
+        };
+      });
+      return data;
+    }
+
+    function applyData(data) {
+      if (!data) return;
+      document.querySelectorAll('#unitsBody tr[data-code]').forEach(tr => {
+        const d = data[tr.dataset.code];
+        if (!d) return;
+        if (typeof d.lead === 'string') tr.querySelector('[data-field="lead"]').textContent = d.lead;
+        if (typeof d.collab === 'string') tr.querySelector('[data-field="collab"]').textContent = d.collab;
+        if (typeof d.review === 'string') tr.querySelector('[data-field="review"]').textContent = d.review;
+        if (d.status) { tr.querySelector('[data-field="status"]').value = d.status; tr.dataset.status = d.status; }
+      });
+    }
+
+    function recount() {
+      let claimed = 0, done = 0;
+      document.querySelectorAll('#unitsBody tr[data-code]').forEach(tr => {
+        if (tr.querySelector('[data-field="lead"]').textContent.trim()) claimed++;
+        if (tr.querySelector('[data-field="status"]').value === 'done') done++;
+      });
+      document.getElementById('claimedCount').textContent = claimed;
+      document.getElementById('doneCount').textContent = done;
+    }
+
+    function save(silent) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(collect()));
+        if (!silent) flashHint('已儲存至本機瀏覽器 ✓');
+      } catch(e) { flashHint('儲存失敗：' + e.message); }
+    }
+
+    let hintTimer;
+    function flashHint(msg) {
+      const el = document.getElementById('saveHint');
+      const orig = '現場填寫會自動存到本機瀏覽器；正式登錄請編輯本檔後 commit & push。';
+      el.textContent = msg;
+      clearTimeout(hintTimer);
+      hintTimer = setTimeout(() => { el.textContent = orig; }, 2500);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      buildRows();
+      try { applyData(JSON.parse(localStorage.getItem(STORAGE_KEY))); } catch(e) {}
+      recount();
+
+      const body = document.getElementById('unitsBody');
+      body.addEventListener('input', () => { recount(); save(true); });
+      body.addEventListener('change', e => {
+        if (e.target.matches('select.status')) e.target.closest('tr').dataset.status = e.target.value;
+        recount(); save(true);
+      });
+
+      document.getElementById('saveBtn').addEventListener('click', () => save(false));
+      document.getElementById('clearBtn').addEventListener('click', () => {
+        if (confirm('確定清除本機暫存？（不影響已 commit 的檔案內容）')) {
+          localStorage.removeItem(STORAGE_KEY);
+          location.reload();
+        }
+      });
+      document.getElementById('exportBtn').addEventListener('click', () => {
+        const blob = new Blob([JSON.stringify(collect(), null, 2)], {type:'application/json'});
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'unit-claim-matrix-' + new Date().toISOString().slice(0,10) + '.json';
+        a.click();
+        URL.revokeObjectURL(a.href);
+      });
+    });
+  </script>
 </body>
 </html>
