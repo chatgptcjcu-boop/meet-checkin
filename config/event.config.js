@@ -43,5 +43,14 @@ window.EVENT_CONFIG = {
     "checkInPageTitle": "臺灣道法總會－教育委員會 會議報到與簽退",
     "ogTitle": "2026宮廟管理師職能基準 iCAP推動會議",
     "ogDescription": "第一次評核委員委員會議 (2026/06/30) - 請進行視訊簽到/簽退。"
+  },
+  "instructorWorksheet730": {
+    "formType": "730-instructor",
+    "sheetTab": "instructor-730",
+    "demoUnit": "M1-1.1",
+    "dateRoc": "115年7月30日",
+    "dateDisplay": "115/07/30",
+    "dateFilePrefix": "1150730",
+    "onlineFormPath": "09-editorial-committee/1150730-m1-demo/1150730-handouts/instructor-worksheet-online.html"
   }
 };

@@ -9,7 +9,11 @@
  *
  * ── 架構說明 ──
  * • 填答-正文 / 填答-附錄 → handleFormSubmit（視訊委員職能填答，勿異動）
+ * • 730-instructor        → handleInstructorWorksheet（730 講師學習單，分頁 instructor-730）
  * • 簽到 / 簽退           → handleSignInOut（驗證簽到＋試算表＋Drive＋寄信通知）
+ *
+ * ⚠️ 每次修改本檔後必須重新部署 Web App：
+ *   部署 → 管理部署 → 編輯 → 版本「新版本」→ 部署
  */
 
 var SPREADSHEET_ID = '1gqA0iv17jE4FKEzUKVh5ngKnd57mU12RW0-md1fTjSo';
@@ -33,6 +37,22 @@ function getSpreadsheet_() {
 
 var SIGN_SHEET_NAME = '工作表1';
 var FORM_SHEET_NAME = '填答紀錄';
+/** 730 教材編審 Demo 講師學習單專用分頁（英文 tab 名，避免 Sheets 編碼問題） */
+var INSTRUCTOR_SHEET_NAME = 'instructor-730';
+
+/** instructor-730 分頁欄位順序（與前端 fields 物件鍵名一致） */
+var INSTRUCTOR_FIELD_KEYS = [
+  '講師姓名', '服務單位宮廟', '示範單元', '活動日期', '職稱', '聯絡電話', 'Email', '出席方式',
+  '編審經驗', 'Demo目的理解', '壹章簽名日期',
+  '緒論導入', '核心概念', '案例故事', '演練活動', '總結',
+  '步驟1', '步驟2', '步驟3', '步驟4', '步驟5', '步驟6',
+  '最難教段落',
+  'ABCD_A', 'ABCD_B', 'ABCD_C', 'ABCD_D', 'B欄可評量', '修訂說明',
+  '教學方式', '時間比例', '學習單設計', '學習單產出',
+  '選擇題1', '選擇題2', '簡答題1', '勾選建檔',
+  'Rubrics達標描述', 'Rubrics達標分數', 'Rubrics待加強描述', 'Rubrics待加強分數',
+  '流程理解', '協作平台', '陸章簽名日期'
+];
 
 /** 與簽到試算表第 1 列標題一致（第 5 欄可核對截圖是否上傳） */
 var SIGN_HEADERS = ['報到時間', '姓名', '身份別', '錄影授權', '截圖連結'];
@@ -50,6 +70,9 @@ function doPost(e) {
 
     if (action === '填答-正文' || action === '填答-附錄') {
       return handleFormSubmit(data);
+    }
+    if (action === '730-instructor') {
+      return handleInstructorWorksheet(data);
     }
     if (action === '簽到' || action === '簽退') {
       return handleSignInOut(data);
@@ -170,6 +193,39 @@ function handleFormSubmit(data) {
     }
   }
 
+  return jsonOut({ ok: true });
+}
+
+/* ═══════════════════════════════════════════════════════════════
+ * 730 講師學習單 — instructor-730 分頁（扁平欄位 + JSON 備份）
+ * action / formType: 730-instructor
+ * ⚠️ 修改後請重新部署 Web App（見檔案頂部說明）
+ * ═══════════════════════════════════════════════════════════════ */
+
+function handleInstructorWorksheet(data) {
+  var ss = getSpreadsheet_();
+  var sheet = ss.getSheetByName(INSTRUCTOR_SHEET_NAME) || ss.insertSheet(INSTRUCTOR_SHEET_NAME);
+  var fields = data.fields || {};
+
+  if (sheet.getLastRow() === 0) {
+    var headers = ['提交時間', '身份'].concat(INSTRUCTOR_FIELD_KEYS, ['頁面URL', '結構化答案JSON']);
+    sheet.appendRow(headers);
+  }
+
+  var row = [
+    formatTaiwanTime_(data.timestamp),
+    data.role || '講師'
+  ];
+
+  for (var i = 0; i < INSTRUCTOR_FIELD_KEYS.length; i++) {
+    var key = INSTRUCTOR_FIELD_KEYS[i];
+    row.push(fields[key] != null ? String(fields[key]) : '');
+  }
+
+  row.push(data.pageUrl || '');
+  row.push(JSON.stringify(data.answers || []));
+
+  sheet.appendRow(row);
   return jsonOut({ ok: true });
 }
 
@@ -346,6 +402,27 @@ function testFormSubmit() {
     timestamp: new Date().toISOString(),
     answerCount: 1,
     answers: [{ title: '1-1 出席確認', fields: [{ label: '委員姓名', value: 'GAS填答測試' }] }],
+    pageUrl: 'manual-test'
+  })).getContent());
+}
+
+function testInstructorWorksheet() {
+  Logger.log(doPost(mockPost_({
+    action: '730-instructor',
+    formType: '730-instructor',
+    name: 'GAS講師測試',
+    role: '講師',
+    timestamp: new Date().toISOString(),
+    demoUnit: 'M1-1.1',
+    eventDate: '115/07/30',
+    fields: {
+      '講師姓名': 'GAS講師測試',
+      '服務單位宮廟': '測試宮廟',
+      '示範單元': 'M1-1.1',
+      '活動日期': '115/07/30',
+      '緒論導入': '測試緒論'
+    },
+    answers: [{ title: '0-1 基本資料', fields: [{ label: '講師姓名', value: 'GAS講師測試' }] }],
     pageUrl: 'manual-test'
   })).getContent());
 }
