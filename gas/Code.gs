@@ -10,6 +10,8 @@
  * ── 架構說明 ──
  * • 填答-正文 / 填答-附錄 → handleFormSubmit（視訊委員職能填答，勿異動）
  * • 730-instructor        → handleInstructorWorksheet（730 講師學習單，分頁 instructor-730）
+ * • unit-claim-matrix     → handleUnitClaimMatrix（86 單元認領矩陣，分頁 unit-claim-matrix，以單元碼 upsert）
+ *                           讀取：doGet ?action=unit-claim-matrix 回傳目前全部單元 JSON
  * • 簽到 / 簽退           → handleSignInOut（驗證簽到＋試算表＋Drive＋寄信通知）
  *
  * ⚠️ 每次修改本檔後必須重新部署 Web App：
@@ -39,6 +41,13 @@ var SIGN_SHEET_NAME = '工作表1';
 var FORM_SHEET_NAME = '填答紀錄';
 /** 730 教材編審 Demo 講師學習單專用分頁（英文 tab 名，避免 Sheets 編碼問題） */
 var INSTRUCTOR_SHEET_NAME = 'instructor-730';
+/** 86 單元認領矩陣分頁（英文 tab 名；以單元碼為主鍵 upsert，last-write-wins） */
+var UNIT_CLAIM_SHEET_NAME = 'unit-claim-matrix';
+
+/** unit-claim-matrix 分頁欄位順序（與前端 units 物件鍵名對應） */
+var UNIT_CLAIM_HEADERS = [
+  '單元碼', '單元名稱', '模組', '主筆', '協作', '審查', '狀態', '更新時間', '更新者'
+];
 
 /** instructor-730 分頁欄位順序（與前端 fields 物件鍵名一致） */
 var INSTRUCTOR_FIELD_KEYS = [
@@ -73,6 +82,9 @@ function doPost(e) {
     }
     if (action === '730-instructor') {
       return handleInstructorWorksheet(data);
+    }
+    if (action === 'unit-claim-matrix') {
+      return handleUnitClaimMatrix(data);
     }
     if (action === '簽到' || action === '簽退') {
       return handleSignInOut(data);
@@ -229,6 +241,90 @@ function handleInstructorWorksheet(data) {
   return jsonOut({ ok: true });
 }
 
+/* ═══════════════════════════════════════════════════════════════
+ * 86 單元認領矩陣 — unit-claim-matrix 分頁（以「單元碼」為主鍵 upsert）
+ * action: unit-claim-matrix
+ * • 前端一次送出全部單元狀態（data.units 陣列）
+ * • 已存在單元碼 → 覆寫該列；不存在 → 新增列（last-write-wins）
+ * • 讀取請走 doGet(?action=unit-claim-matrix)
+ * ⚠️ 修改後請重新部署 Web App（見檔案頂部說明）
+ * ═══════════════════════════════════════════════════════════════ */
+
+function handleUnitClaimMatrix(data) {
+  var ss = getSpreadsheet_();
+  var sheet = ss.getSheetByName(UNIT_CLAIM_SHEET_NAME) || ss.insertSheet(UNIT_CLAIM_SHEET_NAME);
+
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(UNIT_CLAIM_HEADERS);
+  }
+
+  var units = data.units || [];
+  var updater = data.name || '';
+  var timeStr = formatTaiwanTime_(data.timestamp);
+
+  // 建立「單元碼 → 列號」對照，達成 upsert
+  var codeToRow = {};
+  var lastRow = sheet.getLastRow();
+  if (lastRow >= 2) {
+    var codes = sheet.getRange(2, 1, lastRow - 1, 1).getValues();
+    for (var i = 0; i < codes.length; i++) {
+      codeToRow[String(codes[i][0])] = i + 2;
+    }
+  }
+
+  var updated = 0;
+  var appended = 0;
+  for (var j = 0; j < units.length; j++) {
+    var u = units[j] || {};
+    var row = [
+      u.code || '',
+      u.title || '',
+      u.module || '',
+      u.lead || '',
+      u.collab || '',
+      u.review || '',
+      u.status || '',
+      timeStr,
+      updater
+    ];
+    var existingRow = codeToRow[String(u.code)];
+    if (existingRow) {
+      sheet.getRange(existingRow, 1, 1, row.length).setValues([row]);
+      updated++;
+    } else {
+      sheet.appendRow(row);
+      codeToRow[String(u.code)] = sheet.getLastRow();
+      appended++;
+    }
+  }
+
+  return jsonOut({ ok: true, updated: updated, appended: appended, total: units.length });
+}
+
+/** doGet 讀取目前 unit-claim-matrix 全部單元（供前端「同步最新」載入） */
+function getUnitClaimMatrix_() {
+  var ss = getSpreadsheet_();
+  var sheet = ss.getSheetByName(UNIT_CLAIM_SHEET_NAME);
+  if (!sheet || sheet.getLastRow() < 2) {
+    return jsonOut({ ok: true, units: [] });
+  }
+  var values = sheet.getRange(2, 1, sheet.getLastRow() - 1, UNIT_CLAIM_HEADERS.length).getValues();
+  var units = values.map(function (r) {
+    return {
+      code: r[0],
+      title: r[1],
+      module: r[2],
+      lead: r[3],
+      collab: r[4],
+      review: r[5],
+      status: r[6],
+      updatedAt: r[7],
+      updatedBy: r[8]
+    };
+  });
+  return jsonOut({ ok: true, units: units });
+}
+
 /** 簽到／簽退固定寫入「工作表1」，避免與「填答紀錄」分頁混淆 */
 function getOrCreateSignSheet_(ss) {
   var sheet = ss.getSheetByName(SIGN_SHEET_NAME);
@@ -353,8 +449,15 @@ function jsonOut(obj) {
     .setMimeType(ContentService.MimeType.JSON);
 }
 
-/** 瀏覽器開啟 /exec 可測試部署是否上線 */
-function doGet() {
+/**
+ * 瀏覽器開啟 /exec 可測試部署是否上線。
+ * ?action=unit-claim-matrix → 回傳目前 86 單元認領矩陣（供前端「同步最新」）。
+ */
+function doGet(e) {
+  var action = e && e.parameter ? (e.parameter.action || '') : '';
+  if (action === 'unit-claim-matrix') {
+    return getUnitClaimMatrix_();
+  }
   return jsonOut({ ok: true, service: 'meet-checkin', time: new Date().toISOString() });
 }
 
@@ -425,6 +528,21 @@ function testInstructorWorksheet() {
     answers: [{ title: '0-1 基本資料', fields: [{ label: '講師姓名', value: 'GAS講師測試' }] }],
     pageUrl: 'manual-test'
   })).getContent());
+}
+
+function testUnitClaimMatrix() {
+  /* 寫入兩筆單元後再讀回，驗證 upsert 與 doGet 皆正常 */
+  Logger.log(doPost(mockPost_({
+    action: 'unit-claim-matrix',
+    name: 'GAS矩陣測試',
+    timestamp: new Date().toISOString(),
+    units: [
+      { code: 'M1-1.1', title: '緒論－為何寺廟需要法律定位？', module: '模組一', lead: '主辦示範', collab: '', review: '王委員', status: 'done' },
+      { code: 'M1-1.2', title: '執行中樞－管理/董事委員會的定位與職責', module: '模組一', lead: '李委員', collab: '張委員', review: '', status: 'writing' }
+    ],
+    pageUrl: 'manual-test'
+  })).getContent());
+  Logger.log(getUnitClaimMatrix_().getContent());
 }
 
 function testFormSubmitWeb() {

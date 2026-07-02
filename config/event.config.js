@@ -1,4 +1,4 @@
-/** 由 config/event.config.json 產生 — 執行 node scripts/sync-config.js 同步 */
+/** 由 config/event.config.json 自動產生 — 執行 node scripts/sync-config.js 同步 */
 window.EVENT_CONFIG = {
   "meta": {
     "kitVersion": "1.0.0",
@@ -36,7 +36,12 @@ window.EVENT_CONFIG = {
     "channel": "Line"
   },
   "signIn": {
-    "roles": ["評核委員", "專家顧問", "專案工作人員", "列席人員"],
+    "roles": [
+      "評核委員",
+      "專家顧問",
+      "專案工作人員",
+      "列席人員"
+    ],
     "memberPortalPath": "./remote-members/index.html"
   },
   "seo": {
@@ -52,5 +57,12 @@ window.EVENT_CONFIG = {
     "dateDisplay": "115/07/30",
     "dateFilePrefix": "1150730",
     "onlineFormPath": "09-editorial-committee/1150730-m1-demo/1150730-handouts/instructor-worksheet-online.html"
+  },
+  "unitClaimMatrix": {
+    "action": "unit-claim-matrix",
+    "sheetTab": "unit-claim-matrix",
+    "totalUnits": 86,
+    "totalModules": 8,
+    "pagePath": "09-editorial-committee/unit-claim-matrix.html"
   }
 };

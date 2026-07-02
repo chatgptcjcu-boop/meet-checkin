@@ -51,5 +51,12 @@
     "dateDisplay": "115/07/30",
     "dateFilePrefix": "1150730",
     "onlineFormPath": "09-editorial-committee/1150730-m1-demo/1150730-handouts/instructor-worksheet-online.html"
+  },
+  "unitClaimMatrix": {
+    "action": "unit-claim-matrix",
+    "sheetTab": "unit-claim-matrix",
+    "totalUnits": 86,
+    "totalModules": 8,
+    "pagePath": "09-editorial-committee/unit-claim-matrix.html"
   }
 }

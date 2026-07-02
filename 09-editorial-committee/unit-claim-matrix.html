@@ -26,9 +26,16 @@
     .toolbar { display:flex; flex-wrap:wrap; gap:0.5rem; align-items:center; margin:0.75rem 0 0.25rem; }
     .btn { font-family:inherit; font-size:0.78rem; border:1px solid var(--blue); background:#fff; color:var(--blue); border-radius:0.4rem; padding:0.35rem 0.75rem; cursor:pointer; }
     .btn:hover { background:#eff6ff; }
+    .btn.primary { background:var(--blue); color:#fff; font-weight:600; }
+    .btn.primary:hover { background:var(--blue-dark); }
+    .btn:disabled { opacity:0.55; cursor:progress; }
     .btn.warn { border-color:#b91c1c; color:#b91c1c; }
     .btn.warn:hover { background:#fef2f2; }
+    .namebox { font-size:0.75rem; color:#374151; display:inline-flex; align-items:center; gap:0.35rem; }
+    .namebox input { font-family:inherit; font-size:0.78rem; border:1px solid #d1d5db; border-radius:0.4rem; padding:0.3rem 0.5rem; width:11rem; }
     .hint { font-size:0.75rem; color:#6b7280; }
+    #cloudStatus.ok { color:#047857; }
+    #cloudStatus.err { color:#b91c1c; }
 
     .table-wrap { overflow-x:auto; margin-top:0.75rem; border:1px solid #e5e7eb; border-radius:0.5rem; }
     table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
@@ -82,10 +89,18 @@
     </p>
 
     <div class="toolbar">
-      <button class="btn" id="saveBtn">💾 儲存至本機瀏覽器</button>
-      <button class="btn" id="exportBtn">⬇ 匯出 JSON（回傳編審召集人）</button>
+      <button class="btn primary" id="saveCloudBtn">☁ 儲存到雲端（Google 試算表）</button>
+      <button class="btn" id="syncBtn">🔄 同步最新（讀取雲端）</button>
+      <label class="namebox">您的姓名
+        <input type="text" id="editorName" placeholder="選填，雲端記錄更新者" autocomplete="name">
+      </label>
+      <span class="hint" id="cloudStatus"></span>
+    </div>
+    <div class="toolbar">
+      <button class="btn" id="saveBtn">💾 存本機暫存</button>
+      <button class="btn" id="exportBtn">⬇ 匯出 JSON（備份）</button>
       <button class="btn warn" id="clearBtn">清除本機暫存</button>
-      <span class="hint" id="saveHint">現場填寫會自動存到本機瀏覽器；正式登錄請編輯本檔後 commit &amp; push。</span>
+      <span class="hint" id="saveHint">編輯後會自動存本機；請按「☁ 儲存到雲端」才會寫入共用試算表（多人共用、以單元碼覆寫）。</span>
     </div>
 
     <div class="table-wrap">
@@ -110,10 +125,14 @@
       示範單元 <strong>M1-1.1</strong> 已由主辦完成 Demo，可參考
       <a class="samplelink" href="textbook-units/m1-1-1-demo-unit/final-sample.html">完稿範例</a> 與
       <a class="samplelink" href="textbook-units/m1-1-1-demo-unit/unit-template.html">空白模板</a>。<br>
-      填寫方式：直接點各儲存格輸入委員姓名、選擇狀態；完成後可「儲存至本機」或「匯出 JSON」交回召集人正式登錄。
+      填寫方式：直接點各儲存格輸入委員姓名、選擇狀態。編輯會自動存本機瀏覽器；<br>
+      按「<strong>☁ 儲存到雲端</strong>」即寫入主辦單位 Google 試算表（分頁 <code>unit-claim-matrix</code>，一列一單元、以單元碼覆寫）。<br>
+      多人共用：開啟頁面會自動讀取雲端最新；亦可按「<strong>🔄 同步最新</strong>」重新載入。<br>
+      注意：雲端採<strong>後寫覆蓋（last-write-wins）</strong>，兩人同時改同一單元時，後按儲存者為準；建議編輯前先「同步最新」。
     </p>
   </div>
 
+  <script src="../config/event.config.js"></script>
   <script>
     const MODULES = [
       { id: 1, name: "模組一｜寺廟組織治理與法規遵循", hours: 20, units: [
@@ -227,6 +246,15 @@
       ["done","已定稿"]
     ];
     const STORAGE_KEY = "editorial-unit-claim-matrix-v1";
+    const CLOUD_AT_KEY = STORAGE_KEY + ":cloudAt";
+
+    /* 單元碼 → 名稱／模組（雲端寫入時附帶，供試算表可讀性） */
+    const CODE_TITLE = {}, CODE_MODULE = {};
+    MODULES.forEach(m => m.units.forEach(([code, title]) => { CODE_TITLE[code] = title; CODE_MODULE[code] = m.name; }));
+
+    function gasUrl(){ return (window.EVENT_CONFIG && window.EVENT_CONFIG.backend && window.EVENT_CONFIG.backend.gasWebAppUrl) || ''; }
+    function claimAction(){ return (window.EVENT_CONFIG && window.EVENT_CONFIG.unitClaimMatrix && window.EVENT_CONFIG.unitClaimMatrix.action) || 'unit-claim-matrix'; }
+    function nowStr(){ return new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Taipei' }).slice(0, 16); }
 
     function esc(s){ return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 
@@ -280,6 +308,106 @@
       });
     }
 
+    /* 收集為雲端上傳格式：一列一單元，含單元名稱與模組 */
+    function collectUnits() {
+      const data = collect();
+      return Object.keys(data).map(code => ({
+        code,
+        title: CODE_TITLE[code] || '',
+        module: CODE_MODULE[code] || '',
+        lead: data[code].lead,
+        collab: data[code].collab,
+        review: data[code].review,
+        status: data[code].status
+      }));
+    }
+
+    /* 將雲端 units 陣列套用回表格（雲端為準，覆寫本機顯示） */
+    function applyCloudUnits(units) {
+      if (!Array.isArray(units)) return 0;
+      const map = {};
+      units.forEach(u => {
+        if (!u || !u.code) return;
+        map[u.code] = {
+          lead: u.lead || '',
+          collab: u.collab || '',
+          review: u.review || '',
+          status: u.status || 'none'
+        };
+      });
+      applyData(map);
+      recount();
+      return Object.keys(map).length;
+    }
+
+    function setCloudStatus(msg, kind) {
+      const el = document.getElementById('cloudStatus');
+      el.className = kind || '';
+      el.textContent = msg || '';
+    }
+
+    function markCloudSaved(t) {
+      localStorage.setItem(CLOUD_AT_KEY, t);
+    }
+
+    /* 儲存到雲端：no-cors POST（同 instructor-worksheet / remote-members） */
+    async function saveCloud() {
+      const url = gasUrl();
+      if (!url) { setCloudStatus('尚未設定雲端網址（GAS URL）', 'err'); return; }
+      const btn = document.getElementById('saveCloudBtn');
+      const name = document.getElementById('editorName').value.trim();
+      const payload = {
+        action: claimAction(),
+        name: name,
+        timestamp: new Date().toISOString(),
+        units: collectUnits(),
+        pageUrl: location.href
+      };
+      btn.disabled = true;
+      const orig = btn.textContent;
+      btn.textContent = '☁ 儲存中…';
+      setCloudStatus('正在寫入雲端試算表…', '');
+      try {
+        await fetch(url, {
+          method: 'POST',
+          mode: 'no-cors',
+          cache: 'no-cache',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload)
+        });
+        save(true);
+        const t = nowStr();
+        markCloudSaved(t);
+        setCloudStatus('已儲存到雲端 ✓（分頁 unit-claim-matrix，最後儲存 ' + t + '）', 'ok');
+      } catch (e) {
+        setCloudStatus('雲端儲存失敗：' + e.message + '（本機暫存仍保留）', 'err');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = orig;
+      }
+    }
+
+    /* 同步最新：GET 讀取雲端目前全部單元 */
+    async function syncCloud(silent) {
+      const url = gasUrl();
+      if (!url) { if (!silent) setCloudStatus('尚未設定雲端網址（GAS URL）', 'err'); return; }
+      if (!silent) setCloudStatus('正在讀取雲端最新資料…', '');
+      try {
+        const res = await fetch(url + '?action=' + encodeURIComponent(claimAction()), { method: 'GET', cache: 'no-cache' });
+        const json = await res.json();
+        if (json && json.ok && Array.isArray(json.units) && json.units.length) {
+          const n = applyCloudUnits(json.units);
+          save(true);
+          const cloudAt = localStorage.getItem(CLOUD_AT_KEY);
+          setCloudStatus('已同步雲端 ' + n + ' 筆 ✓' + (cloudAt ? '（本機最後儲存 ' + cloudAt + '）' : ''), 'ok');
+        } else if (!silent) {
+          setCloudStatus('雲端尚無資料，可先按「☁ 儲存到雲端」建立。', '');
+        }
+      } catch (e) {
+        if (!silent) setCloudStatus('同步失敗：' + e.message + '（顯示本機暫存）', 'err');
+      }
+    }
+
     function recount() {
       let claimed = 0, done = 0;
       document.querySelectorAll('#unitsBody tr[data-code]').forEach(tr => {
@@ -311,6 +439,9 @@
       try { applyData(JSON.parse(localStorage.getItem(STORAGE_KEY))); } catch(e) {}
       recount();
 
+      const cloudAt = localStorage.getItem(CLOUD_AT_KEY);
+      if (cloudAt) setCloudStatus('本機最後儲存到雲端：' + cloudAt, '');
+
       const body = document.getElementById('unitsBody');
       body.addEventListener('input', () => { recount(); save(true); });
       body.addEventListener('change', e => {
@@ -318,6 +449,8 @@
         recount(); save(true);
       });
 
+      document.getElementById('saveCloudBtn').addEventListener('click', saveCloud);
+      document.getElementById('syncBtn').addEventListener('click', () => syncCloud(false));
       document.getElementById('saveBtn').addEventListener('click', () => save(false));
       document.getElementById('clearBtn').addEventListener('click', () => {
         if (confirm('確定清除本機暫存？（不影響已 commit 的檔案內容）')) {
@@ -333,6 +466,9 @@
         a.click();
         URL.revokeObjectURL(a.href);
       });
+
+      /* 開啟時自動讀取雲端最新（靜默；失敗則沿用本機暫存） */
+      syncCloud(true);
     });
   </script>
 </body>
