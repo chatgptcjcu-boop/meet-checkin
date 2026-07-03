@@ -12,6 +12,8 @@
  * • 730-instructor        → handleInstructorWorksheet（730 講師學習單，分頁 instructor-730）
  * • unit-claim-matrix     → handleUnitClaimMatrix（86 單元認領矩陣，分頁 unit-claim-matrix，以單元碼 upsert）
  *                           讀取：doGet ?action=unit-claim-matrix 回傳目前全部單元 JSON
+ * • expenses              → handleExpenses（經費編列整份 JSON，分頁 expenses，每次儲存新增一版）
+ *                           讀取：doGet ?action=expenses 回傳最新一版的資料 JSON
  * • 簽到 / 簽退           → handleSignInOut（驗證簽到＋試算表＋Drive＋寄信通知）
  *
  * ⚠️ 每次修改本檔後必須重新部署 Web App：
@@ -43,6 +45,11 @@ var FORM_SHEET_NAME = '填答紀錄';
 var INSTRUCTOR_SHEET_NAME = 'instructor-730';
 /** 86 單元認領矩陣分頁（英文 tab 名；以單元碼為主鍵 upsert，last-write-wins） */
 var UNIT_CLAIM_SHEET_NAME = 'unit-claim-matrix';
+/** 經費編列表分頁（英文 tab 名；整份經費 JSON 每次儲存新增一版，保留歷史） */
+var EXPENSE_SHEET_NAME = 'expenses';
+
+/** expenses 分頁欄位順序（單一結構化文件；每列一個版本，最後一列為最新） */
+var EXPENSE_HEADERS = ['更新時間', '版本', '更新者', '資料JSON'];
 
 /** unit-claim-matrix 分頁欄位順序（與前端 units 物件鍵名對應） */
 var UNIT_CLAIM_HEADERS = [
@@ -85,6 +92,9 @@ function doPost(e) {
     }
     if (action === 'unit-claim-matrix') {
       return handleUnitClaimMatrix(data);
+    }
+    if (action === 'expenses') {
+      return handleExpenses(data);
     }
     if (action === '簽到' || action === '簽退') {
       return handleSignInOut(data);
@@ -325,6 +335,61 @@ function getUnitClaimMatrix_() {
   return jsonOut({ ok: true, units: units });
 }
 
+/* ═══════════════════════════════════════════════════════════════
+ * 經費編列表 — expenses 分頁（整份結構化 JSON 文件，每次儲存新增一版）
+ * action: expenses
+ * • 前端一次送出整份經費狀態（data.state：meta＋rows＋staff＋版本）
+ * • 每次儲存「新增一列」保留歷史（審計軌跡），不覆寫舊版
+ * • 讀取請走 doGet(?action=expenses) → 回傳最後一列（最新版）的資料 JSON
+ * ⚠️ 修改後請重新部署 Web App（見檔案頂部說明）
+ * ═══════════════════════════════════════════════════════════════ */
+
+function handleExpenses(data) {
+  var ss = getSpreadsheet_();
+  var sheet = ss.getSheetByName(EXPENSE_SHEET_NAME) || ss.insertSheet(EXPENSE_SHEET_NAME);
+
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(EXPENSE_HEADERS);
+  }
+
+  var state = data.state || {};
+  var version = data.version || (state && state.dataVersion) || '';
+  var updater = data.name || '';
+
+  sheet.appendRow([
+    formatTaiwanTime_(data.timestamp),
+    version,
+    updater,
+    JSON.stringify(state)
+  ]);
+
+  return jsonOut({ ok: true, version: version, rows: sheet.getLastRow() - 1 });
+}
+
+/** doGet 讀取 expenses 最新一版（最後一列）的資料 JSON（供前端「同步最新」載入） */
+function getExpenses_() {
+  var ss = getSpreadsheet_();
+  var sheet = ss.getSheetByName(EXPENSE_SHEET_NAME);
+  if (!sheet || sheet.getLastRow() < 2) {
+    return jsonOut({ ok: true, state: null });
+  }
+  var lastRow = sheet.getLastRow();
+  var row = sheet.getRange(lastRow, 1, 1, EXPENSE_HEADERS.length).getValues()[0];
+  var state = null;
+  try {
+    state = row[3] ? JSON.parse(row[3]) : null;
+  } catch (e) {
+    state = null;
+  }
+  return jsonOut({
+    ok: true,
+    updatedAt: row[0],
+    version: row[1],
+    updatedBy: row[2],
+    state: state
+  });
+}
+
 /** 簽到／簽退固定寫入「工作表1」，避免與「填答紀錄」分頁混淆 */
 function getOrCreateSignSheet_(ss) {
   var sheet = ss.getSheetByName(SIGN_SHEET_NAME);
@@ -452,11 +517,15 @@ function jsonOut(obj) {
 /**
  * 瀏覽器開啟 /exec 可測試部署是否上線。
  * ?action=unit-claim-matrix → 回傳目前 86 單元認領矩陣（供前端「同步最新」）。
+ * ?action=expenses          → 回傳經費編列表最新一版（供前端「同步最新」）。
  */
 function doGet(e) {
   var action = e && e.parameter ? (e.parameter.action || '') : '';
   if (action === 'unit-claim-matrix') {
     return getUnitClaimMatrix_();
+  }
+  if (action === 'expenses') {
+    return getExpenses_();
   }
   return jsonOut({ ok: true, service: 'meet-checkin', time: new Date().toISOString() });
 }
@@ -543,6 +612,27 @@ function testUnitClaimMatrix() {
     pageUrl: 'manual-test'
   })).getContent());
   Logger.log(getUnitClaimMatrix_().getContent());
+}
+
+function testExpenses() {
+  /* 寫入一版經費 JSON 後再讀回，驗證 append 版本與 doGet 皆正常 */
+  Logger.log(doPost(mockPost_({
+    action: 'expenses',
+    name: 'GAS經費測試',
+    timestamp: new Date().toISOString(),
+    version: '20260704-000000-0001',
+    state: {
+      schemaVersion: 1,
+      dataVersion: '20260704-000000-0001',
+      updatedAt: new Date().toISOString(),
+      updatedDate: '115年7月4日 00:00:00',
+      meta: { meetingName: '宮廟管理師第一次評核委員會', rateAttendance: 2500, rateReview: 1830, rateHost: 3000 },
+      rows: [{ item: '場地費', category: '業務費', unitPrice: 5000, qty: 1, unit: '式', note: '測試', feeType: 'biz' }],
+      staff: [{ name: '王芯庭', role: '會議助理／紀錄', hours: 6, hourly: 0, transport: 0, note: '' }]
+    },
+    pageUrl: 'manual-test'
+  })).getContent());
+  Logger.log(getExpenses_().getContent());
 }
 
 function testFormSubmitWeb() {

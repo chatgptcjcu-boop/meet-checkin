@@ -95,6 +95,14 @@ body {
   cursor: pointer;
   text-decoration: none;
 }
+.top-bar button.primary {
+  background: var(--green, #16a34a);
+  color: #fff;
+  box-shadow: 0 0 0 2px rgb(255 255 255 / 0.35);
+}
+.top-bar button:disabled { opacity: 0.6; cursor: progress; }
+#cloudStatus.ok { color: #047857; }
+#cloudStatus.err { color: #b91c1c; }
 .wrap { max-width: 1200px; margin: 0 auto; padding: 1rem; }
 
 .note {

@@ -64,5 +64,10 @@ window.EVENT_CONFIG = {
     "totalUnits": 86,
     "totalModules": 8,
     "pagePath": "09-editorial-committee/unit-claim-matrix.html"
+  },
+  "expenses": {
+    "action": "expenses",
+    "sheetTab": "expenses",
+    "pagePath": "expenses/budget-dashboard.html"
   }
 };

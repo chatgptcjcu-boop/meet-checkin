@@ -183,7 +183,9 @@ window.applyExpenseEnvTheme = function () {
       bar.insertBefore(badge, bar.firstChild);
     }
     badge.textContent = info.badge;
-    badge.title = info.env === 'local' ? '本機檔案／localhost' : 'GitHub Pages 線上版';
+    badge.title = info.env === 'local'
+      ? '本機檔案／localhost（可用「☁ 儲存到雲端」寫入共用試算表）'
+      : 'GitHub Pages 線上版｜「☁ 儲存到雲端」即時同步 Google 試算表';
   });
 
   const syncPanel = document.getElementById('syncPanel');
@@ -191,7 +193,9 @@ window.applyExpenseEnvTheme = function () {
     syncPanel.classList.add('env-panel-' + info.env);
     const envEl = document.getElementById('syncEnv');
     if (envEl) {
-      envEl.textContent = '目前環境：' + info.label + (info.env === 'local' ? '（紫色標示）' : '（青綠色標示）');
+      envEl.textContent = '目前環境：' + info.label
+        + (info.env === 'local' ? '（紫色標示）' : '（青綠色標示）')
+        + '｜雲端資料存於 Google 試算表分頁 expenses';
     }
   }
 };

@@ -12,7 +12,9 @@
   <div class="top-bar no-print">
     <h1>宮廟管理師第一次評核委員會｜經費動態編列（115/6/30）</h1>
     <span class="version-tag" id="topVersionTag"></span>
-    <button type="button" id="btnSave">💾 儲存</button>
+    <button type="button" id="btnSaveCloud" class="primary">☁ 儲存到雲端</button>
+    <button type="button" id="btnSyncCloud">🔄 同步最新</button>
+    <button type="button" id="btnSave">💾 儲存(本機)</button>
     <button type="button" id="btnExport">⬇ 匯出</button>
     <button type="button" id="btnImport">⬆ 匯入</button>
     <input type="file" id="importFile" accept="application/json,.json" hidden>
@@ -29,9 +31,20 @@
       <p id="syncEnv" style="margin:0.25rem 0">目前環境：—</p>
       <p id="syncVersion" style="margin:0.25rem 0">本機版本：—</p>
       <p id="syncUpdated" style="margin:0.25rem 0">最後更新：—</p>
+      <p id="cloudSavedAt" style="margin:0.25rem 0">最後雲端儲存時間：（尚無紀錄）</p>
+      <p id="cloudStatus" style="margin:0.25rem 0;min-height:1.2rem;font-weight:600"></p>
+      <p style="margin:0.5rem 0 0.25rem">
+        <label style="font-size:0.82rem;color:#334155">更新者（選填，寫入雲端紀錄）：
+          <input type="text" id="cloudEditorName" placeholder="您的姓名" autocomplete="name"
+                 style="font-size:0.85rem;padding:0.25rem 0.4rem;border:1px solid #cbd5e1;border-radius:6px;width:10rem">
+        </label>
+      </p>
       <p style="font-size:0.82rem;color:#64748b;margin:0.5rem 0 0;line-height:1.5">
-        本機瀏覽器與 GitHub Pages 各自儲存資料。請用上方「匯出／匯入」JSON 檔同步。
+        「<strong>☁ 儲存到雲端</strong>」會把整份經費資料寫入主辦單位 Google 試算表（分頁 <code>expenses</code>，每次存檔新增一版、保留歷史）。
+        開啟頁面會自動讀取雲端最新版；亦可按「<strong>🔄 同步最新</strong>」重新載入。
+        「💾 儲存(本機)／⬇ 匯出／⬆ 匯入」仍保留為離線備份。
         每次儲存會產生新版本號：<strong>YYYYMMDD-HHmmss-NNNN</strong>（日期＋時間＋4碼流水號）。
+        注意：雲端採<strong>後寫覆蓋（last-write-wins）</strong>，多人同時編輯時以最後儲存者為準；建議編輯前先「同步最新」。
       </p>
     </div>
 
@@ -134,6 +147,7 @@
 
   <div class="version-bar no-print" id="versionBar"></div>
 
+  <script src="../config/event.config.js"></script>
   <script src="./expense-data.js"></script>
   <script src="./budget-dashboard.js"></script>
 </body>

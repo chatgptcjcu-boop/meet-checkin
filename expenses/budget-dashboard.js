@@ -306,6 +306,147 @@
     return sum;
   }
 
+  const CLOUD_AT_KEY = STORAGE_KEY + ':cloudAt';
+
+  function gasUrl() {
+    return (window.EVENT_CONFIG && window.EVENT_CONFIG.backend && window.EVENT_CONFIG.backend.gasWebAppUrl) || '';
+  }
+
+  function expensesAction() {
+    return (window.EVENT_CONFIG && window.EVENT_CONFIG.expenses && window.EVENT_CONFIG.expenses.action) || 'expenses';
+  }
+
+  function nowStr() {
+    return new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Taipei' }).slice(0, 16);
+  }
+
+  function setCloudStatus(msg, kind) {
+    const el = document.getElementById('cloudStatus');
+    if (!el) return;
+    el.className = kind || '';
+    el.textContent = msg || '';
+  }
+
+  function renderCloudSavedAt() {
+    const el = document.getElementById('cloudSavedAt');
+    if (!el) return;
+    const t = localStorage.getItem(CLOUD_AT_KEY);
+    el.textContent = '最後雲端儲存時間：' + (t || '（尚無紀錄）');
+  }
+
+  /** 把整份雲端狀態套回表單（雲端為準；清空後重建列） */
+  function applyStateToForm(state) {
+    if (!state) return;
+    if (state.meta) {
+      Object.entries(state.meta).forEach(([k, v]) => {
+        const el = document.getElementById(k);
+        if (el) el.value = v;
+      });
+    }
+    body.innerHTML = '';
+    const rows = state.rows?.length ? state.rows : DEFAULT_BUDGET_ROWS;
+    rows.forEach((r, i) => addRow(r, i + 1));
+    staffBody.innerHTML = '';
+    const staff = state.staff?.length ? state.staff : DEFAULT_STAFF;
+    staff.forEach(addStaff);
+    syncFeeRows();
+    recalc();
+  }
+
+  /** 儲存到雲端：no-cors POST 整份 state（同 unit-claim-matrix 模式），並同步本機 */
+  async function saveCloud() {
+    const url = gasUrl();
+    const btn = document.getElementById('btnSaveCloud');
+    if (!url) { setCloudStatus('尚未設定雲端網址（GAS URL）', 'err'); return; }
+
+    const prev = loadState();
+    const state = enrichExpenseState(buildState(), { previousDataVersion: prev?.dataVersion });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    updateVersionUI(state);
+
+    const name = document.getElementById('cloudEditorName')?.value.trim() || '';
+    const payload = {
+      action: expensesAction(),
+      name,
+      timestamp: new Date().toISOString(),
+      version: state.dataVersion,
+      state,
+      pageUrl: location.href,
+    };
+
+    const orig = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = '☁ 儲存中…';
+    setCloudStatus('正在寫入雲端試算表…', '');
+    try {
+      await fetch(url, {
+        method: 'POST',
+        mode: 'no-cors',
+        cache: 'no-cache',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload),
+      });
+      const t = nowStr();
+      localStorage.setItem(CLOUD_AT_KEY, t);
+      renderCloudSavedAt();
+      setCloudStatus('已儲存到雲端 ✓（分頁 expenses，版本 ' + state.dataVersion + '，' + t + '）', 'ok');
+    } catch (e) {
+      setCloudStatus('雲端儲存失敗：' + e.message + '（本機已儲存，稍後可重試或改用「⬇ 匯出」備份）', 'err');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = orig;
+    }
+  }
+
+  /** 同步最新：GET 讀取雲端最新一版 state 並套回表單 */
+  async function syncCloud(silent) {
+    const url = gasUrl();
+    if (!url) { if (!silent) setCloudStatus('尚未設定雲端網址（GAS URL）', 'err'); return; }
+    if (!silent) setCloudStatus('正在讀取雲端最新資料…', '');
+    try {
+      const res = await fetch(url + '?action=' + encodeURIComponent(expensesAction()), { method: 'GET', cache: 'no-cache' });
+      const json = await res.json();
+      if (json && json.ok && json.state) {
+        const cloud = json.state;
+        const local = loadState();
+        const cloudVer = cloud.dataVersion || '';
+        const localVer = local?.dataVersion || '';
+        const cmp = local ? compareDataVersions(cloudVer, localVer) : 1;
+
+        if (silent && cmp <= 0) {
+          if (cmp < 0) {
+            setCloudStatus('本機資料較新（' + localVer + '），未覆蓋；如需上傳請按「☁ 儲存到雲端」。', '');
+          }
+          return;
+        }
+        if (!silent && cmp < 0) {
+          if (!confirm('雲端版本（' + cloudVer + '）比本機（' + localVer + '）舊，確定用雲端覆蓋本機？')) {
+            setCloudStatus('已取消同步（保留本機資料）', '');
+            return;
+          }
+        }
+
+        applyStateToForm(cloud);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(cloud));
+        updateVersionUI(cloud);
+        setCloudStatus('已同步雲端資料 ✓（版本 ' + (cloudVer || '未知') + '，更新者 ' + (json.updatedBy || '—') + '）', 'ok');
+      } else if (!silent) {
+        setCloudStatus('雲端尚無資料，可先按「☁ 儲存到雲端」建立第一版。', '');
+      }
+    } catch (e) {
+      if (!silent) setCloudStatus('同步失敗：' + e.message + '（顯示本機資料）', 'err');
+    }
+  }
+
+  /** 密碼閘通過後才自動讀取雲端（auth.js 使用同一 sessionStorage 鍵） */
+  function whenAuthed(cb) {
+    const AUTH_KEY = 'meet-checkin-expenses-auth-v1';
+    if (sessionStorage.getItem(AUTH_KEY)) { cb(); return; }
+    const iv = setInterval(() => {
+      if (sessionStorage.getItem(AUTH_KEY)) { clearInterval(iv); cb(); }
+    }, 400);
+  }
+
   function init() {
     const saved = loadState();
     if (saved?.meta) {
@@ -333,6 +474,8 @@
     const hostDescEl = document.getElementById('hostDesc');
     if (hostDescEl) hostDescEl.addEventListener('input', () => {});
 
+    document.getElementById('btnSaveCloud').onclick = saveCloud;
+    document.getElementById('btnSyncCloud').onclick = () => syncCloud(false);
     document.getElementById('btnSave').onclick = saveState;
     document.getElementById('btnExport').onclick = exportState;
     document.getElementById('btnImport').onclick = () => document.getElementById('importFile').click();
@@ -353,6 +496,10 @@
     syncFeeRows();
     recalc();
     updateVersionUI(saved);
+    renderCloudSavedAt();
+
+    /* 開啟頁面（密碼通過後）自動讀取雲端最新版；失敗或較舊則沿用本機 */
+    whenAuthed(() => syncCloud(true));
   }
 
   init();
