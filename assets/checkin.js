@@ -3,7 +3,7 @@
  */
 window.MeetCheckin = {
   GAS_URL:
-    'https://script.google.com/macros/s/AKfycbxlJASeVM3NvkrBJZDW7C5J53nC9UegMLgUTkNdsppaK6P5K5Hjr2xzQ1DlkFCXvT4HuQ/exec',
+    'https://script.google.com/macros/s/AKfycbwBOJsxpGQevTIICe_Yf5suQtn7HXZP_KbvCLigzQggBBfoKnQElFm01u5CwHA5zv0o7w/exec',
   MEET_URL: 'https://meet.google.com/kci-xjtu-dmr?hs=122',
   streamRef: null,
 
