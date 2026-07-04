@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "kitVersion": "1.0.0",
+    "configSchema": 1,
+    "presetId": "1151018-editorial",
+    "lifecycle": { "status": "planned" }
+  },
+  "org": {
+    "name": "臺灣道法總會",
+    "department": "教育委員會",
+    "headerLine": "臺灣道法總會－教育委員會",
+    "meetingSubtitle": "單元認領與分工",
+    "footerPlan": "宮廟管理師職能基準發展計畫",
+    "copyright": "2026 臺灣道法總會 教育委員會"
+  },
+  "event": {
+    "id": "1151018-editorial-unit-claim",
+    "title": "教材編審委員會｜單元認領與分工（第二場）",
+    "shortTitle": "教材編審委員會第二場",
+    "tagline": "86 單元認領與分工",
+    "sessionLabel": "教材編審委員會第二場",
+    "dateIso": "2026-10-18",
+    "dateDisplay": "2026/10/18",
+    "dateRoc": "115年10月18日",
+    "dateFilePrefix": "1151018",
+    "sessionBadge": "教材編審委員會第二場 ｜ 2026/10/18",
+    "roster": {
+      "_comment": "待規劃：主辦於會前填入名單",
+      "meetingTitle": "單元認領與分工",
+      "meetingDate": "115年10月18日",
+      "committee": [],
+      "observers": []
+    }
+  },
+  "backend": {
+    "gasWebAppUrl": "https://script.google.com/macros/s/AKfycbxlJASeVM3NvkrBJZDW7C5J53nC9UegMLgUTkNdsppaK6P5K5Hjr2xzQ1DlkFCXvT4HuQ/exec"
+  },
+  "meet": { "url": "" },
+  "contact": { "name": "王芯庭助理", "phone": "0956800579", "channel": "Line" },
+  "signIn": {
+    "roles": ["教材講師", "編審委員", "專家顧問", "專案工作人員", "列席人員"],
+    "committeeLabel": "教材講師／編審委員",
+    "observersLabel": "列席與工作人員",
+    "guestRoles": ["專家顧問", "專案工作人員", "列席人員", "觀摩來賓"],
+    "memberPortalPath": "./remote-members/index.html"
+  },
+  "seo": {
+    "entryPageTitle": "會議報到入口｜教材編審委員會第二場",
+    "checkInPageTitle": "臺灣道法總會－教育委員會 教材編審委員會報到",
+    "ogTitle": "教材編審委員會｜單元認領與分工",
+    "ogDescription": "115年10月18日教材編審委員會第二場。",
+    "entryOgDescription": "請依出席方式選擇：現場簽到或視訊簽到。"
+  },
+  "paths": {
+    "onsiteCheckin": "./onsite-checkin/",
+    "onsiteQrProjector": "./onsite-projector.html",
+    "onsiteQrPrint": "./onsite-qr-print.html",
+    "onsiteCheckinUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/onsite-checkin/"
+  }
+}

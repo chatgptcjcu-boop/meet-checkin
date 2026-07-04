@@ -3,248 +3,466 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>宮廟管理師 iCAP 專案｜雙機協作儀表板</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <title>宮廟管理師 iCAP 專案｜開會專案管理儀表板</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --red: #b91c1c;
-      --blue: #1e40af;
-      --green: #065f46;
-      --amber: #92400e;
       --bg: #f1f5f9;
+      --panel: #ffffff;
+      --gold: #fbbf24;
+      --green: #34d399;
+      --green-dark: #065f46;
+      --eval: #b91c1c;
+      --edit: #1e40af;
+      --muted: #6b7280;
+      --line: #e5e7eb;
     }
     * { box-sizing: border-box; }
-    body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); margin: 0; padding: 1.5rem 1rem 3rem; color: #111; }
-    .wrap { max-width: 64rem; margin: 0 auto; }
-    header { background: linear-gradient(135deg, #1e3a5f 0%, #1e40af 100%); color: #fff; border-radius: 0.75rem; padding: 1.75rem 2rem; margin-bottom: 1.5rem; }
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background: var(--bg);
+      margin: 0;
+      padding: 1.5rem 1rem 3rem;
+      color: #111;
+    }
+    .wrap { max-width: 68rem; margin: 0 auto; }
+    header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 55%, #065f46 100%);
+      color: #fff;
+      border-radius: 0.75rem;
+      padding: 1.75rem 2rem;
+      margin-bottom: 1.25rem;
+      border-bottom: 4px solid var(--gold);
+    }
     header h1 { margin: 0 0 0.35rem; font-size: 1.45rem; }
     header p { margin: 0; opacity: 0.9; font-size: 0.9rem; }
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
-    @media (max-width: 720px) { .grid-2 { grid-template-columns: 1fr; } }
-    .panel { background: #fff; border-radius: 0.75rem; box-shadow: 0 2px 8px rgb(0 0 0 / 0.06); padding: 1.25rem 1.5rem; margin-bottom: 1rem; }
-    .panel h2 { font-size: 1.05rem; margin: 0 0 0.75rem; border-left: 4px solid var(--red); padding-left: 0.6rem; }
-    .panel h2.blue { border-color: var(--blue); }
-    .badge { display: inline-block; font-size: 0.68rem; padding: 0.12rem 0.45rem; border-radius: 0.25rem; font-weight: 600; }
-    .done { background: #d1fae5; color: var(--green); }
-    .wip { background: #fef3c7; color: var(--amber); }
-    .plan { background: #e5e7eb; color: #374151; }
-    .meeting-row { display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.65rem 0; border-bottom: 1px solid #f3f4f6; }
-    .meeting-row:last-child { border-bottom: none; }
-    .meeting-num { flex-shrink: 0; width: 1.75rem; height: 1.75rem; background: #fee2e2; color: var(--red); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem; }
-    .meeting-num.blue { background: #dbeafe; color: var(--blue); }
-    .meeting-body { flex: 1; min-width: 0; }
-    .meeting-title { font-weight: 600; font-size: 0.92rem; }
-    .meeting-meta { font-size: 0.78rem; color: #6b7280; margin-top: 0.15rem; }
-    .meeting-links { margin-top: 0.35rem; }
-    .meeting-links a { font-size: 0.78rem; color: var(--red); margin-right: 0.75rem; }
-    .meeting-links a.blue { color: var(--blue); }
-    .phase-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.35rem; }
-    .phase-tag { font-size: 0.65rem; background: #f3f4f6; color: #4b5563; padding: 0.1rem 0.35rem; border-radius: 0.2rem; }
-    .sync-box { background: #eff6ff; border: 1px solid #93c5fd; border-radius: 0.5rem; padding: 1rem; font-size: 0.85rem; }
-    .sync-box code { background: #dbeafe; padding: 0.1rem 0.35rem; border-radius: 0.2rem; font-size: 0.8rem; }
-    .sync-steps { margin: 0.5rem 0 0; padding-left: 1.25rem; }
-    .sync-steps li { margin: 0.3rem 0; }
+    .top-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
     .quick-links { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-    .quick-links a { display: inline-block; padding: 0.45rem 0.85rem; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.4rem; text-decoration: none; color: #111; font-size: 0.85rem; }
-    .quick-links a:hover { border-color: var(--blue); background: #eff6ff; }
-    .alert { background: #fef3c7; border: 1px solid #fbbf24; border-radius: 0.5rem; padding: 0.75rem 1rem; font-size: 0.85rem; margin-bottom: 1rem; }
-    .progress-bar { height: 6px; background: #e5e7eb; border-radius: 3px; margin-top: 0.5rem; overflow: hidden; }
-    .progress-fill { height: 100%; border-radius: 3px; }
-    .progress-fill.red { background: var(--red); width: 25%; }
-    .progress-fill.blue { background: var(--blue); width: 12.5%; }
+    .quick-links a {
+      display: inline-block;
+      padding: 0.4rem 0.8rem;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 0.4rem;
+      text-decoration: none;
+      color: #111;
+      font-size: 0.82rem;
+    }
+    .quick-links a:hover { border-color: var(--gold); background: #fffbeb; }
+    .meta-pill {
+      font-size: 0.75rem;
+      color: var(--muted);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 0.35rem 0.85rem;
+    }
+    .section {
+      background: var(--panel);
+      border-radius: 0.75rem;
+      box-shadow: 0 2px 8px rgb(0 0 0 / 0.06);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .section h2 {
+      font-size: 1.05rem;
+      margin: 0 0 0.85rem;
+      padding-left: 0.6rem;
+      border-left: 4px solid var(--gold);
+    }
+    .section h2.preparing { border-color: #f59e0b; }
+    .section h2.planned { border-color: #9ca3af; }
+    .section h2.completed { border-color: var(--green); }
+    .section-desc { font-size: 0.82rem; color: var(--muted); margin: -0.5rem 0 0.85rem; }
+    .empty { font-size: 0.85rem; color: var(--muted); padding: 0.5rem 0; }
+    .event-card {
+      border: 1px solid var(--line);
+      border-radius: 0.6rem;
+      padding: 1rem 1.15rem;
+      margin-bottom: 0.75rem;
+    }
+    .event-card:last-child { margin-bottom: 0; }
+    .event-card.active-card {
+      border-color: var(--green);
+      background: linear-gradient(135deg, #ecfdf5 0%, #fff 60%);
+      box-shadow: 0 0 0 1px rgb(52 211 153 / 0.25);
+    }
+    .event-card.completed-card { border-color: #d1fae5; }
+    .event-head { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: flex-start; justify-content: space-between; }
+    .event-title { font-weight: 700; font-size: 0.98rem; }
+    .event-meta { font-size: 0.78rem; color: var(--muted); margin-top: 0.2rem; }
+    .badge {
+      display: inline-block;
+      font-size: 0.68rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 0.25rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .badge-active { background: #d1fae5; color: var(--green-dark); }
+    .badge-preparing { background: #fef3c7; color: #92400e; }
+    .badge-planned { background: #f3f4f6; color: #374151; }
+    .badge-completed { background: #ecfdf5; color: var(--green-dark); }
+    .badge-eval { background: #fee2e2; color: var(--eval); }
+    .badge-edit { background: #dbeafe; color: var(--edit); }
+    .link-row { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.65rem; }
+    .link-row a, .link-row button {
+      font-size: 0.76rem;
+      padding: 0.3rem 0.6rem;
+      border-radius: 0.35rem;
+      text-decoration: none;
+      border: 1px solid var(--line);
+      background: #f9fafb;
+      color: #111;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .link-row a:hover, .link-row button:hover { border-color: var(--gold); background: #fffbeb; }
+    .link-row a.primary { background: #065f46; color: #fff; border-color: #065f46; }
+    .link-row a.primary:hover { background: #047857; }
+    .link-row button.switch-btn { border-color: #f59e0b; color: #92400e; background: #fffbeb; }
+    .phase-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.45rem; }
+    .phase-tag {
+      font-size: 0.65rem;
+      background: #f3f4f6;
+      color: #4b5563;
+      padding: 0.1rem 0.35rem;
+      border-radius: 0.2rem;
+    }
+    .progress-bar { height: 6px; background: #e5e7eb; border-radius: 3px; margin-top: 0.45rem; overflow: hidden; }
+    .progress-fill { height: 100%; border-radius: 3px; background: #f59e0b; }
+    .alert {
+      background: #fffbeb;
+      border: 1px solid var(--gold);
+      border-radius: 0.5rem;
+      padding: 0.75rem 1rem;
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+    }
+    .alert code { background: #fef3c7; padding: 0.1rem 0.35rem; border-radius: 0.2rem; font-size: 0.8rem; }
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgb(0 0 0 / 0.45);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      background: #fff;
+      border-radius: 0.75rem;
+      max-width: 28rem;
+      width: 100%;
+      padding: 1.5rem;
+      box-shadow: 0 8px 32px rgb(0 0 0 / 0.15);
+    }
+    .modal h3 { margin: 0 0 0.75rem; font-size: 1.05rem; }
+    .modal pre {
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 0.85rem 1rem;
+      border-radius: 0.5rem;
+      font-size: 0.82rem;
+      overflow-x: auto;
+      margin: 0 0 1rem;
+    }
+    .modal-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .modal-actions button {
+      padding: 0.45rem 0.9rem;
+      border-radius: 0.4rem;
+      border: 1px solid var(--line);
+      background: #f9fafb;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.85rem;
+    }
+    .modal-actions button.primary { background: #065f46; color: #fff; border-color: #065f46; }
     footer { text-align: center; font-size: 0.75rem; color: #9ca3af; margin-top: 2rem; }
-    table { width: 100%; font-size: 0.82rem; border-collapse: collapse; }
-    th, td { border: 1px solid #e5e7eb; padding: 0.4rem 0.5rem; text-align: left; }
-    th { background: #f9fafb; }
+    footer a { color: #6b7280; }
   </style>
 </head>
 <body>
   <div class="wrap">
     <header>
-      <h1>宮廟管理師職能基準｜專案協作儀表板</h1>
-      <p>臺灣道法總會－教育委員會｜評核委員會 × 教材編審委員會｜雙機同步工作區</p>
+      <h1>宮廟管理師職能基準｜開會專案管理儀表板</h1>
+      <p>臺灣道法總會－教育委員會｜評核委員會 × 教材編審委員會｜活動生命週期總覽</p>
     </header>
 
-    <div class="alert" id="syncAlert">
-      <strong>Git 同步提醒：</strong>本機大量檔案（含 <code>08-evaluation-committee/</code>）若尚未 push，另一台電腦<strong>看不到</strong>。每次換機請先 <code>git pull origin main</code>，收工請 <code>git push</code>。詳見 <a href="SYNC-WORKFLOW.md">SYNC-WORKFLOW.md</a>。
+    <div class="alert">
+      <strong>固定入口 URL：</strong>委員永遠開啟 <a href="index.html">index.html</a> 簽到；主辦切換活動請在本機執行 <code>node scripts/switch-event.js &lt;活動-id&gt;</code>，再 push 部署。詳見 <code>.cursor/skills/meeting-event-lifecycle/SKILL.md</code>。
     </div>
 
-    <div class="grid-2">
-      <div class="panel">
-        <h2>快速入口</h2>
-        <div class="quick-links">
-          <a href="index.html">視訊簽到頁</a>
-          <a href="remote-members/index.html">委員專區</a>
-          <a href="08-evaluation-committee/index.html">評核委員會</a>
-          <a href="09-editorial-committee/index.html">教材編審委員會</a>
-          <a href="SYNC-WORKFLOW.md">同步指南</a>
-          <a href="https://github.com/chatgptcjcu-boop/meet-checkin" target="_blank" rel="noopener">GitHub Repo</a>
-        </div>
+    <div class="top-bar">
+      <div class="quick-links">
+        <a href="index.html">會議報到入口</a>
+        <a href="remote-members/index.html">委員專區</a>
+        <a href="08-evaluation-committee/index.html">評核委員會</a>
+        <a href="09-editorial-committee/index.html">教材編審委員會</a>
+        <a href="SYNC-WORKFLOW.md">同步指南</a>
       </div>
-      <div class="panel">
-        <h2 class="blue">整體進度</h2>
-        <p style="font-size:0.85rem;margin:0 0 0.25rem;">評核委員會（4 場）<span class="badge wip">1 完成 · 1 籌備</span></p>
-        <div class="progress-bar"><div class="progress-fill red"></div></div>
-        <p style="font-size:0.85rem;margin:0.75rem 0 0.25rem;">教材編審委員會（4 場）<span class="badge plan">架構建立中</span></p>
-        <div class="progress-bar"><div class="progress-fill blue"></div></div>
-        <p style="font-size:0.75rem;color:#6b7280;margin-top:0.5rem;">最後更新：<span id="lastUpdated">—</span></p>
-      </div>
+      <span class="meta-pill">資料來源：<code>config/events-registry.json</code>｜更新：<span id="lastUpdated">—</span></span>
     </div>
 
-    <div class="panel">
-      <h2>雙機同步｜三步驟</h2>
-      <div class="sync-box">
-        <ol class="sync-steps">
-          <li><strong>開工前</strong>：<code>cd meet-checkin && git pull origin main</code></li>
-          <li><strong>工作中</strong>：編輯 HTML／彙整資料；掃描 PDF 放本機 <code>members/*/scans/</code>（勿 push 個資）</li>
-          <li><strong>收工後</strong>：<code>git add … && git commit -m "…" && git push origin main</code></li>
-        </ol>
-        <p style="margin:0.75rem 0 0;font-size:0.8rem;">線上預覽（push 後 1–3 分鐘）：<br>
-          <a href="https://chatgptcjcu-boop.github.io/meet-checkin/dashboard.html">…/dashboard.html</a>
-        </p>
-      </div>
+    <div class="section" id="section-active">
+      <h2>目前進行中（ACTIVE）</h2>
+      <p class="section-desc">全站簽到入口目前綁定的活動；僅能有一場為進行中。</p>
+      <div id="active-list"></div>
     </div>
 
-    <!-- 評核委員會 -->
-    <div class="panel">
-      <h2>A. 評核委員會（4 場會議）</h2>
-      <p style="font-size:0.85rem;color:#6b7280;margin:-0.25rem 0 0.75rem;">利害關係人參與、職能基準與課程架構確認 → ABCD／評量 → 大綱審查 → 送審驗收</p>
-
-      <div class="meeting-row">
-        <div class="meeting-num">1</div>
-        <div class="meeting-body">
-          <div class="meeting-title">職能基準共構 <span class="badge done">115/06/30 已完成</span></div>
-          <div class="meeting-meta">產出：附錄十一｜資料彙整區待掃描上傳</div>
-          <div class="phase-tags">
-            <span class="phase-tag">Phase0 身分</span><span class="phase-tag">Phase1 需求</span><span class="phase-tag">Phase2 T1-T7</span><span class="phase-tag">Phase3 任務</span><span class="phase-tag">Phase4 86單元</span><span class="phase-tag">Phase5 決議</span>
-          </div>
-          <div class="meeting-links">
-            <a href="08-evaluation-committee/1150630-handouts/index.html">現場發放</a>
-            <a href="08-evaluation-committee/1150630/index.html">內部模板</a>
-            <a href="08-evaluation-committee/1150630-data-compilation/index.html">資料彙整區</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="meeting-row">
-        <div class="meeting-num">2</div>
-        <div class="meeting-body">
-          <div class="meeting-title">ABCD 教學目標與assessment-design <span class="badge wip">115/08/30 籌備中</span></div>
-          <div class="meeting-meta">產出：附錄十二（預定）</div>
-          <div class="phase-tags">
-            <span class="phase-tag">Phase0 確認</span><span class="phase-tag">Phase1 回顧</span><span class="phase-tag">Phase2 86優先</span><span class="phase-tag">Phase3 ABCD</span><span class="phase-tag">Phase4 評量</span><span class="phase-tag">Phase5 決議</span>
-          </div>
-          <div class="meeting-links">
-            <a href="08-evaluation-committee/1150830-prep/index.html">會議籌備</a>
-            <a href="08-evaluation-committee/1150830/index.html">內部模板</a>
-            <a href="08-evaluation-committee/1150830/AGENDA.md">議程</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="meeting-row">
-        <div class="meeting-num">3</div>
-        <div class="meeting-body">
-          <div class="meeting-title">教材大綱審查 <span class="badge plan">115/10/25 待規劃</span></div>
-          <div class="meeting-meta">銜接編審委員會中期成果</div>
-          <div class="meeting-links">
-            <a href="08-evaluation-committee/1151025/index.html">籌備入口（占位）</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="meeting-row">
-        <div class="meeting-num">4</div>
-        <div class="meeting-body">
-          <div class="meeting-title">送審前總驗收 <span class="badge plan">115/11/29 待規劃</span></div>
-          <div class="meeting-meta">iCAP 送審包定稿</div>
-          <div class="meeting-links">
-            <a href="08-evaluation-committee/1151129/index.html">籌備入口（占位）</a>
-          </div>
-        </div>
-      </div>
+    <div class="section" id="section-preparing">
+      <h2 class="preparing">籌備中（preparing）</h2>
+      <p class="section-desc">文件與名單準備中，尚未切換為進行中。</p>
+      <div id="preparing-list"></div>
     </div>
 
-    <!-- 教材編審委員會 -->
-    <div class="panel">
-      <h2 class="blue">B. 教材編審委員會（4 場會議）</h2>
-      <p style="font-size:0.85rem;color:#6b7280;margin:-0.25rem 0 0.75rem;">主辦 Demo 帶領全流程 → 單元認領 → 線上協作撰寫 → 定稿驗收</p>
-
-      <div class="meeting-row">
-        <div class="meeting-num blue">1</div>
-        <div class="meeting-body">
-          <div class="meeting-title">編審流程 Demo 示範 <span class="badge wip">115/07/30 籌備中</span></div>
-          <div class="meeting-meta">委員多不熟悉教材步驟與評量方法｜主辦現場帶做一個完整單元</div>
-          <div class="phase-tags">
-            <span class="phase-tag">Demo1 架構</span><span class="phase-tag">Demo2 ABCD</span><span class="phase-tag">Demo3 評量</span><span class="phase-tag">Demo4 協作平台</span>
-          </div>
-          <div class="meeting-links">
-            <a href="09-editorial-committee/1150730-m1-demo/index.html" class="blue">Demo 腳本</a>
-            <a href="09-editorial-committee/collaboration-platform/index.html" class="blue">協作平台說明</a>
-            <a href="09-editorial-committee/unit-claim-matrix.html" class="blue">認領矩陣</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="meeting-row">
-        <div class="meeting-num blue">2</div>
-        <div class="meeting-body">
-          <div class="meeting-title">單元認領與分工 <span class="badge plan">115/10/18 待規劃</span></div>
-          <div class="meeting-meta">86 單元認領｜主筆／協作／審閱角色</div>
-          <div class="meeting-links">
-            <a href="09-editorial-committee/1151018-m2-unit-claim/index.html" class="blue">會議籌備</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="meeting-row">
-        <div class="meeting-num blue">3</div>
-        <div class="meeting-body">
-          <div class="meeting-title">協作審閱中期檢核 <span class="badge plan">115/11/15 待規劃</span></div>
-          <div class="meeting-meta">線上協作進度盤點｜同儕審閱</div>
-          <div class="meeting-links">
-            <a href="09-editorial-committee/1151115-m3-collaborative-review/index.html" class="blue">會議籌備</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="meeting-row">
-        <div class="meeting-num blue">4</div>
-        <div class="meeting-body">
-          <div class="meeting-title">定稿驗收 <span class="badge plan">115/12/20 待規劃</span></div>
-          <div class="meeting-meta">180hr 全冊定稿｜評量工具包</div>
-          <div class="meeting-links">
-            <a href="09-editorial-committee/1151220-m4-final-acceptance/index.html" class="blue">會議籌備</a>
-          </div>
-        </div>
-      </div>
+    <div class="section" id="section-planned">
+      <h2 class="planned">已排程（planned）</h2>
+      <p class="section-desc">已排定日期，待啟動籌備。</p>
+      <div id="planned-list"></div>
     </div>
 
-    <div class="panel">
-      <h2 class="blue">教材編審｜Demo → 協作流程摘要</h2>
-      <table>
-        <thead><tr><th>階段</th><th>誰做</th><th>做什麼</th><th>工具／文件</th></tr></thead>
-        <tbody>
-          <tr><td>① Demo 示範</td><td>主辦（您）</td><td>帶領完成示範單元 M1-1.1 全流程：大綱→ABCD→評量→上傳協作平台</td><td><a href="09-editorial-committee/1150730-m1-demo/index.html">Demo 腳本</a></td></tr>
-          <tr><td>② 認領單元</td><td>各委員</td><td>於矩陣認領 86 單元中 1～3 個，指定主筆與協作</td><td><a href="09-editorial-committee/unit-claim-matrix.html">認領矩陣</a></td></tr>
-          <tr><td>③ 線上協作</td><td>認領委員</td><td>於協作平台共寫教材；主審／編輯委員留言審閱</td><td><a href="09-editorial-committee/collaboration-platform/index.html">平台占位</a></td></tr>
-          <tr><td>④ 中期檢核</td><td>全體</td><td>第三次會議盤點進度、同儕審閱</td><td>M3 會議資料</td></tr>
-          <tr><td>⑤ 定稿</td><td>編審會</td><td>第四次會議驗收、簽核、移交</td><td>M4 會議資料</td></tr>
-        </tbody>
-      </table>
+    <div class="section" id="section-completed">
+      <h2 class="completed">事件管理（completed）</h2>
+      <p class="section-desc">已結案活動歸檔；可一鍵開啟簡報、講義、資料與設定檔。</p>
+      <div id="completed-list"></div>
     </div>
 
     <footer>
-      meet-checkin/dashboard.html｜進度資料：<a href="dashboard/project-progress.json">project-progress.json</a><br>
-      Live: https://chatgptcjcu-boop.github.io/meet-checkin/dashboard.html
+      meet-checkin/dashboard.html｜
+      <a href="config/events-registry.json">events-registry.json</a> ·
+      <a href="dashboard/project-progress.json">project-progress.json</a><br>
+      Live: <a href="https://chatgptcjcu-boop.github.io/meet-checkin/dashboard.html">chatgptcjcu-boop.github.io/meet-checkin/dashboard.html</a>
     </footer>
   </div>
 
+  <div class="modal-backdrop" id="switchModal" role="dialog" aria-labelledby="switchModalTitle">
+    <div class="modal">
+      <h3 id="switchModalTitle">設為進行中</h3>
+      <p style="font-size:0.85rem;color:#6b7280;margin:0 0 0.75rem;">瀏覽器無法直接執行 Node；請在本機 repo 根目錄執行下列指令，完成後更新 registry 中各活動 <code>status</code> 並 push。</p>
+      <pre id="switchCommand"></pre>
+      <div class="modal-actions">
+        <button type="button" class="primary" id="copySwitchCmd">複製指令</button>
+        <button type="button" id="closeSwitchModal">關閉</button>
+      </div>
+    </div>
+  </div>
+
   <script>
-    fetch('dashboard/project-progress.json')
-      .then(r => r.ok ? r.json() : null)
-      .then(d => { if (d) document.getElementById('lastUpdated').textContent = d.lastUpdated; })
-      .catch(() => {});
+    const LINK_LABELS = {
+      entry: '報到入口',
+      materials: '會議資料',
+      handouts: '現場發放',
+      slideshow: '投影簡報',
+      slideshowAfternoon: '下午簡報',
+      dataCompilation: '資料彙整區',
+      onsiteCheckin: '現場簽到',
+      videoCheckin: '視訊簽到',
+      checkin: '簽到紀錄',
+      qrProjector: 'QR 投影',
+      qrPrint: 'QR 列印',
+      prep: '會議籌備',
+      agenda: '議程',
+      onsitePrint: '現場印製',
+      unitClaimMatrix: '認領矩陣',
+      preset: '活動設定檔'
+    };
+
+    const STATUS_BADGE = {
+      active: '進行中',
+      preparing: '籌備中',
+      planned: '已排程',
+      completed: '已完成'
+    };
+
+    let progressMap = {};
+
+    function committeeBadge(ev) {
+      const cls = ev.committee.includes('evaluation') ? 'badge-eval' : 'badge-edit';
+      return '<span class="badge ' + cls + '">' + ev.committeeLabel + '</span>';
+    }
+
+    function statusBadge(status) {
+      return '<span class="badge badge-' + status + '">' + (STATUS_BADGE[status] || status) + '</span>';
+    }
+
+    function renderLinks(links, primaryKeys) {
+      if (!links) return '';
+      const keys = Object.keys(links);
+      const ordered = [
+        ...primaryKeys.filter((k) => links[k]),
+        ...keys.filter((k) => !primaryKeys.includes(k))
+      ];
+      const seen = new Set();
+      return ordered.filter((k) => {
+        if (seen.has(k) || !links[k]) return false;
+        seen.add(k);
+        return true;
+      }).map((k) => {
+        const href = links[k];
+        const label = LINK_LABELS[k] || k;
+        const isPrimary = primaryKeys.includes(k);
+        const isPreset = k === 'preset';
+        const cls = isPrimary ? ' primary' : '';
+        if (isPreset) {
+          return '<a href="' + href + '" class="' + cls.trim() + '" target="_blank" rel="noopener">' + label + '</a>';
+        }
+        return '<a href="' + href + '" class="' + cls.trim() + '">' + label + '</a>';
+      }).join('');
+    }
+
+    function findProgress(ev) {
+      const stream = ev.committee.includes('evaluation') ? 'evaluation' : 'editorial';
+      const ws = progressMap[stream];
+      if (!ws || !ws.meetings) return null;
+      return ws.meetings.find((m) => m.dateIso === ev.dateIso || m.folder && ev.assetsPath && m.folder.includes(ev.assetsPath.split('/').pop()));
+    }
+
+    function renderPhases(prog) {
+      if (!prog || !prog.phases || !prog.phases.length) return '';
+      return '<div class="phase-tags">' + prog.phases.map((p) => '<span class="phase-tag">' + p + '</span>').join('') + '</div>';
+    }
+
+    function renderProgressBar(prog) {
+      if (!prog || !prog.phases) return '';
+      const total = prog.phases.length;
+      const done = prog.status === 'completed' ? total : Math.max(1, Math.floor(total * 0.35));
+      const pct = Math.round((done / total) * 100);
+      return '<div class="progress-bar"><div class="progress-fill" style="width:' + pct + '%"></div></div>';
+    }
+
+    function switchButton(id) {
+      return '<button type="button" class="switch-btn" data-switch-id="' + id + '">設為進行中</button>';
+    }
+
+    function renderActive(ev) {
+      const prog = findProgress(ev);
+      const links = renderLinks(ev.links, ['entry', 'onsiteCheckin', 'videoCheckin', 'qrProjector', 'qrPrint', 'materials', 'slideshow', 'handouts']);
+      return (
+        '<div class="event-card active-card">' +
+          '<div class="event-head">' +
+            '<div><div class="event-title">' + ev.title + ' <span style="color:#6b7280;font-weight:500">｜' + ev.date + '</span></div>' +
+            '<div class="event-meta">' + ev.committeeLabel + ' 第 ' + ev.meetingNumber + ' 場｜' + ev.id + '</div></div>' +
+            '<div>' + committeeBadge(ev) + ' ' + statusBadge(ev.status) + '</div>' +
+          '</div>' +
+          renderPhases(prog) +
+          '<div class="link-row">' + links + '</div>' +
+        '</div>'
+      );
+    }
+
+    function renderPreparing(ev) {
+      const prog = findProgress(ev);
+      const links = renderLinks(ev.links, ['prep', 'materials', 'agenda', 'preset']);
+      return (
+        '<div class="event-card">' +
+          '<div class="event-head">' +
+            '<div><div class="event-title">' + ev.title + ' <span style="color:#6b7280;font-weight:500">｜' + ev.date + '</span></div>' +
+            '<div class="event-meta">' + ev.committeeLabel + ' 第 ' + ev.meetingNumber + ' 場</div></div>' +
+            '<div>' + committeeBadge(ev) + ' ' + statusBadge(ev.status) + '</div>' +
+          '</div>' +
+          (prog && prog.outputs ? '<div class="event-meta">產出：' + prog.outputs.join('、') + '</div>' : '') +
+          renderPhases(prog) +
+          renderProgressBar(prog) +
+          '<div class="link-row">' + links + switchButton(ev.id) + '</div>' +
+        '</div>'
+      );
+    }
+
+    function renderPlanned(ev) {
+      const links = renderLinks(ev.links, ['materials', 'unitClaimMatrix', 'preset']);
+      return (
+        '<div class="event-card">' +
+          '<div class="event-head">' +
+            '<div><div class="event-title">' + ev.title + ' <span style="color:#6b7280;font-weight:500">｜' + ev.date + '</span></div>' +
+            '<div class="event-meta">' + ev.committeeLabel + ' 第 ' + ev.meetingNumber + ' 場</div></div>' +
+            '<div>' + committeeBadge(ev) + ' ' + statusBadge(ev.status) + '</div>' +
+          '</div>' +
+          '<div class="link-row">' + links + switchButton(ev.id) + '</div>' +
+        '</div>'
+      );
+    }
+
+    function renderCompleted(ev) {
+      const prog = findProgress(ev);
+      const links = renderLinks(ev.links, ['slideshow', 'handouts', 'materials', 'dataCompilation', 'onsitePrint', 'checkin', 'preset']);
+      return (
+        '<div class="event-card completed-card">' +
+          '<div class="event-head">' +
+            '<div><div class="event-title">' + ev.title + ' <span style="color:#6b7280;font-weight:500">｜' + ev.date + '</span></div>' +
+            '<div class="event-meta">' + ev.committeeLabel + ' 第 ' + ev.meetingNumber + ' 場｜資產：<code>' + ev.assetsPath + '</code></div></div>' +
+            '<div>' + committeeBadge(ev) + ' ' + statusBadge(ev.status) + '</div>' +
+          '</div>' +
+          (prog && prog.outputs ? '<div class="event-meta">產出：' + prog.outputs.join('、') + '</div>' : '') +
+          renderPhases(prog) +
+          '<div class="link-row">' + links + '</div>' +
+        '</div>'
+      );
+    }
+
+    function renderSection(containerId, events, renderer, emptyText) {
+      const el = document.getElementById(containerId);
+      if (!events.length) {
+        el.innerHTML = '<p class="empty">' + emptyText + '</p>';
+        return;
+      }
+      el.innerHTML = events.map(renderer).join('');
+    }
+
+    function openSwitchModal(id) {
+      const cmd = 'node scripts/switch-event.js ' + id;
+      document.getElementById('switchCommand').textContent = cmd;
+      document.getElementById('switchModal').classList.add('open');
+      document.getElementById('copySwitchCmd').onclick = function () {
+        navigator.clipboard.writeText(cmd).then(function () {
+          document.getElementById('copySwitchCmd').textContent = '已複製';
+          setTimeout(function () { document.getElementById('copySwitchCmd').textContent = '複製指令'; }, 1500);
+        });
+      };
+    }
+
+    document.getElementById('closeSwitchModal').onclick = function () {
+      document.getElementById('switchModal').classList.remove('open');
+    };
+    document.getElementById('switchModal').onclick = function (e) {
+      if (e.target === this) this.classList.remove('open');
+    };
+
+    document.addEventListener('click', function (e) {
+      const btn = e.target.closest('[data-switch-id]');
+      if (btn) openSwitchModal(btn.getAttribute('data-switch-id'));
+    });
+
+    Promise.all([
+      fetch('config/events-registry.json').then((r) => { if (!r.ok) throw new Error('registry'); return r.json(); }),
+      fetch('dashboard/project-progress.json').then((r) => r.ok ? r.json() : null).catch(() => null)
+    ]).then(function ([registry, progress]) {
+      if (progress) {
+        document.getElementById('lastUpdated').textContent = progress.lastUpdated || registry.lastUpdated;
+        progressMap = progress.workstreams || {};
+      } else {
+        document.getElementById('lastUpdated').textContent = registry.lastUpdated;
+      }
+
+      const events = registry.events || [];
+      const byStatus = (s) => events.filter((e) => e.status === s);
+
+      renderSection('active-list', byStatus('active'), renderActive, '目前無進行中活動。');
+      renderSection('preparing-list', byStatus('preparing'), renderPreparing, '目前無籌備中活動。');
+      renderSection('planned-list', byStatus('planned'), renderPlanned, '目前無已排程活動。');
+      renderSection('completed-list', byStatus('completed'), renderCompleted, '目前無已結案活動。');
+    }).catch(function () {
+      document.getElementById('active-list').innerHTML = '<p class="empty">無法載入 config/events-registry.json，請確認檔案已部署。</p>';
+    });
   </script>
 </body>
 </html>

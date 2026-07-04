@@ -1,0 +1,154 @@
+{
+  "registryVersion": 1,
+  "program": "2026宮廟管理師職能基準 iCAP推動與職能導向課程發展",
+  "org": "臺灣道法總會－教育委員會",
+  "lastUpdated": "2026-07-04",
+  "lifecycleStates": ["planned", "preparing", "active", "completed"],
+  "events": [
+    {
+      "id": "1150630-evaluation",
+      "committee": "08-evaluation-committee",
+      "committeeLabel": "評核委員會",
+      "meetingNumber": 1,
+      "date": "115/06/30",
+      "dateIso": "2026-06-30",
+      "title": "職能基準共構",
+      "status": "completed",
+      "presetPath": "config/events/1150630-evaluation.json",
+      "assetsPath": "08-evaluation-committee/1150630",
+      "links": {
+        "entry": "index.html",
+        "slideshow": "meeting-display.html",
+        "handouts": "08-evaluation-committee/1150630-handouts/index.html",
+        "materials": "08-evaluation-committee/1150630/index.html",
+        "dataCompilation": "08-evaluation-committee/1150630-data-compilation/index.html",
+        "onsitePrint": "onsite-print/members/00-toc-cover.html",
+        "checkin": "video-checkin/index.html",
+        "preset": "config/events/1150630-evaluation.json"
+      }
+    },
+    {
+      "id": "1150830-evaluation",
+      "committee": "08-evaluation-committee",
+      "committeeLabel": "評核委員會",
+      "meetingNumber": 2,
+      "date": "115/08/30",
+      "dateIso": "2026-08-30",
+      "title": "ABCD 教學目標與評量設計",
+      "status": "preparing",
+      "presetPath": "config/events/1150830-evaluation.json",
+      "assetsPath": "08-evaluation-committee/1150830",
+      "links": {
+        "prep": "08-evaluation-committee/1150830-prep/index.html",
+        "materials": "08-evaluation-committee/1150830/index.html",
+        "agenda": "08-evaluation-committee/1150830/AGENDA.md",
+        "preset": "config/events/1150830-evaluation.json"
+      }
+    },
+    {
+      "id": "1151025-evaluation",
+      "committee": "08-evaluation-committee",
+      "committeeLabel": "評核委員會",
+      "meetingNumber": 3,
+      "date": "115/10/25",
+      "dateIso": "2026-10-25",
+      "title": "教材大綱審查",
+      "status": "planned",
+      "presetPath": "config/events/1151025-evaluation.json",
+      "assetsPath": "08-evaluation-committee/1151025",
+      "links": {
+        "materials": "08-evaluation-committee/1151025/index.html",
+        "preset": "config/events/1151025-evaluation.json"
+      }
+    },
+    {
+      "id": "1151129-evaluation",
+      "committee": "08-evaluation-committee",
+      "committeeLabel": "評核委員會",
+      "meetingNumber": 4,
+      "date": "115/11/29",
+      "dateIso": "2026-11-29",
+      "title": "送審前總驗收",
+      "status": "planned",
+      "presetPath": "config/events/1151129-evaluation.json",
+      "assetsPath": "08-evaluation-committee/1151129",
+      "links": {
+        "materials": "08-evaluation-committee/1151129/index.html",
+        "preset": "config/events/1151129-evaluation.json"
+      }
+    },
+    {
+      "id": "1150730-editorial",
+      "committee": "09-editorial-committee",
+      "committeeLabel": "教材編審委員會",
+      "meetingNumber": 1,
+      "date": "115/07/30",
+      "dateIso": "2026-07-30",
+      "title": "編審流程 Demo 示範",
+      "status": "active",
+      "presetPath": "config/events/1150730-editorial.json",
+      "assetsPath": "09-editorial-committee/1150730-m1-demo",
+      "links": {
+        "entry": "index.html",
+        "materials": "09-editorial-committee/1150730-m1-demo/index.html",
+        "slideshow": "09-editorial-committee/1150730-m1-demo/00-preflight/logic-chain-slideshow.html",
+        "slideshowAfternoon": "09-editorial-committee/1150730-m1-demo/00-preflight/m1-1-1-teaching-chain-slideshow.html",
+        "handouts": "09-editorial-committee/1150730-m1-demo/1150730-handouts/print-index.html",
+        "onsiteCheckin": "onsite-checkin/index.html",
+        "videoCheckin": "video-checkin/index.html",
+        "qrProjector": "onsite-projector.html",
+        "qrPrint": "onsite-qr-print.html",
+        "preset": "config/events/1150730-editorial.json"
+      }
+    },
+    {
+      "id": "1151018-editorial",
+      "committee": "09-editorial-committee",
+      "committeeLabel": "教材編審委員會",
+      "meetingNumber": 2,
+      "date": "115/10/18",
+      "dateIso": "2026-10-18",
+      "title": "單元認領與分工",
+      "status": "planned",
+      "presetPath": "config/events/1151018-editorial.json",
+      "assetsPath": "09-editorial-committee/1151018-m2-unit-claim",
+      "links": {
+        "materials": "09-editorial-committee/1151018-m2-unit-claim/index.html",
+        "unitClaimMatrix": "09-editorial-committee/unit-claim-matrix.html",
+        "preset": "config/events/1151018-editorial.json"
+      }
+    },
+    {
+      "id": "1151115-editorial",
+      "committee": "09-editorial-committee",
+      "committeeLabel": "教材編審委員會",
+      "meetingNumber": 3,
+      "date": "115/11/15",
+      "dateIso": "2026-11-15",
+      "title": "協作審閱中期檢核",
+      "status": "planned",
+      "presetPath": "config/events/1151115-editorial.json",
+      "assetsPath": "09-editorial-committee/1151115-m3-collaborative-review",
+      "links": {
+        "materials": "09-editorial-committee/1151115-m3-collaborative-review/index.html",
+        "preset": "config/events/1151115-editorial.json"
+      }
+    },
+    {
+      "id": "1151220-editorial",
+      "committee": "09-editorial-committee",
+      "committeeLabel": "教材編審委員會",
+      "meetingNumber": 4,
+      "date": "115/12/20",
+      "dateIso": "2026-12-20",
+      "title": "定稿驗收",
+      "status": "planned",
+      "presetPath": "config/events/1151220-editorial.json",
+      "assetsPath": "09-editorial-committee/1151220-m4-final-acceptance",
+      "links": {
+        "materials": "09-editorial-committee/1151220-m4-final-acceptance/index.html",
+        "preset": "config/events/1151220-editorial.json"
+      }
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
   "project": "2026宮廟管理師職能基準 iCAP推動與職能導向課程發展",
   "org": "臺灣道法總會－教育委員會",
-  "lastUpdated": "2026-07-02",
+  "lastUpdated": "2026-07-04",
   "recentWork": [
     "730 Demo 新增列印索引 print-index.html 與彩排手冊 rehearsal-runbook.html",
     "1150730-handouts 索引加入列印／彩排卡片；AGENDA 數位準備項標記完成",
@@ -75,7 +75,7 @@
           "dateRoc": "115/07/30",
           "dateIso": "2026-07-30",
           "folder": "09-editorial-committee/1150730-m1-demo",
-          "status": "preparing",
+          "status": "active",
           "phases": ["Phase0 身分單元", "Phase1 職能內容", "Phase2 ABCD", "Phase3 學習單", "Phase4 評量三類", "Phase5 協作建檔"],
           "outputs": ["委員理解編審全流程", "示範單元 M1-1.1 完稿", "logic-chain / teaching-chain 投影簡報"]
         },

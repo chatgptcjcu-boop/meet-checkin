@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "kitVersion": "1.0.0",
+    "configSchema": 1,
+    "presetId": "1151129-evaluation",
+    "lifecycle": { "status": "planned" }
+  },
+  "org": {
+    "name": "臺灣道法總會",
+    "department": "教育委員會",
+    "headerLine": "臺灣道法總會－教育委員會",
+    "meetingSubtitle": "送審前總驗收",
+    "footerPlan": "宮廟管理師職能基準發展計畫",
+    "copyright": "2026 臺灣道法總會 教育委員會"
+  },
+  "event": {
+    "id": "1151129-evaluation-final",
+    "title": "宮廟管理師｜第四次評核委員會",
+    "shortTitle": "送審前總驗收",
+    "tagline": "iCAP 送審包定稿驗收",
+    "sessionLabel": "第四次評核委員委員會議",
+    "dateIso": "2026-11-29",
+    "dateDisplay": "2026/11/29",
+    "dateRoc": "115年11月29日",
+    "dateFilePrefix": "1151129",
+    "sessionBadge": "第四次評核委員委員會議 ｜ 2026/11/29",
+    "roster": {
+      "_comment": "待規劃：主辦於會前填入名單",
+      "meetingTitle": "送審前總驗收",
+      "meetingDate": "115年11月29日",
+      "committee": [],
+      "observers": []
+    }
+  },
+  "backend": {
+    "gasWebAppUrl": "https://script.google.com/macros/s/AKfycbxlJASeVM3NvkrBJZDW7C5J53nC9UegMLgUTkNdsppaK6P5K5Hjr2xzQ1DlkFCXvT4HuQ/exec"
+  },
+  "meet": { "url": "" },
+  "contact": { "name": "王芯庭助理", "phone": "0956800579", "channel": "Line" },
+  "signIn": {
+    "roles": ["評核委員", "專家顧問", "專案工作人員", "列席人員"],
+    "committeeLabel": "評核委員",
+    "observersLabel": "列席人員",
+    "guestRoles": ["專家顧問", "專案工作人員", "列席人員", "觀摩來賓"],
+    "memberPortalPath": "./remote-members/index.html"
+  },
+  "seo": {
+    "entryPageTitle": "會議報到入口｜宮廟管理師第四次評核委員會",
+    "checkInPageTitle": "臺灣道法總會－教育委員會 會議報到與簽退",
+    "ogTitle": "宮廟管理師第四次評核委員會",
+    "ogDescription": "第四次評核委員委員會議 (2026/11/29)。",
+    "entryOgDescription": "請依出席方式選擇：現場簽到或視訊簽到。"
+  },
+  "paths": {
+    "onsiteCheckin": "./onsite-checkin/",
+    "onsiteQrProjector": "./onsite-projector.html",
+    "onsiteQrPrint": "./onsite-qr-print.html",
+    "onsiteCheckinUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/onsite-checkin/"
+  }
+}

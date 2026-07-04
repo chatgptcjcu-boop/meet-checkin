@@ -2,7 +2,11 @@
   "meta": {
     "kitVersion": "1.0.0",
     "configSchema": 1,
-    "presetId": "1150630-evaluation"
+    "presetId": "1150630-evaluation",
+    "lifecycle": {
+      "status": "completed",
+      "completedAt": "2026-06-30"
+    }
   },
   "org": {
     "name": "臺灣道法總會",
