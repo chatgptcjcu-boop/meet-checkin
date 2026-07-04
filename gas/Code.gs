@@ -14,6 +14,8 @@
  *                           讀取：doGet ?action=unit-claim-matrix 回傳目前全部單元 JSON
  * • expenses              → handleExpenses（經費編列整份 JSON，分頁 expenses，每次儲存新增一版）
  *                           讀取：doGet ?action=expenses 回傳最新一版的資料 JSON
+ * • roster-admin          → handleRosterAdmin（出席名單群組／成員 CRUD＋批次貼上）
+ *                           讀取：doGet ?action=roster 回傳全部群組＋成員 JSON
  * • 簽到 / 簽退           → handleSignInOut（驗證簽到＋試算表＋Drive＋寄信通知）
  *
  * ⚠️ 每次修改本檔後必須重新部署 Web App：
@@ -47,9 +49,18 @@ var INSTRUCTOR_SHEET_NAME = 'instructor-730';
 var UNIT_CLAIM_SHEET_NAME = 'unit-claim-matrix';
 /** 經費編列表分頁（英文 tab 名；整份經費 JSON 每次儲存新增一版，保留歷史） */
 var EXPENSE_SHEET_NAME = 'expenses';
+/** 出席名單群組／成員分頁（英文 tab 名；memberId 為跨群組連動刪改的主鍵） */
+var ROSTER_GROUPS_SHEET_NAME = 'roster-groups';
+var ROSTER_MEMBERS_SHEET_NAME = 'roster-members';
 
 /** expenses 分頁欄位順序（單一結構化文件；每列一個版本，最後一列為最新） */
 var EXPENSE_HEADERS = ['更新時間', '版本', '更新者', '資料JSON'];
+
+/** roster-groups 分頁欄位（groupId 為活動 preset rosterGroupIds 引用的穩定 ID） */
+var ROSTER_GROUP_HEADERS = ['groupId', 'name', 'committee', 'rosterKind', 'sortOrder', 'description'];
+
+/** roster-members 分頁欄位（memberId 跨群組連動；同一人在多群組可共用 memberId） */
+var ROSTER_MEMBER_HEADERS = ['memberId', 'groupId', 'name', 'org', 'title', 'role', 'attendance', 'sortOrder'];
 
 /** unit-claim-matrix 分頁欄位順序（與前端 units 物件鍵名對應） */
 var UNIT_CLAIM_HEADERS = [
@@ -95,6 +106,9 @@ function doPost(e) {
     }
     if (action === 'expenses') {
       return handleExpenses(data);
+    }
+    if (action === 'roster-admin') {
+      return handleRosterAdmin(data);
     }
     if (action === '簽到' || action === '簽退') {
       return handleSignInOut(data);
@@ -390,6 +404,466 @@ function getExpenses_() {
   });
 }
 
+/* ═══════════════════════════════════════════════════════════════
+ * 出席名單管理 — roster-groups / roster-members 分頁
+ * action: roster-admin（POST）｜doGet ?action=roster（讀取全部）
+ * • 群組 CRUD、成員 CRUD、批次貼上匯入
+ * • memberId 為跨群組連動主鍵：刪除／更新會同步所有引用列
+ * • 活動 preset 以 rosterGroupIds 引用 groupId，簽到頁 GET 合併名單
+ * ⚠️ 修改後請重新部署 Web App（見檔案頂部說明）
+ * ═══════════════════════════════════════════════════════════════ */
+
+function handleRosterAdmin(data) {
+  var op = data.operation || '';
+  if (op === 'createGroup') return rosterCreateGroup_(data);
+  if (op === 'updateGroup') return rosterUpdateGroup_(data);
+  if (op === 'deleteGroup') return rosterDeleteGroup_(data);
+  if (op === 'createMember') return rosterCreateMember_(data);
+  if (op === 'updateMember') return rosterUpdateMember_(data);
+  if (op === 'deleteMember') return rosterDeleteMember_(data);
+  if (op === 'bulkImport') return rosterBulkImport_(data);
+  if (op === 'linkMember') return rosterLinkMember_(data);
+  if (op === 'seed') return rosterSeedInitial_(data);
+  return jsonOut({ ok: false, error: '未知 roster operation: ' + op });
+}
+
+function getOrCreateRosterGroupsSheet_(ss) {
+  var sheet = ss.getSheetByName(ROSTER_GROUPS_SHEET_NAME);
+  if (!sheet) {
+    sheet = ss.insertSheet(ROSTER_GROUPS_SHEET_NAME);
+    sheet.appendRow(ROSTER_GROUP_HEADERS);
+  } else if (sheet.getLastRow() === 0) {
+    sheet.appendRow(ROSTER_GROUP_HEADERS);
+  }
+  return sheet;
+}
+
+function getOrCreateRosterMembersSheet_(ss) {
+  var sheet = ss.getSheetByName(ROSTER_MEMBERS_SHEET_NAME);
+  if (!sheet) {
+    sheet = ss.insertSheet(ROSTER_MEMBERS_SHEET_NAME);
+    sheet.appendRow(ROSTER_MEMBER_HEADERS);
+  } else if (sheet.getLastRow() === 0) {
+    sheet.appendRow(ROSTER_MEMBER_HEADERS);
+  }
+  return sheet;
+}
+
+function rosterUuid_() {
+  return Utilities.getUuid();
+}
+
+function rosterReadAll_() {
+  var ss = getSpreadsheet_();
+  var gSheet = ss.getSheetByName(ROSTER_GROUPS_SHEET_NAME);
+  var mSheet = ss.getSheetByName(ROSTER_MEMBERS_SHEET_NAME);
+  var groups = [];
+  var members = [];
+
+  if (gSheet && gSheet.getLastRow() >= 2) {
+    var gVals = gSheet.getRange(2, 1, gSheet.getLastRow() - 1, ROSTER_GROUP_HEADERS.length).getValues();
+    groups = gVals.map(function (r) {
+      return {
+        groupId: String(r[0] || ''),
+        name: String(r[1] || ''),
+        committee: String(r[2] || ''),
+        rosterKind: String(r[3] || 'committee'),
+        sortOrder: Number(r[4]) || 0,
+        description: String(r[5] || '')
+      };
+    }).filter(function (g) { return g.groupId; });
+    groups.sort(function (a, b) { return a.sortOrder - b.sortOrder || a.name.localeCompare(b.name, 'zh-Hant'); });
+  }
+
+  if (mSheet && mSheet.getLastRow() >= 2) {
+    var mVals = mSheet.getRange(2, 1, mSheet.getLastRow() - 1, ROSTER_MEMBER_HEADERS.length).getValues();
+    members = mVals.map(function (r) {
+      return {
+        memberId: String(r[0] || ''),
+        groupId: String(r[1] || ''),
+        name: String(r[2] || ''),
+        org: String(r[3] || ''),
+        title: String(r[4] || ''),
+        role: String(r[5] || ''),
+        attendance: String(r[6] || '出席'),
+        sortOrder: Number(r[7]) || 0
+      };
+    }).filter(function (m) { return m.memberId && m.groupId; });
+  }
+
+  return { groups: groups, members: members };
+}
+
+function getRoster_() {
+  var data = rosterReadAll_();
+  return jsonOut({ ok: true, groups: data.groups, members: data.members });
+}
+
+function rosterFindGroupRow_(sheet, groupId) {
+  if (!sheet || sheet.getLastRow() < 2) return 0;
+  var ids = sheet.getRange(2, 1, sheet.getLastRow() - 1, 1).getValues();
+  for (var i = 0; i < ids.length; i++) {
+    if (String(ids[i][0]) === String(groupId)) return i + 2;
+  }
+  return 0;
+}
+
+function rosterMemberRowsByMemberId_(sheet, memberId) {
+  var rows = [];
+  if (!sheet || sheet.getLastRow() < 2) return rows;
+  var vals = sheet.getRange(2, 1, sheet.getLastRow() - 1, 1).getValues();
+  for (var i = 0; i < vals.length; i++) {
+    if (String(vals[i][0]) === String(memberId)) rows.push(i + 2);
+  }
+  return rows;
+}
+
+function rosterMemberRowsByGroupId_(sheet, groupId) {
+  var rows = [];
+  if (!sheet || sheet.getLastRow() < 2) return rows;
+  var vals = sheet.getRange(2, 1, sheet.getLastRow() - 1, 2).getValues();
+  for (var i = 0; i < vals.length; i++) {
+    if (String(vals[i][1]) === String(groupId)) rows.push(i + 2);
+  }
+  return rows;
+}
+
+function rosterNextMemberSort_(sheet, groupId) {
+  var max = 0;
+  if (!sheet || sheet.getLastRow() < 2) return 1;
+  var vals = sheet.getRange(2, 1, sheet.getLastRow() - 1, ROSTER_MEMBER_HEADERS.length).getValues();
+  for (var i = 0; i < vals.length; i++) {
+    if (String(vals[i][1]) === String(groupId)) {
+      var s = Number(vals[i][7]) || 0;
+      if (s > max) max = s;
+    }
+  }
+  return max + 1;
+}
+
+function rosterCreateGroup_(data) {
+  var ss = getSpreadsheet_();
+  var sheet = getOrCreateRosterGroupsSheet_(ss);
+  var groupId = String(data.groupId || '').trim() || rosterUuid_();
+  if (rosterFindGroupRow_(sheet, groupId)) {
+    return jsonOut({ ok: false, error: '群組 ID 已存在：' + groupId });
+  }
+  var row = [
+    groupId,
+    data.name || '',
+    data.committee || '',
+    data.rosterKind || 'committee',
+    Number(data.sortOrder) || sheet.getLastRow(),
+    data.description || ''
+  ];
+  sheet.appendRow(row);
+  return jsonOut({ ok: true, groupId: groupId });
+}
+
+function rosterUpdateGroup_(data) {
+  var ss = getSpreadsheet_();
+  var sheet = getOrCreateRosterGroupsSheet_(ss);
+  var groupId = String(data.groupId || '');
+  var rowNum = rosterFindGroupRow_(sheet, groupId);
+  if (!rowNum) return jsonOut({ ok: false, error: '找不到群組：' + groupId });
+  var existing = sheet.getRange(rowNum, 1, 1, ROSTER_GROUP_HEADERS.length).getValues()[0];
+  sheet.getRange(rowNum, 1, 1, ROSTER_GROUP_HEADERS.length).setValues([[
+    groupId,
+    data.name != null ? data.name : existing[1],
+    data.committee != null ? data.committee : existing[2],
+    data.rosterKind != null ? data.rosterKind : existing[3],
+    data.sortOrder != null ? Number(data.sortOrder) : existing[4],
+    data.description != null ? data.description : existing[5]
+  ]]);
+  return jsonOut({ ok: true, groupId: groupId });
+}
+
+function rosterDeleteGroup_(data) {
+  var ss = getSpreadsheet_();
+  var gSheet = getOrCreateRosterGroupsSheet_(ss);
+  var mSheet = getOrCreateRosterMembersSheet_(ss);
+  var groupId = String(data.groupId || '');
+  var rowNum = rosterFindGroupRow_(gSheet, groupId);
+  if (!rowNum) return jsonOut({ ok: false, error: '找不到群組：' + groupId });
+
+  var memberRows = rosterMemberRowsByGroupId_(mSheet, groupId);
+  for (var i = memberRows.length - 1; i >= 0; i--) {
+    mSheet.deleteRow(memberRows[i]);
+  }
+  gSheet.deleteRow(rowNum);
+  return jsonOut({ ok: true, groupId: groupId, deletedMembers: memberRows.length });
+}
+
+function rosterCreateMember_(data) {
+  var ss = getSpreadsheet_();
+  getOrCreateRosterGroupsSheet_(ss);
+  var sheet = getOrCreateRosterMembersSheet_(ss);
+  var groupId = String(data.groupId || '');
+  if (!rosterFindGroupRow_(ss.getSheetByName(ROSTER_GROUPS_SHEET_NAME), groupId)) {
+    return jsonOut({ ok: false, error: '找不到群組：' + groupId });
+  }
+  var memberId = String(data.memberId || '').trim() || rosterUuid_();
+  var row = [
+    memberId,
+    groupId,
+    data.name || '',
+    data.org || '',
+    data.title || '',
+    data.role || '',
+    data.attendance || '出席',
+    Number(data.sortOrder) || rosterNextMemberSort_(sheet, groupId)
+  ];
+  sheet.appendRow(row);
+  return jsonOut({ ok: true, memberId: memberId, groupId: groupId });
+}
+
+function rosterUpdateMember_(data) {
+  var ss = getSpreadsheet_();
+  var sheet = getOrCreateRosterMembersSheet_(ss);
+  var memberId = String(data.memberId || '');
+  var rows = rosterMemberRowsByMemberId_(sheet, memberId);
+  if (!rows.length) return jsonOut({ ok: false, error: '找不到成員：' + memberId });
+
+  var first = sheet.getRange(rows[0], 1, 1, ROSTER_MEMBER_HEADERS.length).getValues()[0];
+  var name = data.name != null ? data.name : first[2];
+  var org = data.org != null ? data.org : first[3];
+  var title = data.title != null ? data.title : first[4];
+  var role = data.role != null ? data.role : first[5];
+  var attendance = data.attendance != null ? data.attendance : first[6];
+
+  for (var i = 0; i < rows.length; i++) {
+    var cur = sheet.getRange(rows[i], 1, 1, ROSTER_MEMBER_HEADERS.length).getValues()[0];
+    sheet.getRange(rows[i], 1, 1, ROSTER_MEMBER_HEADERS.length).setValues([[
+      memberId,
+      cur[1],
+      name,
+      org,
+      title,
+      role,
+      attendance,
+      data.sortOrder != null ? Number(data.sortOrder) : cur[7]
+    ]]);
+  }
+  return jsonOut({ ok: true, memberId: memberId, updatedRows: rows.length });
+}
+
+function rosterDeleteMember_(data) {
+  var ss = getSpreadsheet_();
+  var sheet = getOrCreateRosterMembersSheet_(ss);
+  var memberId = String(data.memberId || '');
+  var rows = rosterMemberRowsByMemberId_(sheet, memberId);
+  if (!rows.length) return jsonOut({ ok: false, error: '找不到成員：' + memberId });
+  for (var i = rows.length - 1; i >= 0; i--) {
+    sheet.deleteRow(rows[i]);
+  }
+  return jsonOut({ ok: true, memberId: memberId, deletedRows: rows.length });
+}
+
+function rosterLinkMember_(data) {
+  var ss = getSpreadsheet_();
+  var sheet = getOrCreateRosterMembersSheet_(ss);
+  var memberId = String(data.memberId || '');
+  var groupId = String(data.groupId || '');
+  var rows = rosterMemberRowsByMemberId_(sheet, memberId);
+  if (!rows.length) return jsonOut({ ok: false, error: '找不到成員：' + memberId });
+  if (!rosterFindGroupRow_(ss.getSheetByName(ROSTER_GROUPS_SHEET_NAME), groupId)) {
+    return jsonOut({ ok: false, error: '找不到群組：' + groupId });
+  }
+  var src = sheet.getRange(rows[0], 1, 1, ROSTER_MEMBER_HEADERS.length).getValues()[0];
+  var dup = rosterMemberRowsByGroupId_(sheet, groupId);
+  for (var i = 0; i < dup.length; i++) {
+    var cur = sheet.getRange(dup[i], 1, 1, 1).getValue();
+    if (String(cur) === memberId) {
+      return jsonOut({ ok: false, error: '成員已在該群組中' });
+    }
+  }
+  sheet.appendRow([
+    memberId,
+    groupId,
+    src[2],
+    src[3],
+    src[4],
+    src[5],
+    data.attendance != null ? data.attendance : src[6],
+    Number(data.sortOrder) || rosterNextMemberSort_(sheet, groupId)
+  ]);
+  return jsonOut({ ok: true, memberId: memberId, groupId: groupId });
+}
+
+function rosterParseImportLine_(line, defaults) {
+  var parts = line.split('\t');
+  if (parts.length === 1) parts = line.split(',');
+  if (parts.length === 1) parts = [line.trim()];
+  return {
+    name: (parts[0] || '').trim(),
+    org: (parts[1] || defaults.org || '').trim(),
+    title: (parts[2] || defaults.title || '').trim(),
+    role: (parts[3] || defaults.role || '').trim(),
+    attendance: (parts[4] || defaults.attendance || '出席').trim()
+  };
+}
+
+function rosterBulkImport_(data) {
+  var ss = getSpreadsheet_();
+  getOrCreateRosterGroupsSheet_(ss);
+  var sheet = getOrCreateRosterMembersSheet_(ss);
+  var groupId = String(data.groupId || '');
+  if (!rosterFindGroupRow_(ss.getSheetByName(ROSTER_GROUPS_SHEET_NAME), groupId)) {
+    return jsonOut({ ok: false, error: '找不到群組：' + groupId });
+  }
+  var text = String(data.text || '');
+  var lines = text.split(/\r?\n/).map(function (l) { return l.trim(); }).filter(function (l) { return l; });
+  var defaults = {
+    org: data.defaultOrg || '',
+    title: data.defaultTitle || '',
+    role: data.defaultRole || '',
+    attendance: data.defaultAttendance || '出席'
+  };
+  var added = 0;
+  var sort = rosterNextMemberSort_(sheet, groupId);
+  for (var i = 0; i < lines.length; i++) {
+    var m = rosterParseImportLine_(lines[i], defaults);
+    if (!m.name) continue;
+    sheet.appendRow([
+      rosterUuid_(),
+      groupId,
+      m.name,
+      m.org,
+      m.title,
+      m.role,
+      m.attendance,
+      sort++
+    ]);
+    added++;
+  }
+  return jsonOut({ ok: true, groupId: groupId, added: added });
+}
+
+function rosterSeedInitial_(data) {
+  if (data.force !== true) {
+    var existing = rosterReadAll_();
+    if (existing.groups.length) {
+      return jsonOut({ ok: false, error: '已有群組資料；若要覆寫請傳 force:true', groupCount: existing.groups.length });
+    }
+  }
+
+  var ss = getSpreadsheet_();
+  var gSheet = getOrCreateRosterGroupsSheet_(ss);
+  var mSheet = getOrCreateRosterMembersSheet_(ss);
+
+  if (data.force === true) {
+    while (gSheet.getLastRow() > 1) gSheet.deleteRow(2);
+    while (mSheet.getLastRow() > 1) mSheet.deleteRow(2);
+  }
+
+  var seed = getRosterSeedData_();
+  var memberCount = 0;
+  for (var i = 0; i < seed.groups.length; i++) {
+    var g = seed.groups[i];
+    gSheet.appendRow([
+      g.groupId,
+      g.name,
+      g.committee,
+      g.rosterKind,
+      g.sortOrder,
+      g.description || ''
+    ]);
+    var members = seed.members[g.groupId] || [];
+    for (var j = 0; j < members.length; j++) {
+      var m = members[j];
+      mSheet.appendRow([
+        m.memberId || rosterUuid_(),
+        g.groupId,
+        m.name,
+        m.org || '',
+        m.title || '',
+        m.role || '',
+        m.attendance || '出席',
+        m.sortOrder != null ? m.sortOrder : j + 1
+      ]);
+      memberCount++;
+    }
+  }
+  return jsonOut({ ok: true, groups: seed.groups.length, members: memberCount });
+}
+
+/** 0730 教材編審＋630 評核預設群組（與 repo preset / members.js 對齊） */
+function getRosterSeedData_() {
+  var editorialCommittee = [
+    { name: '張祐倉', org: '長榮大學健康科學學院', title: '職能導向培訓與 ICAP 文件編修', role: '編審委員', attendance: '出席' },
+    { name: '甘士照', org: '崑山科技大學', title: '大專院校財務與活動管理教學', role: '教材講師', attendance: '出席' },
+    { name: '沈煒庭', org: '永和區公所社會人文課／台北媽祖文創協會', title: '地方宗教文化推廣與媽祖信仰活動', role: '教材講師', attendance: '出席' },
+    { name: '郭純學', org: '南寶企管顧問有限公司', title: '企業與非營利組織 TTQS 輔導', role: '教材講師', attendance: '出席' },
+    { name: '凃佩君', org: '群羿堂策略整合行銷有限公司', title: '營運長', role: '教材講師', attendance: '出席' },
+    { name: '洪家祥', org: '如魚得水管理顧問有限公司', title: '地方創生與組織策略顧問', role: '教材講師', attendance: '出席' },
+    { name: '蔡靜枝', org: '益和永續股份有限公司', title: '永續發展與地方協力網絡推動', role: '教材講師', attendance: '出席' },
+    { name: '林伯奇', org: '新港奉天宮世界媽祖文化研究暨文獻中心', title: '媽祖文化研究與大型宗教儀典', role: '教材講師', attendance: '出席' },
+    { name: '王明堂', org: '高苑工商', title: '宮廟管理教育與教材審查', role: '編審委員', attendance: '出席' },
+    { name: '陳家誼', org: '利貞法律事務所', title: '宗教團體與宮廟行政法制諮詢', role: '教材講師', attendance: '出席' },
+    { name: '蔣馥蓁', org: '國立政治大學華人宗教研究中心', title: '華人宗教與道教儀式學術研究', role: '教材講師', attendance: '出席' },
+    { name: '胡家綾', org: '禾寅有限公司', title: '地方文化課程與體驗活動規劃', role: '教材講師', attendance: '出席' },
+    { name: '李芳文', org: '安永聯合會計師事務所', title: '教材與財務制度審查', role: '編審委員', attendance: '出席' },
+    { name: '鄭詠紜', org: '宮廟從業培訓與品質管理小組', title: '宮廟現場廟務輔導與培訓品質管理', role: '教材講師', attendance: '出席' },
+    { name: '林宗德', org: '墩點文史工作室', title: '地方文史調查與文化資產田野', role: '教材講師', attendance: '出席' }
+  ];
+  var editorialObservers = [
+    { name: '陳瑞宏', org: '臺灣道法總會', title: '總會長', role: '列席人員', attendance: '出席' },
+    { name: '王芯庭', org: '臺灣道法總會', title: '助理', role: '專案工作人員', attendance: '出席' }
+  ];
+  var evalCommittee = [
+    { name: '林清淇', org: '內政部宗教禮制司', title: '前司長', role: '召集委員', attendance: '出席' },
+    { name: '吳永猛', org: '臺灣法教會／文化大學', title: '前理事長／前副校長', role: '評核委員', attendance: '視訊' },
+    { name: '薄喬萍', org: '義守大學', title: '前院長', role: '評核委員', attendance: '出席' },
+    { name: '李樑堅', org: '義守大學', title: '前副校長', role: '評核委員', attendance: '視訊' },
+    { name: '鄭卜五', org: '高雄師範大學', title: '教授', role: '評核委員', attendance: '視訊' },
+    { name: '鄭志明', org: '輔仁大學', title: '教授', role: '評核委員', attendance: '視訊' },
+    { name: '陳美華', org: '台灣宗教學會', title: '前理事長', role: '評核委員', attendance: '出席' },
+    { name: '高超文', org: '木柵指南宮', title: '主任委員', role: '評核委員', attendance: '出席' },
+    { name: '鄭詠紜', org: '臺灣道法總會', title: '不分區會長', role: '評核委員', attendance: '出席' },
+    { name: '王世任', org: '承天宮', title: '興建主任委員', role: '評核委員', attendance: '出席' },
+    { name: '詹博雅', org: '凌霄寶殿武龍宮', title: '顧問', role: '評核委員', attendance: '出席' },
+    { name: '郭昭廷', org: '開封宮包公廟', title: '前主任委員', role: '評核委員', attendance: '出席' },
+    { name: '黃國彰', org: '中華關聖文化世界弘揚協會', title: '理事長', role: '評核委員', attendance: '出席' },
+    { name: '黃志華', org: '五里林護天府', title: '主任委員', role: '評核委員', attendance: '出席' },
+    { name: '蔡鴻祺', org: '中華世界全民念佛會', title: '會長', role: '評核委員', attendance: '出席' },
+    { name: '洪家祥', org: '如魚得水顧問公司', title: '總經理', role: '評核委員', attendance: '請假' }
+  ];
+  var evalObserversExtra = [
+    { name: '陳瑞宏', org: '臺灣道法總會', title: '總會長', role: '列席人員', attendance: '出席' },
+    { name: '張聰明', org: '臺灣道法總會', title: '監事長', role: '列席人員', attendance: '出席' },
+    { name: '陳昭良', org: '臺灣道法總會', title: '副監事長', role: '列席人員', attendance: '出席' },
+    { name: '黃子瑜', org: '臺灣道法總會', title: '北區會長', role: '列席人員', attendance: '出席' },
+    { name: '郭益富', org: '臺灣道法總會', title: '東區會長', role: '列席人員', attendance: '出席' },
+    { name: '張祐倉', org: '臺灣道法總會', title: '主任委員', role: '列席人員', attendance: '出席' },
+    { name: '王芯庭', org: '臺灣道法總會', title: '助理', role: '列席人員', attendance: '出席' }
+  ];
+
+  function withIds(list, prefix) {
+    return list.map(function (m, idx) {
+      var copy = {};
+      for (var k in m) copy[k] = m[k];
+      copy.memberId = prefix + '-' + String(idx + 1).padStart(3, '0');
+      copy.sortOrder = idx + 1;
+      return copy;
+    });
+  }
+
+  return {
+    groups: [
+      { groupId: '1150730-editorial-committee', name: '730 教材講師／編審委員', committee: '教材編審委員會', rosterKind: 'committee', sortOrder: 1, description: '115/07/30 M1 Demo 主名單' },
+      { groupId: '1150730-editorial-observers', name: '730 列席與工作人員', committee: '教材編審委員會', rosterKind: 'observers', sortOrder: 2, description: '總會長＋助理；五位固定顧問由簽到頁自動合併' },
+      { groupId: '1150630-evaluation-committee', name: '630 評核委員', committee: '評核委員會', rosterKind: 'committee', sortOrder: 3, description: '115/06/30 第一次評核委員會' },
+      { groupId: '1150630-evaluation-observers', name: '630 列席與工作人員', committee: '評核委員會', rosterKind: 'observers', sortOrder: 4, description: '總會幹部與工作人員' }
+    ],
+    members: {
+      '1150730-editorial-committee': withIds(editorialCommittee, '730c'),
+      '1150730-editorial-observers': withIds(editorialObservers, '730o'),
+      '1150630-evaluation-committee': withIds(evalCommittee, '630c'),
+      '1150630-evaluation-observers': withIds(evalObserversExtra, '630o')
+    }
+  };
+}
+
 /** 簽到／簽退固定寫入「工作表1」，避免與「填答紀錄」分頁混淆 */
 function getOrCreateSignSheet_(ss) {
   var sheet = ss.getSheetByName(SIGN_SHEET_NAME);
@@ -518,6 +992,7 @@ function jsonOut(obj) {
  * 瀏覽器開啟 /exec 可測試部署是否上線。
  * ?action=unit-claim-matrix → 回傳目前 86 單元認領矩陣（供前端「同步最新」）。
  * ?action=expenses          → 回傳經費編列表最新一版（供前端「同步最新」）。
+ * ?action=roster            → 回傳出席名單全部群組＋成員（供 roster-admin 與簽到頁）。
  */
 function doGet(e) {
   var action = e && e.parameter ? (e.parameter.action || '') : '';
@@ -526,6 +1001,9 @@ function doGet(e) {
   }
   if (action === 'expenses') {
     return getExpenses_();
+  }
+  if (action === 'roster') {
+    return getRoster_();
   }
   return jsonOut({ ok: true, service: 'meet-checkin', time: new Date().toISOString() });
 }
@@ -633,6 +1111,34 @@ function testExpenses() {
     pageUrl: 'manual-test'
   })).getContent());
   Logger.log(getExpenses_().getContent());
+}
+
+function testRosterSeed() {
+  Logger.log(doPost(mockPost_({
+    action: 'roster-admin',
+    operation: 'seed',
+    force: false
+  })).getContent());
+  Logger.log(getRoster_().getContent());
+}
+
+function testRosterAdmin() {
+  Logger.log(doPost(mockPost_({
+    action: 'roster-admin',
+    operation: 'createGroup',
+    groupId: 'test-group',
+    name: '測試群組',
+    committee: '教育委員會',
+    rosterKind: 'committee'
+  })).getContent());
+  Logger.log(doPost(mockPost_({
+    action: 'roster-admin',
+    operation: 'bulkImport',
+    groupId: 'test-group',
+    text: '測試甲\n測試乙\t單位B',
+    defaultRole: '列席人員'
+  })).getContent());
+  Logger.log(getRoster_().getContent());
 }
 
 function testFormSubmitWeb() {

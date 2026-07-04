@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>出席名單管理｜宮廟管理師 iCAP 專案</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./roster-admin.css?v=1">
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>出席名單管理</h1>
+      <p>管理委員會群組名單（Google 試算表 roster-groups / roster-members）；活動 preset 以 groupId 勾稽，無需每場重填。</p>
+    </header>
+
+    <div class="top-bar">
+      <div class="quick-links">
+        <a href="../dashboard.html">儀表板</a>
+        <a href="../index.html">會議報到入口</a>
+        <a href="../remote-members/index.html">委員專區</a>
+        <a href="./index.html" class="current">出席名單管理</a>
+        <a href="../roster-management.html">名單預覽</a>
+      </div>
+      <div class="toolbar">
+        <button type="button" id="btnReload">🔄 重新載入</button>
+        <button type="button" id="btnSeed">🌱 初始化種子資料</button>
+        <button type="button" id="btnAddGroup" class="primary">＋ 新增群組</button>
+      </div>
+    </div>
+
+    <p id="statusMsg" class="status"></p>
+
+    <div class="layout">
+      <aside class="panel">
+        <h2>名單群組</h2>
+        <ul id="groupList" class="group-list">
+          <li class="empty">載入中…</li>
+        </ul>
+        <div class="note">
+          群組 ID（<code>groupId</code>）供活動 preset 的 <code>rosterGroupIds</code> 引用。
+          種子含 730 教材編審 15 人＋630 評核委員會預設。
+        </div>
+      </aside>
+
+      <main>
+        <div class="panel" id="memberPanel">
+          <p class="empty">載入中…</p>
+        </div>
+
+        <div class="panel" style="margin-top:1rem">
+          <h2>批次貼上匯入</h2>
+          <p class="note" style="margin-top:0">
+            每行一位；僅姓名，或 Tab／逗號分隔：<strong>姓名｜單位｜職稱｜身份｜出席方式</strong>。
+            出席方式：出席｜視訊｜請假。
+          </p>
+          <div class="form-grid" style="margin-top:0.75rem">
+            <div>
+              <label for="pasteDefaultRole">預設身份</label>
+              <input type="text" id="pasteDefaultRole" value="教材講師" placeholder="例：評核委員">
+            </div>
+            <div>
+              <label for="pasteDefaultAtt">預設出席</label>
+              <select id="pasteDefaultAtt">
+                <option value="出席">出席</option>
+                <option value="視訊">視訊</option>
+                <option value="請假">請假</option>
+              </select>
+            </div>
+          </div>
+          <textarea id="pasteText" rows="8" placeholder="張三&#10;李四\t單位\t職稱\t編審委員\t出席"></textarea>
+          <div class="toolbar" style="margin-top:0.5rem">
+            <button type="button" id="btnBulkImport" class="primary">匯入至目前群組</button>
+            <button type="button" id="btnAddMember">＋ 單筆新增</button>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <footer>
+      meet-checkin/roster-admin/ · 修改 <code>gas/Code.gs</code> 後須 GAS 新版本部署 ·
+      <a href="../.cursor/skills/meet-checkin-kit/SKILL.md">meet-checkin-kit</a>
+    </footer>
+  </div>
+
+  <div id="groupModal" class="modal-backdrop">
+    <div class="modal">
+      <h3 id="groupFormTitle">新增群組</h3>
+      <input type="hidden" id="editGroupId">
+      <div class="form-grid">
+        <div>
+          <label for="groupId">群組 ID（英文 kebab-case）</label>
+          <input type="text" id="groupId" placeholder="1150730-editorial-committee">
+        </div>
+        <div>
+          <label for="groupName">群組名稱</label>
+          <input type="text" id="groupName" placeholder="730 教材講師／編審委員">
+        </div>
+        <div>
+          <label for="groupCommittee">所屬委員會</label>
+          <select id="groupCommittee">
+            <option>教育委員會</option>
+            <option>評核委員會</option>
+            <option selected>教材編審委員會</option>
+            <option>上層審閱顧問</option>
+            <option>總會幹部</option>
+            <option>共用</option>
+          </select>
+        </div>
+        <div>
+          <label for="groupKind">名單類型</label>
+          <select id="groupKind">
+            <option value="committee">委員／講師（committee）</option>
+            <option value="observers">列席／顧問（observers）</option>
+          </select>
+        </div>
+        <div>
+          <label for="groupSort">排序</label>
+          <input type="number" id="groupSort" value="1" min="0">
+        </div>
+        <div style="grid-column:1/-1">
+          <label for="groupDesc">說明</label>
+          <input type="text" id="groupDesc" placeholder="選填">
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" id="btnSaveGroup" class="primary">儲存</button>
+        <button type="button" data-close-modal="groupModal">取消</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="memberModal" class="modal-backdrop">
+    <div class="modal">
+      <h3 id="memberFormTitle">新增成員</h3>
+      <div class="form-grid">
+        <div>
+          <label for="memberName">姓名</label>
+          <input type="text" id="memberName" required>
+        </div>
+        <div>
+          <label for="memberOrg">單位</label>
+          <input type="text" id="memberOrg">
+        </div>
+        <div>
+          <label for="memberTitle">職稱</label>
+          <input type="text" id="memberTitle">
+        </div>
+        <div>
+          <label for="memberRole">身份</label>
+          <input type="text" id="memberRole" placeholder="教材講師">
+        </div>
+        <div>
+          <label for="memberAttendance">出席方式</label>
+          <select id="memberAttendance">
+            <option value="出席">出席</option>
+            <option value="視訊">視訊</option>
+            <option value="請假">請假</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" id="btnSaveMember" class="primary">儲存</button>
+        <button type="button" data-close-modal="memberModal">取消</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../config/event.config.js"></script>
+  <script src="./roster-admin.js?v=1"></script>
+</body>
+</html>

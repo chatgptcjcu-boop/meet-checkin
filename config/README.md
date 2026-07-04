@@ -38,7 +38,8 @@ node scripts/switch-event.js 1150630-evaluation
 |------|------|
 | `org.*` | 主辦單位、頁首頁尾 |
 | `event.*` | 會議名稱、日期、PDF 檔名前綴 |
-| `event.roster` | 簽到名單（committee / observers）；有值時覆蓋 `members.js` |
+| `event.roster` | 簽到名單；`rosterGroupIds` 優先從 GAS 載入，否則 inline committee/observers 覆蓋 `members.js` |
+| `rosterAdmin.*` | 出席名單管理頁與 GAS action（`roster-admin/index.html`） |
 | `backend.gasWebAppUrl` | GAS Web App `/exec` URL |
 | `meet.url` | Google Meet 連結 |
 | `contact.*` | 簽名 PDF 回傳對象 |

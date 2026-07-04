@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>名單管理｜宮廟管理師 iCAP 專案</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f1f5f9;
+      --panel: #ffffff;
+      --gold: #fbbf24;
+      --green: #34d399;
+      --green-dark: #065f46;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background: var(--bg);
+      margin: 0;
+      padding: 1.5rem 1rem 3rem;
+      color: #111;
+    }
+    .wrap { max-width: 68rem; margin: 0 auto; }
+    header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 55%, #065f46 100%);
+      color: #fff;
+      border-radius: 0.75rem;
+      padding: 1.75rem 2rem;
+      margin-bottom: 1.25rem;
+      border-bottom: 4px solid var(--gold);
+    }
+    header h1 { margin: 0 0 0.35rem; font-size: 1.45rem; }
+    header p { margin: 0; opacity: 0.9; font-size: 0.9rem; }
+    .top-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
+    .quick-links { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .quick-links a {
+      display: inline-block;
+      padding: 0.4rem 0.8rem;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 0.4rem;
+      text-decoration: none;
+      color: #111;
+      font-size: 0.82rem;
+    }
+    .quick-links a:hover { border-color: var(--gold); background: #fffbeb; }
+    .quick-links a.current { border-color: var(--gold); background: #fffbeb; font-weight: 700; }
+    .meta-pill {
+      font-size: 0.75rem;
+      color: var(--muted);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 0.35rem 0.85rem;
+    }
+    .section {
+      background: var(--panel);
+      border-radius: 0.75rem;
+      box-shadow: 0 2px 8px rgb(0 0 0 / 0.06);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .section h2 {
+      font-size: 1.05rem;
+      margin: 0 0 0.85rem;
+      padding-left: 0.6rem;
+      border-left: 4px solid var(--gold);
+    }
+    .section-desc { font-size: 0.82rem; color: var(--muted); margin: -0.5rem 0 0.85rem; }
+    .event-banner {
+      border: 1px solid var(--line);
+      border-radius: 0.6rem;
+      padding: 1rem 1.15rem;
+      background: linear-gradient(90deg, #ecfdf5 0%, #fff 100%);
+      border-left: 4px solid var(--green);
+      margin-bottom: 1rem;
+    }
+    .event-banner .title { font-weight: 700; font-size: 1.05rem; margin: 0 0 0.35rem; }
+    .event-banner .meta { font-size: 0.82rem; color: var(--muted); }
+    .badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+      margin-right: 0.25rem;
+    }
+    .badge-active { background: #d1fae5; color: #065f46; }
+    .badge-onsite { background: #d1fae5; color: #065f46; }
+    .badge-video { background: #dbeafe; color: #1e40af; }
+    .badge-leave { background: #fee2e2; color: #991b1b; }
+    .badge-source { background: #fef3c7; color: #92400e; }
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 0.75rem 0 0;
+      font-size: 0.8rem;
+    }
+    .stat-chip {
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 0.25rem 0.65rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.55rem 0.65rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: #f8fafc;
+      font-weight: 700;
+      font-size: 0.78rem;
+      color: #374151;
+    }
+    tr:nth-child(even) td { background: #fafafa; }
+    .empty { font-size: 0.85rem; color: var(--muted); padding: 0.5rem 0; }
+    .edit-links { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+    .edit-links a {
+      display: inline-block;
+      padding: 0.45rem 0.85rem;
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 0.45rem;
+      text-decoration: none;
+      color: var(--green-dark);
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+    .edit-links a:hover { border-color: var(--gold); background: #fffbeb; }
+    .note {
+      font-size: 0.8rem;
+      color: var(--muted);
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 0.5rem;
+      padding: 0.75rem 1rem;
+      margin-top: 0.75rem;
+      line-height: 1.55;
+    }
+    code { font-size: 0.78rem; background: #f3f4f6; padding: 0.1rem 0.35rem; border-radius: 0.25rem; }
+    footer {
+      margin-top: 1.5rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-align: center;
+    }
+    footer a { color: var(--green-dark); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>名單管理</h1>
+      <p>檢視目前進行中活動的簽到名單；主辦可於 preset 或 event.config 更新後 push 部署。</p>
+    </header>
+
+    <div class="top-bar">
+      <div class="quick-links">
+        <a href="dashboard.html">儀表板</a>
+        <a href="index.html">會議報到入口</a>
+        <a href="remote-members/index.html">委員專區</a>
+        <a href="roster-admin/index.html">出席名單管理</a>
+        <a href="roster-management.html" class="current">名單預覽</a>
+        <a href="onsite-checkin/index.html">現場簽到</a>
+        <a href="video-checkin/index.html">視訊簽到</a>
+      </div>
+      <span class="meta-pill">名單來源：<span id="rosterSource">載入中…</span></span>
+    </div>
+
+    <div class="section" id="eventSection">
+      <h2>目前進行中活動</h2>
+      <div id="eventBanner" class="event-banner">
+        <p class="empty">載入中…</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 id="committeeHeading">委員名單</h2>
+      <p class="section-desc" id="committeeDesc"></p>
+      <div id="committeeTableWrap"></div>
+    </div>
+
+    <div class="section">
+      <h2 id="observersHeading">列席與顧問</h2>
+      <p class="section-desc" id="observersDesc"></p>
+      <div id="observersTableWrap"></div>
+      <div class="note">
+        總會長之後固定五位為上層審閱顧問與總會幹部（李豐楙、張珣、林美容、黃發保、楊成林）。
+        若 preset 的 <code>event.roster.observers</code> 未含總會長，系統會自動補上；重複姓名會去重。
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>主辦編輯路徑</h2>
+      <p class="section-desc">更新名單請使用 <a href="roster-admin/index.html">出席名單管理</a>（雲端）或編輯 preset 後 push。</p>
+      <div class="edit-links" id="editLinks"></div>
+    </div>
+
+    <footer>
+      meet-checkin/roster-management.html ·
+      <a href="config/README.md">config 說明</a> ·
+      <a href="dashboard.html">返回儀表板</a>
+    </footer>
+  </div>
+
+  <script src="config/event.config.js"></script>
+  <script src="assets/members.js"></script>
+  <script>
+    window.applyConfigRoster && window.applyConfigRoster();
+
+    function attBadge(att) {
+      if (att === '出席') return '<span class="badge badge-onsite">出席</span>';
+      if (att === '請假') return '<span class="badge badge-leave">請假</span>';
+      return '<span class="badge badge-video">視訊</span>';
+    }
+
+    function countByAttendance(list) {
+      var counts = { '出席': 0, '視訊': 0, '請假': 0 };
+      (list || []).forEach(function (m) {
+        var k = counts[m.attendance] !== undefined ? m.attendance : '視訊';
+        counts[k]++;
+      });
+      return counts;
+    }
+
+    function renderStats(list) {
+      var c = countByAttendance(list);
+      return (
+        '<div class="stats">' +
+          '<span class="stat-chip">共 ' + (list ? list.length : 0) + ' 人</span>' +
+          '<span class="stat-chip">出席 ' + c['出席'] + '</span>' +
+          '<span class="stat-chip">視訊 ' + c['視訊'] + '</span>' +
+          '<span class="stat-chip">請假 ' + c['請假'] + '</span>' +
+        '</div>'
+      );
+    }
+
+    function renderTable(list) {
+      if (!list || !list.length) {
+        return '<p class="empty">尚無名單資料。請於活動 preset 的 <code>event.roster</code> 填入，或編輯 <code>assets/members.js</code> 預設值。</p>';
+      }
+      var rows = list.map(function (m, i) {
+        return (
+          '<tr>' +
+            '<td>' + (i + 1) + '</td>' +
+            '<td><strong>' + (m.name || '—') + '</strong></td>' +
+            '<td>' + (m.org || '—') + '</td>' +
+            '<td>' + (m.title || '—') + '</td>' +
+            '<td>' + (m.role || '—') + '</td>' +
+            '<td>' + attBadge(m.attendance) + '</td>' +
+          '</tr>'
+        );
+      }).join('');
+      return (
+        '<table>' +
+          '<thead><tr><th>#</th><th>姓名</th><th>單位</th><th>職稱</th><th>身份</th><th>出席方式</th></tr></thead>' +
+          '<tbody>' + rows + '</tbody>' +
+        '</table>' +
+        renderStats(list)
+      );
+    }
+
+    function renderEditLinks(activeEvent) {
+      var preset = (activeEvent && activeEvent.presetPath) || 'config/events/1150730-editorial.json';
+      var presetId = preset.replace('config/events/', '').replace('.json', '');
+      var links = [
+        { href: preset, label: '活動 preset（' + presetId + '）' },
+        { href: 'config/event.config.json', label: '目前 event.config.json' },
+        { href: 'config/event.config.js', label: '目前 event.config.js' },
+        { href: 'assets/members.js', label: '預設名單 members.js' },
+        { href: 'config/README.md', label: 'config 說明' }
+      ];
+      document.getElementById('editLinks').innerHTML = links.map(function (l) {
+        return '<a href="' + l.href + '" target="_blank" rel="noopener">' + l.label + '</a>';
+      }).join('') +
+        '<span class="meta-pill" style="align-self:center">切換活動：<code>node scripts/switch-event.js ' + presetId + '</code></span>';
+    }
+
+    var cfg = window.EVENT_CONFIG || {};
+    var signIn = cfg.signIn || {};
+    document.getElementById('committeeHeading').textContent = signIn.committeeLabel || '委員名單';
+    document.getElementById('observersHeading').textContent = signIn.observersLabel || '列席與顧問';
+    document.getElementById('committeeDesc').textContent = '現場簽到與視訊簽到共用此區塊名單。';
+    document.getElementById('observersDesc').textContent = '含總會長、五位固定列席／顧問，及其他工作人員。';
+
+    var hasConfigRoster = !!(cfg.event && cfg.event.roster && (
+      (cfg.event.roster.committee && cfg.event.roster.committee.length) ||
+      (cfg.event.roster.observers && cfg.event.roster.observers.length)
+    ));
+    document.getElementById('rosterSource').innerHTML = hasConfigRoster
+      ? '<span class="badge badge-source">event.config</span> <code>event.roster</code>'
+      : '<span class="badge badge-source">預設</span> <code>assets/members.js</code>';
+
+    var roster = window.MEMBER_ROSTER || { committee: [], observers: [] };
+    document.getElementById('committeeTableWrap').innerHTML = renderTable(roster.committee);
+    document.getElementById('observersTableWrap').innerHTML = renderTable(roster.observers);
+
+    fetch('config/events-registry.json')
+      .then(function (r) { if (!r.ok) throw new Error('registry'); return r.json(); })
+      .then(function (registry) {
+        var active = (registry.events || []).find(function (e) { return e.status === 'active'; });
+        if (!active) {
+          document.getElementById('eventBanner').innerHTML =
+            '<p class="empty">registry 中無進行中活動；下方名單來自目前 <code>event.config</code>。</p>' +
+            '<div class="meta">' + (cfg.event && cfg.event.title ? cfg.event.title : '—') + '｜' +
+            (cfg.event && cfg.event.dateRoc ? cfg.event.dateRoc : '—') + '</div>';
+          renderEditLinks(null);
+          return;
+        }
+        document.getElementById('eventBanner').innerHTML =
+          '<p class="title">' + active.title + ' <span class="badge badge-active">進行中</span></p>' +
+          '<div class="meta">' + active.committeeLabel + ' 第 ' + active.meetingNumber + ' 場｜' +
+          active.date + '｜<code>' + active.id + '</code></div>' +
+          '<div class="meta" style="margin-top:0.35rem">' +
+          (roster.meetingTitle || (cfg.event && cfg.event.tagline) || '') + '｜' +
+          (roster.meetingDate || (cfg.event && cfg.event.dateRoc) || '') +
+          '</div>';
+        renderEditLinks(active);
+      })
+      .catch(function () {
+        document.getElementById('eventBanner').innerHTML =
+          '<p class="empty">無法載入 events-registry.json；顯示目前 event.config 名單。</p>';
+        renderEditLinks(null);
+      });
+  </script>
+</body>
+</html>

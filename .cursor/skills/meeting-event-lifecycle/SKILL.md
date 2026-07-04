@@ -82,8 +82,28 @@ planned → preparing → active → completed
 | `qrProjector` / `qrPrint` | QR 投影／列印 |
 | `prep` | 籌備入口 |
 | `preset` | 對應 `config/events/*.json` |
+| `rosterAdmin` | 出席名單管理 `roster-admin/index.html` |
 
 新增活動時：在 `events` 陣列加一筆，並建立對應 `config/events/{id}.json` stub（可複製既有 preset 改日期與標題）。
+
+### 出席名單勾稽（rosterGroupIds）
+
+活動 preset 的 `event.roster.rosterGroupIds` 引用 Google 試算表群組 ID，簽到頁自動合併名單：
+
+```json
+"roster": {
+  "rosterGroupIds": {
+    "committee": ["1150730-editorial-committee"],
+    "observers": ["1150730-editorial-observers"]
+  },
+  "meetingTitle": "…",
+  "meetingDate": "…"
+}
+```
+
+- 無 `rosterGroupIds` 時沿用 inline `committee` / `observers` 或 `assets/members.js`（向後相容）
+- 總會長後五位固定顧問仍由 `members.js` 的 `mergeMandatoryObservers()` 自動合併
+- 主辦編輯名單：`roster-admin/index.html` → GAS → 試算表；不需每場會議重填 JSON
 
 ---
 

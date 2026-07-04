@@ -82,8 +82,8 @@
   </div>
 
   <script src="../assets/checkin.js?v=5"></script>
-  <script src="../assets/members.js"></script>
-  <script>window.applyConfigRoster && window.applyConfigRoster(); MeetCheckinConfig.init({ meta: false });</script>
+  <script src="../assets/members.js?v=2"></script>
+  <script>MeetCheckinConfig.init({ meta: false });</script>
   <script>
     const CHANNEL = '視訊';
     let currentMode = 'signin';
@@ -220,7 +220,7 @@
     }
 
     switchMode('signin');
-    renderList();
+    window.initCheckinRoster(renderList);
   </script>
 </body>
 </html>

@@ -122,8 +122,8 @@
   </div>
 
   <script src="../assets/checkin.js?v=5"></script>
-  <script src="../assets/members.js"></script>
-  <script>window.applyConfigRoster && window.applyConfigRoster(); MeetCheckinConfig.init({ meta: false, roleSelectId: 'guestRole' });</script>
+  <script src="../assets/members.js?v=2"></script>
+  <script>MeetCheckinConfig.init({ meta: false, roleSelectId: 'guestRole' });</script>
   <script>
     const CHANNEL = '現場';
     let currentMode = 'signin';
@@ -306,7 +306,7 @@
     }
 
     switchMode('signin');
-    renderList();
+    window.initCheckinRoster(renderList);
   </script>
 </body>
 </html>

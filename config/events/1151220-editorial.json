@@ -29,11 +29,18 @@
       "meetingTitle": "定稿驗收",
       "meetingDate": "115年12月20日",
       "committee": [],
-      "observers": []
+      "observers": [
+        { "name": "陳瑞宏", "org": "臺灣道法總會", "title": "總會長", "role": "列席人員", "attendance": "出席" },
+        { "name": "李豐楙", "org": "中央研究院／政治大學", "title": "院士；名譽講座教授", "role": "專家顧問", "attendance": "出席" },
+        { "name": "張珣", "org": "中央研究院民族學研究所", "title": "研究員兼前所長", "role": "專家顧問", "attendance": "出席" },
+        { "name": "林美容", "org": "慈濟大學宗教與人文研究所", "title": "教授", "role": "專家顧問", "attendance": "出席" },
+        { "name": "黃發保", "org": "臺灣道法總會", "title": "秘書長", "role": "列席人員", "attendance": "出席" },
+        { "name": "楊成林", "org": "臺灣道法總會", "title": "副秘書長", "role": "列席人員", "attendance": "出席" }
+      ]
     }
   },
   "backend": {
-    "gasWebAppUrl": "https://script.google.com/macros/s/AKfycbxlJASeVM3NvkrBJZDW7C5J53nC9UegMLgUTkNdsppaK6P5K5Hjr2xzQ1DlkFCXvT4HuQ/exec"
+    "gasWebAppUrl": "https://script.google.com/macros/s/AKfycbxxFcVc0EASEAbyQJKKJy9EilZ1qDs8pLbGm9RkoOSEeIBpE152WXg7WnqYGLxO6D73Vw/exec"
   },
   "meet": { "url": "" },
   "contact": { "name": "王芯庭助理", "phone": "0956800579", "channel": "Line" },

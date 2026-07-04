@@ -27,7 +27,11 @@
     "dateFilePrefix": "1150730",
     "sessionBadge": "教材編審委員會第一場 ｜ 2026/07/30",
     "roster": {
-      "_comment": "主辦填入講師與編審委員名單（attendance：出席｜視訊｜請假）",
+      "_comment": "主辦填入講師與編審委員名單（attendance：出席｜視訊｜請假）；rosterGroupIds 優先從 GAS 雲端載入",
+      "rosterGroupIds": {
+        "committee": ["1150730-editorial-committee"],
+        "observers": ["1150730-editorial-observers"]
+      },
       "meetingTitle": "M1 Demo 示範｜職能導向教材編審共構",
       "meetingDate": "115年7月30日",
       "committee": [
@@ -49,12 +53,17 @@
       ],
       "observers": [
         { "name": "陳瑞宏", "org": "臺灣道法總會", "title": "總會長", "role": "列席人員", "attendance": "出席" },
+        { "name": "李豐楙", "org": "中央研究院／政治大學", "title": "院士；名譽講座教授", "role": "專家顧問", "attendance": "出席" },
+        { "name": "張珣", "org": "中央研究院民族學研究所", "title": "研究員兼前所長", "role": "專家顧問", "attendance": "出席" },
+        { "name": "林美容", "org": "慈濟大學宗教與人文研究所", "title": "教授", "role": "專家顧問", "attendance": "出席" },
+        { "name": "黃發保", "org": "臺灣道法總會", "title": "秘書長", "role": "列席人員", "attendance": "出席" },
+        { "name": "楊成林", "org": "臺灣道法總會", "title": "副秘書長", "role": "列席人員", "attendance": "出席" },
         { "name": "王芯庭", "org": "臺灣道法總會", "title": "助理", "role": "專案工作人員", "attendance": "出席" }
       ]
     }
   },
   "backend": {
-    "gasWebAppUrl": "https://script.google.com/macros/s/AKfycbxlJASeVM3NvkrBJZDW7C5J53nC9UegMLgUTkNdsppaK6P5K5Hjr2xzQ1DlkFCXvT4HuQ/exec"
+    "gasWebAppUrl": "https://script.google.com/macros/s/AKfycbxxFcVc0EASEAbyQJKKJy9EilZ1qDs8pLbGm9RkoOSEeIBpE152WXg7WnqYGLxO6D73Vw/exec"
   },
   "meet": {
     "url": "https://meet.google.com/kci-xjtu-dmr?hs=122"
@@ -104,5 +113,11 @@
     "action": "expenses",
     "sheetTab": "expenses",
     "pagePath": "expenses/budget-dashboard.html"
+  },
+  "rosterAdmin": {
+    "action": "roster-admin",
+    "groupsSheetTab": "roster-groups",
+    "membersSheetTab": "roster-members",
+    "pagePath": "roster-admin/index.html"
   }
 }

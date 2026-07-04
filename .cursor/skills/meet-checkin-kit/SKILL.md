@@ -207,6 +207,15 @@ fetch(GAS_URL, {
 改填答手冊題目 | 編輯 HTML；確認 `.q` / `.scope-body` / `.resolution` / `.units-full` 選擇器仍有效
 推 GitHub Pages | push main → 等 1–3 分鐘 → 硬刷新
 
+### 出席名單管理（roster-admin）
+
+- **試算表分頁：** `roster-groups`（群組）、`roster-members`（成員；`memberId` 跨群組連動）
+- **GAS：** `GET ?action=roster` 讀取；`POST action=roster-admin` + `operation` 寫入
+- **前端：** `roster-admin/index.html`（主辦 CRUD＋批次貼上）
+- **活動勾稽：** preset `event.roster.rosterGroupIds.committee` / `.observers` 引用 `groupId` 陣列
+- **簽到頁：** `assets/members.js` 的 `loadRosterFromCloud()` 優先載入；失敗時 fallback inline roster
+- **改 Code.gs 後** 執行 `testRosterSeed` 初始化種子，再 **GAS 新版本部署**
+
 ## 設定檔（套版 v1）
 
 新活動優先改 **`config/events/{date}-{type}.json`** preset，再執行：
@@ -246,6 +255,7 @@ index.html（入口分流）
 | QR 列印 | `onsite-qr-print.html` | 現場簽到 QR（列印） |
 | 舊 QR 書籤 | `onsite-checkin-legacy/` | 自動導向 `onsite-checkin/` |
 | 名單 | `config event.roster` 或 `assets/members.js` | — |
+| 出席名單管理 | `roster-admin/` | 出席名單管理 |
 | 填答 | `remote-members/` | 委員專區 |
 | GAS | `gas/Code.gs` | — |
 
