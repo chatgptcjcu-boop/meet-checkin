@@ -27,7 +27,23 @@
       "_comment": "主辦填入講師與編審委員名單（attendance：出席｜視訊｜請假）",
       "meetingTitle": "M1 Demo 示範｜職能導向教材編審共構",
       "meetingDate": "115年7月30日",
-      "committee": [],
+      "committee": [
+        { "name": "張祐倉", "org": "長榮大學健康科學學院", "title": "職能導向培訓與 ICAP 文件編修", "role": "編審委員", "attendance": "出席" },
+        { "name": "甘士照", "org": "崑山科技大學", "title": "大專院校財務與活動管理教學", "role": "教材講師", "attendance": "出席" },
+        { "name": "沈煒庭", "org": "永和區公所社會人文課／台北媽祖文創協會", "title": "地方宗教文化推廣與媽祖信仰活動", "role": "教材講師", "attendance": "出席" },
+        { "name": "郭純學", "org": "南寶企管顧問有限公司", "title": "企業與非營利組織 TTQS 輔導", "role": "教材講師", "attendance": "出席" },
+        { "name": "凃佩君", "org": "群羿堂策略整合行銷有限公司", "title": "營運長", "role": "教材講師", "attendance": "出席" },
+        { "name": "洪家祥", "org": "如魚得水管理顧問有限公司", "title": "地方創生與組織策略顧問", "role": "教材講師", "attendance": "出席" },
+        { "name": "蔡靜枝", "org": "益和永續股份有限公司", "title": "永續發展與地方協力網絡推動", "role": "教材講師", "attendance": "出席" },
+        { "name": "林伯奇", "org": "新港奉天宮世界媽祖文化研究暨文獻中心", "title": "媽祖文化研究與大型宗教儀典", "role": "教材講師", "attendance": "出席" },
+        { "name": "王明堂", "org": "高苑工商", "title": "宮廟管理教育與教材審查", "role": "編審委員", "attendance": "出席" },
+        { "name": "陳家誼", "org": "利貞法律事務所", "title": "宗教團體與宮廟行政法制諮詢", "role": "教材講師", "attendance": "出席" },
+        { "name": "蔣馥蓁", "org": "國立政治大學華人宗教研究中心", "title": "華人宗教與道教儀式學術研究", "role": "教材講師", "attendance": "出席" },
+        { "name": "胡家綾", "org": "禾寅有限公司", "title": "地方文化課程與體驗活動規劃", "role": "教材講師", "attendance": "出席" },
+        { "name": "李芳文", "org": "安永聯合會計師事務所", "title": "教材與財務制度審查", "role": "編審委員", "attendance": "出席" },
+        { "name": "鄭詠紜", "org": "宮廟從業培訓與品質管理小組", "title": "宮廟現場廟務輔導與培訓品質管理", "role": "教材講師", "attendance": "出席" },
+        { "name": "林宗德", "org": "墩點文史工作室", "title": "地方文史調查與文化資產田野", "role": "教材講師", "attendance": "出席" }
+      ],
       "observers": [
         { "name": "陳瑞宏", "org": "臺灣道法總會", "title": "總會長", "role": "列席人員", "attendance": "出席" },
         { "name": "王芯庭", "org": "臺灣道法總會", "title": "助理", "role": "專案工作人員", "attendance": "出席" }
@@ -47,7 +63,7 @@
   },
   "signIn": {
     "roles": ["教材講師", "編審委員", "專家顧問", "專案工作人員", "列席人員"],
-    "committeeLabel": "編審委員與教材講師",
+    "committeeLabel": "教材講師／編審委員",
     "observersLabel": "列席與工作人員",
     "guestRoles": ["專家顧問", "專案工作人員", "列席人員", "觀摩來賓"],
     "memberPortalPath": "./remote-members/index.html"
