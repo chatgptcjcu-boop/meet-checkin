@@ -17,9 +17,11 @@ window.DEFAULT_CHAIRMAN_OBSERVER = {
   name: '陳瑞宏', org: '臺灣道法總會', title: '總會長', role: '列席人員', attendance: '出席',
 };
 
-/** 將 mandatory 五位插入總會長之後，並移除重複項 */
+/** 將 mandatory 五位插入總會長之後，並移除重複項；保留雲端名單既有 memberId */
 window.mergeMandatoryObservers = function (observers) {
   var list = Array.isArray(observers) ? observers.slice() : [];
+  var byName = {};
+  list.forEach(function (m) { if (m && m.name) byName[m.name] = m; });
   var mandatoryNames = {};
   window.MANDATORY_OBSERVERS_AFTER_CHAIRMAN.forEach(function (m) { mandatoryNames[m.name] = true; });
   var chairman = null;
@@ -28,8 +30,18 @@ window.mergeMandatoryObservers = function (observers) {
     if (m.title === '總會長') chairman = m;
     else if (!mandatoryNames[m.name]) rest.push(m);
   });
-  if (!chairman) chairman = window.DEFAULT_CHAIRMAN_OBSERVER;
-  return [chairman].concat(window.MANDATORY_OBSERVERS_AFTER_CHAIRMAN, rest);
+  if (!chairman) chairman = Object.assign({}, window.DEFAULT_CHAIRMAN_OBSERVER);
+  else if (!chairman.memberId && byName[chairman.name] && byName[chairman.name].memberId) {
+    chairman = Object.assign({}, chairman, { memberId: byName[chairman.name].memberId });
+  }
+  var mandatory = window.MANDATORY_OBSERVERS_AFTER_CHAIRMAN.map(function (m) {
+    var existing = byName[m.name];
+    if (existing && existing.memberId) {
+      return Object.assign({}, m, { memberId: existing.memberId });
+    }
+    return m;
+  });
+  return [chairman].concat(mandatory, rest);
 };
 
 window.MEMBER_ROSTER = {

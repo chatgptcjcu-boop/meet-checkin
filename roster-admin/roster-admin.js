@@ -33,6 +33,47 @@
       .sort(function (a, b) { return (a.sortOrder || 0) - (b.sortOrder || 0); });
   }
 
+  function rosterRoles() {
+    var cfg = window.EVENT_CONFIG || {};
+    var roles = (cfg.signIn && cfg.signIn.roles) || [];
+    if (!roles.length) {
+      roles = ['教材講師', '編審委員', '專家顧問', '專案工作人員', '列席人員'];
+    }
+    return roles;
+  }
+
+  function defaultRoleForGroup(groupId) {
+    var g = state.groups.find(function (x) { return x.groupId === groupId; });
+    if (!g) return rosterRoles()[0];
+    if (g.rosterKind === 'observers') return '列席人員';
+    if (g.committee === '評核委員會') return '評核委員';
+    return '教材講師';
+  }
+
+  function populateRoleSelect(selectEl, value) {
+    if (!selectEl) return;
+    var roles = rosterRoles();
+    var html = roles.map(function (r) {
+      return '<option value="' + r + '">' + r + '</option>';
+    }).join('');
+    if (value && roles.indexOf(value) < 0) {
+      html += '<option value="' + value + '">' + value + '（自訂）</option>';
+    }
+    selectEl.innerHTML = html;
+    selectEl.value = value || roles[0];
+  }
+
+  function initRoleSelects() {
+    populateRoleSelect(document.getElementById('memberRole'), '教材講師');
+    populateRoleSelect(document.getElementById('pasteDefaultRole'), defaultRoleForGroup(state.selectedGroupId));
+  }
+
+  function formatMemberId(id) {
+    if (!id) return '—';
+    if (/^[0-9a-f]{8}-/i.test(id)) return id.slice(0, 8) + '…';
+    return id;
+  }
+
   function attBadge(att) {
     if (att === '出席') return '<span class="badge badge-att">出席</span>';
     if (att === '請假') return '<span class="badge badge-leave">請假</span>';
@@ -78,7 +119,8 @@
       return (
         '<tr>' +
           '<td>' + (i + 1) + '</td>' +
-          '<td><strong>' + m.name + '</strong>' + linkHint + '<br><code style="font-size:0.68rem">' + m.memberId + '</code></td>' +
+          '<td><strong>' + m.name + '</strong>' + linkHint +
+          '<br><code style="font-size:0.68rem" title="' + m.memberId + '">' + formatMemberId(m.memberId) + '</code></td>' +
           '<td>' + (m.org || '—') + '</td>' +
           '<td>' + (m.title || '—') + '</td>' +
           '<td>' + (m.role || '—') + '</td>' +
@@ -124,6 +166,7 @@
       }
       renderGroups();
       renderMembers();
+      initRoleSelects();
       setStatus('已載入 ' + state.groups.length + ' 個群組、' + state.members.length + ' 筆成員列', 'ok');
     } catch (e) {
       setStatus('載入失敗：' + e.message + '（若 GAS 尚未部署 roster 功能，請重新部署 Code.gs）', 'err');
@@ -156,7 +199,10 @@
     document.getElementById('memberName').value = m ? m.name : '';
     document.getElementById('memberOrg').value = m ? m.org : '';
     document.getElementById('memberTitle').value = m ? m.title : '';
-    document.getElementById('memberRole').value = m ? m.role : '';
+    populateRoleSelect(
+      document.getElementById('memberRole'),
+      m ? m.role : defaultRoleForGroup(state.selectedGroupId)
+    );
     document.getElementById('memberAttendance').value = m ? m.attendance : '出席';
   }
 
@@ -181,6 +227,18 @@
       await loadRoster();
     } catch (e) {
       setStatus('種子失敗：' + e.message, 'err');
+    }
+  });
+
+  document.getElementById('btnNormalizeIds').addEventListener('click', async function () {
+    if (!confirm('將 UUID 或不一致的 memberId 整理為群組前綴序號（730o-001 格式），同名成員合併為同一 ID。確定？')) return;
+    try {
+      var json = await postOp({ operation: 'normalizeMemberIds' });
+      if (!json.ok) throw new Error(json.error || '整理失敗');
+      await loadRoster();
+      setStatus('已更新 ' + json.updated + ' 列，合併 ' + json.merged + ' 組同名', 'ok');
+    } catch (e) {
+      setStatus('整理失敗：' + e.message, 'err');
     }
   });
 
@@ -277,6 +335,7 @@
     state.selectedGroupId = li.getAttribute('data-group-id');
     renderGroups();
     renderMembers();
+    populateRoleSelect(document.getElementById('pasteDefaultRole'), defaultRoleForGroup(state.selectedGroupId));
   });
 
   document.getElementById('memberPanel').addEventListener('click', async function (e) {
@@ -340,5 +399,6 @@
     });
   });
 
+  initRoleSelects();
   loadRoster();
 })();

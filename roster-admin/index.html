@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex, nofollow">
   <title>出席名單管理｜宮廟管理師 iCAP 專案</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./roster-admin.css?v=1">
+  <link rel="stylesheet" href="./roster-admin.css?v=2">
 </head>
 <body>
   <div class="wrap">
@@ -26,6 +26,7 @@
       <div class="toolbar">
         <button type="button" id="btnReload">🔄 重新載入</button>
         <button type="button" id="btnSeed">🌱 初始化種子資料</button>
+        <button type="button" id="btnNormalizeIds">🔧 整理 memberId</button>
         <button type="button" id="btnAddGroup" class="primary">＋ 新增群組</button>
       </div>
     </div>
@@ -58,7 +59,7 @@
           <div class="form-grid" style="margin-top:0.75rem">
             <div>
               <label for="pasteDefaultRole">預設身份</label>
-              <input type="text" id="pasteDefaultRole" value="教材講師" placeholder="例：評核委員">
+              <select id="pasteDefaultRole"></select>
             </div>
             <div>
               <label for="pasteDefaultAtt">預設出席</label>
@@ -149,7 +150,7 @@
         </div>
         <div>
           <label for="memberRole">身份</label>
-          <input type="text" id="memberRole" placeholder="教材講師">
+          <select id="memberRole"></select>
         </div>
         <div>
           <label for="memberAttendance">出席方式</label>
@@ -168,6 +169,6 @@
   </div>
 
   <script src="../config/event.config.js"></script>
-  <script src="./roster-admin.js?v=1"></script>
+  <script src="./roster-admin.js?v=2"></script>
 </body>
 </html>
