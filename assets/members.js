@@ -1,6 +1,7 @@
 /**
- * 宮廟管理師第一次評核委員會 — 共用委員名單
- * onsite-checkin-legacy、video-checkin 皆引用此檔，勿分開維護。
+ * 共用委員名單（630 評核委員會預設）
+ * onsite-checkin、video-checkin 皆引用此檔。
+ * 若 config/event.config.js 的 event.roster 有資料，會覆蓋 committee / observers。
  */
 window.MEMBER_ROSTER = {
   meetingTitle: '2026宮廟管理師職能基準 iCAP推動與職能導向課程發展',
@@ -59,3 +60,23 @@ window.attendanceBadge = function (att) {
   if (att === '請假') return '<span class="badge badge-leave">請假</span>';
   return '<span class="badge badge-video">視訊</span>';
 };
+
+/** 若 EVENT_CONFIG.event.roster 存在，覆蓋名單（須先載入 event.config.js） */
+window.applyConfigRoster = function () {
+  var cfg = window.EVENT_CONFIG;
+  if (!cfg || !cfg.event || !cfg.event.roster) return;
+  var r = cfg.event.roster;
+  window.MEMBER_ROSTER = {
+    meetingTitle: r.meetingTitle || (cfg.event.tagline || window.MEMBER_ROSTER.meetingTitle),
+    meetingDate: r.meetingDate || (cfg.event.dateRoc || window.MEMBER_ROSTER.meetingDate),
+    committee: Array.isArray(r.committee) ? r.committee : window.MEMBER_ROSTER.committee,
+    observers: Array.isArray(r.observers) ? r.observers : window.MEMBER_ROSTER.observers,
+  };
+  if (cfg.signIn && cfg.signIn.guestRoles && cfg.signIn.guestRoles.length) {
+    window.GUEST_ROLES = cfg.signIn.guestRoles.slice();
+  }
+};
+
+if (window.EVENT_CONFIG) {
+  window.applyConfigRoster();
+}

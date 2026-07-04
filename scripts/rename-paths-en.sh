@@ -116,7 +116,7 @@ mv_if_exists "$H0830" "$P08/1150830-prep"
 mv_if_exists "$P08" "08-evaluation-committee"
 
 # --- root misc ---
-mv_if_exists "現場簽到" "onsite-checkin-legacy"
+mv_if_exists "現場簽到" "現場簽到"
 mv_if_exists "現場印製" "onsite-print-legacy"
 mv_if_exists "視訊委員" "remote-members"
 

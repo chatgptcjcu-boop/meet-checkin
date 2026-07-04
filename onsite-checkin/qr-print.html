@@ -2,7 +2,9 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <title>onsite-checkin-legacy QR Code｜列印用</title>
+  <title>現場簽到 QR Code｜列印用</title>
+  <script src="../config/event.config.js"></script>
+  <script src="../config/apply-event-config.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -82,29 +84,30 @@
 </head>
 <body>
   <div class="print-bar no-print">
-    onsite-checkin-legacy QR Code｜列印用
+    現場簽到 QR Code｜列印用
     <a href="./projector.html">投影版</a>
     <button type="button" onclick="window.print()">🖨 列印</button>
   </div>
   <div class="sheet">
-    <p class="org">臺灣道法總會｜教育委員會</p>
-    <h1>宮廟管理師<br>第一次評核委員會</h1>
-    <p class="date">115年6月30日｜onsite-checkin-legacy</p>
+    <p class="org" data-event="org.headerLine">臺灣道法總會｜教育委員會</p>
+    <h1 data-event="event.title">會議現場簽到</h1>
+    <p class="date" data-event-date-line>—｜現場簽到</p>
     <div class="qr-wrap">
-      <img src="../assets/onsite-checkin-legacy-qrcode.png" alt="onsite-checkin-legacy QR Code" width="400" height="400">
+      <img src="../assets/onsite-qrcode.png" alt="現場簽到 QR Code" width="400" height="400">
     </div>
     <p class="scan-title">請掃描 QR Code 完成簽到</p>
     <div class="steps">
       <strong>簽到方式</strong>
       <ol>
         <li>用手機相機或 LINE 掃描上方 QR Code</li>
-        <li><strong>評核委員</strong>：從名單點選您的姓名</li>
+        <li><strong data-sign-in-label="committee">評核委員</strong>：從名單點選您的姓名</li>
         <li><strong>其他現場人員</strong>：選身份別 → 填中文姓名 → 拍照</li>
         <li>完成後請依工作人員引導就座</li>
       </ol>
     </div>
-    <p class="url">https://chatgptcjcu-boop.github.io/meet-checkin/onsite-checkin-legacy/</p>
+    <p class="url" data-event="paths.onsiteCheckinUrl">https://chatgptcjcu-boop.github.io/meet-checkin/onsite-checkin/</p>
     <p class="footer">會議結束請再次掃描完成簽退</p>
   </div>
+  <script>MeetCheckinConfig.init({ meta: false });</script>
 </body>
 </html>

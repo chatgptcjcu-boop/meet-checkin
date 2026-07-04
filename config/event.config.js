@@ -2,27 +2,50 @@
 window.EVENT_CONFIG = {
   "meta": {
     "kitVersion": "1.0.0",
-    "configSchema": 1
+    "configSchema": 1,
+    "presetId": "1150730-editorial"
   },
   "org": {
     "name": "臺灣道法總會",
     "department": "教育委員會",
     "headerLine": "臺灣道法總會－教育委員會",
-    "meetingSubtitle": "職能基準共構會議",
+    "meetingSubtitle": "職能導向課程共構",
     "footerPlan": "宮廟管理師職能基準發展計畫",
     "copyright": "2026 臺灣道法總會 教育委員會"
   },
   "event": {
-    "id": "1150630-temple-manager-review",
-    "title": "宮廟管理師｜第一次評核委員會",
-    "shortTitle": "宮廟管理師第一次評核委員會",
-    "tagline": "2026宮廟管理師職能基準 iCAP推動與職能導向課程發展",
-    "sessionLabel": "第一次評核委員委員會議",
-    "dateIso": "2026-06-30",
-    "dateDisplay": "2026/06/30",
-    "dateRoc": "115年6月30日",
-    "dateFilePrefix": "1150630",
-    "sessionBadge": "第一次評核委員委員會議 ｜ 2026/06/30"
+    "id": "1150730-editorial-m1-demo",
+    "title": "教材編審委員會｜M1 Demo 示範（第一場）",
+    "shortTitle": "教材編審委員會第一場",
+    "tagline": "M1 Demo 示範｜職能導向教材編審共構",
+    "sessionLabel": "教材編審委員會第一場",
+    "dateIso": "2026-07-30",
+    "dateDisplay": "2026/07/30",
+    "dateRoc": "115年7月30日",
+    "dateFilePrefix": "1150730",
+    "sessionBadge": "教材編審委員會第一場 ｜ 2026/07/30",
+    "roster": {
+      "_comment": "主辦填入講師與編審委員名單（attendance：出席｜視訊｜請假）",
+      "meetingTitle": "M1 Demo 示範｜職能導向教材編審共構",
+      "meetingDate": "115年7月30日",
+      "committee": [],
+      "observers": [
+        {
+          "name": "陳瑞宏",
+          "org": "臺灣道法總會",
+          "title": "總會長",
+          "role": "列席人員",
+          "attendance": "出席"
+        },
+        {
+          "name": "王芯庭",
+          "org": "臺灣道法總會",
+          "title": "助理",
+          "role": "專案工作人員",
+          "attendance": "出席"
+        }
+      ]
+    }
   },
   "backend": {
     "gasWebAppUrl": "https://script.google.com/macros/s/AKfycbxlJASeVM3NvkrBJZDW7C5J53nC9UegMLgUTkNdsppaK6P5K5Hjr2xzQ1DlkFCXvT4HuQ/exec"
@@ -37,17 +60,34 @@ window.EVENT_CONFIG = {
   },
   "signIn": {
     "roles": [
-      "評核委員",
+      "教材講師",
+      "編審委員",
       "專家顧問",
       "專案工作人員",
       "列席人員"
     ],
+    "committeeLabel": "編審委員與教材講師",
+    "observersLabel": "列席與工作人員",
+    "guestRoles": [
+      "專家顧問",
+      "專案工作人員",
+      "列席人員",
+      "觀摩來賓"
+    ],
     "memberPortalPath": "./remote-members/index.html"
   },
   "seo": {
-    "checkInPageTitle": "臺灣道法總會－教育委員會 會議報到與簽退",
-    "ogTitle": "2026宮廟管理師職能基準 iCAP推動會議",
-    "ogDescription": "第一次評核委員委員會議 (2026/06/30) - 請進行視訊簽到/簽退。"
+    "entryPageTitle": "會議報到入口｜教材編審委員會第一場",
+    "checkInPageTitle": "臺灣道法總會－教育委員會 教材編審委員會報到",
+    "ogTitle": "教材編審委員會｜M1 Demo 示範（第一場）",
+    "ogDescription": "115年7月30日教材編審委員會第一場 — 請依出席方式完成現場或視訊簽到。",
+    "entryOgDescription": "請依出席方式選擇：現場簽到或視訊簽到。"
+  },
+  "paths": {
+    "onsiteCheckin": "./onsite-checkin/",
+    "onsiteQrProjector": "./onsite-projector.html",
+    "onsiteQrPrint": "./onsite-qr-print.html",
+    "onsiteCheckinUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/onsite-checkin/"
   },
   "instructorWorksheet730": {
     "formType": "730-instructor",

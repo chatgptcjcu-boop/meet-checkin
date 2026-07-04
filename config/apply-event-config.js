@@ -67,14 +67,43 @@
   function applyDocumentMeta() {
     var cfg = getEventConfig();
     var seo = cfg.seo || {};
-    if (seo.checkInPageTitle) document.title = seo.checkInPageTitle;
+    var title = seo.entryPageTitle || seo.checkInPageTitle;
+    if (title) document.title = title;
     function setMeta(prop, content) {
       if (!content) return;
       var el = document.querySelector('meta[property="' + prop + '"]');
       if (el) el.setAttribute('content', content);
     }
     setMeta('og:title', seo.ogTitle);
-    setMeta('og:description', seo.ogDescription);
+    setMeta('og:description', seo.entryOgDescription || seo.ogDescription);
+  }
+
+  function applySignInLabels(root) {
+    var cfg = getEventConfig();
+    var signIn = cfg.signIn || {};
+    var scope = root || document;
+    scope.querySelectorAll('[data-sign-in-label="committee"]').forEach(function (el) {
+      if (signIn.committeeLabel) el.textContent = signIn.committeeLabel;
+    });
+    scope.querySelectorAll('[data-sign-in-label="observers"]').forEach(function (el) {
+      if (signIn.observersLabel) el.textContent = signIn.observersLabel;
+    });
+    scope.querySelectorAll('[data-event-date-line]').forEach(function (el) {
+      var dateRoc = cfg.event && cfg.event.dateRoc;
+      if (dateRoc) el.textContent = dateRoc + '｜現場簽到';
+    });
+  }
+
+  function applyCheckinRuntime() {
+    var cfg = getEventConfig();
+    if (global.MeetCheckin) {
+      if (cfg.backend && cfg.backend.gasWebAppUrl) {
+        global.MeetCheckin.GAS_URL = cfg.backend.gasWebAppUrl;
+      }
+      if (cfg.meet && cfg.meet.url) {
+        global.MeetCheckin.MEET_URL = cfg.meet.url;
+      }
+    }
   }
 
   function populateRoleSelect(selectId) {
@@ -104,6 +133,8 @@
     options = options || {};
     if (options.meta !== false) applyDocumentMeta();
     applyDataEventBindings(document);
+    applySignInLabels(document);
+    applyCheckinRuntime();
     if (options.roleSelectId) populateRoleSelect(options.roleSelectId);
   }
 
@@ -120,6 +151,8 @@
     },
     buildPdfFilename: buildPdfFilename,
     apply: applyDataEventBindings,
+    applySignInLabels: applySignInLabels,
+    applyCheckinRuntime: applyCheckinRuntime,
     init: initEventConfig,
   };
 })(typeof window !== 'undefined' ? window : globalThis);

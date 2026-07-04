@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>視訊簽到｜宮廟管理師第一次評核委員會</title>
+  <title>視訊簽到</title>
+  <script src="../config/event.config.js"></script>
+  <script src="../config/apply-event-config.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="../assets/checkin.css">
 </head>
@@ -13,7 +15,8 @@
     <div class="max-w-2xl mx-auto px-4 py-4 text-center">
       <a href="../" class="text-blue-300 text-xs hover:text-white">← 返回會議入口</a>
       <p class="text-yellow-300 text-sm font-semibold mt-2">視訊簽到</p>
-      <h1 class="text-xl font-bold">宮廟管理師｜第一次評核委員會</h1>
+      <h1 class="text-xl font-bold" data-event="event.title">視訊簽到</h1>
+      <p class="text-blue-200 text-xs mt-1" data-event="event.dateRoc"></p>
     </div>
   </header>
 
@@ -30,7 +33,7 @@
     <input type="search" id="searchBox" placeholder="搜尋姓名…" class="w-full mb-4 px-4 py-3 rounded-xl border border-slate-300 bg-white shadow-sm" oninput="renderList()">
 
     <section class="mb-5">
-      <h2 class="text-sm font-bold text-blue-800 mb-2">評核委員（視訊）</h2>
+      <h2 class="text-sm font-bold text-blue-800 mb-2"><span data-sign-in-label="committee">評核委員</span>（視訊）</h2>
       <div id="committeeList" class="space-y-2"></div>
     </section>
     <section class="mb-6">
@@ -40,7 +43,7 @@
     </section>
 
     <p class="text-center text-xs text-slate-400">
-      現場出席請至 <a href="../onsite-checkin-legacy/" class="text-blue-600 underline">onsite-checkin-legacy</a>
+      現場出席請至 <a href="../onsite-checkin/" class="text-blue-600 underline">現場簽到</a>
     </p>
   </main>
 
@@ -70,7 +73,7 @@
   <div id="loadingOverlay" class="fixed inset-0 bg-blue-900/95 z-50 flex flex-col items-center justify-center">
     <div class="spinner mb-4"></div>
     <h2 id="loadingTitle" class="text-xl text-white font-bold">正在傳送…</h2>
-    <p id="loadingSubtitle" class="text-blue-200 text-sm mt-2">完成後將導向remote-members專區</p>
+    <p id="loadingSubtitle" class="text-blue-200 text-sm mt-2">完成後將導向填答專區</p>
   </div>
   <div id="successOverlay" class="fixed inset-0 bg-green-900/95 z-50 flex flex-col items-center justify-center text-center px-6">
     <h2 id="successTitle" class="text-3xl text-white font-bold mb-2">簽退完成</h2>
@@ -78,12 +81,19 @@
     <button type="button" onclick="backToList(true)" class="bg-white text-green-800 font-bold px-6 py-3 rounded-xl">返回名單</button>
   </div>
 
+  <script src="../assets/checkin.js?v=5"></script>
   <script src="../assets/members.js"></script>
-  <script src="../assets/checkin.js?v=4"></script>
+  <script>window.applyConfigRoster && window.applyConfigRoster(); MeetCheckinConfig.init({ meta: false });</script>
   <script>
     const CHANNEL = '視訊';
     let currentMode = 'signin';
     let selectedMember = null;
+
+    function memberPortalUrl(name, role) {
+      const base = (MeetCheckinConfig.get().signIn && MeetCheckinConfig.get().signIn.memberPortalPath) || '../remote-members/index.html';
+      const q = new URLSearchParams({ name: name, role: role });
+      return base + (base.indexOf('?') >= 0 ? '&' : '?') + q.toString();
+    }
 
     function canVideoCheckin(m) {
       return m.attendance !== '請假';
@@ -133,7 +143,7 @@
         si.className = 'flex-1 py-2.5 text-sm font-bold rounded-lg bg-white text-blue-700 shadow';
         so.className = 'flex-1 py-2.5 text-sm font-bold rounded-lg text-slate-500';
         hint.innerHTML = '請從<strong class="text-blue-700">委員名單點選您的姓名</strong>，拍照簽到後進入視訊會議室。';
-        sub.textContent = '完成後將導向remote-members專區';
+        sub.textContent = '完成後將導向填答專區';
       } else {
         so.className = 'flex-1 py-2.5 text-sm font-bold rounded-lg bg-white text-green-700 shadow';
         si.className = 'flex-1 py-2.5 text-sm font-bold rounded-lg text-slate-500';
@@ -200,8 +210,7 @@
         document.getElementById('submitBtn').style.display = 'block';
         if (!ok) return;
         if (currentMode === 'signin') {
-          const q = new URLSearchParams({ name: m.name, role: m.role });
-          window.location.href = '../remote-members/index.html?' + q.toString();
+          window.location.href = memberPortalUrl(m.name, m.role);
         } else {
           document.getElementById('successTitle').textContent = '簽退完成';
           document.getElementById('successMsg').textContent = m.name + '，感謝您的參與！';

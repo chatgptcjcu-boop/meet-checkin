@@ -1,6 +1,6 @@
 {
   "liveUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/",
-  "onsiteUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/onsite-checkin-legacy/",
+  "onsiteUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/onsite-checkin/",
   "onsitePrintUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/onsite-print/",
   "onsitePrintLegacyUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/onsite-print-legacy/index.html",
   "meetingDisplayUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/meeting-display.html",
@@ -11,24 +11,30 @@
   "videoUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/video-checkin/",
   "memberZoneUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/remote-members/",
   "editorialDemoUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/09-editorial-committee/1150730-m1-demo/index.html",
+  "editorialCheckInEntryUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/",
   "instructorWorksheetOnlineUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/09-editorial-committee/1150730-m1-demo/1150730-handouts/instructor-worksheet-online.html",
   "logicChainSlideshowUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/09-editorial-committee/1150730-m1-demo/00-preflight/logic-chain-slideshow.html",
   "teachingChainSlideshowUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/09-editorial-committee/1150730-m1-demo/00-preflight/m1-1-1-teaching-chain-slideshow.html",
+  "activeEventId": "1150730-editorial-m1-demo",
+  "activeEventPreset": "1150730-editorial",
   "provider": "GitHub Pages",
   "architecture": {
     "entry": "單一入口 index.html — 選現場或視訊",
-    "sharedRoster": "assets/members.js — 評核委員＋列席，兩通道共用",
-    "onsite": "onsite-checkin-legacy — 名單點選（出席）＋其他現場人員（身份別＋姓名）",
+    "sharedRoster": "config event.roster 或 assets/members.js — 兩通道共用",
+    "onsite": "onsite-checkin — 名單點選（出席）＋其他現場人員（身份別＋姓名）",
     "video": "video-checkin — 名單點選（視訊）→ 簽到後導向 remote-members 專區",
-    "forms": "remote-members — 會議資料與填答（簽到後進入）"
+    "forms": "remote-members — 會議資料與填答（簽到後進入）",
+    "qrProjector": "onsite-projector.html — 會場投影 QR",
+    "qrPrint": "onsite-qr-print.html — A4 列印 QR"
   },
   "features": [
-    "單一入口分流：onsite-checkin-legacy / video-checkin",
-    "共用委員名單 assets/members.js",
+    "單一入口分流：現場簽到 / 視訊簽到",
+    "活動 preset 切換：node scripts/switch-event.js",
+    "共用委員名單（config roster 或 members.js）",
     "現場：名單點選 + 其他現場人員手動登記",
-    "視訊：名單點選 → 拍照 → remote-members 專區",
+    "視訊：名單點選 → 拍照 → 委員專區",
     "簽到/簽退雙模式、截圖、GAS 試算表、寄信通知",
-    "730 Demo 投影：logic-chain-slideshow、m1-1-1-teaching-chain-slideshow"
+    "730 教材編審：logic-chain-slideshow、m1-1-1-teaching-chain-slideshow"
   ],
   "emailNotification": {
     "enabled": true,

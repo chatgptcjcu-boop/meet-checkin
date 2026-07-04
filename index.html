@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>會議報到入口｜宮廟管理師第一次評核委員會</title>
-  <meta property="og:title" content="宮廟管理師第一次評核委員會 — 報到入口">
-  <meta property="og:description" content="請依出席方式選擇：onsite-checkin-legacy 或 視訊簽到。">
+  <title>會議報到入口</title>
+  <meta property="og:title" content="">
+  <meta property="og:description" content="">
+  <script src="config/event.config.js"></script>
+  <script src="config/apply-event-config.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
   <style>
@@ -19,35 +21,33 @@
 
   <header class="bg-blue-900 text-white border-b-4 border-yellow-500 shadow-lg">
     <div class="max-w-3xl mx-auto px-4 py-8 text-center">
-      <p class="text-yellow-300 text-sm font-semibold tracking-widest mb-2">臺灣道法總會－教育委員會</p>
-      <h1 class="text-2xl md:text-3xl font-black leading-snug">宮廟管理師｜第一次評核委員會</h1>
-      <p class="text-blue-200 text-sm mt-2">115年6月30日</p>
-      <p class="text-white/80 text-sm mt-4 max-w-xl mx-auto leading-relaxed">
-        2026宮廟管理師職能基準 iCAP推動與職能導向課程發展
-      </p>
+      <p class="text-yellow-300 text-sm font-semibold tracking-widest mb-2" data-event="org.headerLine">臺灣道法總會－教育委員會</p>
+      <h1 class="text-2xl md:text-3xl font-black leading-snug" data-event="event.title">會議報到入口</h1>
+      <p class="text-blue-200 text-sm mt-2" data-event="event.dateRoc">—</p>
+      <p class="text-white/80 text-sm mt-4 max-w-xl mx-auto leading-relaxed" data-event="event.tagline"></p>
     </div>
   </header>
 
   <main class="flex-grow max-w-3xl mx-auto w-full px-4 py-10">
     <p class="text-center text-slate-600 mb-8 text-sm md:text-base">
       委員名單已事先建檔，請依您的<strong class="text-slate-800">出席方式</strong>選擇入口：<br class="hidden md:inline">
-      現場出席請點「onsite-checkin-legacy」；視訊出席請點「視訊簽到」。
+      現場出席請點「現場簽到」；視訊出席請點「視訊簽到」。
     </p>
 
-    <div class="grid md:grid-cols-2 gap-5 mb-10">
-      <a href="./onsite-checkin-legacy/" class="entry-card block bg-white rounded-2xl border-2 border-emerald-200 p-8 text-center shadow-md">
+    <div class="grid md:grid-cols-2 gap-5 mb-8">
+      <a href="./onsite-checkin/" class="entry-card block bg-white rounded-2xl border-2 border-emerald-200 p-8 text-center shadow-md">
         <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-emerald-100 flex items-center justify-center">
           <svg class="w-8 h-8 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
           </svg>
         </div>
-        <h2 class="text-xl font-bold text-emerald-800 mb-2">onsite-checkin-legacy</h2>
+        <h2 class="text-xl font-bold text-emerald-800 mb-2">現場簽到</h2>
         <p class="text-sm text-slate-600 leading-relaxed">
           在會場者：從<strong>委員名單點選姓名</strong>；<br>
           其他現場人員：選身份別、填中文姓名、拍照簽到。
         </p>
-        <span class="inline-block mt-5 bg-emerald-600 text-white text-sm font-bold px-6 py-2.5 rounded-xl">進入onsite-checkin-legacy →</span>
+        <span class="inline-block mt-5 bg-emerald-600 text-white text-sm font-bold px-6 py-2.5 rounded-xl">進入現場簽到 →</span>
       </a>
 
       <a href="./video-checkin/" class="entry-card block bg-white rounded-2xl border-2 border-blue-200 p-8 text-center shadow-md">
@@ -65,19 +65,32 @@
       </a>
     </div>
 
+    <section class="bg-amber-50 border-2 border-amber-200 rounded-2xl p-5 mb-8">
+      <h3 class="text-sm font-bold text-amber-900 mb-3 text-center">主辦用｜現場簽到 QR</h3>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="./onsite-projector.html" class="text-center bg-white border-2 border-emerald-300 rounded-xl px-5 py-3 text-sm font-bold text-emerald-800 hover:bg-emerald-50 shadow-sm">
+          現場簽到 QR（投影）→
+        </a>
+        <a href="./onsite-qr-print.html" class="text-center bg-white border-2 border-emerald-300 rounded-xl px-5 py-3 text-sm font-bold text-emerald-800 hover:bg-emerald-50 shadow-sm">
+          現場簽到 QR（列印）→
+        </a>
+      </div>
+      <p class="text-xs text-amber-800/80 text-center mt-3">會場入口投影或列印 QR，掃描後進入現場簽到頁</p>
+    </section>
+
     <div class="bg-white/70 rounded-xl border border-slate-200 p-5 text-center text-xs text-slate-500">
       <a href="./assets/宮廟管理師-評核委員聯絡資訊.pdf" class="text-blue-600 underline" target="_blank">委員名單 PDF</a>
       ｜簽到完成後寄信通知附截圖
       ｜<a href="./meeting-display.html" class="text-blue-700 underline font-semibold">會議投影（議程）</a>
-      ｜<a href="./onsite-projector.html" class="text-emerald-700 underline font-semibold">onsite-checkin-legacy QR（投影）</a>
-      ｜remote-members填答專區：<a href="./remote-members/" class="text-blue-600 underline">remote-members專區</a>
-      ｜onsite-print-legacy資料：<a href="./onsite-print/" class="text-emerald-700 underline font-semibold">委員／列席套組</a>
+      ｜填答專區：<a href="./remote-members/" class="text-blue-600 underline">委員專區</a>
+      ｜<a href="./onsite-print/" class="text-emerald-700 underline font-semibold">委員／列席套組</a>
       ｜<a href="./dashboard.html" class="text-slate-700 underline font-semibold">專案儀表板（主辦）</a>
     </div>
   </main>
 
-  <footer class="text-center text-xs text-slate-400 py-6">
+  <footer class="text-center text-xs text-slate-400 py-6" data-event="org.copyright">
     &copy; 2026 臺灣道法總會 教育委員會
   </footer>
+  <script>MeetCheckinConfig.init();</script>
 </body>
 </html>

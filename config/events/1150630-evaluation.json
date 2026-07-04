@@ -1,0 +1,112 @@
+{
+  "meta": {
+    "kitVersion": "1.0.0",
+    "configSchema": 1,
+    "presetId": "1150630-evaluation"
+  },
+  "org": {
+    "name": "臺灣道法總會",
+    "department": "教育委員會",
+    "headerLine": "臺灣道法總會－教育委員會",
+    "meetingSubtitle": "職能基準共構會議",
+    "footerPlan": "宮廟管理師職能基準發展計畫",
+    "copyright": "2026 臺灣道法總會 教育委員會"
+  },
+  "event": {
+    "id": "1150630-temple-manager-review",
+    "title": "宮廟管理師｜第一次評核委員會",
+    "shortTitle": "宮廟管理師第一次評核委員會",
+    "tagline": "2026宮廟管理師職能基準 iCAP推動與職能導向課程發展",
+    "sessionLabel": "第一次評核委員委員會議",
+    "dateIso": "2026-06-30",
+    "dateDisplay": "2026/06/30",
+    "dateRoc": "115年6月30日",
+    "dateFilePrefix": "1150630",
+    "sessionBadge": "第一次評核委員委員會議 ｜ 2026/06/30",
+    "roster": {
+      "meetingTitle": "2026宮廟管理師職能基準 iCAP推動與職能導向課程發展",
+      "meetingDate": "115年6月30日",
+      "committee": [
+        { "name": "林清淇", "org": "內政部宗教禮制司", "title": "前司長", "role": "召集委員", "attendance": "出席" },
+        { "name": "吳永猛", "org": "臺灣法教會／文化大學", "title": "前理事長／前副校長", "role": "評核委員", "attendance": "視訊" },
+        { "name": "薄喬萍", "org": "義守大學", "title": "前院長", "role": "評核委員", "attendance": "出席" },
+        { "name": "李樑堅", "org": "義守大學", "title": "前副校長", "role": "評核委員", "attendance": "視訊" },
+        { "name": "鄭卜五", "org": "高雄師範大學", "title": "教授", "role": "評核委員", "attendance": "視訊" },
+        { "name": "鄭志明", "org": "輔仁大學", "title": "教授", "role": "評核委員", "attendance": "視訊" },
+        { "name": "陳美華", "org": "台灣宗教學會", "title": "前理事長", "role": "評核委員", "attendance": "出席" },
+        { "name": "高超文", "org": "木柵指南宮", "title": "主任委員", "role": "評核委員", "attendance": "出席" },
+        { "name": "鄭詠紜", "org": "臺灣道法總會", "title": "不分區會長", "role": "評核委員", "attendance": "出席" },
+        { "name": "王世任", "org": "承天宮", "title": "興建主任委員", "role": "評核委員", "attendance": "出席" },
+        { "name": "詹博雅", "org": "凌霄寶殿武龍宮", "title": "顧問", "role": "評核委員", "attendance": "出席" },
+        { "name": "郭昭廷", "org": "開封宮包公廟", "title": "前主任委員", "role": "評核委員", "attendance": "出席" },
+        { "name": "黃國彰", "org": "中華關聖文化世界弘揚協會", "title": "理事長", "role": "評核委員", "attendance": "出席" },
+        { "name": "黃志華", "org": "五里林護天府", "title": "主任委員", "role": "評核委員", "attendance": "出席" },
+        { "name": "蔡鴻祺", "org": "中華世界全民念佛會", "title": "會長", "role": "評核委員", "attendance": "出席" },
+        { "name": "洪家祥", "org": "如魚得水顧問公司", "title": "總經理", "role": "評核委員", "attendance": "請假" }
+      ],
+      "observers": [
+        { "name": "陳瑞宏", "org": "臺灣道法總會", "title": "總會長", "role": "列席人員", "attendance": "出席" },
+        { "name": "張聰明", "org": "臺灣道法總會", "title": "監事長", "role": "列席人員", "attendance": "出席" },
+        { "name": "陳昭良", "org": "臺灣道法總會", "title": "副監事長", "role": "列席人員", "attendance": "出席" },
+        { "name": "黃子瑜", "org": "臺灣道法總會", "title": "北區會長", "role": "列席人員", "attendance": "出席" },
+        { "name": "郭益富", "org": "臺灣道法總會", "title": "東區會長", "role": "列席人員", "attendance": "出席" },
+        { "name": "張祐倉", "org": "臺灣道法總會", "title": "主任委員", "role": "列席人員", "attendance": "出席" },
+        { "name": "黃發保", "org": "臺灣道法總會", "title": "秘書長", "role": "列席人員", "attendance": "出席" },
+        { "name": "楊成林", "org": "臺灣道法總會", "title": "副秘書長", "role": "列席人員", "attendance": "出席" },
+        { "name": "王芯庭", "org": "臺灣道法總會", "title": "助理", "role": "列席人員", "attendance": "出席" }
+      ]
+    }
+  },
+  "backend": {
+    "gasWebAppUrl": "https://script.google.com/macros/s/AKfycbxlJASeVM3NvkrBJZDW7C5J53nC9UegMLgUTkNdsppaK6P5K5Hjr2xzQ1DlkFCXvT4HuQ/exec"
+  },
+  "meet": {
+    "url": "https://meet.google.com/kci-xjtu-dmr?hs=122"
+  },
+  "contact": {
+    "name": "王芯庭助理",
+    "phone": "0956800579",
+    "channel": "Line"
+  },
+  "signIn": {
+    "roles": ["評核委員", "專家顧問", "專案工作人員", "列席人員"],
+    "committeeLabel": "評核委員",
+    "observersLabel": "列席人員",
+    "guestRoles": ["專家顧問", "專案工作人員", "列席人員", "觀摩來賓"],
+    "memberPortalPath": "./remote-members/index.html"
+  },
+  "seo": {
+    "entryPageTitle": "會議報到入口｜宮廟管理師第一次評核委員會",
+    "checkInPageTitle": "臺灣道法總會－教育委員會 會議報到與簽退",
+    "ogTitle": "2026宮廟管理師職能基準 iCAP推動會議",
+    "ogDescription": "第一次評核委員委員會議 (2026/06/30) - 請進行視訊簽到/簽退。",
+    "entryOgDescription": "請依出席方式選擇：現場簽到或視訊簽到。"
+  },
+  "paths": {
+    "onsiteCheckin": "./onsite-checkin/",
+    "onsiteQrProjector": "./onsite-projector.html",
+    "onsiteQrPrint": "./onsite-qr-print.html",
+    "onsiteCheckinUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/onsite-checkin/"
+  },
+  "instructorWorksheet730": {
+    "formType": "730-instructor",
+    "sheetTab": "instructor-730",
+    "demoUnit": "M1-1.1",
+    "dateRoc": "115年7月30日",
+    "dateDisplay": "115/07/30",
+    "dateFilePrefix": "1150730",
+    "onlineFormPath": "09-editorial-committee/1150730-m1-demo/1150730-handouts/instructor-worksheet-online.html"
+  },
+  "unitClaimMatrix": {
+    "action": "unit-claim-matrix",
+    "sheetTab": "unit-claim-matrix",
+    "totalUnits": 86,
+    "totalModules": 8,
+    "pagePath": "09-editorial-committee/unit-claim-matrix.html"
+  },
+  "expenses": {
+    "action": "expenses",
+    "sheetTab": "expenses",
+    "pagePath": "expenses/budget-dashboard.html"
+  }
+}

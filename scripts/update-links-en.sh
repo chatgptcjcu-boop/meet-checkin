@@ -104,7 +104,7 @@ apply 'DEMO-SCRIPT-主辦.md' 'DEMO-SCRIPT-host.md'
 apply '06-Phase5-產出歸檔與銜接.html' '06-phase5-archive-and-handoff.html'
 
 # Legacy root folders (if linked)
-apply '現場簽到' 'onsite-checkin-legacy'
+apply '現場簽到' '現場簽到'
 apply '現場印製' 'onsite-print-legacy'
 apply '視訊委員' 'remote-members'
 
