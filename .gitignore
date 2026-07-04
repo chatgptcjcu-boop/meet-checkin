@@ -1,6 +1,9 @@
 # 僅供本機使用，勿上傳
 _local/
 .DS_Store
-.cursor/
+.cursor/*
+!.cursor/skills/
+!.cursor/skills/meeting-event-lifecycle/
+!.cursor/skills/meeting-event-lifecycle/**
 .zerodeploy-claim-token
 *.local
