@@ -7,3 +7,5 @@ _local/
 !.cursor/skills/meeting-event-lifecycle/**
 .zerodeploy-claim-token
 *.local
+!.cursor/skills/meet-checkin-kit/
+!.cursor/skills/meet-checkin-kit/**
