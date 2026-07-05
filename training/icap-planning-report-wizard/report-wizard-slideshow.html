@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>備援訓練｜iCAP 職能導向課程規劃與執行報告書格式精靈</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/meeting-display.css">
+  <style>
+    /* ADDIE 對位總圖：左階段 + 右報告書區塊 */
+    .addie-pair {
+      display: grid;
+      grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+      column-gap: 1.4vw;
+      align-items: stretch;
+      width: 100%;
+      max-width: 94vw;
+      margin: 0 auto;
+    }
+    .addie-pair .chain-step { margin: 0; }
+    .addie-pair .chain-arrow { grid-column: 1; }
+    .addie-pair .map-spacer { grid-column: 2; }
+    .addie-head {
+      font-size: clamp(0.72rem, 1.35vw, 0.95rem);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding-bottom: 0.6vh;
+      margin-bottom: 0.3vh;
+      border-bottom: 1px solid var(--line);
+    }
+    .addie-head.phase { color: var(--accent); }
+    .addie-head.doc { color: var(--accent2); }
+    .map-note {
+      display: flex;
+      align-items: center;
+      background: rgb(52 211 153 / 0.06);
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      padding: 0.55vh 0.9vw;
+      font-size: clamp(0.78rem, 1.45vw, 1.02rem);
+      line-height: 1.45;
+      color: var(--text);
+    }
+    .map-note b { color: var(--accent2); font-weight: 700; }
+    .map-note.warn {
+      background: rgb(251 191 36 / 0.08);
+      border: 1px solid var(--accent);
+    }
+    .map-note.warn b { color: var(--accent); }
+    .field-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1vh 1.5vw;
+      font-size: clamp(0.78rem, 1.45vw, 1.02rem);
+    }
+    @media (max-width: 900px) { .field-grid { grid-template-columns: 1fr; } }
+    .field-item {
+      background: var(--panel);
+      border-left: 3px solid var(--accent2);
+      border-radius: 0 8px 8px 0;
+      padding: 0.6em 0.85em;
+      line-height: 1.45;
+    }
+    .field-item .lbl { color: var(--accent); font-weight: 700; font-size: 0.92em; }
+    .tips-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5vw;
+      font-size: clamp(0.78rem, 1.45vw, 1.02rem);
+    }
+    @media (max-width: 900px) { .tips-cols { grid-template-columns: 1fr; } }
+    .tips-cols h4 {
+      color: var(--accent);
+      font-size: clamp(0.85rem, 1.55vw, 1.08rem);
+      margin-bottom: 0.6vh;
+    }
+    .tips-cols ul { list-style: none; line-height: 1.55; }
+    .tips-cols li { padding: 0.25em 0 0.25em 1.1em; position: relative; }
+    .tips-cols li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--accent2);
+    }
+    .checklist li::before { content: '☐'; color: var(--accent); }
+    table.agenda.compact th, table.agenda.compact td { padding: 0.45em 0.65em; font-size: clamp(0.75rem, 1.4vw, 0.98rem); }
+  </style>
+</head>
+<body>
+  <div class="deck" id="deck">
+
+    <!-- 1 封面 -->
+    <section class="slide slide-welcome active" data-id="welcome">
+      <div class="slide-body">
+        <p class="org" style="font-size:clamp(0.9rem,2vw,1.1rem);color:#fbbf24;letter-spacing:.15em;margin-bottom:2vh">備援訓練章節｜STANDALONE</p>
+        <h1 class="main-title">職能導向課程<br>規劃與執行報告書<br>格式精靈導覽</h1>
+        <p class="sub">勞動部勞動力發展署｜iCAP 職能導向課程發展</p>
+        <p class="tagline">依官方 ODT 格式拆解：封面申請欄位 → 壹課程資訊 → 貳規劃內容（表1–12）→ 參佐證資料<br>可獨立使用，不限單一會議日期｜與 iCAP 平台線上申請並行參考</p>
+      </div>
+    </section>
+
+    <!-- 2 如何使用 -->
+    <section class="slide" data-id="how-to">
+      <div class="slide-header">
+        <p class="org">HOW TO USE</p>
+        <h2>如何使用本精靈</h2>
+        <p class="meta">投影導覽｜自學走讀｜撰寫報告書前的格式地圖</p>
+      </div>
+      <div class="slide-body">
+        <ul class="bullets">
+          <li><strong>← → 或空白鍵</strong>切換投影片；下方下拉選單可跳頁；建議全螢幕投影</li>
+          <li>本模組為<strong>備援訓練教材</strong>，任何時間可開啟，不綁定評核會或教材編審會場次</li>
+          <li>每一區塊依「總覽 → 欄位／表格 → 書寫注意」設計，對照您手邊的計畫書或試辦紀錄填寫</li>
+          <li><strong>重要區別：</strong>本 ODT 格式供「課程規劃與執行報告」使用；<strong>iCAP 課程認證申請</strong>請依 iCAP 平台線上系統欄位為準</li>
+        </ul>
+        <div class="hint-box">建議搭配：職能基準／課程地圖／單元計畫書草稿。精靈說明「填什麼、怎麼寫」，內容仍來自您的 ADDIE 產出。</div>
+      </div>
+    </section>
+
+    <!-- 3 報告書總地圖 -->
+    <section class="slide" data-id="map-all" data-addie="all">
+      <div class="slide-header">
+        <p class="org">REPORT MAP</p>
+        <h2>報告書總地圖</h2>
+        <p class="meta">壹 → 貳 → 參 三大部分｜對位 ADDIE（A-D-I-E）</p>
+      </div>
+      <div class="slide-body">
+        <div class="addie-pair" id="addieFlowAll">
+          <div class="addie-head phase">ADDIE 階段</div>
+          <div class="addie-head doc">報告書區塊</div>
+
+          <div class="chain-step" data-step="cover"><span class="lid">封</span>封面申請欄位</div>
+          <div class="map-note">案號、課程名稱、職能依據、申請類型、辦訓期間——<b>送審身分識別</b></div>
+          <div class="chain-arrow">↓</div>
+          <div class="map-spacer"></div>
+
+          <div class="chain-step" data-step="sec1"><span class="lid">壹</span>課程資訊（文字敘述）</div>
+          <div class="map-note">訓練需求、簡介、目的（各 1000 字）＋時數、級別、對象、先備——<b>說清楚「為何辦、辦給誰」</b></div>
+          <div class="chain-arrow">↓</div>
+          <div class="map-spacer"></div>
+
+          <div class="chain-step" data-step="a"><span class="lid">A</span>分析｜表1–2</div>
+          <div class="map-note">職能表（T/P/K/S/L）→ 課程地圖——<b>能力從哪來、拆成幾格課</b></div>
+          <div class="chain-arrow">↓</div>
+          <div class="map-spacer"></div>
+
+          <div class="chain-step" data-step="d"><span class="lid">D</span>設計發展｜表3–8</div>
+          <div class="map-note">目標、內容、方法、教材、師資、評量——<b>每一格課怎麼教、怎麼驗</b></div>
+          <div class="chain-arrow">↓</div>
+          <div class="map-spacer"></div>
+
+          <div class="chain-step" data-step="ie"><span class="lid">I·E</span>實施評估｜表9–12</div>
+          <div class="map-note">執行人員、試辦成果、學習證據、結訓標準——<b>真的辦過、有數據、有佐證</b></div>
+          <div class="chain-arrow">↓</div>
+          <div class="map-spacer"></div>
+
+          <div class="chain-step demo-step" data-step="ref"><span class="lid">參</span>佐證資料｜ADDIE 對照表</div>
+          <div class="map-note warn">指標 1.1–5.3 對位上傳檔案＋<b>利益關係人參與紀錄（註5）</b>——審查員查「有沒有做、有沒有證明」</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 封面申請欄位 -->
+    <section class="slide" data-id="cover-fields">
+      <div class="slide-header">
+        <p class="org">COVER｜APPLICATION</p>
+        <h2>封面申請欄位精靈</h2>
+        <p class="meta">勞動部勞動力發展署｜職能導向課程規劃與執行報告書</p>
+      </div>
+      <div class="slide-body">
+        <div class="field-grid">
+          <div class="field-item"><span class="lbl">申請日期／案號</span><br>系統免填；紙本或內部版可留空待核發</div>
+          <div class="field-item"><span class="lbl">課程名稱（中／英）</span><br>與招生簡章、證書譯名一致；有英文證書才必填英文</div>
+          <div class="field-item"><span class="lbl">申請單位（中／英）</span><br>主辦法人全銜；勿與協力單位混淆</div>
+          <div class="field-item"><span class="lbl">協力單位</span><br>共同辦訓、提供場域或師資者；無則填「無」</div>
+          <div class="field-item"><span class="lbl">辦訓期間</span><br>試辦班起訖日；須涵蓋表10 試辦成果期間</div>
+          <div class="field-item"><span class="lbl">註</span><br>本格式供課程使用；iCAP 認證申請依平台線上系統</div>
+        </div>
+        <div class="hint-box"><strong>書寫要點：</strong>封面是審查第一印象——課程名稱勿與計畫書、簡章、平台申請三處不同寫法；辦訓期間與後文表10、招生紀錄日期必須對得上。</div>
+      </div>
+    </section>
+
+    <!-- 5 職能依據與申請類型 -->
+    <section class="slide" data-id="basis-type">
+      <div class="slide-header">
+        <p class="org">COVER｜BASIS &amp; TYPE</p>
+        <h2>職能依據與申請類型</h2>
+        <p class="meta">勾選錯誤會連動表1 與佐證資料整份對不上</p>
+      </div>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card">
+            <h3>職能依據（擇一勾選）</h3>
+            <p><strong>□ 職能基準</strong> — 對應已公告之國家／產業職能基準<br>
+            <strong>□ 職能單元</strong> — 依單元級職能文件<br>
+            <strong>□ 自行職能分析</strong> — 需附完整分析文件（參·A·1.1）</p>
+          </div>
+          <div class="card">
+            <h3>申請類型</h3>
+            <p><strong>新申請</strong>｜<strong>展延</strong><br>
+            <strong>類別1</strong> 與原課程一致<br>
+            <strong>類別2</strong> 課程部分調整<br>
+            <strong>類別3</strong> 職能依據及課程皆部分調整<br>
+            <strong>變更</strong> — 須列變更項目</p>
+          </div>
+        </div>
+        <div class="tips-cols" style="margin-top:1.5vh">
+          <div>
+            <h4>常見錯誤</h4>
+            <ul>
+              <li>口頭說「依職能基準開課」，封面卻勾自行分析</li>
+              <li>展延／變更卻仍填寫「新申請」全套表單</li>
+              <li>類別2/3 調整處未在表4、表5 標示差異</li>
+            </ul>
+          </div>
+          <div>
+            <h4>與 iCAP 專案連結</h4>
+            <ul>
+              <li>職能基準路線：表1 的 T/P/K/S 應可追溯到基準文件編號</li>
+              <li>自行分析路徑：參·A·1.1 須上傳分析會議紀錄、訪談或德懷術產出</li>
+              <li>類別勾選決定審查深度——調整越大，表10–11 證據要求越完整</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6 壹、課程資訊總覽 -->
+    <section class="slide" data-id="sec1-overview">
+      <div class="slide-header">
+        <p class="org">SECTION 壹｜OVERVIEW</p>
+        <h2>壹、課程資訊 — 總覽</h2>
+        <p class="meta">ADDIE「分析」前的脈絡說明｜審查員先讀的三段千字文</p>
+      </div>
+      <div class="slide-body">
+        <ul class="bullets">
+          <li>此區<strong>不含表格</strong>，以敘述性文字呈現課程定位——是整份報告的「故事前言」</li>
+          <li>三段各<strong>字數上限 1000 字</strong>：訓練需求、課程簡介、課程目的——三者不可複製貼上同一段</li>
+          <li>量化欄位：課程時數、職能級別、主要對象、先備條件——須與表2 地圖總時數、表3 各單元級別一致</li>
+          <li>對位 iCAP 思維：先交代<strong>產業／場域需求（Why）</strong>，再說<strong>課程包什麼（What）</strong>，最後<strong>學完能做什么（So what）</strong></li>
+        </ul>
+        <div class="hint-box">寫完壹後，用「表2 總時數加總 = 課程時數？」「對象資格 = 招生簡章？」兩題自我檢核。</div>
+      </div>
+    </section>
+
+    <!-- 7 訓練需求／簡介／目的 -->
+    <section class="slide" data-id="sec1-texts">
+      <div class="slide-header">
+        <p class="org">SECTION 壹｜1000×3</p>
+        <h2>訓練需求／簡介／目的</h2>
+        <p class="meta">三字千限｜差異化寫法｜勿三段同義反覆</p>
+      </div>
+      <div class="slide-body">
+        <table class="agenda compact">
+          <thead><tr><th>欄位</th><th>寫什麼</th><th>差異化提示</th></tr></thead>
+          <tbody>
+            <tr><td class="sec">訓練需求</td><td>場域痛點、人力缺口、法規或產業趨勢</td><td>引用調查、訪談、會議共識；可對利益關係人紀錄</td></tr>
+            <tr><td class="sec">課程簡介</td><td>課程結構、模組、時數配置、特色</td><td>呼應表2 地圖架構；讓人看見「幾格課、怎麼串」</td></tr>
+            <tr><td class="sec">課程目的</td><td>完訓後學員能力與應用情境</td><td>對表1 職能表與表3 目標；用成果導向語句</td></tr>
+          </tbody>
+        </table>
+        <div class="tips-cols" style="margin-top:1.2vh">
+          <div>
+            <h4>書寫注意</h4>
+            <ul>
+              <li>避免空泛形容詞（「提升競爭力」）而無具體任務或行為</li>
+              <li>需求段寫「問題」，目的段寫「解決後的表現」——時態、角度不同</li>
+              <li>字數接近上限時，優先保留可驗證的敘述，刪掉標語式句子</li>
+            </ul>
+          </div>
+          <div>
+            <h4>常見錯誤</h4>
+            <ul>
+              <li>三段內容 80% 重複，審查員視為敷衍</li>
+              <li>目的段列活動流程（「含講授、分組」）而非能力產出</li>
+              <li>需求無數據來源，與參·利益關係人紀錄對不上</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8 時數、級別、對象、先備 -->
+    <section class="slide" data-id="sec1-meta">
+      <div class="slide-header">
+        <p class="org">SECTION 壹｜METADATA</p>
+        <h2>時數、級別、對象、先備條件</h2>
+        <p class="meta">量化欄位｜全報告一致性檢查樞紐</p>
+      </div>
+      <div class="slide-body">
+        <div class="field-grid">
+          <div class="field-item"><span class="lbl">課程時數</span><br>總訓練時數（含線上／實作）；= 表2、表4 加總邏輯一致</div>
+          <div class="field-item"><span class="lbl">課程職能級別</span><br>對應職能基準級別（如 Level 1–4）；表1、表3 逐列級別不得矛盾</div>
+          <div class="field-item"><span class="lbl">主要對象（參訓資格）</span><br>職類、年資、學歷或執照；= 招生簡章資格條款</div>
+          <div class="field-item"><span class="lbl">先備條件（資格條件）</span><br>入班前須具備之知識／經驗；影響表3 目標難度設定</div>
+        </div>
+        <div class="hint-box"><strong>實務檢核：</strong>若課程含多級別單元，封面「課程職能級別」寫主級別，表3 逐列標各單元級別並說明設計理由。對象欄避免「凡對本主題有興趣者」——需可執法、可招生。</div>
+      </div>
+    </section>
+
+    <!-- 9 表1 職能表 -->
+    <section class="slide" data-id="t1">
+      <div class="slide-header">
+        <p class="org">SECTION 貳｜A 分析</p>
+        <h2>表1　本課程之職能表</h2>
+        <p class="meta">工作任務 T → 行為指標 P → K/S/L｜職能導向核心</p>
+      </div>
+      <div class="slide-body">
+        <table class="agenda compact">
+          <thead><tr><th>欄位</th><th>填寫要點</th></tr></thead>
+          <tbody>
+            <tr><td>工作任務（中／英*1）</td><td>可觀察的工作任務名稱；有英文證書才填英文</td></tr>
+            <tr><td>對應行為指標 P</td><td>可衡量的表現標準；與表3「對應行為指標」逐字對齊</td></tr>
+            <tr><td>職能級別 L</td><td>與封面、表3 一致</td></tr>
+            <tr><td>知識 K／技能 S</td><td>支撐該任務完成所需；表3、表4 不得漏列</td></tr>
+          </tbody>
+        </table>
+        <div class="tips-cols" style="margin-top:1.2vh">
+          <div>
+            <h4>書寫注意</h4>
+            <ul>
+              <li>一列 = 一組 T-P-K-S 閉環；列數宜覆蓋本課程所有核心任務</li>
+              <li>P 用「可觀察動詞 + 標準」，避免「了解、熟悉」</li>
+              <li>K/S 從 P 反推——「要表現到這樣，需要知道什麼、會做什麼？」</li>
+            </ul>
+          </div>
+          <div>
+            <h4>常見錯誤</h4>
+            <ul>
+              <li>表1 列了任務，表3 卻找不到對應 P</li>
+              <li>把教學章節標題當工作任務（混淆「教什麼」與「做什麼」）</li>
+              <li>自行分析案卻無參·1.1 職能分析文件佐證</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10 表2 課程地圖 -->
+    <section class="slide" data-id="t2">
+      <div class="slide-header">
+        <p class="org">SECTION 貳｜A 分析</p>
+        <h2>表2　課程地圖</h2>
+        <p class="meta">分析階段產出｜表3–8 的「索引」</p>
+      </div>
+      <div class="slide-body">
+        <ul class="bullets">
+          <li>將表1 職能<strong>拆解為課程（單元）序列</strong>——每格課對應一或多組 T/P/K/S</li>
+          <li>地圖須呈現<strong>先後順序、模組分組、總時數配置</strong>；與壹「課程簡介」呼應</li>
+          <li>表3 起所有「課程(單元)名稱」必須與地圖<strong>完全一致</strong>（含標點、序號）</li>
+          <li>對位 iCAP 1.2 指標：地圖是「教學發展」起點，下午單元設計、ABCD 都從這裡定位</li>
+        </ul>
+        <div class="hint-box"><strong>實務提示：</strong>先定地圖再填表3–8，避免寫完八張表才發現單元名稱不一致。模組化課程可在地圖註明「必修／選修」與時數加總規則。</div>
+      </div>
+    </section>
+
+    <!-- 11 表3 教學訓練目標 -->
+    <section class="slide" data-id="t3">
+      <div class="slide-header">
+        <p class="org">SECTION 貳｜D 設計發展</p>
+        <h2>表3　教學／訓練目標與職能內涵</h2>
+        <p class="meta">ABCD 連結提示｜指標 2.1</p>
+      </div>
+      <div class="slide-body">
+        <table class="agenda compact">
+          <thead><tr><th>欄位</th><th>填寫要點</th></tr></thead>
+          <tbody>
+            <tr><td>課程(單元)名稱（中／英*2）</td><td>同表2；有英文證書才填英文</td></tr>
+            <tr><td>單元職能級別</td><td>可與整課不同，但需合理</td></tr>
+            <tr><td>教學／訓練目標</td><td>建議 ABCD：對象(A)、行為(B)、條件(C)、標準(D)</td></tr>
+            <tr><td>對應行為指標／K／S</td><td>回溯表1；表5 方法、表8 評量依此設計</td></tr>
+          </tbody>
+        </table>
+        <div class="hint-box"><strong>ABCD 連結：</strong>「<em>完訓學員(A)</em> 能在 <em>模擬場域(C)</em> 正確執行 <em>○○程序(B)</em>，符合 <em>表1 行為指標 P(D)</em>。」——目標寫不好，表5 方法與表8 評量會全線失焦。</div>
+      </div>
+    </section>
+
+    <!-- 12 表4-5 -->
+    <section class="slide" data-id="t45">
+      <div class="slide-header">
+        <p class="org">SECTION 貳｜D 設計發展</p>
+        <h2>表4 課程內容｜表5 教學方法</h2>
+        <p class="meta">指標 2.2、3.1｜教什么 × 怎么教</p>
+      </div>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card">
+            <h3>表4　課程內容</h3>
+            <p><strong>單元名稱</strong>｜<strong>時數</strong>｜<strong>大綱內容</strong><br>
+            大綱需對應表3 的 K/S；時數加總 = 表2／壹 時數<br>
+            寫「教學步驟＋核心知技能點」，非只有章節名</p>
+          </div>
+          <div class="card">
+            <h3>表5　教學方法</h3>
+            <p>每單元勾選：講述、討論、演練、協同、專題、示範、案例、其他<br>
+            須對應<strong>表3 目標</strong>——要「會做」的單元應含演練／示範／實作<br>
+            方法與表6 教具、表8 評量方式邏輯一致</p>
+          </div>
+        </div>
+        <div class="tips-cols" style="margin-top:1.2vh">
+          <div>
+            <h4>書寫注意</h4>
+            <ul>
+              <li>表4 大綱粒度：審查員要能看出「這 2 小時在教什麼」</li>
+              <li>表5 勿全勾講述——職能課強調 Performance</li>
+              <li>類別2/3 調整處，於大綱或方法欄標註「本次修訂」</li>
+            </ul>
+          </div>
+          <div>
+            <h4>常見錯誤</h4>
+            <ul>
+              <li>大綱抄教材目錄，未對 K/S</li>
+              <li>標榜案例教學卻無表11 案例產出證據</li>
+              <li>表4 時數與表2 地圖、表10 實際授課紀錄不符</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 13 表6-8 -->
+    <section class="slide" data-id="t68">
+      <div class="slide-header">
+        <p class="org">SECTION 貳｜D 設計發展</p>
+        <h2>表6 教材資源｜表7 師資｜表8 評量</h2>
+        <p class="meta">指標 3.2、5.1｜資源 × 人力 × 驗收</p>
+      </div>
+      <div class="slide-body">
+        <table class="agenda compact">
+          <thead><tr><th>表格</th><th>關鍵欄位</th><th>書寫要點</th></tr></thead>
+          <tbody>
+            <tr><td class="sec">表6 教材與教學資源</td><td>教材教具／設備勾選</td><td>線上課須勾視訊軟體；設備與表5 方法匹配</td></tr>
+            <tr><td class="sec">表7 師資條件</td><td>授課／評量／協助人員</td><td>規劃階段可列「職稱＋資格要件」；表9 填實際姓名</td></tr>
+            <tr><td class="sec">表8 學習成果評量</td><td>評量方式＋評量工具</td><td>方式（測驗／實作…）須對表3 目標；工具欄勾具體卷別、檢核表</td></tr>
+          </tbody>
+        </table>
+        <div class="hint-box"><strong>三角檢核：</strong>表3 目標 → 表5 方法 → 表8 評量，同一單元須能回答「教這個目標，用這方法，用這工具驗」。表7 評量人員不得與授課教師完全同一且無外部監督（視規範而定）。</div>
+      </div>
+    </section>
+
+    <!-- 14 表9-12 -->
+    <section class="slide" data-id="t912">
+      <div class="slide-header">
+        <p class="org">SECTION 貳｜I·E 實施評估</p>
+        <h2>表9–12　實施與評估階段</h2>
+        <p class="meta">試辦數據｜學習證據｜結訓標準</p>
+      </div>
+      <div class="slide-body">
+        <div class="scopes">
+          <div class="item"><span class="num">表9</span> 實際執行人員資格 — 姓名＋資格證明；對表7 規劃</div>
+          <div class="item"><span class="num">表10</span> 試辦班成果 — 起訖、參訓／完訓／結訓人數（數字）</div>
+          <div class="item"><span class="num">表11</span> 學習成果證據 — 各單元具體產出（作業、實作照片、檢核表…）</div>
+          <div class="item"><span class="num">表12</span> 結訓標準*3 — 各階段評量／學科／術科／其他；至少勾一項</div>
+        </div>
+        <div class="tips-cols" style="margin-top:1.2vh">
+          <div>
+            <h4>書寫注意</h4>
+            <ul>
+              <li>表10「結訓人數」= 符合 iCAP 結訓標準者，非僅出席</li>
+              <li>表11 證據須可抽查——與參·5.2 上傳檔案一致</li>
+              <li>表12 結訓標準須與表8 評量方式、成績總表邏輯呼應</li>
+            </ul>
+          </div>
+          <div>
+            <h4>常見錯誤</h4>
+            <ul>
+              <li>試辦期間與封面辦訓期間不一致</li>
+              <li>表11 只寫「學員學習心得」而無具體產出</li>
+              <li>表12 全空白或與成績單結訓規則矛盾</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 15 參、佐證資料 ADIE 對照 -->
+    <section class="slide" data-id="ref-addie">
+      <div class="slide-header">
+        <p class="org">SECTION 參｜EVIDENCE</p>
+        <h2>佐證資料總覽 — ADDIE 對照表</h2>
+        <p class="meta">階段｜指標｜利益關係人紀錄*5｜佐證資料*6</p>
+      </div>
+      <div class="slide-body">
+        <table class="agenda compact">
+          <thead><tr><th>階段</th><th>指標</th><th>利益關係人參與</th><th>佐證資料（上傳）</th></tr></thead>
+          <tbody>
+            <tr><td class="sec">A 分析</td><td>1.1 職能依據<br>1.2 課程地圖</td><td>需求訪談、分析工作坊</td><td>職能分析文件</td></tr>
+            <tr><td class="sec">D 設計</td><td>2.1 教學訓練目標<br>2.2 課程內容</td><td>課程設計審查會</td><td>—</td></tr>
+            <tr><td class="sec">D 發展</td><td>3.1 教學方法<br>3.2 教材資源</td><td>試教回饋</td><td>課程教材、人員資格文件</td></tr>
+            <tr><td class="sec">I 執行</td><td>4.1 課程辦理</td><td>試辦班學員／講師</td><td>招生簡章、滿意度、實施紀錄</td></tr>
+            <tr><td class="sec">E 評估</td><td>5.1 學習成果評量<br>5.2 學習成果證據<br>5.3 管控評估</td><td>評量委員、管考單位</td><td>成績總表、評量工具、證據、管控機制文件</td></tr>
+          </tbody>
+        </table>
+        <div class="hint-box">表1–12 是「結構化摘要」；參章是「原始證明」。審查常交叉比對：表8 寫的評量工具，參·5.1 是否真有上傳？</div>
+      </div>
+    </section>
+
+    <!-- 16 利益關係人 -->
+    <section class="slide" data-id="stakeholders">
+      <div class="slide-header">
+        <p class="org">SECTION 參｜註5</p>
+        <h2>利益關係人參與紀錄</h2>
+        <p class="meta">次數視需求而定｜多場會議整合為一份上傳</p>
+      </div>
+      <div class="slide-body">
+        <ul class="bullets">
+          <li><strong>註5：</strong>利益關係人參與紀錄次數視課程發展需求而定，不論次數<strong>整合為一份檔案</strong>上傳</li>
+          <li>應涵蓋 ADDIE 各階段關鍵決策點——需求確認、地圖審查、試教回饋、試辦檢討等</li>
+          <li>紀錄格式：日期、與會者（含外部代表）、議題、決議、對應指標編號</li>
+          <li>與壹「訓練需求」、表1 職能來源<strong>可互相引用</strong>——證明「不是閉門造車」</li>
+        </ul>
+        <div class="grid-2" style="margin-top:1.2vh">
+          <div class="card">
+            <h3>建議收錄對象</h3>
+            <p>雇主／場域主管、實務工作者、學員代表、外部專家、管考單位窗口</p>
+          </div>
+          <div class="card">
+            <h3>常見不足</h3>
+            <p>僅內部開會、無外部利害關係人；紀錄無決議；日期與試辦／設計時程對不上</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 17 地雷與 checklist -->
+    <section class="slide" data-id="checklist">
+      <div class="slide-header">
+        <p class="org">QUALITY CHECK</p>
+        <h2>常見送審地雷 &amp; Checklist</h2>
+        <p class="meta">交件前 15 分鐘自我審查</p>
+      </div>
+      <div class="slide-body">
+        <div class="tips-cols">
+          <div>
+            <h4>常見地雷</h4>
+            <ul>
+              <li>表1 P 與表3 目標、表8 評量「三套話各說各話」</li>
+              <li>單元名稱在表2–11 不一致（全形／半形、序號）</li>
+              <li>表10 人數與成績總表、學員名單對不上</li>
+              <li>勾「職能基準」卻無基準版本／代碼標示</li>
+              <li>參章缺 5.2 證據或 4.1 實施紀錄</li>
+              <li>報告書與 iCAP 平台申請內容矛盾</li>
+            </ul>
+          </div>
+          <div>
+            <h4>交件 Checklist</h4>
+            <ul class="checklist">
+              <li>封面職能依據、類型勾選正確</li>
+              <li>壹 三字千文不重複；時數 = 表2/表4 加總</li>
+              <li>表1→表3→表8 邏輯鏈逐單元走過</li>
+              <li>表9 人員資格附證明文件</li>
+              <li>表10–12 試辦數據完整</li>
+              <li>參·ADDIE 對照表每格皆有佐證或說明</li>
+              <li>利益關係人紀錄已整合上傳</li>
+              <li>與 iCAP 平台欄位交叉比對</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 18 結語 -->
+    <section class="slide slide-welcome" data-id="closing">
+      <div class="slide-body">
+        <p class="org" style="font-size:clamp(0.9rem,2vw,1.1rem);color:#fbbf24;letter-spacing:.15em;margin-bottom:2vh">NEXT STEPS</p>
+        <h1 class="main-title" style="font-size:clamp(1.8rem,4.5vw,3rem)">下一步</h1>
+        <p class="sub">對照計畫書 → 填表1–12 → 備齊參章佐證 → 平台申請</p>
+        <p class="tagline" style="margin-top:3vh">
+          本精靈為格式地圖，實質內容來自 ADDIE 產出與試辦紀錄<br>
+          撰寫時開啟職能表、課程地圖、單元計畫書並排對照<br>
+          iCAP 認證請以<strong style="color:#fbbf24">平台線上系統</strong>最新欄位為準<br><br>
+          ← → 或空白鍵複習｜按 3 回到報告書總地圖
+        </p>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="slide-counter" id="counter">1 / 18</div>
+
+  <div class="controls no-print">
+    <button type="button" id="btnPrev">◀ 上一頁</button>
+    <button type="button" id="btnNext">下一頁 ▶</button>
+    <select id="slideSelect" aria-label="選擇投影片"></select>
+    <button type="button" id="btnFs">全螢幕</button>
+    <a href="index.html" style="color:#94a3b8;font-size:0.78rem;text-decoration:none">訓練索引</a>
+    <a href="../../dashboard.html" style="color:#94a3b8;font-size:0.78rem;text-decoration:none">儀表板</a>
+    <span class="counter" id="counterCtrl">1 / 18</span>
+    <span class="keys">← → 或空白鍵切換</span>
+  </div>
+
+  <script src="../../assets/meeting-display.js"></script>
+  <script>
+    MeetingDisplay.init({
+      labels: [
+        '封面', '如何使用', '報告書總地圖', '封面申請欄位', '職能依據與類型',
+        '壹課程資訊總覽', '需求簡介目的', '時數級別對象', '表1 職能表', '表2 課程地圖',
+        '表3 教學目標', '表4-5 內容方法', '表6-8 資源師資評量', '表9-12 實施評估',
+        '參佐證ADDIE', '利益關係人', '地雷Checklist', '結語下一步'
+      ],
+      hotkeys: { '3': 2 },
+      onShow: function (idx, slides) {
+        const step = slides[idx].dataset.addie;
+        document.querySelectorAll('#addieFlowAll .chain-step').forEach(function (el) {
+          el.classList.toggle('highlight', step && step !== 'all' && el.dataset.step === step);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
