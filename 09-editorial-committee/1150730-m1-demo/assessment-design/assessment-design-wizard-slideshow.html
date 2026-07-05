@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>會議投影｜評量設計三表精靈導覽｜Phase 4</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../../assets/meeting-display.css">
+  <style>
+    .triad {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1.2vw;
+      width: 100%;
+      max-width: 92vw;
+      margin: 0 auto;
+    }
+    .triad .card { text-align: center; }
+    .triad .card h3 { font-size: clamp(0.85rem, 1.6vw, 1.05rem); margin-bottom: 0.5vh; }
+    .triad .card p { font-size: clamp(0.75rem, 1.35vw, 0.95rem); color: var(--muted); }
+    .tag-pill {
+      display: inline-block;
+      font-size: clamp(0.68rem, 1.2vw, 0.82rem);
+      padding: 0.2em 0.65em;
+      border-radius: 999px;
+      background: rgb(251 191 36 / 0.15);
+      color: var(--accent);
+      margin: 0.15em;
+    }
+    table.compact {
+      width: 100%;
+      max-width: 88vw;
+      border-collapse: collapse;
+      font-size: clamp(0.72rem, 1.35vw, 0.92rem);
+    }
+    table.compact th, table.compact td {
+      border: 1px solid var(--line);
+      padding: 0.45em 0.6em;
+      text-align: left;
+      vertical-align: top;
+    }
+    table.compact th { background: rgb(52 211 153 / 0.08); color: var(--accent2); }
+    .err-list li { color: #fca5a5; }
+    .ok-list li { color: var(--accent2); }
+  </style>
+</head>
+<body>
+  <div class="deck" id="deck">
+
+    <section class="slide slide-welcome active" data-id="welcome">
+      <div class="slide-body">
+        <p class="org" style="font-size:clamp(0.9rem,2vw,1.1rem);color:#fbbf24;letter-spacing:.15em;margin-bottom:2vh">教材編審 Demo｜Phase 4</p>
+        <h1 class="main-title">評量設計<br>三表精靈導覽</h1>
+        <p class="sub">M1-1.1 單元示範｜考古題・勾選建檔・Rubrics</p>
+        <p class="tagline">認知 ＋ 行為達成 ＋ 質性評分 ＝ 表8 三角檢核<br>約 12 分鐘｜投影後現場填寫三表附錄</p>
+      </div>
+    </section>
+
+    <section class="slide" data-id="why-three">
+      <div class="slide-header">
+        <p class="org">STEP 1</p>
+        <h2>為什麼需要三張表？</h2>
+        <p class="meta">一張表無法同時證明「知道、做到、做得好」</p>
+      </div>
+      <div class="slide-body">
+        <div class="triad">
+          <div class="card">
+            <h3>01 考古題</h3>
+            <p>認知測驗<br>學科／情境判斷</p>
+            <span class="tag-pill">總結性為主</span>
+          </div>
+          <div class="card">
+            <h3>02 勾選建檔</h3>
+            <p>行為達成<br>對照 P 行為指標</p>
+            <span class="tag-pill">形成性為主</span>
+          </div>
+          <div class="card">
+            <h3>03 Rubrics</h3>
+            <p>質性評分<br>觀察「程度」</p>
+            <span class="tag-pill">形成＋總結</span>
+          </div>
+        </div>
+        <div class="hint-box" style="margin-top:2vh"><strong>三角檢核：</strong>表3 教學目標 → 表5 教學方法 → <em>表8 評量工具</em>，三表合起來回答「怎麼驗證學員真的會了」。</div>
+      </div>
+    </section>
+
+    <section class="slide" data-id="indicators">
+      <div class="slide-header">
+        <p class="org">STEP 2</p>
+        <h2>計畫書指標勾稽</h2>
+        <p class="meta">不是 Demo 自創格式 — 品質認證會審</p>
+      </div>
+      <div class="slide-body">
+        <table class="compact">
+          <thead>
+            <tr><th>來源</th><th>要求</th><th>三表回應</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>指標 2.3</td><td>行為指標可觀察、可評量</td><td>勾選建檔每一列 = 一個 P</td></tr>
+            <tr><td>D-3</td><td>設計階段規劃評量藍圖</td><td>Phase 4 單元級三類工具</td></tr>
+            <tr><td>E-1</td><td>評量對應目標與 P</td><td>考古題測 B；勾選對 P</td></tr>
+            <tr><td>表8</td><td>方式＋具體工具名稱</td><td>筆試／檢核表／Rubrics 填入</td></tr>
+          </tbody>
+        </table>
+        <div class="hint-box">審查常交叉比對：<strong>表8 寫的工具</strong>，參章 5.1 是否真有上傳？名稱須一致。</div>
+      </div>
+    </section>
+
+    <section class="slide" data-id="form01">
+      <div class="slide-header">
+        <p class="org">附錄 01</p>
+        <h2>考古題範本｜認知測驗</h2>
+        <p class="meta">不是挖舊考卷 — 是 icap 擬真題型</p>
+      </div>
+      <div class="slide-body">
+        <ul class="bullets">
+          <li>題型：選擇、比較、案例分析、簡答</li>
+          <li>每一題須對 <strong>ABCD 的 B 欄動詞</strong>（說明、比較、建議…）</li>
+          <li>標註對應 <strong>P 編號</strong>（例：P1.1.1）</li>
+        </ul>
+        <div class="card" style="margin-top:1.5vh">
+          <p><strong>M1-1.1 示範</strong>｜M1-AS-1.1.4 案例分析題</p>
+          <p style="color:#94a3b8;font-size:clamp(0.8rem,1.4vw,0.95rem)">「年輕信眾、資金充裕、強調透明 — 建議財團法人或寺廟？請說明理由。」→ 測 B「能建議」、對 ABCD #3</p>
+        </div>
+        <div class="hint-box">現場任務：各起草 <strong>2 選擇 ＋ 1 簡答</strong> 草稿。</div>
+      </div>
+    </section>
+
+    <section class="slide" data-id="form02">
+      <div class="slide-header">
+        <p class="org">附錄 02</p>
+        <h2>勾選建檔表｜行為達成</h2>
+        <p class="meta">每一列 = 一個 P 行為指標 — 不是心情打勾</p>
+      </div>
+      <div class="slide-body">
+        <ul class="bullets ok-list">
+          <li>列 1：能說明私人名義登記的兩項風險（<strong>P1.1.1</strong>）</li>
+          <li>列 2：能比較財團法人與登記寺廟優缺點（<strong>P1.1.2</strong>）</li>
+          <li>列 3：能依案例建議法律型態並說明理由</li>
+        </ul>
+        <ul class="bullets err-list" style="margin-top:1vh">
+          <li>✗ 寫「有出席」「聽得很認真」</li>
+          <li>✗ 列與表1 P 文字不一致</li>
+        </ul>
+        <div class="hint-box">勾選後須<strong>建檔</strong>（紙本／試算表／平台）— 對應 E-2 證據留存。</div>
+      </div>
+    </section>
+
+    <section class="slide" data-id="form03">
+      <div class="slide-header">
+        <p class="org">附錄 03</p>
+        <h2>Rubrics｜分數與觀察評量</h2>
+        <p class="meta">4–3–2–1 對應 D 標準（ABCD 的 D）</p>
+      </div>
+      <div class="slide-body">
+        <table class="compact">
+          <thead>
+            <tr><th>向度</th><th>4 優秀</th><th>3 良好</th><th>2 待加強</th><th>1 未達</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>說明組織型態差異</td><td>正確且完整</td><td>大致正確</td><td>有缺漏</td><td>無法說明</td></tr>
+            <tr><td>案例應用</td><td>連結廟方實務</td><td>部分連結</td><td>流於抽象</td><td>無法應用</td></tr>
+            <tr><td>學習單產出</td><td>完整交件</td><td>小幅缺漏</td><td>未完成</td><td>未交</td></tr>
+          </tbody>
+        </table>
+        <div class="hint-box"><strong>D 標準</strong>要能在「3 良好」以上描述中看見：學員表現是否符合表1 行為指標 P 的要求。</div>
+      </div>
+    </section>
+
+    <section class="slide" data-id="pass-line">
+      <div class="slide-header">
+        <p class="org">STEP 3</p>
+        <h2>及格線 8／12 的意義</h2>
+        <p class="meta">多向度加總 ＋ 明確通過標準</p>
+      </div>
+      <div class="slide-body">
+        <ul class="bullets">
+          <li>3 個向度 × 每向度最高 4 分 ＝ <strong>總分 12 分</strong></li>
+          <li>及格線 <strong>≥ 8 分</strong>（約 67%）— 示範「不是單一題對就過」</li>
+          <li>計畫書可另訂門檻（例：70% 或關鍵向度不得低於 3 分）</li>
+          <li>質性觀察欄：記錄<strong>為何</strong>給此分數 — 供審查與申訴</li>
+        </ul>
+        <div class="hint-box">Rubrics 不是裝飾 — 是讓不同評量者<strong>一致判斷</strong>的依據（信效度基礎）。</div>
+      </div>
+    </section>
+
+    <section class="slide" data-id="walkthrough">
+      <div class="slide-header">
+        <p class="org">STEP 4</p>
+        <h2>M1-1.1 完整 Walkthrough</h2>
+        <p class="meta">同一單元、同一組 ABCD — 三表互相佐證</p>
+      </div>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card">
+            <h3>目標（Phase 2）</h3>
+            <p>B：能說明三種法人型態差異<br>D：對照 P1.1.1、P1.1.2 達標</p>
+          </div>
+          <div class="card">
+            <h3>評量（Phase 4）</h3>
+            <p>考古題 → 紙上測知識<br>勾選 → 課中觀察行為<br>Rubrics → 口試／作業評程度</p>
+          </div>
+        </div>
+        <div class="hint-box" style="margin-top:2vh">填完三表 → 登錄 <strong>評量工具建檔表</strong> → Phase 5 上傳協作平台。</div>
+      </div>
+    </section>
+
+    <section class="slide" data-id="mistakes">
+      <div class="slide-header">
+        <p class="org">STEP 5</p>
+        <h2>常見錯誤</h2>
+        <p class="meta">帶領時必提醒 — 避免送審被退件</p>
+      </div>
+      <div class="slide-body">
+        <ul class="bullets err-list">
+          <li>考古題只考名詞，未測 B 欄動詞</li>
+          <li>勾選列寫出席紀錄，未對 P 行為指標</li>
+          <li>Rubrics 各級描述差異太小，評分不一致</li>
+          <li>表8 勾「筆試」但工具欄空白</li>
+          <li>三表各做各的，未對同一目標三角佐證</li>
+        </ul>
+        <div class="hint-box ok-list">對照 <a href="../00-preflight/assessment-design-analysis.md" style="color:var(--accent2)">assessment-design-analysis.md</a> 完整分析（主持者課前閱讀）。</div>
+      </div>
+    </section>
+
+    <section class="slide" data-id="next">
+      <div class="slide-header">
+        <p class="org">START</p>
+        <h2>開始 Phase 4 現場填寫</h2>
+        <p class="meta">發三表附錄 ＋ 對照 M1-1.1 範例動手做</p>
+      </div>
+      <div class="slide-body">
+        <ul class="bullets">
+          <li><strong>01</strong> <a href="01-archaeology-question-template.html" style="color:var(--accent)">考古題範本</a> — 10 min 起草</li>
+          <li><strong>02</strong> <a href="02-checklist-archive.html" style="color:var(--accent)">勾選建檔表</a> — 7 min 對照 P</li>
+          <li><strong>03</strong> <a href="03-scoring-observation.html" style="color:var(--accent)">Rubrics 評量表</a> — 5 min 填量規</li>
+          <li>登錄 <a href="../worksheets/assessment-tool-archive.html" style="color:var(--accent)">評量工具建檔表</a></li>
+        </ul>
+        <div class="hint-box">進階：報告書表8 總覽見 <code style="color:var(--accent)">training/icap-planning-report-wizard/report-wizard-slideshow.html</code></div>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="slide-counter" id="counter">1 / 10</div>
+  <div class="controls no-print">
+    <button type="button" id="btnPrev">◀ 上一頁</button>
+    <button type="button" id="btnNext">下一頁 ▶</button>
+    <select id="slideSelect" aria-label="選擇投影片"></select>
+    <button type="button" id="btnFs">全螢幕</button>
+    <span class="counter" id="counterCtrl">1 / 10</span>
+    <span class="keys">← → 或空白鍵切換</span>
+  </div>
+
+  <script src="../../../assets/meeting-display.js"></script>
+  <script>
+    MeetingDisplay.init({
+      labels: [
+        '封面', '為何三表', '計畫書指標', '考古題', '勾選建檔',
+        'Rubrics', '及格線 8/12', 'M1-1.1 案例', '常見錯誤', '開始填寫'
+      ],
+      hotkeys: { '8': 7 }
+    });
+  </script>
+</body>
+</html>
