@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>宮廟管理師職能基準模型｜icapV74 示範檢視</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #0f766e;
+      --accent-dark: #115e59;
+      --warn-bg: #fffbeb;
+      --warn-border: #f59e0b;
+      --toolbar-bg: #134e4a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      margin: 0;
+      background: #e2e8f0;
+      color: #1e293b;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .topbar {
+      background: #fff;
+      border-bottom: 1px solid #cbd5e1;
+      padding: 0.75rem 1rem;
+    }
+    .topbar a { color: var(--accent); font-size: 0.85rem; text-decoration: none; }
+    .topbar a:hover { text-decoration: underline; }
+    h1 { font-size: 1.15rem; margin: 0.35rem 0 0; }
+    .sub { font-size: 0.8rem; color: #64748b; margin-top: 0.2rem; }
+    .banner {
+      background: var(--warn-bg);
+      border-bottom: 1px solid var(--warn-border);
+      padding: 0.55rem 1rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #92400e;
+      text-align: center;
+    }
+    .intro {
+      background: #fff;
+      margin: 0.75rem 1rem 0;
+      padding: 0.85rem 1rem;
+      border-radius: 0.5rem;
+      border: 1px solid #e2e8f0;
+      font-size: 0.85rem;
+      line-height: 1.55;
+    }
+    .intro strong { color: var(--accent-dark); }
+    .col-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+      gap: 0.4rem;
+      margin-top: 0.5rem;
+    }
+    .col-chip {
+      background: #f0fdfa;
+      border: 1px solid #99f6e4;
+      border-radius: 0.35rem;
+      padding: 0.35rem 0.5rem;
+      font-size: 0.78rem;
+    }
+    .col-chip b { color: var(--accent); }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.55rem 1rem;
+      background: var(--toolbar-bg);
+      color: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .toolbar button {
+      font-family: inherit;
+      border: 1px solid rgb(255 255 255 / 0.25);
+      background: rgb(255 255 255 / 0.12);
+      color: #fff;
+      border-radius: 0.35rem;
+      padding: 0.35rem 0.7rem;
+      font-size: 0.82rem;
+      cursor: pointer;
+    }
+    .toolbar button:hover { background: rgb(255 255 255 / 0.22); }
+    .toolbar button:disabled { opacity: 0.45; cursor: not-allowed; }
+    .zoom-label { font-size: 0.82rem; min-width: 3.5rem; text-align: center; }
+    .viewer-wrap {
+      flex: 1;
+      overflow: auto;
+      padding: 1rem;
+      background: #94a3b8;
+      min-height: 50vh;
+    }
+    #pdfStage {
+      transform-origin: top center;
+      margin: 0 auto;
+      width: fit-content;
+      transition: transform 0.12s ease-out;
+    }
+    #pdfCanvas {
+      display: block;
+      box-shadow: 0 8px 24px rgb(0 0 0 / 0.25);
+      background: #fff;
+      max-width: none;
+    }
+    .page-nav {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      margin-left: auto;
+    }
+    .status {
+      font-size: 0.78rem;
+      color: rgb(255 255 255 / 0.85);
+      margin-left: 0.5rem;
+    }
+    .footer-note {
+      text-align: center;
+      font-size: 0.75rem;
+      color: #64748b;
+      padding: 0.75rem;
+    }
+    @media (max-width: 640px) {
+      .toolbar { justify-content: center; }
+      .page-nav { margin-left: 0; width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a href="index.html">← 職能基準文件包索引</a>
+    · <a href="../dashboard.html">專案儀表板</a>
+    <h1>宮廟管理師｜職能基準模型（icapV74）</h1>
+    <p class="sub">表 2-2 職能規格表｜14 工作任務 × 42 行為指標｜T／P／O／K／S／A 完整示範</p>
+  </header>
+
+  <div class="banner">示範材料｜請勿編輯｜職能基準模型文件格式參考</div>
+
+  <section class="intro">
+    <p>本頁展示 <strong>icapV74 輔導計畫書</strong>第二章「職能基準」之標準表格格式（OCS／iCAP 職能基準模型）。七大主要職責（T1–T7）下，每一列工作任務皆對應可觀察之行為指標、具體工作產出，以及支撐完成任務所需之知識與技能。</p>
+    <div class="col-grid">
+      <div class="col-chip"><b>T</b> 工作任務 — 工作者須負責之核心職責</div>
+      <div class="col-chip"><b>P</b> 行為指標 — 可觀察、可衡量的表現標準</div>
+      <div class="col-chip"><b>O</b> 工作產出 — 任務完成後之具體文件或成果</div>
+      <div class="col-chip"><b>K</b> 知識 — 完成任務所需之專業知識</div>
+      <div class="col-chip"><b>S</b> 技能 — 完成任務所需之操作能力</div>
+      <div class="col-chip"><b>A</b> 態度 — 職業倫理與價值取向（§2.3 另列）</div>
+    </div>
+    <p style="margin:0.5rem 0 0;font-size:0.78rem;color:#64748b">來源：<code>icap-zhineng-jizhun</code> › icapV74.html › 表 2-2｜115/06/30 評核委員會共構之宮廟管理師職能基準</p>
+  </section>
+
+  <div class="toolbar" role="toolbar" aria-label="PDF 縮放控制">
+    <button type="button" id="btnZoomOut" title="縮小">－ 縮小</button>
+    <span class="zoom-label" id="zoomPct">100%</span>
+    <button type="button" id="btnZoomIn" title="放大">＋ 放大</button>
+    <button type="button" id="btnFitWidth">適合寬度</button>
+    <button type="button" id="btnReset">重設</button>
+    <div class="page-nav">
+      <button type="button" id="btnPrevPage">◀ 上一頁</button>
+      <span class="zoom-label" id="pageInfo">1 / 1</span>
+      <button type="button" id="btnNextPage">下一頁 ▶</button>
+    </div>
+    <span class="status" id="loadStatus">載入中…</span>
+  </div>
+
+  <div class="viewer-wrap" id="viewerWrap">
+    <div id="pdfStage">
+      <canvas id="pdfCanvas"></canvas>
+    </div>
+  </div>
+
+  <p class="footer-note">唯讀檢視｜內容擷自 icapV74（2025-09-07）｜完整計畫書請至 icap-zhineng-jizhun 原始庫</p>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.8.69/pdf.min.mjs" type="module"></script>
+  <script type="module">
+    import * as pdfjsLib from 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.8.69/pdf.min.mjs';
+
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.8.69/pdf.worker.min.mjs';
+
+    const PDF_URL = 'assets/temple-manager-competency-model-v74.pdf';
+    const canvas = document.getElementById('pdfCanvas');
+    const ctx = canvas.getContext('2d');
+    const stage = document.getElementById('pdfStage');
+    const viewerWrap = document.getElementById('viewerWrap');
+    const zoomPctEl = document.getElementById('zoomPct');
+    const pageInfoEl = document.getElementById('pageInfo');
+    const loadStatus = document.getElementById('loadStatus');
+
+    let pdfDoc = null;
+    let pageNum = 1;
+    let scale = 1;
+    let baseScale = 1;
+    let fitWidthMode = false;
+
+    async function renderPage(num) {
+      const page = await pdfDoc.getPage(num);
+      const viewport = page.getViewport({ scale: scale * baseScale });
+      canvas.height = viewport.height;
+      canvas.width = viewport.width;
+      await page.render({ canvasContext: ctx, viewport }).promise;
+      pageInfoEl.textContent = num + ' / ' + pdfDoc.numPages;
+      document.getElementById('btnPrevPage').disabled = num <= 1;
+      document.getElementById('btnNextPage').disabled = num >= pdfDoc.numPages;
+      zoomPctEl.textContent = Math.round(scale * 100) + '%';
+    }
+
+    function applyFitWidth() {
+      if (!pdfDoc) return;
+      pdfDoc.getPage(pageNum).then(function (page) {
+        const unscaled = page.getViewport({ scale: 1 });
+        const pad = 32;
+        baseScale = (viewerWrap.clientWidth - pad) / unscaled.width;
+        scale = 1;
+        fitWidthMode = true;
+        renderPage(pageNum);
+      });
+    }
+
+    function setScale(next) {
+      fitWidthMode = false;
+      scale = Math.min(3, Math.max(0.35, next));
+      renderPage(pageNum);
+    }
+
+    pdfjsLib.getDocument(PDF_URL).promise.then(function (pdf) {
+      pdfDoc = pdf;
+      loadStatus.textContent = '共 ' + pdf.numPages + ' 頁';
+      applyFitWidth();
+    }).catch(function (err) {
+      loadStatus.textContent = 'PDF 載入失敗';
+      console.error(err);
+    });
+
+    document.getElementById('btnZoomIn').addEventListener('click', function () {
+      setScale(scale + 0.15);
+    });
+    document.getElementById('btnZoomOut').addEventListener('click', function () {
+      setScale(scale - 0.15);
+    });
+    document.getElementById('btnReset').addEventListener('click', function () {
+      scale = 1;
+      baseScale = 1;
+      fitWidthMode = false;
+      renderPage(pageNum);
+    });
+    document.getElementById('btnFitWidth').addEventListener('click', applyFitWidth);
+    document.getElementById('btnPrevPage').addEventListener('click', function () {
+      if (pageNum > 1) { pageNum--; renderPage(pageNum); }
+    });
+    document.getElementById('btnNextPage').addEventListener('click', function () {
+      if (pdfDoc && pageNum < pdfDoc.numPages) { pageNum++; renderPage(pageNum); }
+    });
+    window.addEventListener('resize', function () {
+      if (fitWidthMode) applyFitWidth();
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === '+' || e.key === '=') { e.preventDefault(); setScale(scale + 0.15); }
+      if (e.key === '-') { e.preventDefault(); setScale(scale - 0.15); }
+      if (e.key === '0') { scale = 1; baseScale = 1; renderPage(pageNum); }
+      if (e.key === 'ArrowLeft' && pageNum > 1) { pageNum--; renderPage(pageNum); }
+      if (e.key === 'ArrowRight' && pdfDoc && pageNum < pdfDoc.numPages) { pageNum++; renderPage(pageNum); }
+    });
+  </script>
+</body>
+</html>
