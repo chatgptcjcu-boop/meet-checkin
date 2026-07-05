@@ -7,19 +7,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../assets/meeting-display.css">
   <style>
-    .slide-agenda { padding: 2vh 3vw 4vh; }
-    .slide-agenda .slide-header { margin-bottom: 1.2vh; padding-bottom: 0.8vh; }
-    .slide-agenda .slide-header h2 { font-size: clamp(1.15rem, 2.8vw, 1.85rem); }
-    .slide-agenda .slide-header .meta { font-size: clamp(0.72rem, 1.25vw, 0.92rem); }
+    .slide-agenda { padding: 1.4vh 2.5vw 3.2vh; }
+    .slide-agenda .slide-header { margin-bottom: 0.7vh; padding-bottom: 0.55vh; }
+    .slide-agenda .slide-header .org { font-size: clamp(0.78rem, 1.35vw, 0.98rem); }
+    .slide-agenda .slide-header h2 { font-size: clamp(1.35rem, 3.1vw, 2.05rem); }
+    .slide-agenda .slide-header .meta { font-size: clamp(0.82rem, 1.45vw, 1.02rem); }
     .slide-agenda .slide-body {
       justify-content: flex-start;
       overflow: hidden;
-      gap: 0.8vh;
+      gap: 0.55vh;
     }
     .agenda-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1vh 1.2vw;
+      gap: 0.65vh 1vw;
       width: 100%;
       max-width: 96vw;
       flex: 1;
@@ -39,10 +40,11 @@
     .agenda-block.full { grid-column: 1 / -1; }
     .block-head {
       flex-shrink: 0;
-      padding: 0.45vh 0.7vw;
-      font-size: clamp(0.68rem, 1.15vw, 0.82rem);
+      padding: 0.32vh 0.55vw;
+      font-size: clamp(0.82rem, 1.4vw, 0.98rem);
       font-weight: 700;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.03em;
+      line-height: 1.3;
     }
     .agenda-block.am .block-head { background: rgb(52 211 153 / 0.12); color: var(--accent2); }
     .agenda-block.pm .block-head { background: rgb(251 191 36 / 0.1); color: var(--accent); }
@@ -50,13 +52,13 @@
     .agenda-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: clamp(0.58rem, 0.95vw, 0.72rem);
-      line-height: 1.35;
+      font-size: clamp(0.74rem, 1.28vw, 0.92rem);
+      line-height: 1.32;
     }
     .agenda-table th,
     .agenda-table td {
       border: 1px solid var(--line);
-      padding: 0.28vh 0.45vw;
+      padding: 0.22vh 0.4vw;
       vertical-align: top;
     }
     .agenda-table th {
@@ -64,6 +66,7 @@
       color: var(--muted);
       font-weight: 600;
       text-align: left;
+      font-size: clamp(0.7rem, 1.15vw, 0.86rem);
     }
     .agenda-table .time { white-space: nowrap; font-weight: 700; color: var(--accent); }
     .agenda-table .chain { color: var(--accent2); font-weight: 700; white-space: nowrap; }
@@ -71,11 +74,11 @@
     .agenda-table tr.break td { color: var(--muted); font-style: italic; }
     .agenda-foot {
       flex-shrink: 0;
-      font-size: clamp(0.62rem, 1vw, 0.75rem);
+      font-size: clamp(0.7rem, 1.12vw, 0.84rem);
       color: var(--muted);
       text-align: center;
-      line-height: 1.45;
-      padding-top: 0.4vh;
+      line-height: 1.38;
+      padding-top: 0.3vh;
     }
     .agenda-foot b { color: var(--accent2); }
   </style>
@@ -86,12 +89,12 @@
       <div class="slide-header">
         <p class="org">臺灣道法總會｜教育委員會</p>
         <h2>教材編審委員會第一場｜115/07/30 議程與流程</h2>
-        <p class="meta">示範單元 M1-1.1「緒論－為何寺廟需要法律定位？」｜上午邏輯鏈 L0–L7 ＋ 下午教學鏈、Phase 0–5 ＋ 報告書精靈走讀</p>
+        <p class="meta">M1-1.1 緒論 Demo｜上午 L0–L7 邏輯鏈｜下午 Phase 0–5 ＋ 報告書精靈走讀</p>
       </div>
       <div class="slide-body">
         <div class="agenda-grid">
           <div class="agenda-block am full">
-            <div class="block-head">上午 10:00–11:30（90min）｜職能品質審查邏輯鏈 L0–L7｜主投影 logic-chain-slideshow</div>
+            <div class="block-head">上午 10:00–11:30｜邏輯鏈 L0–L7｜logic-chain-slideshow</div>
             <table class="agenda-table">
               <thead>
                 <tr><th style="width:14%">時間</th><th style="width:6%">鏈</th><th>主題</th><th style="width:18%">產出</th></tr>
