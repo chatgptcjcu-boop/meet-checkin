@@ -30,6 +30,8 @@ index.html（入口分流）
 |------|-----------|------|
 | 工作表1 | `簽到` / `簽退` | 報到時間、姓名、身份別、錄影授權 |
 | 填答紀錄 | `填答-正文` / `填答-附錄` | 結構化 JSON 答案 |
+| instructor-730 | `730-instructor` | 730 教材編審 Demo 講師學習單 |
+| icap-report-worksheet | `icap-report-worksheet` | iCAP 報告書格式精靈講師學習單（備援訓練） |
 
 ## 關鍵設計決策（勿隨意改壞）
 
@@ -215,6 +217,14 @@ fetch(GAS_URL, {
 - **活動勾稽：** preset `event.roster.rosterGroupIds.committee` / `.observers` 引用 `groupId` 陣列
 - **簽到頁：** `assets/members.js` 的 `loadRosterFromCloud()` 優先載入；失敗時 fallback inline roster
 - **改 Code.gs 後** 執行 `testRosterSeed` 初始化種子，再 **GAS 新版本部署**
+
+### iCAP 報告書精靈講師學習單（icap-report-worksheet）
+
+- **試算表分頁：** `icap-report-worksheet`
+- **GAS：** `POST action=icap-report-worksheet`（`handleReportWizardWorksheet`）
+- **前端：** `training/icap-planning-report-wizard/worksheets/instructor-worksheet-online.html`
+- **config：** `icapReportWorksheet.formType` / `sheetTab` in `event.config.json`
+- **測試：** GAS 編輯器執行 `testReportWizardWorksheet`；**改 Code.gs 後 GAS 新版本部署**
 
 ## 設定檔（套版 v1）
 

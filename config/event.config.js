@@ -197,7 +197,7 @@ window.EVENT_CONFIG = {
     }
   },
   "backend": {
-    "gasWebAppUrl": "https://script.google.com/macros/s/AKfycbxxFcVc0EASEAbyQJKKJy9EilZ1qDs8pLbGm9RkoOSEeIBpE152WXg7WnqYGLxO6D73Vw/exec"
+    "gasWebAppUrl": "https://script.google.com/macros/s/AKfycbwWh5saY0FCsGB7firXQsxcr7buDlPdwLYxea10EeRrsNeYaj9i_HAfudv5Mp3ryQCROg/exec"
   },
   "meet": {
     "url": "https://meet.google.com/kci-xjtu-dmr?hs=122"
@@ -246,6 +246,12 @@ window.EVENT_CONFIG = {
     "dateDisplay": "115/07/30",
     "dateFilePrefix": "1150730",
     "onlineFormPath": "09-editorial-committee/1150730-m1-demo/1150730-handouts/instructor-worksheet-online.html"
+  },
+  "icapReportWorksheet": {
+    "formType": "icap-report-worksheet",
+    "sheetTab": "icap-report-worksheet",
+    "dateFilePrefix": "icap-report",
+    "onlineFormPath": "training/icap-planning-report-wizard/worksheets/instructor-worksheet-online.html"
   },
   "unitClaimMatrix": {
     "action": "unit-claim-matrix",

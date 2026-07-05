@@ -10,6 +10,7 @@
  * ── 架構說明 ──
  * • 填答-正文 / 填答-附錄 → handleFormSubmit（視訊委員職能填答，勿異動）
  * • 730-instructor        → handleInstructorWorksheet（730 講師學習單，分頁 instructor-730）
+ * • icap-report-worksheet → handleReportWizardWorksheet（報告書精靈講師學習單，分頁 icap-report-worksheet）
  * • unit-claim-matrix     → handleUnitClaimMatrix（86 單元認領矩陣，分頁 unit-claim-matrix，以單元碼 upsert）
  *                           讀取：doGet ?action=unit-claim-matrix 回傳目前全部單元 JSON
  * • expenses              → handleExpenses（經費編列整份 JSON，分頁 expenses，每次儲存新增一版）
@@ -45,6 +46,8 @@ var SIGN_SHEET_NAME = '工作表1';
 var FORM_SHEET_NAME = '填答紀錄';
 /** 730 教材編審 Demo 講師學習單專用分頁（英文 tab 名，避免 Sheets 編碼問題） */
 var INSTRUCTOR_SHEET_NAME = 'instructor-730';
+/** iCAP 報告書格式精靈講師學習單（備援訓練模組） */
+var REPORT_WIZARD_SHEET_NAME = 'icap-report-worksheet';
 /** 86 單元認領矩陣分頁（英文 tab 名；以單元碼為主鍵 upsert，last-write-wins） */
 var UNIT_CLAIM_SHEET_NAME = 'unit-claim-matrix';
 /** 經費編列表分頁（英文 tab 名；整份經費 JSON 每次儲存新增一版，保留歷史） */
@@ -81,6 +84,20 @@ var INSTRUCTOR_FIELD_KEYS = [
   '流程理解', '協作平台', '陸章簽名日期'
 ];
 
+/** icap-report-worksheet 分頁欄位順序（與前端 fields 物件鍵名一致） */
+var REPORT_WIZARD_FIELD_KEYS = [
+  '講師姓名', '服務單位', '課程名稱',
+  '訓練需求', '課程簡介', '課程目的',
+  '課程時數', '職能級別', '主要對象', '先備條件',
+  '表1_職能任務', '表1_行為指標P', '表1_知識技能',
+  '表2_課程地圖',
+  '表3_A對象', '表3_B行為', '表3_C條件', '表3_D標準', '表3_對應職能',
+  '表4_單元內容', '表5_教學方法',
+  '表6_教材資源', '表7_師資安排', '表8_評量方式',
+  '表9_執行人員', '表10_試辦成果', '表11_學習證據', '表12_結訓標準',
+  '填寫章節', '簽名日期'
+];
+
 /** 與簽到試算表第 1 列標題一致（第 5 欄可核對截圖是否上傳） */
 var SIGN_HEADERS = ['報到時間', '姓名', '身份別', '錄影授權', '截圖連結'];
 
@@ -100,6 +117,9 @@ function doPost(e) {
     }
     if (action === '730-instructor') {
       return handleInstructorWorksheet(data);
+    }
+    if (action === 'icap-report-worksheet') {
+      return handleReportWizardWorksheet(data);
     }
     if (action === 'unit-claim-matrix') {
       return handleUnitClaimMatrix(data);
@@ -255,6 +275,39 @@ function handleInstructorWorksheet(data) {
 
   for (var i = 0; i < INSTRUCTOR_FIELD_KEYS.length; i++) {
     var key = INSTRUCTOR_FIELD_KEYS[i];
+    row.push(fields[key] != null ? String(fields[key]) : '');
+  }
+
+  row.push(data.pageUrl || '');
+  row.push(JSON.stringify(data.answers || []));
+
+  sheet.appendRow(row);
+  return jsonOut({ ok: true });
+}
+
+/* ═══════════════════════════════════════════════════════════════
+ * iCAP 報告書格式精靈講師學習單 — icap-report-worksheet 分頁
+ * action / formType: icap-report-worksheet
+ * ⚠️ 修改後請重新部署 Web App（見檔案頂部說明）
+ * ═══════════════════════════════════════════════════════════════ */
+
+function handleReportWizardWorksheet(data) {
+  var ss = getSpreadsheet_();
+  var sheet = ss.getSheetByName(REPORT_WIZARD_SHEET_NAME) || ss.insertSheet(REPORT_WIZARD_SHEET_NAME);
+  var fields = data.fields || {};
+
+  if (sheet.getLastRow() === 0) {
+    var headers = ['提交時間', '身份'].concat(REPORT_WIZARD_FIELD_KEYS, ['頁面URL', '結構化答案JSON']);
+    sheet.appendRow(headers);
+  }
+
+  var row = [
+    formatTaiwanTime_(data.timestamp),
+    data.role || '講師'
+  ];
+
+  for (var i = 0; i < REPORT_WIZARD_FIELD_KEYS.length; i++) {
+    var key = REPORT_WIZARD_FIELD_KEYS[i];
     row.push(fields[key] != null ? String(fields[key]) : '');
   }
 
@@ -1261,6 +1314,25 @@ function testFormSubmit() {
     timestamp: new Date().toISOString(),
     answerCount: 1,
     answers: [{ title: '1-1 出席確認', fields: [{ label: '委員姓名', value: 'GAS填答測試' }] }],
+    pageUrl: 'manual-test'
+  })).getContent());
+}
+
+function testReportWizardWorksheet() {
+  Logger.log(doPost(mockPost_({
+    action: 'icap-report-worksheet',
+    formType: 'icap-report-worksheet',
+    name: 'GAS報告精靈測試',
+    role: '講師',
+    timestamp: new Date().toISOString(),
+    fields: {
+      '講師姓名': 'GAS報告精靈測試',
+      '服務單位': '測試單位',
+      '課程名稱': '宮廟管理師職能導向課程',
+      '訓練需求': '測試訓練需求',
+      '填寫章節': '整合版'
+    },
+    answers: [{ title: '壹、課程資訊', fields: [{ label: '訓練需求', value: '測試訓練需求' }] }],
     pageUrl: 'manual-test'
   })).getContent());
 }

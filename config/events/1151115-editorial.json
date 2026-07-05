@@ -40,7 +40,7 @@
     }
   },
   "backend": {
-    "gasWebAppUrl": "https://script.google.com/macros/s/AKfycbxxFcVc0EASEAbyQJKKJy9EilZ1qDs8pLbGm9RkoOSEeIBpE152WXg7WnqYGLxO6D73Vw/exec"
+    "gasWebAppUrl": "https://script.google.com/macros/s/AKfycbwWh5saY0FCsGB7firXQsxcr7buDlPdwLYxea10EeRrsNeYaj9i_HAfudv5Mp3ryQCROg/exec"
   },
   "meet": { "url": "" },
   "contact": { "name": "王芯庭助理", "phone": "0956800579", "channel": "Line" },

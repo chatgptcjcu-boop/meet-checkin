@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>講師學習單｜線上填寫版｜iCAP 報告書格式精靈</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="worksheet-shared.css">
+</head>
+<body data-form-type="icap-report-worksheet" data-section="整合版" data-back-href="./index.html">
+  <div class="doc">
+    <nav class="nav">
+      <a href="index.html">← 學習單索引</a>
+      <a href="../report-wizard-slideshow.html">投影簡報</a>
+      <a href="../index.html">模組索引</a>
+    </nav>
+
+    <div class="online-banner">
+      <strong>線上填寫版</strong> — 請依序填寫壹～伍章，完成後點頁底「提交學習單」寫入 Google 試算表（分頁 <code>icap-report-worksheet</code>）。
+    </div>
+
+    <div class="cover">
+      <h1>講師學習單｜線上填寫版</h1>
+      <p class="date">iCAP 職能導向課程規劃與執行報告書</p>
+      <p class="org">備援訓練｜報告書格式精靈</p>
+      <div class="hint">
+        <strong>填寫說明</strong>
+        <ul style="margin:0.5rem 0 0;padding-left:1.2rem;text-align:left;">
+          <li>請依序填寫：壹 → 貳（表1–12）→ 完成後提交</li>
+          <li>建議先看完 <a href="../report-wizard-slideshow.html">格式精靈投影簡報</a> 再動手填寫</li>
+          <li>表1 示範一列即可；完整職能表請於正式報告書自行擴充</li>
+          <li>亦可先練 <a href="index.html">分段學習單</a>，再來此整合提交</li>
+        </ul>
+      </div>
+      <div class="sign-grid" style="margin-top:2rem;text-align:left;">
+        <div class="field"><label>講師姓名</label><input class="online-input" id="coverName" type="text" autocomplete="name"></div>
+        <div class="field"><label>服務單位</label><input class="online-input" id="coverOrg" type="text"></div>
+        <div class="field"><label>課程名稱</label><input class="online-input" id="courseName" type="text" placeholder="與封面、招生簡章一致"></div>
+        <div class="field"><label>填寫日期</label><input class="online-input" id="signDate" type="text"></div>
+      </div>
+    </div>
+
+    <div class="section-nav">
+      <a href="#sec1">壹 課程資訊</a>
+      <a href="#sec2">表1–2</a>
+      <a href="#sec3">表3–5</a>
+      <a href="#sec4">表6–8</a>
+      <a href="#sec5">表9–12</a>
+    </div>
+
+    <!-- 壹、課程資訊 -->
+    <div class="section" id="sec1">
+      <h2 class="sec-title">壹、課程資訊</h2>
+      <p class="sec-sub"><span class="icap-tag">ADDIE 脈絡</span> <a class="slide-ref" href="../report-wizard-slideshow.html">簡報第 6–8 頁</a></p>
+      <div class="q">
+        <div class="q-title">1-1　訓練需求（上限 1000 字）</div>
+        <p class="q-hint">場域痛點、人力缺口；寫「問題」而非課程活動</p>
+        <textarea class="online-textarea tall" id="trainingNeed"></textarea>
+      </div>
+      <div class="q">
+        <div class="q-title">1-2　課程簡介（上限 1000 字）</div>
+        <p class="q-hint">課程結構、模組、時數配置；呼應表2 地圖</p>
+        <textarea class="online-textarea tall" id="courseIntro"></textarea>
+      </div>
+      <div class="q">
+        <div class="q-title">1-3　課程目的（上限 1000 字）</div>
+        <p class="q-hint">完訓後學員能力；對表1 職能表與表3 目標</p>
+        <textarea class="online-textarea tall" id="coursePurpose"></textarea>
+      </div>
+      <div class="q">
+        <div class="q-title">1-4　量化欄位</div>
+        <div class="grid-2">
+          <div class="field"><label>課程時數</label><input class="online-input" id="courseHours" type="text"></div>
+          <div class="field"><label>課程職能級別</label><input class="online-input" id="competencyLevel" type="text"></div>
+          <div class="field"><label>主要對象</label><input class="online-input" id="targetAudience" type="text"></div>
+          <div class="field"><label>先備條件</label><input class="online-input" id="prerequisites" type="text"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 表1–2 -->
+    <div class="section" id="sec2">
+      <h2 class="sec-title">貳之一、分析階段（表1–2）</h2>
+      <p class="sec-sub"><span class="icap-tag">ADDIE A</span> <a class="slide-ref" href="../report-wizard-slideshow.html">簡報第 9–10 頁</a></p>
+      <div class="q">
+        <div class="q-title">表1　職能表（示範一列）</div>
+        <p class="q-hint">完整職能表請複製列自行擴充；表3「對應行為指標」須與 P 逐字對齊</p>
+        <div class="field"><label>工作任務 T</label><textarea class="online-textarea" id="t1Task"></textarea></div>
+        <div class="field"><label>行為指標 P</label><textarea class="online-textarea" id="t1Performance"></textarea></div>
+        <div class="field"><label>知識 K／技能 S</label><textarea class="online-textarea" id="t1Knowledge"></textarea></div>
+      </div>
+      <div class="q">
+        <div class="q-title">表2　課程地圖概要</div>
+        <textarea class="online-textarea tall" id="t2CourseMap" placeholder="模組／單元架構、總時數配置"></textarea>
+      </div>
+    </div>
+
+    <!-- 表3–5 -->
+    <div class="section" id="sec3">
+      <h2 class="sec-title">貳之二、設計發展（表3–5）</h2>
+      <p class="sec-sub"><span class="icap-tag">ADDIE D</span> <a class="slide-ref" href="../report-wizard-slideshow.html">簡報第 11–12 頁</a></p>
+      <div class="q">
+        <div class="q-title">表3　教學／訓練目標（ABCD）</div>
+        <table>
+          <tr><th style="width:18%">A 對象</th><td><textarea class="online-textarea" id="t3A"></textarea></td></tr>
+          <tr><th>B 行為</th><td><textarea class="online-textarea" id="t3B"></textarea></td></tr>
+          <tr><th>C 條件</th><td><textarea class="online-textarea" id="t3C"></textarea></td></tr>
+          <tr><th>D 標準</th><td><textarea class="online-textarea" id="t3D"></textarea></td></tr>
+        </table>
+        <div class="field"><label>對應行為指標／K／S</label><textarea class="online-textarea" id="t3Competency"></textarea></div>
+      </div>
+      <div class="q">
+        <div class="q-title">表4　課程內容（示範單元）</div>
+        <textarea class="online-textarea tall" id="t4Content" placeholder="單元名稱、時數、大綱內容"></textarea>
+      </div>
+      <div class="q">
+        <div class="q-title">表5　教學方法</div>
+        <div class="opts">
+          <label><input type="checkbox" name="t5Methods" value="講述"> 講述</label>
+          <label><input type="checkbox" name="t5Methods" value="討論"> 討論</label>
+          <label><input type="checkbox" name="t5Methods" value="演練"> 演練</label>
+          <label><input type="checkbox" name="t5Methods" value="案例"> 案例</label>
+          <label><input type="checkbox" name="t5Methods" value="示範"> 示範</label>
+          <label><input type="checkbox" name="t5Methods" value="實作"> 實作</label>
+        </div>
+        <div class="field"><label>方法說明（選填）</label><textarea class="online-textarea" id="t5MethodsText"></textarea></div>
+      </div>
+    </div>
+
+    <!-- 表6–8 -->
+    <div class="section" id="sec4">
+      <h2 class="sec-title">貳之三、資源與評量（表6–8）</h2>
+      <p class="sec-sub"><span class="icap-tag">三角檢核</span> <a class="slide-ref" href="../report-wizard-slideshow.html">簡報第 13 頁</a></p>
+      <div class="q">
+        <div class="q-title">表6　教材與教學資源</div>
+        <textarea class="online-textarea tall" id="t6Resources"></textarea>
+      </div>
+      <div class="q">
+        <div class="q-title">表7　師資條件</div>
+        <textarea class="online-textarea tall" id="t7Faculty" placeholder="授課／評量人員資格要件"></textarea>
+      </div>
+      <div class="q">
+        <div class="q-title">表8　學習成果評量</div>
+        <textarea class="online-textarea tall" id="t8Assessment" placeholder="評量方式＋評量工具；須對表3 目標"></textarea>
+      </div>
+    </div>
+
+    <!-- 表9–12 -->
+    <div class="section" id="sec5">
+      <h2 class="sec-title">貳之四、實施評估（表9–12）</h2>
+      <p class="sec-sub"><span class="icap-tag">ADDIE I·E</span> <a class="slide-ref" href="../report-wizard-slideshow.html">簡報第 14 頁</a></p>
+      <div class="q">
+        <div class="q-title">表9　實際執行人員資格</div>
+        <textarea class="online-textarea" id="t9Staff" placeholder="姓名＋資格證明"></textarea>
+      </div>
+      <div class="q">
+        <div class="q-title">表10　試辦班成果</div>
+        <textarea class="online-textarea" id="t10Results" placeholder="起訖日期、參訓／完訓／結訓人數"></textarea>
+      </div>
+      <div class="q">
+        <div class="q-title">表11　學習成果證據</div>
+        <textarea class="online-textarea tall" id="t11Evidence" placeholder="各單元具體產出（作業、實作照片、檢核表…）"></textarea>
+      </div>
+      <div class="q">
+        <div class="q-title">表12　結訓標準</div>
+        <textarea class="online-textarea" id="t12Graduation" placeholder="各階段評量／學科／術科／其他"></textarea>
+      </div>
+      <div class="sign-block">
+        <p>我已完成報告書格式精靈學習單填寫，並理解各表邏輯鏈（表1→表3→表8）。</p>
+      </div>
+    </div>
+  </div>
+
+  <link rel="stylesheet" href="../../../remote-members/submit-form.css?v=20260705a">
+  <script src="../../../config/event.config.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var el = document.getElementById('signDate');
+      if (el && !el.value) {
+        el.value = new Date().toLocaleDateString('zh-TW', { timeZone: 'Asia/Taipei', year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '/');
+      }
+    });
+  </script>
+  <script src="report-wizard-submit.js?v=20260705a"></script>
+</body>
+</html>
