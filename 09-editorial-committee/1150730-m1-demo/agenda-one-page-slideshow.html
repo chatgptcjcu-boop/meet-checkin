@@ -49,6 +49,10 @@
     .agenda-block.am .block-head { background: rgb(52 211 153 / 0.12); color: var(--accent2); }
     .agenda-block.pm .block-head { background: rgb(251 191 36 / 0.1); color: var(--accent); }
     .agenda-block.lunch .block-head { background: rgb(148 163 184 / 0.12); color: var(--muted); }
+    .agenda-block.remarks { border-color: rgb(167 139 250 / 0.45); }
+    .agenda-block.remarks .block-head { background: rgb(167 139 250 / 0.12); color: #c4b5fd; }
+    .remarks-speakers { padding: 0.35vh 0.55vw; font-size: clamp(0.72rem, 1.2vw, 0.88rem); line-height: 1.38; color: var(--muted); }
+    .remarks-speakers li { margin: 0.15vh 0; }
     .agenda-table {
       width: 100%;
       border-collapse: collapse;
@@ -112,8 +116,17 @@
             </table>
           </div>
 
+          <div class="agenda-block remarks full">
+            <div class="block-head">11:30–12:00｜審閱顧問／來賓／長官致詞（預排）｜主辦排程</div>
+            <ul class="remarks-speakers">
+              <li><strong>審閱顧問（3位）：</strong>李豐楙 教授、張珣 教授、林美容 教授 — 指導發言</li>
+              <li><strong>來賓：</strong>李游坤 道長（邀請中）</li>
+              <li><strong>長官發言：</strong>視出席長官（預留）</li>
+            </ul>
+          </div>
+
           <div class="agenda-block lunch full">
-            <div class="block-head">午休 11:30–13:50</div>
+            <div class="block-head">午休 12:00–13:50</div>
           </div>
 
           <div class="agenda-block pm">

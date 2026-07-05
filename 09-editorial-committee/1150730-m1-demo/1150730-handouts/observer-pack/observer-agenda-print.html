@@ -39,11 +39,14 @@
     .attendee .line { flex: 1; border-bottom: 1px solid #94a3b8; min-width: 30mm; }
     h2 { font-size: 9pt; font-weight: 700; margin: 2.5mm 0 1.5mm; padding-left: 2mm; border-left: 3px solid var(--pm); page-break-after: avoid; }
     h2.am { border-color: var(--am); color: var(--am); }
+    h2.remarks { border-color: #7c3aed; color: #7c3aed; }
     table { width: 100%; border-collapse: collapse; font-size: 7.5pt; margin-bottom: 2mm; }
     th, td { border: 1px solid var(--border); padding: 1.2mm 1.5mm; vertical-align: top; }
     th { background: #f1f5f9; text-align: left; font-weight: 600; }
     .time { white-space: nowrap; font-weight: 600; }
     .lunch td { background: #f8fafc; color: #64748b; text-align: center; font-style: italic; }
+    .remarks td { background: #f5f3ff; }
+    .remarks-note { font-size: 7pt; color: #64748b; margin: 0 0 2mm; }
     .foot { margin-top: 3mm; padding-top: 2mm; border-top: 1px solid var(--border); font-size: 7pt; color: #64748b; }
     .note-obs { background: #ecfdf5; border: 1px solid #6ee7b7; padding: 2mm 3mm; font-size: 7.5pt; margin-bottom: 3mm; border-radius: 1mm; }
     @media print {
@@ -67,7 +70,7 @@
       <span class="badge-obs">列席／旁聽版</span>
       <p class="org">臺灣道法總會</p>
       <h1>教材編審委員會｜115/07/30 議程總覽</h1>
-      <p class="meta">M1 Demo 示範｜單元 M1-1.1｜上午 10:00–11:30 ＋ 下午 13:50–17:00</p>
+      <p class="meta">M1 Demo 示範｜單元 M1-1.1｜上午 10:00–11:30 ＋ 致詞 11:30–12:00 ＋ 下午 13:50–17:00</p>
     </header>
 
     <div class="note-obs">
@@ -94,7 +97,18 @@
       </tbody>
     </table>
 
-    <table><tbody><tr class="lunch"><td class="time" style="width:16%">11:30–13:50</td><td colspan="2">午休</td></tr></tbody></table>
+    <h2 class="remarks">致詞｜審閱顧問／來賓／長官（11:30–12:00）</h2>
+    <p class="remarks-note">主辦預先排程；發言順序依現場調整。</p>
+    <table>
+      <thead><tr><th style="width:16%">時間</th><th style="width:12%">身分</th><th>發言者</th></tr></thead>
+      <tbody>
+        <tr class="remarks"><td class="time">11:30–12:00</td><td>審閱顧問</td><td>李豐楙 教授、張珣 教授、林美容 教授 — 指導發言</td></tr>
+        <tr class="remarks"><td class="time"></td><td>來賓</td><td>李游坤 道長（邀請中）</td></tr>
+        <tr class="remarks"><td class="time"></td><td>長官</td><td>視出席長官</td></tr>
+      </tbody>
+    </table>
+
+    <table><tbody><tr class="lunch"><td class="time" style="width:16%">12:00–13:50</td><td colspan="2">午休</td></tr></tbody></table>
 
     <h2>下午｜教學鏈 ＋ Phase 0–5 ＋ 報告書走讀（13:50–17:00）</h2>
     <table>

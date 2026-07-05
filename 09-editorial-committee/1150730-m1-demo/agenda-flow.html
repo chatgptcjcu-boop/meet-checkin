@@ -25,12 +25,14 @@
     th, td { border: 1px solid var(--border); padding: 0.4rem 0.5rem; vertical-align: top; }
     th { background: #f1f5f9; text-align: left; }
     .time { white-space: nowrap; font-weight: 600; }
-    .overview { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; margin: 1rem 0; }
+    .overview { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin: 1rem 0; }
     @media (max-width: 768px) { .overview { grid-template-columns: 1fr; } }
     .block { border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.85rem 1rem; }
     .block.am { border-color: #99f6e4; background: #ecfdf5; }
     .block.pm { border-color: #93c5fd; background: #eff6ff; }
     .block.rw { border-color: #fcd34d; background: #fffbeb; }
+    .block.remarks { border-color: #c4b5fd; background: #f5f3ff; }
+    h2.remarks { border-color: #7c3aed; color: #7c3aed; }
     .block strong { display: block; margin-bottom: 0.25rem; }
     .links { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.75rem 0; }
     .links a { display: inline-block; font-size: 0.82rem; padding: 0.35rem 0.65rem; border: 1px solid var(--border); border-radius: 0.35rem; text-decoration: none; color: #1e40af; background: #f8fafc; }
@@ -55,7 +57,7 @@
 
     <header class="hero">
       <h1>教材編審委員會第一場｜議程與流程</h1>
-      <p class="sub">115年7月30日（2026/07/30）｜上午邏輯鏈 90min ＋ 下午 Demo 190min（含報告書精靈銜接）</p>
+      <p class="sub">115年7月30日（2026/07/30）｜上午邏輯鏈 90min ＋ 致詞 30min ＋ 下午 Demo 190min（含報告書精靈銜接）</p>
       <p class="meta">示範單元 M1-1.1「緒論－為何寺廟需要法律定位？」｜臺灣道法總會－教育委員會</p>
     </header>
 
@@ -65,6 +67,11 @@
           <strong>上午 10:00–11:30（90min）</strong>
           職能品質審查邏輯鏈 L0–L7<br>
           主投影：<code>logic-chain-slideshow.html</code>
+        </div>
+        <div class="block remarks">
+          <strong>11:30–12:00（30min）</strong>
+          審閱顧問／來賓／長官致詞（預排）<br>
+          主辦預先排程，發言順序與時間依現場調整
         </div>
         <div class="block pm">
           <strong>下午 13:50–17:00（190min）</strong>
@@ -99,7 +106,8 @@
         </thead>
         <tbody>
           <tr><td class="time">10:00–11:30</td><td>90min</td><td>前置導覽：邏輯鏈 L0–L7</td><td>導覽學習單</td></tr>
-          <tr><td class="time">11:30–13:50</td><td>—</td><td>午休</td><td>—</td></tr>
+          <tr><td class="time">11:30–12:00</td><td>30min</td><td>審閱顧問／來賓／長官致詞（預排）</td><td>主辦排程</td></tr>
+          <tr><td class="time">12:00–13:50</td><td>110min</td><td>午休</td><td>—</td></tr>
           <tr><td class="time">13:50–14:05</td><td>15min</td><td>M1-1.1 教學鏈說明（投影）</td><td>理解下午 Phase 對應</td></tr>
           <tr><td class="time">14:05–15:25</td><td>80min</td><td>Phase 0–3 ＋ 報告書表1–5 走讀銜接</td><td>單元設計草稿、表1–5 練習列</td></tr>
           <tr><td class="time">15:25–15:30</td><td>5min</td><td>短休</td><td>—</td></tr>
@@ -127,7 +135,20 @@
         </tbody>
       </table>
 
-      <h2 class="pm">二、下午 Part A｜M1-1.1 教學鏈（15min）</h2>
+      <h2 class="remarks">二、致詞｜審閱顧問／來賓／長官（11:30–12:00）</h2>
+      <p style="font-size:0.85rem;color:#64748b;">主辦預先排程；發言順序與各段時間依現場出席與主持安排調整。</p>
+      <table>
+        <thead>
+          <tr><th>身分</th><th>發言者</th><th>備註</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>審閱顧問（3位）</td><td>李豐楙 教授（中央研究院院士）、張珣 教授（中研院民族所）、林美容 教授（慈濟大學）</td><td>指導發言</td></tr>
+          <tr><td>來賓</td><td>李游坤 道長</td><td>邀請中</td></tr>
+          <tr><td>長官</td><td>視出席長官</td><td>預留欄位</td></tr>
+        </tbody>
+      </table>
+
+      <h2 class="pm">三、下午 Part A｜M1-1.1 教學鏈（15min）</h2>
       <p style="font-size:0.85rem;color:#64748b;">主投影 <a href="00-preflight/m1-1-1-teaching-chain-slideshow.html">m1-1-1-teaching-chain-slideshow.html</a>｜13:50 準時，Phase 0 動手前</p>
       <table>
         <thead>
@@ -141,7 +162,7 @@
         </tbody>
       </table>
 
-      <h2 class="pm">三、下午 Part B｜Phase 0–3 ＋ 報告書表1–5 走讀（80min）</h2>
+      <h2 class="pm">四、下午 Part B｜Phase 0–3 ＋ 報告書表1–5 走讀（80min）</h2>
       <p style="font-size:0.85rem;color:#64748b;">話術 <a href="1150730-handouts/facilitator-teaching-script.html">facilitator-teaching-script.html</a>｜報告書投影 <a href="../../training/icap-planning-report-wizard/report-wizard-slideshow.html">report-wizard-slideshow.html</a></p>
       <table>
         <thead>
@@ -157,7 +178,7 @@
         </tbody>
       </table>
 
-      <h2 class="pm">四、下午 Part C｜Phase 4–5 ＋ 表6–8 走讀（60min）</h2>
+      <h2 class="pm">五、下午 Part C｜Phase 4–5 ＋ 表6–8 走讀（60min）</h2>
       <table>
         <thead>
           <tr><th>時間</th><th>Phase／表</th><th>主題</th><th>走讀／模板</th></tr>
@@ -170,7 +191,7 @@
         </tbody>
       </table>
 
-      <h2 class="rw">五、下午 Part D｜報告書精靈收尾（30min）</h2>
+      <h2 class="rw">六、下午 Part D｜報告書精靈收尾（30min）</h2>
       <p style="font-size:0.85rem;color:#64748b;">簡報第 47–55 頁｜課後完整走讀見 <a href="../../training/icap-planning-report-wizard/agenda-flow.html">備援模組議程</a></p>
       <table>
         <thead>
