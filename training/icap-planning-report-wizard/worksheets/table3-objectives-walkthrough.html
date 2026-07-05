@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>表3 目標走讀｜宮廟管理師 ABCD</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="worksheet-shared.css">
+  <style>
+    :root { --gold: #fbbf24; --step-on: #0f766e; }
+    body { background: #0f172a; }
+    .walkthrough { max-width: 52rem; margin: 0 auto; padding: 1rem 1.25rem 3rem; }
+    .walk-header { text-align: center; color: #f8fafc; margin-bottom: 1.25rem; }
+    .walk-header h1 { font-size: 1.35rem; margin: 0.5rem 0 0.25rem; color: var(--gold); }
+    .walk-header p { font-size: 0.88rem; color: #94a3b8; margin: 0; }
+    .step-nav { display: flex; flex-wrap: wrap; gap: 0.35rem; justify-content: center; margin-bottom: 1rem; }
+    .step-nav button {
+      font-family: inherit; font-size: 0.78rem; padding: 0.35rem 0.65rem;
+      border: 1px solid #475569; border-radius: 6px; background: #1e293b; color: #cbd5e1; cursor: pointer;
+    }
+    .step-nav button.active { border-color: var(--gold); color: var(--gold); background: #334155; }
+    .step-nav button.done { border-color: #34d399; color: #34d399; }
+    .panel { background: #fff; border-radius: 0.75rem; padding: 1.25rem 1.5rem; box-shadow: 0 8px 24px rgb(0 0 0 / 0.25); margin-bottom: 1rem; }
+    .panel[hidden] { display: none; }
+    .step-title { font-size: 1.1rem; font-weight: 700; color: var(--step-on); margin: 0 0 0.35rem; }
+    .step-meta { font-size: 0.82rem; color: #64748b; margin-bottom: 1rem; }
+    .narration { font-size: 0.92rem; line-height: 1.6; margin-bottom: 1rem; }
+    .example-box { background: #f0fdfa; border: 1px solid #6ee7b7; border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.85rem; margin-bottom: 1rem; }
+    .example-box .lbl { font-weight: 700; color: var(--step-on); font-size: 0.78rem; margin-bottom: 0.35rem; }
+    .your-turn-box { background: #fffbeb; border: 2px dashed var(--gold); border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.88rem; margin: 1rem 0; }
+    .your-turn-box strong { color: #b45309; }
+    .field-row { margin-bottom: 0.85rem; }
+    .field-row label { display: block; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.25rem; color: #334155; }
+    .field-row .hint { font-size: 0.75rem; color: #64748b; margin-top: 0.2rem; }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.25rem; }
+    .btn { font-family: inherit; font-size: 0.88rem; font-weight: 600; padding: 0.5rem 1rem; border-radius: 6px; border: none; cursor: pointer; }
+    .btn-primary { background: var(--step-on); color: #fff; }
+    .btn-primary:hover { background: #115e59; }
+    .btn-secondary { background: #e2e8f0; color: #334155; }
+    .btn-gold { background: var(--gold); color: #1e293b; }
+    .link-bar { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; font-size: 0.8rem; padding: 0.75rem 0; border-bottom: 1px solid #334155; margin-bottom: 1rem; }
+    .link-bar a { color: #34d399; text-decoration: none; }
+    .summary-table { width: 100%; font-size: 0.82rem; }
+    .summary-table th { width: 22%; }
+    .status-msg { font-size: 0.82rem; color: #059669; margin-top: 0.5rem; }
+    .split-hint { font-size: 0.82rem; background: #1e293b; color: #94a3b8; border-radius: 8px; padding: 0.65rem 0.85rem; margin-bottom: 1rem; text-align: center; }
+    .split-hint a { color: #34d399; }
+  </style>
+</head>
+<body>
+  <div class="walkthrough">
+    <div class="link-bar">
+      <a href="../report-wizard-slideshow.html">← 投影簡報（第 23–27 頁）</a>
+      <a href="index.html">學習單索引</a>
+      <a href="table1-writing-walkthrough.html">表1 寫作走讀</a>
+      <a href="table2-course-map-walkthrough.html">表2 地圖走讀</a>
+      <a href="../../../competency-standard/competency-model-v74-viewer.html" target="_blank">icapV74 檢視器 ↗</a>
+      <a href="section-03-design.html">表3–5 分段學習單</a>
+      <a href="instructor-worksheet-online.html">線上整合版</a>
+    </div>
+
+    <div class="walk-header">
+      <p>宮廟管理師｜報告書表3 沉浸式寫作走讀</p>
+      <h1>表2 單元名 → 表1 P → ABCD 目標</h1>
+      <p>示範 M1-1.1｜P1.1.1｜職能級別 3｜完成後可暫存本機</p>
+    </div>
+
+    <div class="split-hint">
+      建議<strong>並排視窗</strong>：左開 <a href="table1-writing-walkthrough.html">表1 走讀</a> 或 <a href="../../../competency-standard/competency-model-v74-viewer.html" target="_blank">V74</a>，右側依步驟填寫
+    </div>
+
+    <nav class="step-nav" id="stepNav" aria-label="走讀步驟"></nav>
+
+    <section class="panel" data-step="0">
+      <h2 class="step-title">總覽｜表1–2 → 表3 設計鏈</h2>
+      <p class="step-meta">表2 單元名 → 對表1 P → ABCD → 表4–5</p>
+      <p class="narration">表3 把職能翻成<strong>教學目標</strong>。請先完成表1–2 走讀（或手邊草稿），再為一個單元填完整一列。本走讀以 <strong>M1-1.1</strong> 示範。</p>
+      <div class="example-box">
+        <div class="lbl">四步流程</div>
+        ① 對表1 P → ② 寫 ABCD → ③ D 標準檢核 → ④ 檢核並對表4
+      </div>
+      <div class="your-turn-box"><strong>現在輪到你：</strong>確認已有表2 單元名與表1 P，點「下一步」。</div>
+      <div class="btn-row"><button type="button" class="btn btn-primary" data-next>下一步：對 P →</button></div>
+    </section>
+
+    <section class="panel" data-step="1" hidden>
+      <h2 class="step-title">Step 1｜對應表1 行為指標 P</h2>
+      <p class="step-meta">表2 單元名 + 表1 P 逐字對齊</p>
+      <div class="example-box">
+        <div class="lbl">示範｜M1-1.1 → P1.1.1</div>
+        <strong>單元：</strong>M1-1.1 緒論 - 為何寺廟需要法律定位？<br>
+        <strong>級別 L：</strong>3<br>
+        <strong>P1.1.1：</strong>能依據宗教法規，召開信徒大會並製作符合主管機關要求之會議紀錄。<br>
+        <strong>K/S：</strong>K01、K02、K26；S01、S17、S28
+      </div>
+      <div class="your-turn-box"><strong>現在輪到你：</strong>從表2 複製單元全名，從表1 抄 P。</div>
+      <div class="field-row">
+        <label for="myUnitCode">單元碼</label>
+        <input class="online-input" id="myUnitCode" type="text" placeholder="例：M1-1.1">
+      </div>
+      <div class="field-row">
+        <label for="myUnitName">課程（單元）名稱（須與表2 逐字一致）</label>
+        <input class="online-input" id="myUnitName" type="text" placeholder="例：緒論 - 為何寺廟需要法律定位？">
+      </div>
+      <div class="field-row">
+        <label for="myP">對應行為指標 P（逐字對齊表1）</label>
+        <textarea class="online-textarea" id="myP" placeholder="從表1 複製，勿改寫…"></textarea>
+      </div>
+      <div class="field-row">
+        <label for="myKS">對應 K／S</label>
+        <textarea class="online-textarea" id="myKS" placeholder="例：K01、K02、K26；S01、S17、S28"></textarea>
+      </div>
+      <div class="field-row">
+        <label for="myL">單元職能級別</label>
+        <input class="online-input" id="myL" type="text" value="3" readonly class="readonly-field">
+      </div>
+      <div class="btn-row">
+        <button type="button" class="btn btn-secondary" data-prev>← 上一步</button>
+        <button type="button" class="btn btn-gold" id="btnCopyDemoP">套用 M1-1.1 示範</button>
+        <button type="button" class="btn btn-primary" data-next>下一步：ABCD →</button>
+      </div>
+    </section>
+
+    <section class="panel" data-step="2" hidden>
+      <h2 class="step-title">Step 2｜寫 ABCD 教學目標</h2>
+      <p class="step-meta">A 對象｜B 行為｜C 條件</p>
+      <div class="example-box">
+        <div class="lbl">示範｜M1-1.1</div>
+        <strong>A：</strong>完訓學員<br>
+        <strong>B：</strong>能說明寺廟法人登記之法律定位，並辨識三種組織型態（寺廟、教會、基金會）之核心差異<br>
+        <strong>C：</strong>在提供之法人比較表與 M1-1.1 緒論教材條件下
+      </div>
+      <div class="your-turn-box"><strong>現在輪到你：</strong>B 用「能…」開頭，對應表3 B 欄（決定表5 方法）。</div>
+      <div class="field-row"><label for="myA">A 對象</label><input class="online-input" id="myA" type="text" placeholder="例：完訓學員"></div>
+      <div class="field-row"><label for="myB">B 行為</label><textarea class="online-textarea" id="myB" placeholder="可觀察動詞…"></textarea></div>
+      <div class="field-row"><label for="myC">C 條件</label><textarea class="online-textarea" id="myC" placeholder="情境、工具、時間…"></textarea></div>
+      <div class="btn-row">
+        <button type="button" class="btn btn-secondary" data-prev>← 上一步</button>
+        <button type="button" class="btn btn-gold" id="btnCopyDemoABC">套用示範 A/B/C</button>
+        <button type="button" class="btn btn-primary" data-next>下一步：D 標準 →</button>
+      </div>
+    </section>
+
+    <section class="panel" data-step="3" hidden>
+      <h2 class="step-title">Step 3｜D 標準與 K/S 檢核</h2>
+      <p class="step-meta">D 對 P｜銜接表4 大綱</p>
+      <div class="example-box">
+        <div class="lbl">示範｜D 欄</div>
+        符合表1 行為指標 P1.1.1（能依據宗教法規…製作符合主管機關要求之會議紀錄），法人比較表正確率 ≥80%
+      </div>
+      <div class="your-turn-box"><strong>現在輪到你：</strong>D 須能指回表1 P——表8 評量依此設計。</div>
+      <div class="field-row">
+        <label for="myD">D 標準（對 P）</label>
+        <textarea class="online-textarea tall" id="myD" placeholder="引用 P 或寫量化標準…"></textarea>
+      </div>
+      <div class="field-row">
+        <label for="myT4Note">表4 要教的 K/S 點（選填備忘）</label>
+        <textarea class="online-textarea" id="myT4Note" placeholder="例：三種法人比較、會議紀錄格式實作…"></textarea>
+      </div>
+      <div class="btn-row">
+        <button type="button" class="btn btn-secondary" data-prev>← 上一步</button>
+        <button type="button" class="btn btn-gold" id="btnCopyDemoD">套用示範 D</button>
+        <button type="button" class="btn btn-primary" data-next>下一步：檢核 →</button>
+      </div>
+    </section>
+
+    <section class="panel" data-step="4" hidden>
+      <h2 class="step-title">Step 4｜檢核與下一步</h2>
+      <p class="step-meta">表3 一列閉環｜準備填表4</p>
+      <table class="summary-table">
+        <tr><th>單元</th><td id="sumUnit">—</td></tr>
+        <tr><th>對應 P</th><td id="sumP">—</td></tr>
+        <tr><th>ABCD</th><td id="sumABCD">—</td></tr>
+        <tr><th>D 標準</th><td id="sumD">—</td></tr>
+        <tr><th>K/S</th><td id="sumKS">—</td></tr>
+      </table>
+      <div class="q" style="margin-top:1rem">
+        <div class="q-title">自我檢核</div>
+        <div class="opts" style="flex-direction:column;align-items:flex-start;">
+          <label><input type="checkbox" id="chk1"> 單元名與表2 逐字一致？</label>
+          <label><input type="checkbox" id="chk2"> P 與表1 逐字一致？</label>
+          <label><input type="checkbox" id="chk3"> D 能回溯到 P？</label>
+          <label><input type="checkbox" id="chk4"> B 用可觀察動詞，非「了解、熟悉」？</label>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button type="button" class="btn btn-secondary" data-prev>← 上一步</button>
+        <button type="button" class="btn btn-secondary" id="btnSave">暫存本機</button>
+        <button type="button" class="btn btn-gold" id="btnCopy">複製摘要文字</button>
+        <a class="btn btn-primary" href="table4-content-walkthrough.html" style="text-decoration:none;display:inline-block">→ 表4 內容走讀</a>
+        <a class="btn btn-primary" href="section-03-design.html" style="text-decoration:none;display:inline-block">→ 表3–5 學習單</a>
+      </div>
+      <p class="status-msg" id="statusMsg" hidden></p>
+    </section>
+  </div>
+
+  <script>
+    (function () {
+      var STORAGE_KEY = 'icap-table3-walkthrough-v1';
+      var STEP_LABELS = ['總覽', 'Step1 對P', 'Step2 ABCD', 'Step3 D標準', 'Step4 檢核'];
+      var current = 0;
+      var panels = Array.prototype.slice.call(document.querySelectorAll('.panel[data-step]'));
+      var nav = document.getElementById('stepNav');
+      var fieldIds = ['myUnitCode','myUnitName','myP','myKS','myL','myA','myB','myC','myD','myT4Note'];
+      var fields = {};
+      fieldIds.forEach(function (id) { fields[id] = document.getElementById(id); });
+
+      var DEMO = {
+        myUnitCode: 'M1-1.1',
+        myUnitName: '緒論 - 為何寺廟需要法律定位？',
+        myP: '能依據宗教法規，召開信徒大會並製作符合主管機關要求之會議紀錄。',
+        myKS: 'K01 宮廟組織運作知識；K02 組織章程與行政規章；K26 宮廟登記與變更實務知識；S01 文書處理；S17 會議規劃；S28 登記文件撰寫',
+        myL: '3',
+        myA: '完訓學員',
+        myB: '能說明寺廟法人登記之法律定位，並辨識三種組織型態（寺廟、教會、基金會）之核心差異',
+        myC: '在提供之法人比較表與 M1-1.1 緒論教材條件下',
+        myD: '符合表1 行為指標 P1.1.1（能依據宗教法規…製作符合主管機關要求之會議紀錄），法人比較表正確率 ≥80%',
+        myT4Note: '三種法人比較表演練；會議紀錄格式示範與草稿撰寫'
+      };
+
+      STEP_LABELS.forEach(function (label, i) {
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = label;
+        btn.dataset.step = String(i);
+        btn.addEventListener('click', function () { goTo(i); });
+        nav.appendChild(btn);
+      });
+
+      function collect() {
+        var data = { step: current };
+        fieldIds.forEach(function (id) { data[id] = fields[id].value; });
+        return data;
+      }
+      function apply(data) {
+        if (!data) return;
+        fieldIds.forEach(function (id) { if (data[id] !== undefined) fields[id].value = data[id]; });
+        if (typeof data.step === 'number') current = data.step;
+      }
+      function saveLocal() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(collect())); } catch (e) {} }
+      function loadLocal() {
+        try { var raw = localStorage.getItem(STORAGE_KEY); if (raw) apply(JSON.parse(raw)); } catch (e) {}
+      }
+      function updateSummary() {
+        document.getElementById('sumUnit').textContent = (fields.myUnitCode.value || '') + ' ' + (fields.myUnitName.value || '') || '—';
+        document.getElementById('sumP').textContent = fields.myP.value || '—';
+        document.getElementById('sumABCD').textContent = ['A:' + fields.myA.value, 'B:' + fields.myB.value, 'C:' + fields.myC.value].join('｜') || '—';
+        document.getElementById('sumD').textContent = fields.myD.value || '—';
+        document.getElementById('sumKS').textContent = fields.myKS.value || '—';
+      }
+      function goTo(idx) {
+        if (idx < 0 || idx >= panels.length) return;
+        current = idx;
+        panels.forEach(function (p, i) { p.hidden = i !== idx; });
+        nav.querySelectorAll('button').forEach(function (b, i) {
+          b.classList.toggle('active', i === idx);
+          b.classList.toggle('done', i < idx);
+        });
+        if (idx === 4) updateSummary();
+        saveLocal();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      document.querySelectorAll('[data-next]').forEach(function (btn) { btn.addEventListener('click', function () { goTo(current + 1); }); });
+      document.querySelectorAll('[data-prev]').forEach(function (btn) { btn.addEventListener('click', function () { goTo(current - 1); }); });
+      fieldIds.forEach(function (id) { fields[id].addEventListener('input', saveLocal); });
+
+      document.getElementById('btnCopyDemoP').addEventListener('click', function () {
+        ['myUnitCode','myUnitName','myP','myKS'].forEach(function (k) { fields[k].value = DEMO[k]; });
+        saveLocal();
+      });
+      document.getElementById('btnCopyDemoABC').addEventListener('click', function () {
+        ['myA','myB','myC'].forEach(function (k) { fields[k].value = DEMO[k]; });
+        saveLocal();
+      });
+      document.getElementById('btnCopyDemoD').addEventListener('click', function () {
+        fields.myD.value = DEMO.myD;
+        fields.myT4Note.value = DEMO.myT4Note;
+        saveLocal();
+      });
+      document.getElementById('btnSave').addEventListener('click', function () {
+        saveLocal();
+        var msg = document.getElementById('statusMsg');
+        msg.textContent = '已暫存至本機瀏覽器';
+        msg.hidden = false;
+        setTimeout(function () { msg.hidden = true; }, 3000);
+      });
+      document.getElementById('btnCopy').addEventListener('click', function () {
+        updateSummary();
+        var text = [
+          '【表3 教學目標一列】',
+          '單元：' + fields.myUnitCode.value + ' ' + fields.myUnitName.value,
+          '級別：' + (fields.myL.value || '3'),
+          '對應 P：' + fields.myP.value,
+          'K/S：' + fields.myKS.value,
+          'A：' + fields.myA.value,
+          'B：' + fields.myB.value,
+          'C：' + fields.myC.value,
+          'D：' + fields.myD.value
+        ].join('\n');
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function () {
+            var msg = document.getElementById('statusMsg');
+            msg.textContent = '已複製到剪貼簿';
+            msg.hidden = false;
+            setTimeout(function () { msg.hidden = true; }, 3000);
+          });
+        }
+      });
+
+      loadLocal();
+      if (!fields.myUnitName.value && !fields.myP.value) {
+        fields.myUnitCode.value = DEMO.myUnitCode;
+        fields.myUnitName.value = DEMO.myUnitName;
+      }
+      goTo(current);
+    })();
+  </script>
+</body>
+</html>
