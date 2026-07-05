@@ -2,7 +2,7 @@
   "registryVersion": 1,
   "program": "2026宮廟管理師職能基準 iCAP推動與職能導向課程發展",
   "org": "臺灣道法總會－教育委員會",
-  "lastUpdated": "2026-07-04",
+  "lastUpdated": "2026-07-05",
   "lifecycleStates": ["planned", "preparing", "active", "completed"],
   "events": [
     {
@@ -19,6 +19,7 @@
       "links": {
         "entry": "index.html",
         "slideshow": "meeting-display.html",
+        "agenda": "meeting-display.html",
         "handouts": "08-evaluation-committee/1150630-handouts/index.html",
         "materials": "08-evaluation-committee/1150630/index.html",
         "dataCompilation": "08-evaluation-committee/1150630-data-compilation/index.html",
@@ -90,8 +91,10 @@
       "assetsPath": "09-editorial-committee/1150730-m1-demo",
       "links": {
         "entry": "index.html",
+        "agenda": "09-editorial-committee/1150730-m1-demo/agenda-flow.html",
         "materials": "09-editorial-committee/1150730-m1-demo/index.html",
         "slideshow": "09-editorial-committee/1150730-m1-demo/00-preflight/logic-chain-slideshow.html",
+        "rehearsalRunbook": "09-editorial-committee/1150730-m1-demo/1150730-handouts/rehearsal-runbook.html",
         "slideshowAfternoon": "09-editorial-committee/1150730-m1-demo/00-preflight/m1-1-1-teaching-chain-slideshow.html",
         "handouts": "09-editorial-committee/1150730-m1-demo/1150730-handouts/print-index.html",
         "onsiteCheckin": "onsite-checkin/index.html",

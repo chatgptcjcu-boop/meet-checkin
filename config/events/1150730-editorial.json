@@ -91,7 +91,9 @@
     "onsiteCheckin": "./onsite-checkin/",
     "onsiteQrProjector": "./onsite-projector.html",
     "onsiteQrPrint": "./onsite-qr-print.html",
-    "onsiteCheckinUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/onsite-checkin/"
+    "onsiteCheckinUrl": "https://chatgptcjcu-boop.github.io/meet-checkin/onsite-checkin/",
+    "agendaFlow": "09-editorial-committee/1150730-m1-demo/agenda-flow.html",
+    "rehearsalRunbook": "09-editorial-committee/1150730-m1-demo/1150730-handouts/rehearsal-runbook.html"
   },
   "instructorWorksheet730": {
     "formType": "730-instructor",
