@@ -19,10 +19,10 @@
       "links": {
         "entry": "index.html",
         "slideshow": "meeting-display.html",
-        "agenda": "meeting-display.html",
         "handouts": "08-evaluation-committee/1150630-handouts/index.html",
         "materials": "08-evaluation-committee/1150630/index.html",
         "dataCompilation": "08-evaluation-committee/1150630-data-compilation/index.html",
+        "agenda": "08-evaluation-committee/1150630/agenda-flow.html",
         "onsitePrint": "onsite-print/members/00-toc-cover.html",
         "checkin": "video-checkin/index.html",
         "preset": "config/events/1150630-evaluation.json"

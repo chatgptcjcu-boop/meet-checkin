@@ -3,306 +3,156 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>會議投影｜115/07/30 教材編審 Demo｜議程與流程</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../assets/meeting-display.css">
+  <title>議程與流程｜115/07/30 教材編審 Demo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
-    .agenda .am { color: #34d399; font-weight: 600; }
-    .agenda .pm { color: #60a5fa; font-weight: 600; }
-    .agenda .sec { color: #fbbf24; font-weight: 700; }
-    .link-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 1vh 1.5vw; width: 100%; }
-    .link-grid a {
-      display: block;
-      background: rgb(52 211 153 / 0.08);
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 0.8vh 1vw;
-      color: var(--accent2);
-      text-decoration: none;
-      font-size: clamp(0.78rem, 1.4vw, 0.95rem);
-    }
-    .link-grid a:hover { border-color: var(--accent2); }
-    .link-grid a strong { color: var(--accent); display: block; margin-bottom: 0.3vh; }
+    :root { --am: #0f766e; --pm: #1e40af; --border: #cbd5e1; }
+    body { font-family: 'Noto Sans TC', sans-serif; background: #f0f4f8; margin: 0; font-size: 10.5pt; line-height: 1.55; color: #111; }
+    .doc { max-width: 56rem; margin: 0 auto; background: #fff; box-shadow: 0 4px 16px rgb(0 0 0 / 0.06); }
+    .nav { padding: 0.75rem 1.5rem 0; font-size: 0.85rem; }
+    .nav a { color: #1e40af; }
+    .hero { padding: 1.5rem 1.5rem 1.25rem; border-bottom: 3px solid var(--pm); }
+    .hero h1 { font-size: 1.45rem; margin: 0 0 0.35rem; color: var(--pm); }
+    .hero .sub { font-weight: 600; color: #334155; margin: 0 0 0.25rem; }
+    .hero .meta { font-size: 0.85rem; color: #64748b; margin: 0; }
+    .body { padding: 1.25rem 1.5rem 2rem; }
+    h2 { font-size: 1.1rem; font-weight: 700; border-left: 4px solid var(--pm); padding-left: 0.55rem; margin: 1.5rem 0 0.65rem; }
+    h2.am { border-color: var(--am); color: var(--am); }
+    h2.pm { border-color: var(--pm); color: var(--pm); }
+    h3 { font-size: 0.95rem; font-weight: 600; margin: 1rem 0 0.4rem; color: #334155; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin: 0.5rem 0 1rem; }
+    th, td { border: 1px solid var(--border); padding: 0.4rem 0.5rem; vertical-align: top; }
+    th { background: #f1f5f9; text-align: left; }
+    .time { white-space: nowrap; font-weight: 600; }
+    .overview { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin: 1rem 0; }
+    @media (max-width: 640px) { .overview { grid-template-columns: 1fr; } }
+    .block { border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.85rem 1rem; }
+    .block.am { border-color: #99f6e4; background: #ecfdf5; }
+    .block.pm { border-color: #93c5fd; background: #eff6ff; }
+    .block strong { display: block; margin-bottom: 0.25rem; }
+    .links { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.75rem 0; }
+    .links a { display: inline-block; font-size: 0.82rem; padding: 0.35rem 0.65rem; border: 1px solid var(--border); border-radius: 0.35rem; text-decoration: none; color: #1e40af; background: #f8fafc; }
+    .links a:hover { background: #eff6ff; border-color: #93c5fd; }
+    .note { background: #fef3c7; border: 1px solid #fbbf24; border-radius: 0.4rem; padding: 0.65rem 0.85rem; font-size: 0.85rem; margin: 0.75rem 0; }
+    code { font-size: 0.78rem; background: #f1f5f9; padding: 0.1rem 0.3rem; border-radius: 0.2rem; }
+    ul { margin: 0.35rem 0; padding-left: 1.2rem; }
+    @media print { body { background: #fff; } .doc { box-shadow: none; } .nav { display: none; } }
   </style>
 </head>
 <body>
-  <div class="deck" id="deck">
+  <div class="doc">
+    <p class="nav">
+      <a href="index.html">← Phase 索引</a> ·
+      <a href="../../dashboard.html">儀表板</a> ·
+      <a href="1150730-handouts/rehearsal-runbook.html">彩排手冊</a>
+    </p>
 
-    <section class="slide slide-welcome active" data-id="welcome">
-      <div class="slide-body">
-        <p class="org" style="font-size:clamp(0.9rem,2vw,1.1rem);color:#fbbf24;letter-spacing:.15em;margin-bottom:2vh">臺灣道法總會｜教育委員會</p>
-        <h1 class="main-title">教材編審委員會<br>M1 Demo 示範</h1>
-        <p class="sub">115年7月30日（週三）｜上午 10:00–11:30 ＋ 下午 13:50–16:10</p>
-        <p class="tagline">2026 宮廟管理師職能基準 iCAP 推動與職能導向課程發展<br>示範單元 M1-1.1｜職能導向教材編審共構</p>
-      </div>
-    </section>
+    <header class="hero">
+      <h1>教材編審委員會第一場｜議程與流程</h1>
+      <p class="sub">115年7月30日（2026/07/30）｜兩段式：上午邏輯鏈 90min ＋ 下午 Demo 140min</p>
+      <p class="meta">示範單元 M1-1.1「緒論－為何寺廟需要法律定位？」｜臺灣道法總會－教育委員會</p>
+    </header>
 
-    <section class="slide" data-id="purpose">
-      <div class="slide-header">
-        <p class="org">MEETING PURPOSE</p>
-        <h2>今天這場會議在做什麼？</h2>
-        <p class="meta">上午對位邏輯鏈 → 下午帶做一個完整單元</p>
-      </div>
-      <div class="slide-body">
-        <ul class="bullets">
-          <li><strong>不是</strong>寫完整 180 小時教材，<strong>不是</strong>重開評核委員會範疇會議</li>
-          <li>上午：走完整條<strong>職能品質審查邏輯鏈</strong>（需求→範疇→T/P/O→KSA→課程地圖）</li>
-          <li>下午：以 M1-1.1 為例，帶做<strong>單元設計全流程</strong>（內容→目標→學習單→評量→歸檔）</li>
-          <li>產出：講師學習單、評量工具包雛形、協作平台建檔示範</li>
-        </ul>
-        <div class="hint-box">多數講師未修過 iCAP 職能導向課程——上午先對位，下午才動手。</div>
-      </div>
-    </section>
-
-    <section class="slide" data-id="agenda">
-      <div class="slide-header">
-        <p class="org">AGENDA</p>
-        <h2>今日會議流程總覽</h2>
-        <p class="meta">全日約 4.5 小時（含午休）｜請依主持引導同步填寫學習單</p>
-      </div>
-      <div class="slide-body">
-        <table class="agenda" id="agendaTable">
-          <thead><tr><th>時段</th><th>內容</th><th>標記</th></tr></thead>
-          <tbody>
-            <tr data-goto="am"><td class="am">10:00–11:30</td><td>前置導覽｜職能邏輯鏈 L0–L7（90min）</td><td class="sec">上午</td></tr>
-            <tr data-goto="lunch"><td>11:30–13:50</td><td>午休</td><td>—</td></tr>
-            <tr data-goto="pre"><td class="pm">13:50–14:10</td><td>M1-1.1 教學鏈說明（20min）</td><td class="sec">Pre</td></tr>
-            <tr data-goto="p0"><td class="pm">14:10–14:20</td><td>Phase 0｜身分確認、Demo 定位</td><td class="sec">0</td></tr>
-            <tr data-goto="p1"><td class="pm">14:20–14:45</td><td>Phase 1｜教學內容與教學步驟</td><td class="sec">1</td></tr>
-            <tr data-goto="p2"><td class="pm">14:45–15:05</td><td>Phase 2｜教學目標（ABCD）</td><td class="sec">2</td></tr>
-            <tr data-goto="p3"><td class="pm">15:05–15:30</td><td>Phase 3｜教學方式、學習單填寫</td><td class="sec">3</td></tr>
-            <tr data-goto="p4"><td class="pm">15:30–16:00</td><td>Phase 4｜評量方式（考古題、勾選、分數觀察）</td><td class="sec">4</td></tr>
-            <tr data-goto="p5"><td class="pm">16:00–16:10</td><td>Phase 5｜產出歸檔、協作平台、下次銜接</td><td class="sec">5</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="slide" data-id="am" data-agenda="am">
-      <div class="slide-header">
-        <p class="org">MORNING｜10:00–11:30</p>
-        <h2>上午｜邏輯鏈導覽（L0–L7）</h2>
-        <p class="meta">主投影：logic-chain-slideshow.html（12 頁）｜發《導覽學習單》</p>
-      </div>
-      <div class="slide-body">
-        <table class="agenda compact">
-          <thead><tr><th>時間</th><th>鏈環</th><th>主題</th></tr></thead>
-          <tbody>
-            <tr><td>0:00–0:10</td><td>L0</td><td>開場：傳統教材 vs 職能導向</td></tr>
-            <tr><td>0:10–0:22</td><td>L1</td><td>職能如何發展？程序總覽</td></tr>
-            <tr><td>0:22–0:34</td><td>L2</td><td>產業需求分析</td></tr>
-            <tr><td>0:34–0:46</td><td>L3</td><td>定義範疇（七大範疇 T1–T7）</td></tr>
-            <tr><td>0:46–0:58</td><td>L4</td><td>工作任務 T → 行為指標 P → 產出 O</td></tr>
-            <tr><td>0:58–1:10</td><td>L5</td><td>知識、技能、態度（KSA）</td></tr>
-            <tr><td>1:10–1:22</td><td>L6</td><td>課程地圖 → 教學單元（86 單元）</td></tr>
-            <tr><td>1:22–1:30</td><td>L7</td><td>銜接下午 Demo、回收學習單</td></tr>
-          </tbody>
-        </table>
-        <div class="hint-box">話術：<code>facilitator-preflight-script.html</code>｜詳見 <code>00-preflight/AGENDA-preflight.md</code></div>
-      </div>
-    </section>
-
-    <section class="slide" data-id="pre" data-agenda="pre">
-      <div class="slide-header">
-        <p class="org">PRE-PHASE｜13:50–14:10</p>
-        <h2>下午開場｜M1-1.1 教學鏈說明</h2>
-        <p class="meta">主投影：m1-1-1-teaching-chain-slideshow.html（13 頁）｜此段不發下午學習單</p>
-      </div>
-      <div class="slide-body">
-        <ul class="bullets">
-          <li>回顧上午 L2–L6：單元從哪裡來？</li>
-          <li>T/P/O 對位 → 1.1.1～1.1.4 四段內容 → 學習單 → 評量對照</li>
-          <li>教學鏈總圖：職能→內容→步驟→ABCD→學習單→評量</li>
-          <li>Phase 0–5 對照表預告 → 「現在開始 Phase 0」→ 發《講師學習單》</li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="slide" data-id="p0" data-agenda="p0">
-      <div class="slide-header">
-        <p class="org">PHASE 0｜14:10–14:20</p>
-        <h2>身分確認與 Demo 定位</h2>
-        <p class="meta">投影：01-phase0-identity.html｜填學習單壹章</p>
-      </div>
-      <div class="slide-body">
-        <ul class="bullets">
-          <li>開場：今日 2hr 帶做「一個單元」全流程</li>
-          <li>iCAP 職能導向 vs 傳統教材差異</li>
-          <li>投影 86 單元架構、指定今日 M1-1.1</li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="slide" data-id="p1" data-agenda="p1">
-      <div class="slide-header">
-        <p class="org">PHASE 1｜14:20–14:45</p>
-        <h2>教學內容與教學步驟</h2>
-        <p class="meta">投影：02-phase1-content-and-steps.html｜iCAP 對照 #1 #2</p>
-      </div>
-      <div class="slide-body">
-        <ul class="bullets">
-          <li>教學內容五段式（緒論→概念→案例→演練→總結）</li>
-          <li>帶填 120min 單元時間軸步驟表</li>
-          <li>小組分享：你的單元最難教哪一段？</li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="slide" data-id="p2" data-agenda="p2">
-      <div class="slide-header">
-        <p class="org">PHASE 2｜14:45–15:05</p>
-        <h2>教學目標（ABCD）</h2>
-        <p class="meta">投影：03-phase2-abcd-objectives.html｜現場共填 M1-1.1</p>
-      </div>
-      <div class="slide-body">
-        <ul class="bullets">
-          <li>ABCD 白話＋可觀察動詞表（禁用「了解、熟悉」）</li>
-          <li>現場共填 A/B/C/D 四欄</li>
-          <li>檢核：B 欄是否可評量</li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="slide" data-id="p3" data-agenda="p3">
-      <div class="slide-header">
-        <p class="org">PHASE 3｜15:05–15:30</p>
-        <h2>教學方式、學習單與產出</h2>
-        <p class="meta">投影：04-phase3-methods-and-worksheets.html｜iCAP 對照 #4 #5 #6</p>
-      </div>
-      <div class="slide-body">
-        <ul class="bullets">
-          <li>教學方式：講述、案例、小組、實作</li>
-          <li>發學習單叁章：活動設計＋產出欄</li>
-          <li>「學習單產出」= 學員課後帶走什麼</li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="slide" data-id="p4" data-agenda="p4">
-      <div class="slide-header">
-        <p class="org">PHASE 4｜15:30–16:00</p>
-        <h2>評量方式設計</h2>
-        <p class="meta">投影：05-phase4-assessment-design.html ＋ assessment-design 三表</p>
-      </div>
-      <div class="slide-body">
-        <ul class="bullets">
-          <li>評量三類：考古題／勾選建檔／分數與觀察</li>
-          <li>現場起草 2 題選擇＋1 簡答（考古題範本）</li>
-          <li>行為指標對照勾選、Rubrics 2 級示範</li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="slide" data-id="p5" data-agenda="p5">
-      <div class="slide-header">
-        <p class="org">PHASE 5｜16:00–16:10</p>
-        <h2>產出歸檔與下次銜接</h2>
-        <p class="meta">投影：06-phase5-archive-and-handoff.html｜iCAP 對照 #10</p>
-      </div>
-      <div class="slide-body">
-        <ul class="bullets">
-          <li>完整流程：認領→共寫→審閱→定稿</li>
-          <li>協作平台操作 2 分鐘示範</li>
-          <li>Q&A、回收學習單、預告 M2 認領會</li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="slide" data-id="checkin">
-      <div class="slide-header">
-        <p class="org">CHECK-IN &amp; RESOURCES</p>
-        <h2>簽到與會議資源</h2>
-        <p class="meta">現場與視訊請依方式完成簽到</p>
-      </div>
-      <div class="slide-body">
-        <div class="grid-2">
-          <div class="card">
-            <h3>簽到</h3>
-            <ul class="bullets" style="font-size:clamp(0.85rem,1.6vw,1.05rem)">
-              <li>現場：掃描 QR 或至簽到區點選姓名</li>
-              <li>視訊：完成視訊簽到後進入 Meet</li>
-            </ul>
-            <p class="link-row">…/meet-checkin/onsite-checkin/</p>
-            <p class="link-row">…/meet-checkin/video-checkin/</p>
-          </div>
-          <div class="card">
-            <h3>講師學習單</h3>
-            <ul class="bullets" style="font-size:clamp(0.85rem,1.6vw,1.05rem)">
-              <li>紙本：instructor-worksheet.html</li>
-              <li>線上：instructor-worksheet-online.html</li>
-              <li>上午導覽：instructor-preflight-worksheet.html</li>
-            </ul>
-          </div>
+    <div class="body">
+      <div class="overview">
+        <div class="block am">
+          <strong>上午 10:00–11:30（90min）</strong>
+          職能品質審查邏輯鏈 L0–L7（L1–L6 核心）<br>
+          主投影：<code>logic-chain-slideshow.html</code>
+        </div>
+        <div class="block pm">
+          <strong>下午 13:50–16:10（140min）</strong>
+          教學鏈 20min ＋ Phase 0–5 帶做 120min<br>
+          主投影：<code>m1-1-1-teaching-chain-slideshow.html</code>
         </div>
       </div>
-    </section>
 
-    <section class="slide" data-id="links">
-      <div class="slide-header">
-        <p class="org">FACILITATOR</p>
-        <h2>主持者資源連結</h2>
-        <p class="meta">彩排手冊、話術腳本、列印索引</p>
+      <div class="note">
+        <strong>主持者必備：</strong>
+        <a href="00-preflight/facilitator-preflight-script.html">上午話術</a>、
+        <a href="1150730-handouts/facilitator-teaching-script.html">下午話術</a>、
+        <a href="1150730-handouts/rehearsal-runbook.html">彩排手冊</a>（分鐘表＋投影切換）。
+        詳細分鐘表另見 <a href="00-preflight/AGENDA-preflight.md">前置議程 MD</a>、
+        <a href="AGENDA.md">下午議程 MD</a>。
       </div>
-      <div class="slide-body">
-        <div class="link-grid">
-          <a href="00-preflight/logic-chain-slideshow.html"><strong>上午主投影</strong>邏輯鏈簡報（12 頁）</a>
-          <a href="00-preflight/m1-1-1-teaching-chain-slideshow.html"><strong>下午開場</strong>教學鏈簡報（13 頁）</a>
-          <a href="1150730-handouts/rehearsal-runbook.html"><strong>彩排手冊</strong>分鐘表＋投影切換</a>
-          <a href="00-preflight/facilitator-preflight-script.html"><strong>上午話術</strong>導覽主持腳本</a>
-          <a href="1150730-handouts/facilitator-teaching-script.html"><strong>下午話術</strong>Demo 主持腳本</a>
-          <a href="1150730-handouts/print-index.html"><strong>列印索引</strong>全項目勾選清單</a>
-          <a href="index.html"><strong>Phase 索引</strong>0–5 模板一鍵跳轉</a>
-          <a href="../../index.html"><strong>報到入口</strong>現場／視訊簽到</a>
-        </div>
-      </div>
-    </section>
 
-    <section class="slide slide-welcome" data-id="closing">
-      <div class="slide-body">
-        <p class="org" style="font-size:clamp(0.9rem,2vw,1.1rem);color:#fbbf24;letter-spacing:.15em;margin-bottom:2vh">READY TO START</p>
-        <h1 class="main-title" style="font-size:clamp(1.8rem,4.5vw,3rem)">準備好了嗎？</h1>
-        <p class="sub">上午：邏輯鏈對位 → 下午：M1-1.1 單元帶做</p>
-        <p class="tagline" style="margin-top:3vh">
-          主持者請開啟邏輯鏈簡報全螢幕<br>
-          講師請領《導覽學習單》並完成簽到
-        </p>
-      </div>
-    </section>
+      <h2>全日總覽</h2>
+      <table>
+        <thead>
+          <tr><th>時段</th><th>時長</th><th>內容</th><th>產出</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="time">10:00–11:30</td><td>90min</td><td>前置導覽：邏輯鏈 L0–L7</td><td>導覽學習單</td></tr>
+          <tr><td class="time">11:30–13:50</td><td>—</td><td>午休</td><td>—</td></tr>
+          <tr><td class="time">13:50–14:10</td><td>20min</td><td>M1-1.1 教學鏈說明（投影）</td><td>理解下午 Phase 對應</td></tr>
+          <tr><td class="time">14:10–16:10</td><td>120min</td><td>Phase 0–5 單元 Demo 帶做</td><td>講師學習單、評量三表</td></tr>
+        </tbody>
+      </table>
 
+      <h2 class="am">一、上午｜邏輯鏈導覽（L1–L6）</h2>
+      <p style="font-size:0.85rem;color:#64748b;">主投影 <a href="00-preflight/logic-chain-slideshow.html">logic-chain-slideshow.html</a>｜話術 <a href="00-preflight/facilitator-preflight-script.html">facilitator-preflight-script.html</a></p>
+      <table>
+        <thead>
+          <tr><th>時間</th><th>鏈環</th><th>主題</th><th>產出</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="time">0:00–0:10</td><td>L0</td><td>開場：傳統教材 vs 職能導向</td><td>講師自評勾選</td></tr>
+          <tr><td class="time">0:10–0:22</td><td>L1</td><td>職能如何發展？iCAP 程序總覽</td><td>邏輯鏈地圖</td></tr>
+          <tr><td class="time">0:22–0:34</td><td>L2</td><td>產業需求分析</td><td>需求→職能缺口 1 例</td></tr>
+          <tr><td class="time">0:34–0:46</td><td>L3</td><td>定義範疇（七大範疇 T1–T7）</td><td>T1–T7 對號入座</td></tr>
+          <tr><td class="time">0:46–0:58</td><td>L4</td><td>工作任務 T → 行為指標 P → 產出 O</td><td>T/P/O 各 1 例</td></tr>
+          <tr><td class="time">0:58–1:10</td><td>L5</td><td>知識、技能、態度（KSA）</td><td>K/S/A 各 1 項</td></tr>
+          <tr><td class="time">1:10–1:22</td><td>L6</td><td>教學發展：課程地圖→教學單元</td><td>M1-1.1 在鏈上位置</td></tr>
+          <tr><td class="time">1:22–1:30</td><td>L7</td><td>銜接下午 Demo</td><td>問題清單、預告學習單</td></tr>
+        </tbody>
+      </table>
+
+      <h2 class="pm">二、下午 Part A｜M1-1.1 教學鏈（20min）</h2>
+      <p style="font-size:0.85rem;color:#64748b;">主投影 <a href="00-preflight/m1-1-1-teaching-chain-slideshow.html">m1-1-1-teaching-chain-slideshow.html</a>｜13:50 準時，Phase 0 動手前</p>
+      <table>
+        <thead>
+          <tr><th>時間</th><th>內容</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="time">13:50–13:53</td><td>開場：上午 L2–L6 回顧</td></tr>
+          <tr><td class="time">13:53–13:58</td><td>T/P/O、單元定位（1.1.1～1.1.4）</td></tr>
+          <tr><td class="time">13:58–14:05</td><td>教學鏈總圖、Phase 0–5 對照</td></tr>
+          <tr><td class="time">14:05–14:10</td><td>「現在開始 Phase 0」→ 發《講師學習單》</td></tr>
+        </tbody>
+      </table>
+
+      <h2 class="pm">三、下午 Part B｜Phase 0–5 帶做（120min）</h2>
+      <p style="font-size:0.85rem;color:#64748b;">話術 <a href="1150730-handouts/facilitator-teaching-script.html">facilitator-teaching-script.html</a></p>
+      <table>
+        <thead>
+          <tr><th>時間</th><th>Phase</th><th>主題</th><th>模板</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="time">14:10–14:20</td><td>0</td><td>身分確認、Demo 定位</td><td><a href="01-phase0-identity.html">Phase 0</a></td></tr>
+          <tr><td class="time">14:20–14:45</td><td>1</td><td>教學內容、教學步驟</td><td><a href="02-phase1-content-and-steps.html">Phase 1</a></td></tr>
+          <tr><td class="time">14:45–15:05</td><td>2</td><td>教學目標（ABCD）</td><td><a href="03-phase2-abcd-objectives.html">Phase 2</a></td></tr>
+          <tr><td class="time">15:05–15:30</td><td>3</td><td>教學方式、學習單</td><td><a href="04-phase3-methods-and-worksheets.html">Phase 3</a></td></tr>
+          <tr><td class="time">15:30–16:00</td><td>4</td><td>評量方式（考古題、勾選、分數觀察）</td><td><a href="05-phase4-assessment-design.html">Phase 4</a></td></tr>
+          <tr><td class="time">16:00–16:10</td><td>5</td><td>產出歸檔、協作平台、M2 銜接</td><td><a href="06-phase5-archive-and-handoff.html">Phase 5</a></td></tr>
+        </tbody>
+      </table>
+
+      <h2>相關資源</h2>
+      <div class="links">
+        <a href="00-preflight/index.html">前置導覽索引</a>
+        <a href="00-preflight/logic-chain-slideshow.html">上午投影</a>
+        <a href="00-preflight/m1-1-1-teaching-chain-slideshow.html">下午投影</a>
+        <a href="1150730-handouts/index.html">現場發放</a>
+        <a href="1150730-handouts/print-index.html">列印索引</a>
+        <a href="1150730-handouts/rehearsal-runbook.html">彩排手冊</a>
+        <a href="demo-units/M1-1.1/index.html">M1-1.1 走讀</a>
+        <a href="00-preflight/AGENDA-preflight.md">前置議程 MD</a>
+        <a href="AGENDA.md">下午議程 MD</a>
+      </div>
+
+      <h3>邏輯鏈順序（主持者必背）</h3>
+      <p style="font-size:0.88rem;">產業需求 → 七大範疇 → 工作任務 T → 行為指標 P → 產出 O → KSA → 課程地圖（86 單元）→ 單元設計（＝下午 Demo）</p>
+    </div>
   </div>
-
-  <div class="slide-counter" id="counter">1 / 14</div>
-
-  <div class="controls no-print">
-    <button type="button" id="btnPrev">◀ 上一頁</button>
-    <button type="button" id="btnNext">下一頁 ▶</button>
-    <select id="slideSelect" aria-label="選擇投影片"></select>
-    <button type="button" id="btnFs">全螢幕</button>
-    <a href="../../onsite-projector.html" style="color:#94a3b8;font-size:0.78rem;text-decoration:none">簽到QR</a>
-    <span class="counter" id="counterCtrl">1 / 14</span>
-    <span class="keys">← → 或空白鍵切換</span>
-  </div>
-
-  <script src="../../assets/meeting-display.js"></script>
-  <script>
-    MeetingDisplay.init({
-      labels: [
-        '封面', '會議目的', '議程總覽', '上午邏輯鏈', '下午教學鏈',
-        'Phase 0', 'Phase 1', 'Phase 2', 'Phase 3', 'Phase 4', 'Phase 5',
-        '簽到資源', '主持連結', '開場'
-      ],
-      hotkeys: {
-        '3': 2,
-        'a': 2,
-        'A': 2
-      },
-      onShow: function (idx, slides) {
-        const id = slides[idx].dataset.agenda;
-        document.querySelectorAll('#agendaTable tbody tr').forEach(function (tr) {
-          tr.classList.toggle('highlight', id && tr.dataset.goto === id);
-        });
-      }
-    });
-  </script>
 </body>
 </html>
