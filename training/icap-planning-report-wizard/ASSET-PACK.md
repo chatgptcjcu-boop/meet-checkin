@@ -12,6 +12,7 @@
 | **參考教材** | `reference/` | 勞動部 ODT 公版格式、縮圖、`source-metadata.json` 溯源 |
 | **投影** | `report-wizard-slideshow.html` | 24 頁 meeting-display 簡報（含金綠主題、表1 寫作引導） |
 | **學習單 hub** | `worksheets/index.html` | 分段 + 整合入口 |
+| **沉浸式走讀** | `worksheets/table1`～`table5-*-walkthrough.html` | 上課逐段講解／現場練習；**不連 GAS**；localStorage 僅當次 |
 | **線上表單** | `worksheets/instructor-worksheet-online.html` | 壹～伍整合填寫、提交試算表 |
 | **分段練習** | `worksheets/section-01`～`05` | 可列印手寫版 |
 | **提交邏輯** | `worksheets/report-wizard-submit.js` | GAS POST（no-cors） |

@@ -10,6 +10,14 @@ body { font-family: 'Noto Sans TC', sans-serif; background: #f8fafc; margin: 0; 
   background: #ecfdf5; border: 1px solid #6ee7b7; color: #065f46;
   padding: 0.6rem 0.85rem; margin: 0.5rem 18mm 0; font-size: 0.82rem; border-radius: 6px;
 }
+.practice-notice {
+  background: #fffbeb; border: 2px solid #fbbf24; border-radius: 8px;
+  padding: 0.85rem 1rem; margin-bottom: 1rem; font-size: 0.85rem; line-height: 1.55; color: #78350f;
+}
+.practice-notice-title { font-weight: 700; margin: 0 0 0.35rem; color: #92400e; }
+.practice-notice p { margin: 0.25rem 0; }
+.practice-notice a { color: #0f766e; font-weight: 600; text-decoration: none; }
+.practice-notice a:hover { text-decoration: underline; }
 .section { padding: 12mm 18mm; border-bottom: 1px solid #e5e7eb; }
 .sec-title { font-size: 1.15rem; font-weight: 700; border-bottom: 2px solid var(--teal); padding-bottom: 0.35rem; margin: 0 0 1rem; color: var(--teal); }
 .sec-sub { font-size: 0.85rem; color: #555; margin: -0.5rem 0 1rem; }

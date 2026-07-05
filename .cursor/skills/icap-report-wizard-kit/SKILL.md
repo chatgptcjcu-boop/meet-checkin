@@ -35,6 +35,7 @@ flowchart LR
 | 模組入口 | `training/icap-planning-report-wizard/index.html` | 索引、流程說明 |
 | 投影簡報 | `.../report-wizard-slideshow.html` | meeting-display 18 頁 wizard |
 | 學習單 hub | `.../worksheets/index.html` | 分段 + 整合入口 |
+| 沉浸式走讀 | `.../worksheets/table1`～`table5-*-walkthrough.html` | 上課現場練習；不連 GAS；localStorage 僅當次 |
 | 線上填寫 | `.../worksheets/instructor-worksheet-online.html` | 提交至試算表 |
 | 提交 JS | `.../worksheets/report-wizard-submit.js` | 讀 config、組 payload |
 | GAS handler | `gas/Code.gs` → `handleReportWizardWorksheet` | action `icap-report-worksheet` |
@@ -101,6 +102,8 @@ Config 模板：[templates/config-snippet.json](../../training/icap-planning-rep
 - 送出：`fetch` + `mode: 'no-cors'` + `Content-Type: text/plain`
 - GAS URL 來源：`window.EVENT_CONFIG.backend.gasWebAppUrl`（需載入 `event.config.js`）
 - 成功 UI 代表「請求已發出」；以試算表列為準
+
+**沉浸式走讀頁（table1–5 `*-walkthrough.html`）：** 僅上課逐段講解與現場練習；**不連 GAS**、不寫試算表。localStorage 暫存僅供當次練習；頁頂 `.practice-notice` 橫幅須保留。正式存檔請引導至 `instructor-worksheet-online.html`。
 
 ---
 

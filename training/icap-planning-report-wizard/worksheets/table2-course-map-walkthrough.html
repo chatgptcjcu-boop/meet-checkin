@@ -102,7 +102,14 @@
     <div class="walk-header">
       <p>宮廟管理師｜報告書表2 沉浸式寫作走讀</p>
       <h1>表1 T 群組 → 模組時數 → 單元命名</h1>
-      <p>示範 T1→M1｜180hr／8 模組／86 單元｜完成後可暫存本機或複製至學習單</p>
+      <p>示範 T1→M1｜180hr／8 模組／86 單元｜上課現場練習</p>
+    </div>
+
+    <div class="practice-notice" role="note">
+      <p class="practice-notice-title">📋 本頁用途說明</p>
+      <p>本走讀頁僅供上課時逐段講解與現場練習，不會自動存檔至雲端。</p>
+      <p>瀏覽器本機暫存僅供當次練習，關閉或換裝置即可能消失。</p>
+      <p>請自行複製摘要，或至 <a href="instructor-worksheet-online.html">講師學習單｜線上填寫版</a> 整合提交後存檔。</p>
     </div>
 
     <div class="split-hint">
@@ -286,7 +293,7 @@
       </div>
       <div class="btn-row">
         <button type="button" class="btn btn-secondary" data-prev>← 上一步</button>
-        <button type="button" class="btn btn-secondary" id="btnSave">暫存本機</button>
+        <button type="button" class="btn btn-secondary" id="btnSave">暫存本機（僅當次）</button>
         <button type="button" class="btn btn-gold" id="btnCopy">複製摘要文字</button>
         <a class="btn btn-primary" href="table3-objectives-walkthrough.html" style="text-decoration:none;display:inline-block">→ 表3 目標走讀</a>
         <a class="btn btn-primary" href="section-02-analysis.html" style="text-decoration:none;display:inline-block">→ 表1–2 學習單</a>
@@ -453,7 +460,7 @@
       document.getElementById('btnSave').addEventListener('click', function () {
         saveLocal();
         var msg = document.getElementById('statusMsg');
-        msg.textContent = '已暫存至本機瀏覽器（清除快取前可恢復）';
+        msg.textContent = '已暫存至本機瀏覽器（僅供當次練習；關閉或換裝置可能消失）';
         msg.hidden = false;
         setTimeout(function () { msg.hidden = true; }, 3000);
       });
