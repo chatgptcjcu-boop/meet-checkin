@@ -97,6 +97,16 @@
       background: #94a3b8;
       min-height: 50vh;
     }
+    .html-fallback {
+      display: none;
+      width: 100%;
+      min-height: 70vh;
+      border: 0;
+      background: #fff;
+      box-shadow: 0 8px 24px rgb(0 0 0 / 0.25);
+    }
+    .viewer-wrap.fallback-mode .html-fallback { display: block; }
+    .viewer-wrap.fallback-mode #pdfStage { display: none; }
     #pdfStage {
       transform-origin: top center;
       margin: 0 auto;
@@ -173,6 +183,7 @@
     <div id="pdfStage">
       <canvas id="pdfCanvas"></canvas>
     </div>
+    <iframe class="html-fallback" id="htmlFallback" title="職能基準模型 HTML 備援檢視" src="assets/temple-manager-competency-model-v74-print.html"></iframe>
   </div>
 
   <p class="footer-note">唯讀檢視｜內容擷自 icapV74（2025-09-07）｜完整計畫書請至 icap-zhineng-jizhun 原始庫</p>
@@ -184,7 +195,8 @@
     pdfjsLib.GlobalWorkerOptions.workerSrc =
       'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.8.69/pdf.worker.min.mjs';
 
-    const PDF_URL = 'assets/temple-manager-competency-model-v74.pdf';
+    const PDF_URL = './assets/temple-manager-competency-model-v74.pdf';
+    const HTML_FALLBACK_URL = './assets/temple-manager-competency-model-v74-print.html';
     const canvas = document.getElementById('pdfCanvas');
     const ctx = canvas.getContext('2d');
     const stage = document.getElementById('pdfStage');
@@ -229,13 +241,23 @@
       renderPage(pageNum);
     }
 
-    pdfjsLib.getDocument(PDF_URL).promise.then(function (pdf) {
+    function showHtmlFallback(reason) {
+      viewerWrap.classList.add('fallback-mode');
+      document.getElementById('htmlFallback').src = HTML_FALLBACK_URL;
+      loadStatus.textContent = 'PDF 不可用，已切換 HTML 備援';
+      document.querySelector('.toolbar').style.display = 'none';
+      console.warn('PDF fallback:', reason);
+    }
+
+    fetch(PDF_URL, { method: 'HEAD' }).then(function (res) {
+      if (!res.ok) throw new Error('PDF HTTP ' + res.status);
+      return pdfjsLib.getDocument(PDF_URL).promise;
+    }).then(function (pdf) {
       pdfDoc = pdf;
       loadStatus.textContent = '共 ' + pdf.numPages + ' 頁';
       applyFitWidth();
     }).catch(function (err) {
-      loadStatus.textContent = 'PDF 載入失敗';
-      console.error(err);
+      showHtmlFallback(err);
     });
 
     document.getElementById('btnZoomIn').addEventListener('click', function () {
