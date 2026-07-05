@@ -276,6 +276,8 @@
       qrPrint: 'QR 列印',
       prep: '會議籌備',
       agenda: '議程',
+      agendaOnePage: '一頁式投影',
+      agendaPrint: '一頁式列印',
       rehearsalRunbook: '彩排手冊',
       onsitePrint: '現場印製',
       unitClaimMatrix: '認領矩陣',
@@ -351,7 +353,7 @@
 
     function renderActive(ev) {
       const prog = findProgress(ev);
-      const links = renderLinks(ev.links, ['entry', 'agenda', 'onsiteCheckin', 'videoCheckin', 'qrProjector', 'qrPrint', 'materials', 'slideshow', 'rehearsalRunbook', 'handouts']);
+      const links = renderLinks(ev.links, ['entry', 'agenda', 'agendaOnePage', 'agendaPrint', 'onsiteCheckin', 'videoCheckin', 'qrProjector', 'qrPrint', 'materials', 'slideshow', 'rehearsalRunbook', 'handouts']);
       return (
         '<div class="event-card active-card">' +
           '<div class="event-head">' +

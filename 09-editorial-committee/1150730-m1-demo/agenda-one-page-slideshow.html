@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>教材編審委員會第一場｜115/07/30 議程與流程</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/meeting-display.css">
+  <style>
+    .slide-agenda { padding: 2vh 3vw 4vh; }
+    .slide-agenda .slide-header { margin-bottom: 1.2vh; padding-bottom: 0.8vh; }
+    .slide-agenda .slide-header h2 { font-size: clamp(1.15rem, 2.8vw, 1.85rem); }
+    .slide-agenda .slide-header .meta { font-size: clamp(0.72rem, 1.25vw, 0.92rem); }
+    .slide-agenda .slide-body {
+      justify-content: flex-start;
+      overflow: hidden;
+      gap: 0.8vh;
+    }
+    .agenda-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1vh 1.2vw;
+      width: 100%;
+      max-width: 96vw;
+      flex: 1;
+      min-height: 0;
+    }
+    .agenda-block {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      overflow: hidden;
+      background: rgb(30 41 59 / 0.55);
+    }
+    .agenda-block.am { border-color: rgb(52 211 153 / 0.45); }
+    .agenda-block.pm { border-color: rgb(251 191 36 / 0.45); }
+    .agenda-block.full { grid-column: 1 / -1; }
+    .block-head {
+      flex-shrink: 0;
+      padding: 0.45vh 0.7vw;
+      font-size: clamp(0.68rem, 1.15vw, 0.82rem);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+    .agenda-block.am .block-head { background: rgb(52 211 153 / 0.12); color: var(--accent2); }
+    .agenda-block.pm .block-head { background: rgb(251 191 36 / 0.1); color: var(--accent); }
+    .agenda-block.lunch .block-head { background: rgb(148 163 184 / 0.12); color: var(--muted); }
+    .agenda-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: clamp(0.58rem, 0.95vw, 0.72rem);
+      line-height: 1.35;
+    }
+    .agenda-table th,
+    .agenda-table td {
+      border: 1px solid var(--line);
+      padding: 0.28vh 0.45vw;
+      vertical-align: top;
+    }
+    .agenda-table th {
+      background: rgb(15 23 42 / 0.6);
+      color: var(--muted);
+      font-weight: 600;
+      text-align: left;
+    }
+    .agenda-table .time { white-space: nowrap; font-weight: 700; color: var(--accent); }
+    .agenda-table .chain { color: var(--accent2); font-weight: 700; white-space: nowrap; }
+    .agenda-table .phase { color: var(--accent); font-weight: 700; white-space: nowrap; }
+    .agenda-table tr.break td { color: var(--muted); font-style: italic; }
+    .agenda-foot {
+      flex-shrink: 0;
+      font-size: clamp(0.62rem, 1vw, 0.75rem);
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.45;
+      padding-top: 0.4vh;
+    }
+    .agenda-foot b { color: var(--accent2); }
+  </style>
+</head>
+<body>
+  <div class="deck" id="deck">
+    <section class="slide slide-agenda active" data-id="agenda">
+      <div class="slide-header">
+        <p class="org">臺灣道法總會｜教育委員會</p>
+        <h2>教材編審委員會第一場｜115/07/30 議程與流程</h2>
+        <p class="meta">示範單元 M1-1.1「緒論－為何寺廟需要法律定位？」｜上午邏輯鏈 L0–L7 ＋ 下午教學鏈、Phase 0–5 ＋ 報告書精靈走讀</p>
+      </div>
+      <div class="slide-body">
+        <div class="agenda-grid">
+          <div class="agenda-block am full">
+            <div class="block-head">上午 10:00–11:30（90min）｜職能品質審查邏輯鏈 L0–L7｜主投影 logic-chain-slideshow</div>
+            <table class="agenda-table">
+              <thead>
+                <tr><th style="width:14%">時間</th><th style="width:6%">鏈</th><th>主題</th><th style="width:18%">產出</th></tr>
+              </thead>
+              <tbody>
+                <tr><td class="time">10:00–10:10</td><td class="chain">L0</td><td>開場：傳統教材 vs 職能導向</td><td>講師自評勾選</td></tr>
+                <tr><td class="time">10:10–10:22</td><td class="chain">L1</td><td>職能如何發展？iCAP 程序總覽</td><td>邏輯鏈地圖</td></tr>
+                <tr><td class="time">10:22–10:34</td><td class="chain">L2</td><td>產業需求分析</td><td>需求→職能缺口 1 例</td></tr>
+                <tr><td class="time">10:34–10:46</td><td class="chain">L3</td><td>定義範疇（七大範疇 T1–T7）</td><td>T1–T7 對號入座</td></tr>
+                <tr><td class="time">10:46–10:58</td><td class="chain">L4</td><td>工作任務 T → 行為指標 P → 產出 O</td><td>T/P/O 各 1 例</td></tr>
+                <tr><td class="time">10:58–11:10</td><td class="chain">L5</td><td>知識、技能、態度（KSA）</td><td>K/S/A 各 1 項</td></tr>
+                <tr><td class="time">11:10–11:22</td><td class="chain">L6</td><td>教學發展：課程地圖→教學單元</td><td>M1-1.1 在鏈上位置</td></tr>
+                <tr><td class="time">11:22–11:30</td><td class="chain">L7</td><td>銜接下午 Demo ＋ 預告報告書精靈走讀</td><td>問題清單、預告學習單</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="agenda-block lunch full">
+            <div class="block-head">午休 11:30–13:50</div>
+          </div>
+
+          <div class="agenda-block pm">
+            <div class="block-head">下午 13:50–15:25｜教學鏈 ＋ Phase 0–3 ＋ 表1–5</div>
+            <table class="agenda-table">
+              <thead>
+                <tr><th style="width:22%">時間</th><th style="width:10%">Phase</th><th>主題</th></tr>
+              </thead>
+              <tbody>
+                <tr><td class="time">13:50–14:05</td><td class="phase">Pre</td><td>M1-1.1 教學鏈說明（投影）→ 發《講師學習單》</td></tr>
+                <tr><td class="time">14:05–14:15</td><td class="phase">0</td><td>身分確認、Demo 定位</td></tr>
+                <tr><td class="time">14:15–14:30</td><td class="phase">精靈</td><td>報告書總地圖（簡報 1–10 頁）＋表1 職能表走讀</td></tr>
+                <tr><td class="time">14:30–14:45</td><td class="phase">1</td><td>教學內容、教學步驟 ＋ 表4 走讀</td></tr>
+                <tr><td class="time">14:45–14:57</td><td class="phase">2</td><td>教學目標（ABCD）＋ 表3 走讀</td></tr>
+                <tr><td class="time">14:57–15:12</td><td class="phase">3</td><td>教學方式、學習單 ＋ 表5 走讀</td></tr>
+                <tr><td class="time">15:12–15:25</td><td class="phase">表2</td><td>課程地圖走讀（呼應上午 L6）</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="agenda-block pm">
+            <div class="block-head">下午 15:25–17:00｜Phase 4–5 ＋ 表6–12 ＋ 收尾</div>
+            <table class="agenda-table">
+              <thead>
+                <tr><th style="width:22%">時間</th><th style="width:10%">Phase</th><th>主題</th></tr>
+              </thead>
+              <tbody>
+                <tr class="break"><td class="time">15:25–15:30</td><td>—</td><td>短休</td></tr>
+                <tr><td class="time">15:30–15:50</td><td class="phase">4</td><td>評量方式 ＋ 評量精靈 ＋ 表8 走讀</td></tr>
+                <tr><td class="time">15:50–16:05</td><td class="phase">6–7</td><td>表6 資源、表7 師資走讀</td></tr>
+                <tr><td class="time">16:05–16:15</td><td class="phase">5</td><td>產出歸檔、協作平台、M2 銜接</td></tr>
+                <tr><td class="time">16:15–16:30</td><td class="phase">精靈</td><td>表9–12 快速概覽（簡報 47–52 頁）</td></tr>
+                <tr><td class="time">16:30–17:00</td><td class="phase">收尾</td><td>Checklist 自我審查 ＋ 線上學習單導覽、Q&A</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <p class="agenda-foot">
+          邏輯鏈順序：<b>產業需求 → 七大範疇 → T/P/O → KSA → 課程地圖（86 單元）→ 單元設計 → 報告書表1–12</b>
+          ｜詳細版 <a href="agenda-flow.html" style="color:var(--accent)">agenda-flow.html</a>
+          ｜紙本 <a href="1150730-handouts/agenda-one-page-print.html" style="color:var(--accent2)">agenda-one-page-print</a>
+        </p>
+      </div>
+    </section>
+  </div>
+
+  <div class="slide-counter" id="counter">1 / 1</div>
+  <div class="controls no-print">
+    <button type="button" id="btnFs">全螢幕</button>
+    <span class="keys">全日一頁式議程｜F11 或全螢幕投影</span>
+  </div>
+  <script src="../../assets/meeting-display.js"></script>
+  <script>
+    MeetingDisplay.init({ labels: ['全日議程'] });
+  </script>
+</body>
+</html>
