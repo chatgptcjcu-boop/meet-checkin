@@ -6,7 +6,7 @@
   <title>議程與流程｜115/07/30 教材編審 Demo</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
-    :root { --am: #0f766e; --pm: #1e40af; --border: #cbd5e1; }
+    :root { --am: #0f766e; --pm: #1e40af; --rw: #b45309; --border: #cbd5e1; }
     body { font-family: 'Noto Sans TC', sans-serif; background: #f0f4f8; margin: 0; font-size: 10.5pt; line-height: 1.55; color: #111; }
     .doc { max-width: 56rem; margin: 0 auto; background: #fff; box-shadow: 0 4px 16px rgb(0 0 0 / 0.06); }
     .nav { padding: 0.75rem 1.5rem 0; font-size: 0.85rem; }
@@ -19,23 +19,27 @@
     h2 { font-size: 1.1rem; font-weight: 700; border-left: 4px solid var(--pm); padding-left: 0.55rem; margin: 1.5rem 0 0.65rem; }
     h2.am { border-color: var(--am); color: var(--am); }
     h2.pm { border-color: var(--pm); color: var(--pm); }
+    h2.rw { border-color: var(--rw); color: var(--rw); }
     h3 { font-size: 0.95rem; font-weight: 600; margin: 1rem 0 0.4rem; color: #334155; }
     table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin: 0.5rem 0 1rem; }
     th, td { border: 1px solid var(--border); padding: 0.4rem 0.5rem; vertical-align: top; }
     th { background: #f1f5f9; text-align: left; }
     .time { white-space: nowrap; font-weight: 600; }
-    .overview { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin: 1rem 0; }
-    @media (max-width: 640px) { .overview { grid-template-columns: 1fr; } }
+    .overview { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; margin: 1rem 0; }
+    @media (max-width: 768px) { .overview { grid-template-columns: 1fr; } }
     .block { border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.85rem 1rem; }
     .block.am { border-color: #99f6e4; background: #ecfdf5; }
     .block.pm { border-color: #93c5fd; background: #eff6ff; }
+    .block.rw { border-color: #fcd34d; background: #fffbeb; }
     .block strong { display: block; margin-bottom: 0.25rem; }
     .links { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.75rem 0; }
     .links a { display: inline-block; font-size: 0.82rem; padding: 0.35rem 0.65rem; border: 1px solid var(--border); border-radius: 0.35rem; text-decoration: none; color: #1e40af; background: #f8fafc; }
     .links a:hover { background: #eff6ff; border-color: #93c5fd; }
     .note { background: #fef3c7; border: 1px solid #fbbf24; border-radius: 0.4rem; padding: 0.65rem 0.85rem; font-size: 0.85rem; margin: 0.75rem 0; }
+    .note-info { background: #ecfdf5; border-color: #6ee7b7; }
     code { font-size: 0.78rem; background: #f1f5f9; padding: 0.1rem 0.3rem; border-radius: 0.2rem; }
     ul { margin: 0.35rem 0; padding-left: 1.2rem; }
+    td a { color: #1e40af; }
     @media print { body { background: #fff; } .doc { box-shadow: none; } .nav { display: none; } }
   </style>
 </head>
@@ -49,7 +53,7 @@
 
     <header class="hero">
       <h1>教材編審委員會第一場｜議程與流程</h1>
-      <p class="sub">115年7月30日（2026/07/30）｜兩段式：上午邏輯鏈 90min ＋ 下午 Demo 140min</p>
+      <p class="sub">115年7月30日（2026/07/30）｜上午邏輯鏈 90min ＋ 下午 Demo 190min（含報告書精靈銜接）</p>
       <p class="meta">示範單元 M1-1.1「緒論－為何寺廟需要法律定位？」｜臺灣道法總會－教育委員會</p>
     </header>
 
@@ -57,13 +61,18 @@
       <div class="overview">
         <div class="block am">
           <strong>上午 10:00–11:30（90min）</strong>
-          職能品質審查邏輯鏈 L0–L7（L1–L6 核心）<br>
+          職能品質審查邏輯鏈 L0–L7<br>
           主投影：<code>logic-chain-slideshow.html</code>
         </div>
         <div class="block pm">
-          <strong>下午 13:50–16:10（140min）</strong>
-          教學鏈 20min ＋ Phase 0–5 帶做 120min<br>
+          <strong>下午 13:50–17:00（190min）</strong>
+          教學鏈 15min ＋ Phase 0–5 帶做 ＋ 報告書走讀銜接<br>
           主投影：<code>m1-1-1-teaching-chain-slideshow.html</code>
+        </div>
+        <div class="block rw">
+          <strong>備援模組（課後自學）</strong>
+          報告書格式精靈全日約 5hr<br>
+          <a href="../../training/icap-planning-report-wizard/agenda-flow.html">獨立議程</a>
         </div>
       </div>
 
@@ -76,6 +85,11 @@
         <a href="AGENDA.md">下午議程 MD</a>。
       </div>
 
+      <div class="note note-info">
+        <strong>115/07/06 調整說明：</strong>下午延長至 17:00，整合「報告書格式精靈」55 頁投影與表1–12 沉浸式走讀。現場以 M1-1.1 單元對應表3–8 走讀；表9–12 與完整 5 小時版留待
+        <a href="../../training/icap-planning-report-wizard/agenda-flow.html">備援訓練模組</a>課後自學。
+      </div>
+
       <h2>全日總覽</h2>
       <table>
         <thead>
@@ -84,30 +98,34 @@
         <tbody>
           <tr><td class="time">10:00–11:30</td><td>90min</td><td>前置導覽：邏輯鏈 L0–L7</td><td>導覽學習單</td></tr>
           <tr><td class="time">11:30–13:50</td><td>—</td><td>午休</td><td>—</td></tr>
-          <tr><td class="time">13:50–14:10</td><td>20min</td><td>M1-1.1 教學鏈說明（投影）</td><td>理解下午 Phase 對應</td></tr>
-          <tr><td class="time">14:10–16:10</td><td>120min</td><td>Phase 0–5 單元 Demo 帶做</td><td>講師學習單、評量三表</td></tr>
+          <tr><td class="time">13:50–14:05</td><td>15min</td><td>M1-1.1 教學鏈說明（投影）</td><td>理解下午 Phase 對應</td></tr>
+          <tr><td class="time">14:05–15:25</td><td>80min</td><td>Phase 0–3 ＋ 報告書表1–5 走讀銜接</td><td>單元設計草稿、表1–5 練習列</td></tr>
+          <tr><td class="time">15:25–15:30</td><td>5min</td><td>短休</td><td>—</td></tr>
+          <tr><td class="time">15:30–16:15</td><td>45min</td><td>Phase 4 ＋ 評量精靈 ＋ 表6–8 走讀</td><td>評量三表、表6–8 練習</td></tr>
+          <tr><td class="time">16:15–16:30</td><td>15min</td><td>Phase 5 歸檔</td><td>協作平台、M2 銜接</td></tr>
+          <tr><td class="time">16:30–17:00</td><td>30min</td><td>報告書精靈收尾（表9–12 概覽、Checklist、線上學習單）</td><td>課後自學路徑</td></tr>
         </tbody>
       </table>
 
-      <h2 class="am">一、上午｜邏輯鏈導覽（L1–L6）</h2>
+      <h2 class="am">一、上午｜邏輯鏈導覽（L0–L7）</h2>
       <p style="font-size:0.85rem;color:#64748b;">主投影 <a href="00-preflight/logic-chain-slideshow.html">logic-chain-slideshow.html</a>｜話術 <a href="00-preflight/facilitator-preflight-script.html">facilitator-preflight-script.html</a></p>
       <table>
         <thead>
           <tr><th>時間</th><th>鏈環</th><th>主題</th><th>產出</th></tr>
         </thead>
         <tbody>
-          <tr><td class="time">0:00–0:10</td><td>L0</td><td>開場：傳統教材 vs 職能導向</td><td>講師自評勾選</td></tr>
-          <tr><td class="time">0:10–0:22</td><td>L1</td><td>職能如何發展？iCAP 程序總覽</td><td>邏輯鏈地圖</td></tr>
-          <tr><td class="time">0:22–0:34</td><td>L2</td><td>產業需求分析</td><td>需求→職能缺口 1 例</td></tr>
-          <tr><td class="time">0:34–0:46</td><td>L3</td><td>定義範疇（七大範疇 T1–T7）</td><td>T1–T7 對號入座</td></tr>
-          <tr><td class="time">0:46–0:58</td><td>L4</td><td>工作任務 T → 行為指標 P → 產出 O</td><td>T/P/O 各 1 例</td></tr>
-          <tr><td class="time">0:58–1:10</td><td>L5</td><td>知識、技能、態度（KSA）</td><td>K/S/A 各 1 項</td></tr>
-          <tr><td class="time">1:10–1:22</td><td>L6</td><td>教學發展：課程地圖→教學單元</td><td>M1-1.1 在鏈上位置</td></tr>
-          <tr><td class="time">1:22–1:30</td><td>L7</td><td>銜接下午 Demo</td><td>問題清單、預告學習單</td></tr>
+          <tr><td class="time">10:00–10:10</td><td>L0</td><td>開場：傳統教材 vs 職能導向</td><td>講師自評勾選</td></tr>
+          <tr><td class="time">10:10–10:22</td><td>L1</td><td>職能如何發展？iCAP 程序總覽</td><td>邏輯鏈地圖</td></tr>
+          <tr><td class="time">10:22–10:34</td><td>L2</td><td>產業需求分析</td><td>需求→職能缺口 1 例</td></tr>
+          <tr><td class="time">10:34–10:46</td><td>L3</td><td>定義範疇（七大範疇 T1–T7）</td><td>T1–T7 對號入座</td></tr>
+          <tr><td class="time">10:46–10:58</td><td>L4</td><td>工作任務 T → 行為指標 P → 產出 O</td><td>T/P/O 各 1 例</td></tr>
+          <tr><td class="time">10:58–11:10</td><td>L5</td><td>知識、技能、態度（KSA）</td><td>K/S/A 各 1 項</td></tr>
+          <tr><td class="time">11:10–11:22</td><td>L6</td><td>教學發展：課程地圖→教學單元</td><td>M1-1.1 在鏈上位置</td></tr>
+          <tr><td class="time">11:22–11:30</td><td>L7</td><td>銜接下午 Demo ＋ 預告報告書精靈走讀</td><td>問題清單、預告學習單</td></tr>
         </tbody>
       </table>
 
-      <h2 class="pm">二、下午 Part A｜M1-1.1 教學鏈（20min）</h2>
+      <h2 class="pm">二、下午 Part A｜M1-1.1 教學鏈（15min）</h2>
       <p style="font-size:0.85rem;color:#64748b;">主投影 <a href="00-preflight/m1-1-1-teaching-chain-slideshow.html">m1-1-1-teaching-chain-slideshow.html</a>｜13:50 準時，Phase 0 動手前</p>
       <table>
         <thead>
@@ -116,24 +134,57 @@
         <tbody>
           <tr><td class="time">13:50–13:53</td><td>開場：上午 L2–L6 回顧</td></tr>
           <tr><td class="time">13:53–13:58</td><td>T/P/O、單元定位（1.1.1～1.1.4）</td></tr>
-          <tr><td class="time">13:58–14:05</td><td>教學鏈總圖、Phase 0–5 對照</td></tr>
-          <tr><td class="time">14:05–14:10</td><td>「現在開始 Phase 0」→ 發《講師學習單》</td></tr>
+          <tr><td class="time">13:58–14:03</td><td>教學鏈總圖、Phase 0–5 對照</td></tr>
+          <tr><td class="time">14:03–14:05</td><td>「現在開始 Phase 0」→ 發《講師學習單》</td></tr>
         </tbody>
       </table>
 
-      <h2 class="pm">三、下午 Part B｜Phase 0–5 帶做（120min）</h2>
-      <p style="font-size:0.85rem;color:#64748b;">話術 <a href="1150730-handouts/facilitator-teaching-script.html">facilitator-teaching-script.html</a></p>
+      <h2 class="pm">三、下午 Part B｜Phase 0–3 ＋ 報告書表1–5 走讀（80min）</h2>
+      <p style="font-size:0.85rem;color:#64748b;">話術 <a href="1150730-handouts/facilitator-teaching-script.html">facilitator-teaching-script.html</a>｜報告書投影 <a href="../../training/icap-planning-report-wizard/report-wizard-slideshow.html">report-wizard-slideshow.html</a></p>
       <table>
         <thead>
-          <tr><th>時間</th><th>Phase</th><th>主題</th><th>模板</th></tr>
+          <tr><th>時間</th><th>Phase／表</th><th>主題</th><th>走讀／模板</th></tr>
         </thead>
         <tbody>
-          <tr><td class="time">14:10–14:20</td><td>0</td><td>身分確認、Demo 定位</td><td><a href="01-phase0-identity.html">Phase 0</a></td></tr>
-          <tr><td class="time">14:20–14:45</td><td>1</td><td>教學內容、教學步驟</td><td><a href="02-phase1-content-and-steps.html">Phase 1</a></td></tr>
-          <tr><td class="time">14:45–15:05</td><td>2</td><td>教學目標（ABCD）</td><td><a href="03-phase2-abcd-objectives.html">Phase 2</a></td></tr>
-          <tr><td class="time">15:05–15:30</td><td>3</td><td>教學方式、學習單</td><td><a href="04-phase3-methods-and-worksheets.html">Phase 3</a></td></tr>
-          <tr><td class="time">15:30–16:00</td><td>4</td><td>評量方式（考古題、勾選、分數觀察）</td><td><a href="05-phase4-assessment-design.html">Phase 4</a>｜<a href="assessment-design/assessment-design-wizard-slideshow.html">精靈投影</a></td></tr>
-          <tr><td class="time">16:00–16:10</td><td>5</td><td>產出歸檔、協作平台、M2 銜接</td><td><a href="06-phase5-archive-and-handoff.html">Phase 5</a></td></tr>
+          <tr><td class="time">14:05–14:15</td><td>0</td><td>身分確認、Demo 定位</td><td><a href="01-phase0-identity.html">Phase 0</a></td></tr>
+          <tr><td class="time">14:15–14:30</td><td>精靈</td><td>報告書總地圖（簡報第 1–10 頁）＋表1 職能表走讀</td><td><a href="../../training/icap-planning-report-wizard/worksheets/table1-writing-walkthrough.html">表1 走讀</a>｜<a href="../../competency-standard/competency-model-v74-viewer.html">V74</a></td></tr>
+          <tr><td class="time">14:30–14:45</td><td>1</td><td>教學內容、教學步驟 ＋ 表4 內容走讀</td><td><a href="02-phase1-content-and-steps.html">Phase 1</a>｜<a href="../../training/icap-planning-report-wizard/worksheets/table4-content-walkthrough.html">表4 走讀</a></td></tr>
+          <tr><td class="time">14:45–14:57</td><td>2</td><td>教學目標（ABCD）＋ 表3 目標走讀</td><td><a href="03-phase2-abcd-objectives.html">Phase 2</a>｜<a href="../../training/icap-planning-report-wizard/worksheets/table3-objectives-walkthrough.html">表3 走讀</a></td></tr>
+          <tr><td class="time">14:57–15:12</td><td>3</td><td>教學方式、學習單 ＋ 表5 方法走讀</td><td><a href="04-phase3-methods-and-worksheets.html">Phase 3</a>｜<a href="../../training/icap-planning-report-wizard/worksheets/table5-methods-walkthrough.html">表5 走讀</a></td></tr>
+          <tr><td class="time">15:12–15:25</td><td>表2</td><td>課程地圖走讀（呼應上午 L6）</td><td><a href="../../training/icap-planning-report-wizard/worksheets/table2-course-map-walkthrough.html">表2 走讀</a>｜<a href="../unit-claim-matrix.html">認領矩陣</a></td></tr>
+        </tbody>
+      </table>
+
+      <h2 class="pm">四、下午 Part C｜Phase 4–5 ＋ 表6–8 走讀（60min）</h2>
+      <table>
+        <thead>
+          <tr><th>時間</th><th>Phase／表</th><th>主題</th><th>走讀／模板</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="time">15:25–15:30</td><td>—</td><td>短休</td><td>—</td></tr>
+          <tr><td class="time">15:30–15:50</td><td>4</td><td>評量方式（考古題、勾選、分數觀察）＋ 表8 評量走讀</td><td><a href="05-phase4-assessment-design.html">Phase 4</a>｜<a href="assessment-design/assessment-design-wizard-slideshow.html">評量精靈</a>｜<a href="../../training/icap-planning-report-wizard/worksheets/table8-assessment-walkthrough.html">表8 走讀</a></td></tr>
+          <tr><td class="time">15:50–16:05</td><td>6–7</td><td>表6 資源、表7 師資走讀</td><td><a href="../../training/icap-planning-report-wizard/worksheets/table6-resources-walkthrough.html">表6</a>｜<a href="../../training/icap-planning-report-wizard/worksheets/table7-faculty-walkthrough.html">表7</a></td></tr>
+          <tr><td class="time">16:05–16:15</td><td>5</td><td>產出歸檔、協作平台、M2 銜接</td><td><a href="06-phase5-archive-and-handoff.html">Phase 5</a></td></tr>
+        </tbody>
+      </table>
+
+      <h2 class="rw">五、下午 Part D｜報告書精靈收尾（30min）</h2>
+      <p style="font-size:0.85rem;color:#64748b;">簡報第 47–55 頁｜課後完整走讀見 <a href="../../training/icap-planning-report-wizard/agenda-flow.html">備援模組議程</a></p>
+      <table>
+        <thead>
+          <tr><th>時間</th><th>內容</th><th>連結</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="time">16:15–16:25</td><td>表9–12 快速概覽（簡報第 47–52 頁，各表 2–3 分鐘導覽）</td>
+            <td>
+              <a href="../../training/icap-planning-report-wizard/worksheets/table9-staff-walkthrough.html">表9</a>、
+              <a href="../../training/icap-planning-report-wizard/worksheets/table10-pilot-walkthrough.html">表10</a>、
+              <a href="../../training/icap-planning-report-wizard/worksheets/table11-evidence-walkthrough.html">表11</a>、
+              <a href="../../training/icap-planning-report-wizard/worksheets/table12-graduation-walkthrough.html">表12</a>
+            </td>
+          </tr>
+          <tr><td class="time">16:25–16:35</td><td>地雷 Checklist 自我審查（簡報第 54 頁）</td><td><a href="../../training/icap-planning-report-wizard/report-wizard-slideshow.html">精靈投影</a></td></tr>
+          <tr><td class="time">16:35–17:00</td><td>線上學習單導覽、Q&A、課後自學指派</td><td><a href="../../training/icap-planning-report-wizard/worksheets/instructor-worksheet-online.html">報告書線上學習單</a>｜<a href="1150730-handouts/instructor-worksheet-online.html">0730 單元學習單</a></td></tr>
         </tbody>
       </table>
 
@@ -143,17 +194,16 @@
         <a href="00-preflight/logic-chain-slideshow.html">上午投影</a>
         <a href="00-preflight/m1-1-1-teaching-chain-slideshow.html">下午投影</a>
         <a href="assessment-design/assessment-design-wizard-slideshow.html">Phase 4 評量精靈</a>
-        <a href="00-preflight/assessment-design-analysis.md">評量設計分析</a>
+        <a href="../../training/icap-planning-report-wizard/report-wizard-slideshow.html">報告書精靈投影</a>
+        <a href="../../training/icap-planning-report-wizard/agenda-flow.html">報告書精靈議程</a>
+        <a href="../../training/icap-planning-report-wizard/worksheets/index.html">表1–12 走讀索引</a>
         <a href="1150730-handouts/index.html">現場發放</a>
-        <a href="1150730-handouts/print-index.html">列印索引</a>
         <a href="1150730-handouts/rehearsal-runbook.html">彩排手冊</a>
         <a href="demo-units/M1-1.1/index.html">M1-1.1 走讀</a>
-        <a href="00-preflight/AGENDA-preflight.md">前置議程 MD</a>
-        <a href="AGENDA.md">下午議程 MD</a>
       </div>
 
       <h3>邏輯鏈順序（主持者必背）</h3>
-      <p style="font-size:0.88rem;">產業需求 → 七大範疇 → 工作任務 T → 行為指標 P → 產出 O → KSA → 課程地圖（86 單元）→ 單元設計（＝下午 Demo）</p>
+      <p style="font-size:0.88rem;">產業需求 → 七大範疇 → 工作任務 T → 行為指標 P → 產出 O → KSA → 課程地圖（86 單元）→ 單元設計（下午 Demo）→ 報告書表1–12（精靈走讀銜接）</p>
     </div>
   </div>
 </body>

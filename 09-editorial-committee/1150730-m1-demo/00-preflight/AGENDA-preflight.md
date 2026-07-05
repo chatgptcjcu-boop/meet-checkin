@@ -3,7 +3,7 @@
 **定位：** Demo 動手做 M1-1.1 **之前**，先帶大家走完整條 iCAP 思維鏈一次。  
 **對象：** 教材講師（未修過 iCAP 職能導向課程）  
 **建議時數：** 90 分鐘（精簡版 60 分鐘見各 Phase 括號）  
-**銜接：** 結束後休息 15 分鐘 → 進入 `1150730-m1-demo` Phase 0–5（2hr 單元實作）
+**銜接：** 結束後午休 → 下午 13:50–17:00 進入 `1150730-m1-demo`（教學鏈 15min ＋ Phase 0–5 帶做 ＋ 報告書精靈表1–12 走讀銜接）
 
 ---
 
@@ -30,7 +30,7 @@
 | 0:46–0:58 | L4 | 工作任務 T → 行為指標 P → 產出 O | T/P/O 三欄各 1 例 |
 | 0:58–1:10 | L5 | 知識、技能、態度（KSA） | K/S/A 各 1 項 |
 | 1:10–1:22 | L6 | 教學發展：課程地圖→教學單元 | 看見 M1-1.1 在鏈上位置 |
-| 1:22–1:30 | L7 | 銜接 Demo：今日下午做什麼 | 講師確認問題清單 |
+| 1:22–1:30 | L7 | 銜接 Demo：下午 Phase 0–5 ＋ 報告書精靈走讀 | 講師確認問題清單 |
 
 ---
 
@@ -84,3 +84,5 @@
 | `facilitator-preflight-script.html` | 分鐘級話術 |
 | `instructor-preflight-worksheet.html` | 學員紙本／PDF |
 | `ICAP-quality-chain-reference.md` | 勞動部文件章節表 |
+| `../../training/icap-planning-report-wizard/agenda-flow.html` | 報告書精靈獨立議程（課後自學） |
+| `../../training/icap-planning-report-wizard/worksheets/table2-course-map-walkthrough.html` | 表2 走讀（下午 15:12 呼應 L6） |
