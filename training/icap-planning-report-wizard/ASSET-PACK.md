@@ -10,7 +10,7 @@
 |------|------|------|
 | **入口** | `index.html` | 模組首頁、使用流程、結構速覽 |
 | **參考教材** | `reference/` | 勞動部 ODT 公版格式、縮圖、`source-metadata.json` 溯源 |
-| **投影** | `report-wizard-slideshow.html` | 18 頁 meeting-display 簡報（金綠主題） |
+| **投影** | `report-wizard-slideshow.html` | 24 頁 meeting-display 簡報（含金綠主題、表1 寫作引導） |
 | **學習單 hub** | `worksheets/index.html` | 分段 + 整合入口 |
 | **線上表單** | `worksheets/instructor-worksheet-online.html` | 壹～伍整合填寫、提交試算表 |
 | **分段練習** | `worksheets/section-01`～`05` | 可列印手寫版 |

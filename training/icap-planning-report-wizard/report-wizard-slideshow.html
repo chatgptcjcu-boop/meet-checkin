@@ -105,6 +105,52 @@
     a.card-link .lbl { color: var(--accent); font-weight: 700; font-size: clamp(0.72rem, 1.3vw, 0.9rem); }
     a.card-link .name { font-weight: 600; font-size: clamp(0.82rem, 1.5vw, 1.05rem); margin: 0.2vh 0; }
     a.card-link .desc { font-size: clamp(0.72rem, 1.3vw, 0.88rem); color: #94a3b8; line-height: 1.4; }
+    /* 表1 沉浸式寫作引導 */
+    .write-flow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.5vh 0.6vw;
+      font-size: clamp(0.78rem, 1.45vw, 1.02rem);
+      margin: 1vh 0;
+    }
+    .write-flow .wf-step {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.5vh 0.85vw;
+      font-weight: 600;
+    }
+    .write-flow .wf-step.on { border-color: var(--accent2); color: var(--accent2); }
+    .write-flow .wf-arrow { color: var(--accent); font-weight: 700; }
+    .demo-box {
+      background: rgb(52 211 153 / 0.06);
+      border: 1px solid var(--accent2);
+      border-radius: 10px;
+      padding: 1vh 1.1vw;
+      font-size: clamp(0.76rem, 1.4vw, 0.98rem);
+      line-height: 1.5;
+      margin: 0.8vh 0;
+    }
+    .demo-box .demo-lbl { color: var(--accent2); font-weight: 700; font-size: 0.88em; margin-bottom: 0.3vh; }
+    .demo-box .demo-src { font-size: 0.82em; color: #94a3b8; margin-top: 0.4vh; }
+    .your-turn {
+      background: rgb(251 191 36 / 0.1);
+      border: 2px dashed var(--accent);
+      border-radius: 10px;
+      padding: 0.8vh 1vw;
+      font-size: clamp(0.78rem, 1.45vw, 1.02rem);
+      margin-top: 1vh;
+    }
+    .your-turn strong { color: var(--accent); }
+    .narration {
+      font-size: clamp(0.82rem, 1.5vw, 1.05rem);
+      line-height: 1.55;
+      color: var(--text);
+      margin-bottom: 1vh;
+    }
+    .narration em { color: var(--accent2); font-style: normal; font-weight: 600; }
   </style>
 </head>
 <body>
@@ -412,7 +458,181 @@
       </div>
     </section>
 
-    <!-- 10 表2 課程地圖 -->
+    <!-- 10 表1 寫作引導總覽 -->
+    <section class="slide" data-id="t1-write-overview" data-addie="a">
+      <div class="slide-header">
+        <p class="org">TABLE 1｜WRITING GUIDE</p>
+        <h2>表1 實際寫作引導 — 總覽</h2>
+        <p class="meta">從 icapV74 挑一列 → 填表1 → 對表3｜ADDIE 分析閉環</p>
+      </div>
+      <div class="slide-body">
+        <p class="narration">別從空白 Word 開始。請打開<strong>宮廟管理師職能基準</strong>，挑一列工作任務，照下面四步把 T→P→K/S→L 寫進表1——之後表3 的「對應行為指標」必須<em>逐字對齊</em>。</p>
+        <div class="write-flow">
+          <span class="wf-step on">① 選 T</span><span class="wf-arrow">→</span>
+          <span class="wf-step">② 寫 P</span><span class="wf-arrow">→</span>
+          <span class="wf-step">③ 填 K/S + L</span><span class="wf-arrow">→</span>
+          <span class="wf-step">④ 對表3</span>
+        </div>
+        <div class="grid-2" style="margin-top:1.2vh">
+          <div class="card">
+            <h3>示範路徑（本計畫）</h3>
+            <p>icapV74 <strong>T1.1</strong>「執行宗教法人登記與章程管理」→ 表1 一列 → 對應課程單元如 <strong>M1-1.1</strong> 緒論</p>
+          </div>
+          <div class="card">
+            <h3>級別統一</h3>
+            <p>宮廟管理師 86 單元與職能基準皆為<strong>職能級別 3</strong>——封面、表1 每列、表3 每單元皆填 3</p>
+          </div>
+        </div>
+        <div class="your-turn"><strong>現在輪到你：</strong>下一頁起跟著示範走一遍；最後一頁開啟<strong>表1 寫作走讀</strong>，選自己的單元填一列。</div>
+      </div>
+    </section>
+
+    <!-- 11 Step 1 選工作任務 T -->
+    <section class="slide" data-id="t1-write-step-t">
+      <div class="slide-header">
+        <p class="org">STEP 1｜TASK T</p>
+        <h2>Step 1　選工作任務 T</h2>
+        <p class="meta">從職能基準模型挑選｜勿把教學章節標題當 T</p>
+      </div>
+      <div class="slide-body">
+        <p class="narration">工作任務 T 是<strong>場域裡可觀察的任務名稱</strong>，不是「第一堂課講什麼」。請在 icapV74 表 2-2 找到與您負責單元對應的 T 編號。</p>
+        <div class="demo-box">
+          <div class="demo-lbl">示範｜icapV74 表 2-2</div>
+          <strong>T1</strong> 宮廟法人治理與登記事務<br>
+          <strong>T1.1</strong> 執行宗教法人登記與章程管理<br>
+          <span class="demo-src">對應課程單元範例：M1-1.1「緒論－宮廟法人定位與登記實務」</span>
+        </div>
+        <div class="tips-cols">
+          <div>
+            <h4>書寫注意</h4>
+            <ul>
+              <li>表1「工作任務」欄填 T 的文字，可附編號（T1.1）</li>
+              <li>一列 = 一組核心任務；86 單元不必 86 列，但核心 T 須覆蓋</li>
+              <li>有英文證書才填英文欄；本計畫可留空</li>
+            </ul>
+          </div>
+          <div>
+            <h4>常見錯誤</h4>
+            <ul>
+              <li>把「模組一緒論」當工作任務（那是課程單元名）</li>
+              <li>自行發明 T，與參·1.1 職能分析文件對不上</li>
+              <li>T 太籠統（「廟務管理」）無法對應具體 P</li>
+            </ul>
+          </div>
+        </div>
+        <div class="your-turn"><strong>現在輪到你：</strong>在 V74 檢視器找到您負責單元對應的 T——先記下編號與任務名稱。</div>
+      </div>
+    </section>
+
+    <!-- 12 Step 2 寫行為指標 P -->
+    <section class="slide" data-id="t1-write-step-p">
+      <div class="slide-header">
+        <p class="org">STEP 2｜PERFORMANCE P</p>
+        <h2>Step 2　寫行為指標 P</h2>
+        <p class="meta">可觀察動詞 + 標準｜表3 須逐字對齊</p>
+      </div>
+      <div class="slide-body">
+        <p class="narration">行為指標 P 回答：「做到什麼程度算會？」用<em>可觀察動詞</em>（能依據…製作、能獨立完成…）加<em>具體標準</em>，禁用「了解、熟悉、認識」。</p>
+        <div class="demo-box">
+          <div class="demo-lbl">示範｜P1.1.1（T1.1 第一條）</div>
+          能依據宗教法規，召開信徒大會並製作符合主管機關要求之會議紀錄。
+          <div class="demo-src">同任務另有 P1.1.2、P1.1.3——表1 可擇一列示範，或合併書寫；表3 須能回溯到同一 P</div>
+        </div>
+        <div class="tips-cols">
+          <div>
+            <h4>書寫注意</h4>
+            <ul>
+              <li>從 icapV74 複製 P 後，表1 與表3「對應行為指標」<strong>逐字一致</strong></li>
+              <li>一句 P 含：條件（依據○○）+ 行為（做什麼）+ 標準（符合○○）</li>
+              <li>工作產出 O 可幫助檢核 P 是否具體（如 O1.1.1 會議紀錄）</li>
+            </ul>
+          </div>
+          <div>
+            <h4>常見錯誤</h4>
+            <ul>
+              <li>表1 寫 P1.1.1，表3 改寫成不同句子</li>
+              <li>P 只有動詞無標準（「能召開會議」——符合什麼？）</li>
+              <li>把教學活動當 P（「能聽完三小時講義」）</li>
+            </ul>
+          </div>
+        </div>
+        <div class="your-turn"><strong>現在輪到你：</strong>選 T1.1 的一條 P 抄進筆記——等下表1 與表3 都用同一句。</div>
+      </div>
+    </section>
+
+    <!-- 13 Step 3 填 K/S + 級別 L -->
+    <section class="slide" data-id="t1-write-step-ksl">
+      <div class="slide-header">
+        <p class="org">STEP 3｜K / S / L</p>
+        <h2>Step 3　填知識 K、技能 S、級別 L</h2>
+        <p class="meta">從 P 反推｜本計畫 L = 3</p>
+      </div>
+      <div class="slide-body">
+        <p class="narration">問自己：「要表現到 P 這樣，學員需要<em>知道什麼（K）</em>、<em>會做什麼（S）</em>？」職能級別 L 本計畫統一填 <strong>3</strong>。</p>
+        <div class="demo-box">
+          <div class="demo-lbl">示範｜T1.1 / P1.1.1 對應 K/S（icapV74）</div>
+          <strong>L：</strong>3<br>
+          <strong>K：</strong>K01 宮廟組織運作知識；K02 組織章程與行政規章；K26 宮廟登記與變更實務知識<br>
+          <strong>S：</strong>S01 文書處理與檔案管理；S17 會議規劃與執行技巧；S28 宮廟登記文件撰寫與申請能力
+        </div>
+        <div class="tips-cols">
+          <div>
+            <h4>書寫注意</h4>
+            <ul>
+              <li>表1 K/S 可寫編號或白話摘要；表4 大綱須涵蓋這些知技能</li>
+              <li>級別 3 = 能獨立完成常規任務；勿與表3 單元級別矛盾</li>
+              <li>一列 T-P-K-S-L 形成閉環，再寫下一列</li>
+            </ul>
+          </div>
+          <div>
+            <h4>常見錯誤</h4>
+            <ul>
+              <li>K/S 抄教材目錄，與 P 無關</li>
+              <li>表1 填 L=2，表3 填 L=3</li>
+              <li>漏列 S——職能課強調「會做」，不只「知道」</li>
+            </ul>
+          </div>
+        </div>
+        <div class="your-turn"><strong>現在輪到你：</strong>對照 V74 該 T 的 K/S 欄，摘 2–3 項寫進表1——或用自己的話對應 P。</div>
+      </div>
+    </section>
+
+    <!-- 14 Step 4 現場動手 -->
+    <section class="slide" data-id="t1-write-step-practice">
+      <div class="slide-header">
+        <p class="org">STEP 4｜PRACTICE</p>
+        <h2>Step 4　現場動手填一列</h2>
+        <p class="meta">走讀精靈 × V74 檢視器 × 學習單｜ADDIE 閉環實作</p>
+      </div>
+      <div class="slide-body">
+        <p class="narration">示範看完，請<strong>選自己負責的單元</strong>，在走讀頁或學習單填完整一列表1——完成後對照表3 預留「對應行為指標」欄位。</p>
+        <div class="link-grid">
+          <a class="card-link" href="worksheets/table1-writing-walkthrough.html" target="_blank" style="border-color:var(--accent)">
+            <div class="lbl">★ 表1 寫作走讀</div>
+            <div class="name">逐步精靈｜T1.1 示範 + 自填一列</div>
+            <div class="desc">table1-writing-walkthrough.html｜可暫存本機</div>
+          </a>
+          <a class="card-link" href="../../competency-standard/competency-model-v74-viewer.html" target="_blank" style="border-color:var(--accent2)">
+            <div class="lbl">icapV74 檢視器</div>
+            <div class="name">表 2-2 職能規格表</div>
+            <div class="desc">並排對照 T/P/K/S</div>
+          </a>
+          <a class="card-link" href="worksheets/section-02-analysis.html" target="_blank">
+            <div class="lbl">分段學習單</div>
+            <div class="name">表1–2 分析階段</div>
+            <div class="desc">section-02-analysis.html｜可列印</div>
+          </a>
+          <a class="card-link" href="worksheets/instructor-worksheet-online.html" target="_blank">
+            <div class="lbl">線上整合版</div>
+            <div class="name">講師學習單｜提交試算表</div>
+            <div class="desc">填完表1 可繼續表2–12</div>
+          </a>
+        </div>
+        <div class="your-turn"><strong>現在輪到你：</strong>開啟走讀頁，左看 V74、右填自己的 T/P/K/S/L——完成後舉手或貼連結分享。</div>
+      </div>
+    </section>
+
+    <!-- 15 表2 課程地圖 -->
     <section class="slide" data-id="t2">
       <div class="slide-header">
         <p class="org">SECTION 貳｜A 分析</p>
@@ -645,17 +865,19 @@
           本精靈為格式地圖，實質內容來自 ADDIE 產出與試辦紀錄<br>
           撰寫時開啟職能表、課程地圖、單元計畫書並排對照<br>
           iCAP 認證請以<strong style="color:#fbbf24">平台線上系統</strong>最新欄位為準<br><br>
-          <a href="worksheets/instructor-worksheet-online.html" style="color:#34d399;font-weight:700;text-decoration:underline">→ 講師學習單｜線上填寫版</a>
+          <a href="worksheets/table1-writing-walkthrough.html" style="color:#fbbf24;font-weight:700;text-decoration:underline">→ 表1 寫作走讀精靈</a>
+          &nbsp;｜&nbsp;
+          <a href="worksheets/instructor-worksheet-online.html" style="color:#34d399;font-weight:700;text-decoration:underline">講師學習單｜線上填寫版</a>
           &nbsp;｜&nbsp;
           <a href="worksheets/index.html" style="color:#94a3b8;text-decoration:underline">分段練習索引</a><br><br>
-          ← → 或空白鍵複習｜按 3 回到報告書總地圖
+          ← → 或空白鍵複習｜按 3 回到報告書總地圖｜表1 寫作引導在第 10–14 頁
         </p>
       </div>
     </section>
 
   </div>
 
-  <div class="slide-counter" id="counter">1 / 19</div>
+  <div class="slide-counter" id="counter">1 / 24</div>
 
   <div class="controls no-print">
     <button type="button" id="btnPrev">◀ 上一頁</button>
@@ -664,7 +886,7 @@
     <button type="button" id="btnFs">全螢幕</button>
     <a href="index.html" style="color:#94a3b8;font-size:0.78rem;text-decoration:none">訓練索引</a>
     <a href="../../dashboard.html" style="color:#94a3b8;font-size:0.78rem;text-decoration:none">儀表板</a>
-    <span class="counter" id="counterCtrl">1 / 19</span>
+    <span class="counter" id="counterCtrl">1 / 24</span>
     <span class="keys">← → 或空白鍵切換</span>
   </div>
 
@@ -673,8 +895,9 @@
     MeetingDisplay.init({
       labels: [
         '封面', '如何使用', '報告書總地圖', '封面申請欄位', '職能依據與類型',
-        '宮廟管理師實例', '壹課程資訊總覽', '需求簡介目的', '時數級別對象', '表1 職能表', '表2 課程地圖',
-        '表3 教學目標', '表4-5 內容方法', '表6-8 資源師資評量', '表9-12 實施評估',
+        '宮廟管理師實例', '壹課程資訊總覽', '需求簡介目的', '時數級別對象', '表1 職能表',
+        '表1寫作總覽', 'Step1 選T', 'Step2 寫P', 'Step3 K/S與L', 'Step4 現場動手',
+        '表2 課程地圖', '表3 教學目標', '表4-5 內容方法', '表6-8 資源師資評量', '表9-12 實施評估',
         '參佐證ADDIE', '利益關係人', '地雷Checklist', '結語下一步'
       ],
       hotkeys: { '3': 2 },
