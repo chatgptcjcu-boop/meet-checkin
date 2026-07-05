@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>表11 學習證據走讀｜宮廟管理師</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="worksheet-shared.css">
+  <style>
+    :root { --gold: #fbbf24; --step-on: #0f766e; }
+    body { background: #0f172a; }
+    .walkthrough { max-width: 52rem; margin: 0 auto; padding: 1rem 1.25rem 3rem; }
+    .walk-header { text-align: center; color: #f8fafc; margin-bottom: 1.25rem; }
+    .walk-header h1 { font-size: 1.35rem; margin: 0.5rem 0 0.25rem; color: var(--gold); }
+    .walk-header p { font-size: 0.88rem; color: #94a3b8; margin: 0; }
+    .step-nav { display: flex; flex-wrap: wrap; gap: 0.35rem; justify-content: center; margin-bottom: 1rem; }
+    .step-nav button { font-family: inherit; font-size: 0.78rem; padding: 0.35rem 0.65rem; border: 1px solid #475569; border-radius: 6px; background: #1e293b; color: #cbd5e1; cursor: pointer; }
+    .step-nav button.active { border-color: var(--gold); color: var(--gold); background: #334155; }
+    .step-nav button.done { border-color: #34d399; color: #34d399; }
+    .panel { background: #fff; border-radius: 0.75rem; padding: 1.25rem 1.5rem; box-shadow: 0 8px 24px rgb(0 0 0 / 0.25); margin-bottom: 1rem; }
+    .panel[hidden] { display: none; }
+    .step-title { font-size: 1.1rem; font-weight: 700; color: var(--step-on); margin: 0 0 0.35rem; }
+    .step-meta { font-size: 0.82rem; color: #64748b; margin-bottom: 1rem; }
+    .narration { font-size: 0.92rem; line-height: 1.6; margin-bottom: 1rem; }
+    .example-box { background: #f0fdfa; border: 1px solid #6ee7b7; border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.85rem; margin-bottom: 1rem; }
+    .example-box .lbl { font-weight: 700; color: var(--step-on); font-size: 0.78rem; margin-bottom: 0.35rem; }
+    .field-row { margin-bottom: 0.85rem; }
+    .field-row label { display: block; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.25rem; color: #334155; }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.25rem; }
+    .btn { font-family: inherit; font-size: 0.88rem; font-weight: 600; padding: 0.5rem 1rem; border-radius: 6px; border: none; cursor: pointer; }
+    .btn-primary { background: var(--step-on); color: #fff; }
+    .btn-secondary { background: #e2e8f0; color: #334155; }
+    .btn-gold { background: var(--gold); color: #1e293b; }
+    .link-bar { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; font-size: 0.8rem; padding: 0.75rem 0; border-bottom: 1px solid #334155; margin-bottom: 1rem; }
+    .link-bar a { color: #34d399; text-decoration: none; }
+    .summary-table { width: 100%; font-size: 0.82rem; }
+    .summary-table th { width: 22%; }
+    .status-msg { font-size: 0.82rem; color: #059669; margin-top: 0.5rem; }
+  </style>
+</head>
+<body>
+  <div class="walkthrough">
+    <div class="link-bar">
+      <a href="../report-wizard-slideshow.html">← 投影簡報（表9–12 第 47–52 頁）</a>
+      <a href="index.html">學習單索引</a>
+      <a href="table10-pilot-walkthrough.html">← 表10 試辦走讀</a>
+      <a href="table12-graduation-walkthrough.html">表12 結訓走讀 →</a>
+      <a href="instructor-worksheet-online.html">線上整合版</a>
+    </div>
+
+    <div class="walk-header">
+      <p>宮廟管理師｜報告書表11 沉浸式寫作走讀</p>
+      <h1>表8 評量工具 → 具體學習產出 → E-2 佐證</h1>
+      <p>示範 M1-1.1｜iCAP #5.2｜上課現場練習</p>
+    </div>
+
+    <div class="practice-notice" role="note">
+      <p class="practice-notice-title">📋 本頁用途說明</p>
+      <p>本走讀頁僅供上課時逐段講解與現場練習，不會自動存檔至雲端。</p>
+      <p>瀏覽器本機暫存僅供當次練習，關閉或換裝置即可能消失。</p>
+      <p>請自行複製摘要，或至 <a href="instructor-worksheet-online.html">講師學習單｜線上填寫版</a> 整合提交後存檔。</p>
+    </div>
+
+    <nav class="step-nav" id="stepNav" aria-label="走讀步驟"></nav>
+
+    <section class="panel" data-step="0">
+      <h2 class="step-title">總覽｜表8 → 表11 → 參·5.2</h2>
+      <p class="step-meta">可抽查的具體產出</p>
+      <p class="narration">表11 列出各單元<strong>學習成果證據</strong>——須是具名、可數量、可抽查的產出（作業、檢核表、實作照片…），並與參章 E-2 上傳檔案一致。</p>
+      <div class="example-box">
+        <div class="lbl">四步流程</div>
+        ① 對表8 工具 → ② 列證據項目 → ③ 對 E-2 佐證 → ④ 檢核提交
+      </div>
+      <div class="btn-row"><button type="button" class="btn btn-primary" data-next>下一步：對表8 →</button></div>
+    </section>
+
+    <section class="panel" data-step="1" hidden>
+      <h2 class="step-title">Step 1｜對照表8 評量工具</h2>
+      <p class="step-meta">工具產出 = 證據項目</p>
+      <div class="example-box">
+        <div class="lbl">示範｜M1-1.1 表8 → 表11</div>
+        表8 工具：法人比較檢核表、會議紀錄 Rubrics<br>
+        → 表11：比較表作答 20 份、紀錄草稿 20 份、Rubrics 評分紀錄 20 份
+      </div>
+      <div class="field-row">
+        <label for="myUnitName">單元名稱（同表3–8）</label>
+        <input class="online-input" id="myUnitName" type="text" placeholder="緒論 - 為何寺廟需要法律定位？">
+      </div>
+      <div class="field-row">
+        <label for="myT8Tools">表8 評量工具（摘要）</label>
+        <textarea class="online-textarea" id="myT8Tools" placeholder="從表8 走讀複製…"></textarea>
+      </div>
+      <div class="btn-row">
+        <button type="button" class="btn btn-secondary" data-prev>← 上一步</button>
+        <button type="button" class="btn btn-gold" id="btnCopyT8">套用 M1-1.1 表8 摘要</button>
+        <button type="button" class="btn btn-primary" data-next>下一步：證據 →</button>
+      </div>
+    </section>
+
+    <section class="panel" data-step="2" hidden>
+      <h2 class="step-title">Step 2｜列具體證據項目</h2>
+      <p class="step-meta">數量＋名稱｜非空泛描述</p>
+      <div class="example-box">
+        <div class="lbl">示範｜M1-1.1 證據清單</div>
+        ① 法人比較自評表（學員作答）20 份<br>
+        ② 三種組織型態案例討論紀錄 5 組<br>
+        ③ 會議紀錄格式演練草稿 20 份<br>
+        ④ Rubrics 評分紀錄表 20 份
+      </div>
+      <div class="field-row">
+        <label for="myEvidence">學習成果證據（草稿）</label>
+        <textarea class="online-textarea tall" id="myEvidence" placeholder="具名產出、份數、可抽查…"></textarea>
+      </div>
+      <div class="btn-row">
+        <button type="button" class="btn btn-secondary" data-prev>← 上一步</button>
+        <button type="button" class="btn btn-gold" id="btnCopyEvidence">套用 M1-1.1 證據</button>
+        <button type="button" class="btn btn-primary" data-next>下一步：E-2 →</button>
+      </div>
+    </section>
+
+    <section class="panel" data-step="3" hidden>
+      <h2 class="step-title">Step 3｜對 E-2 佐證上傳</h2>
+      <p class="step-meta">參·5.2 須能對上</p>
+      <div class="example-box">
+        <div class="lbl">示範｜E-2 佐證索引</div>
+        參·5.2 學習成果證據 #1：M1-1.1 法人比較表作答（PDF 20 份合併）<br>
+        參·5.2 #2：M1-1.1 會議紀錄演練草稿＋Rubrics 評分（ZIP）
+      </div>
+      <div class="field-row">
+        <label for="myE2Ref">E-2 佐證文件索引（草稿）</label>
+        <textarea class="online-textarea" id="myE2Ref" placeholder="參·5.2 檔名、編號…"></textarea>
+      </div>
+      <div class="btn-row">
+        <button type="button" class="btn btn-secondary" data-prev>← 上一步</button>
+        <button type="button" class="btn btn-gold" id="btnCopyE2">套用 E-2 示範</button>
+        <button type="button" class="btn btn-primary" data-next>下一步：檢核 →</button>
+      </div>
+    </section>
+
+    <section class="panel" data-step="4" hidden>
+      <h2 class="step-title">Step 4｜檢核與提交</h2>
+      <p class="step-meta">表11 證據鏈完成</p>
+      <table class="summary-table">
+        <tr><th>單元</th><td id="sumUnit">—</td></tr>
+        <tr><th>表8 工具</th><td id="sumT8">—</td></tr>
+        <tr><th>證據項目</th><td id="sumEvidence">—</td></tr>
+        <tr><th>E-2 索引</th><td id="sumE2">—</td></tr>
+      </table>
+      <div class="q" style="margin-top:1rem">
+        <div class="q-title">自我檢核</div>
+        <div class="opts" style="flex-direction:column;align-items:flex-start;">
+          <label><input type="checkbox"> 每項證據有具名產出與數量？</label>
+          <label><input type="checkbox"> 非僅「學員心得」等空泛描述？</label>
+          <label><input type="checkbox"> 參·5.2 已上傳對應檔案？</label>
+          <label><input type="checkbox"> 表5 勾案例，表11 有案例產出？</label>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button type="button" class="btn btn-secondary" data-prev>← 上一步</button>
+        <button type="button" class="btn btn-secondary" id="btnSave">暫存本機（僅當次）</button>
+        <button type="button" class="btn btn-gold" id="btnCopy">複製摘要文字</button>
+        <a class="btn btn-primary" href="table12-graduation-walkthrough.html" style="text-decoration:none;display:inline-block">→ 表12 結訓走讀</a>
+        <a class="btn btn-primary" href="instructor-worksheet-online.html" style="text-decoration:none;display:inline-block">→ 線上整合版</a>
+      </div>
+      <p class="status-msg" id="statusMsg" hidden></p>
+    </section>
+  </div>
+
+  <script>
+    (function () {
+      var STORAGE_KEY = 'icap-table11-walkthrough-v1';
+      var STEP_LABELS = ['總覽', 'Step1 對表8', 'Step2 證據', 'Step3 E-2', 'Step4 檢核'];
+      var current = 0;
+      var panels = Array.prototype.slice.call(document.querySelectorAll('.panel[data-step]'));
+      var nav = document.getElementById('stepNav');
+      var textFields = ['myUnitName','myT8Tools','myEvidence','myE2Ref'];
+      var fields = {};
+      textFields.forEach(function (id) { fields[id] = document.getElementById(id); });
+
+      STEP_LABELS.forEach(function (label, i) {
+        var btn = document.createElement('button');
+        btn.type = 'button'; btn.textContent = label; btn.dataset.step = String(i);
+        btn.addEventListener('click', function () { goTo(i); });
+        nav.appendChild(btn);
+      });
+
+      function collect() {
+        return { step: current, myUnitName: fields.myUnitName.value, myT8Tools: fields.myT8Tools.value,
+          myEvidence: fields.myEvidence.value, myE2Ref: fields.myE2Ref.value };
+      }
+      function apply(data) {
+        if (!data) return;
+        textFields.forEach(function (id) { if (data[id] !== undefined) fields[id].value = data[id]; });
+        if (typeof data.step === 'number') current = data.step;
+      }
+      function saveLocal() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(collect())); } catch (e) {} }
+      function loadLocal() { try { var raw = localStorage.getItem(STORAGE_KEY); if (raw) apply(JSON.parse(raw)); } catch (e) {} }
+      function updateSummary() {
+        document.getElementById('sumUnit').textContent = fields.myUnitName.value || '—';
+        document.getElementById('sumT8').textContent = fields.myT8Tools.value || '—';
+        document.getElementById('sumEvidence').textContent = fields.myEvidence.value || '—';
+        document.getElementById('sumE2').textContent = fields.myE2Ref.value || '—';
+      }
+      function goTo(idx) {
+        if (idx < 0 || idx >= panels.length) return;
+        current = idx;
+        panels.forEach(function (p, i) { p.hidden = i !== idx; });
+        nav.querySelectorAll('button').forEach(function (b, i) {
+          b.classList.toggle('active', i === idx);
+          b.classList.toggle('done', i < idx);
+        });
+        if (idx === 4) updateSummary();
+        saveLocal();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      document.querySelectorAll('[data-next]').forEach(function (btn) { btn.addEventListener('click', function () { goTo(current + 1); }); });
+      document.querySelectorAll('[data-prev]').forEach(function (btn) { btn.addEventListener('click', function () { goTo(current - 1); }); });
+      textFields.forEach(function (id) { fields[id].addEventListener('input', saveLocal); });
+
+      document.getElementById('btnCopyT8').addEventListener('click', function () {
+        fields.myUnitName.value = '緒論 - 為何寺廟需要法律定位？';
+        fields.myT8Tools.value = 'M1-1.1 法人比較檢核表（筆試）；會議紀錄 Rubrics 檢核表（實作）';
+        saveLocal();
+      });
+      document.getElementById('btnCopyEvidence').addEventListener('click', function () {
+        fields.myEvidence.value = '① 法人比較自評表 20 份\n② 案例討論紀錄 5 組\n③ 會議紀錄演練草稿 20 份\n④ Rubrics 評分紀錄 20 份';
+        saveLocal();
+      });
+      document.getElementById('btnCopyE2').addEventListener('click', function () {
+        fields.myE2Ref.value = '參·5.2 #1：M1-1.1 法人比較表作答（PDF）\n參·5.2 #2：會議紀錄草稿＋Rubrics 評分（ZIP）';
+        saveLocal();
+      });
+      document.getElementById('btnSave').addEventListener('click', function () {
+        saveLocal();
+        var msg = document.getElementById('statusMsg');
+        msg.textContent = '已暫存至本機瀏覽器（僅供當次練習；關閉或換裝置可能消失）';
+        msg.hidden = false;
+        setTimeout(function () { msg.hidden = true; }, 3000);
+      });
+      document.getElementById('btnCopy').addEventListener('click', function () {
+        updateSummary();
+        var text = ['【表11 學習成果證據】', '單元：' + fields.myUnitName.value,
+          '表8 工具：' + fields.myT8Tools.value, '證據：' + fields.myEvidence.value,
+          'E-2：' + fields.myE2Ref.value].join('\n');
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function () {
+            var msg = document.getElementById('statusMsg');
+            msg.textContent = '已複製到剪貼簿'; msg.hidden = false;
+            setTimeout(function () { msg.hidden = true; }, 3000);
+          });
+        }
+      });
+      loadLocal(); goTo(current);
+    })();
+  </script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>表5 方法走讀｜宮廟管理師教學法</title>
+  <title>表8 評量走讀｜宮廟管理師</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="worksheet-shared.css">
   <style>
@@ -14,10 +14,7 @@
     .walk-header h1 { font-size: 1.35rem; margin: 0.5rem 0 0.25rem; color: var(--gold); }
     .walk-header p { font-size: 0.88rem; color: #94a3b8; margin: 0; }
     .step-nav { display: flex; flex-wrap: wrap; gap: 0.35rem; justify-content: center; margin-bottom: 1rem; }
-    .step-nav button {
-      font-family: inherit; font-size: 0.78rem; padding: 0.35rem 0.65rem;
-      border: 1px solid #475569; border-radius: 6px; background: #1e293b; color: #cbd5e1; cursor: pointer;
-    }
+    .step-nav button { font-family: inherit; font-size: 0.78rem; padding: 0.35rem 0.65rem; border: 1px solid #475569; border-radius: 6px; background: #1e293b; color: #cbd5e1; cursor: pointer; }
     .step-nav button.active { border-color: var(--gold); color: var(--gold); background: #334155; }
     .step-nav button.done { border-color: #34d399; color: #34d399; }
     .panel { background: #fff; border-radius: 0.75rem; padding: 1.25rem 1.5rem; box-shadow: 0 8px 24px rgb(0 0 0 / 0.25); margin-bottom: 1rem; }
@@ -27,8 +24,7 @@
     .narration { font-size: 0.92rem; line-height: 1.6; margin-bottom: 1rem; }
     .example-box { background: #f0fdfa; border: 1px solid #6ee7b7; border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.85rem; margin-bottom: 1rem; }
     .example-box .lbl { font-weight: 700; color: var(--step-on); font-size: 0.78rem; margin-bottom: 0.35rem; }
-    .your-turn-box { background: #fffbeb; border: 2px dashed var(--gold); border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.88rem; margin: 1rem 0; }
-    .method-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr)); gap: 0.5rem; margin: 0.75rem 0; }
+    .method-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr)); gap: 0.5rem; margin: 0.75rem 0; }
     .method-grid label { display: flex; align-items: center; gap: 0.35rem; font-size: 0.88rem; padding: 0.4rem 0.5rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; }
     .method-grid label:has(input:checked) { border-color: var(--step-on); background: #f0fdfa; }
     .field-row { margin-bottom: 0.85rem; }
@@ -43,25 +39,24 @@
     .summary-table { width: 100%; font-size: 0.82rem; }
     .summary-table th { width: 22%; }
     .status-msg { font-size: 0.82rem; color: #059669; margin-top: 0.5rem; }
-    .split-hint { font-size: 0.82rem; background: #1e293b; color: #94a3b8; border-radius: 8px; padding: 0.65rem 0.85rem; margin-bottom: 1rem; text-align: center; }
-    .split-hint a { color: #34d399; }
+    .wizard-link { background: #eff6ff; border: 1px solid #93c5fd; border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.88rem; margin-bottom: 1rem; }
+    .wizard-link a { color: #1d4ed8; font-weight: 600; }
   </style>
 </head>
 <body>
   <div class="walkthrough">
     <div class="link-bar">
-      <a href="../report-wizard-slideshow.html">← 投影簡報（第 35–39 頁）</a>
+      <a href="../report-wizard-slideshow.html">← 投影簡報（表6–8 第 41–46 頁）</a>
       <a href="index.html">學習單索引</a>
-      <a href="table3-objectives-walkthrough.html">表3 目標走讀</a>
-      <a href="table4-content-walkthrough.html">表4 內容走讀</a>
-      <a href="section-03-design.html">表3–5 分段學習單</a>
+      <a href="table7-faculty-walkthrough.html">← 表7 師資走讀</a>
+      <a href="table9-staff-walkthrough.html">表9 執行人員走讀 →</a>
       <a href="instructor-worksheet-online.html">線上整合版</a>
     </div>
 
     <div class="walk-header">
-      <p>宮廟管理師｜報告書表5 沉浸式寫作走讀</p>
-      <h1>表3 B 行為 → 勾選方法 → 表8 評量</h1>
-      <p>示範 M1-1.1｜教→法→驗 三角｜上課現場練習</p>
+      <p>宮廟管理師｜報告書表8 沉浸式寫作走讀</p>
+      <h1>表3 目標 → 評量方式＋工具 → 表11 證據</h1>
+      <p>示範 M1-1.1｜iCAP #5.1｜上課現場練習</p>
     </div>
 
     <div class="practice-notice" role="note">
@@ -71,127 +66,121 @@
       <p>請自行複製摘要，或至 <a href="instructor-worksheet-online.html">講師學習單｜線上填寫版</a> 整合提交後存檔。</p>
     </div>
 
-    <div class="split-hint">
-      建議<strong>並排視窗</strong>：左開 <a href="table3-objectives-walkthrough.html">表3 走讀</a> 的 B 欄，右側勾選方法
+    <div class="wizard-link">
+      評量工具設計可參考 <a href="../../../09-editorial-committee/1150730-m1-demo/assessment-design/assessment-design-wizard-slideshow.html" target="_blank">評量三表精靈導覽</a>（考古題／勾選建檔／Rubrics）
     </div>
 
     <nav class="step-nav" id="stepNav" aria-label="走讀步驟"></nav>
 
     <section class="panel" data-step="0">
-      <h2 class="step-title">總覽｜表3 → 表5 → 表8</h2>
-      <p class="step-meta">B 決定方法｜方法決定評量</p>
-      <p class="narration">表5 把表3 目標翻成<strong>教學策略</strong>。職能課強調 Performance——要「會做」的 B 欄，方法須含演練／示範／案例。</p>
+      <h2 class="step-title">總覽｜教→法→驗 三角</h2>
+      <p class="step-meta">表3 D 標準決定表8 評量</p>
+      <p class="narration">表8 記錄<strong>評量方式</strong>（測驗／實作／口試…）與<strong>評量工具</strong>（具體卷別、檢核表名稱）——須能驗證表3 D 欄標準，並預留表11 可抽查證據。</p>
       <div class="example-box">
         <div class="lbl">四步流程</div>
-        ① 對表3 B 欄 → ② 勾選教學法 → ③ 呼應表8 → ④ 檢核提交
+        ① 對表3 D → ② 勾選評量方式 → ③ 具名評量工具 → ④ 檢核提交
       </div>
-      <div class="btn-row"><button type="button" class="btn btn-primary" data-next>下一步：對 B →</button></div>
+      <div class="btn-row"><button type="button" class="btn btn-primary" data-next>下一步：對 D →</button></div>
     </section>
 
     <section class="panel" data-step="1" hidden>
-      <h2 class="step-title">Step 1｜方法對應表3 B 欄</h2>
-      <p class="step-meta">B 決定方法選擇</p>
+      <h2 class="step-title">Step 1｜對應表3 D 標準</h2>
+      <p class="step-meta">評量須驗證 D 欄</p>
       <div class="example-box">
-        <div class="lbl">示範｜M1-1.1 B → 方法邏輯</div>
-        B1 能說明法律定位 → 講述＋案例<br>
-        B2 能辨識三種組織型態 → 討論＋案例<br>
-        B3 能撰寫會議紀錄 → 示範＋演練（對 P1.1.1）
+        <div class="lbl">示範｜M1-1.1 D → 評量邏輯</div>
+        D：符合 P1.1.1，法人比較表正確率 ≥80%<br>
+        → 測驗（比較表）＋實作（會議紀錄草稿 Rubrics ≥2 級）
       </div>
       <div class="field-row">
-        <label for="myUnitName">單元名稱（同表3–4）</label>
+        <label for="myUnitName">單元名稱</label>
         <input class="online-input" id="myUnitName" type="text" placeholder="緒論 - 為何寺廟需要法律定位？">
       </div>
       <div class="field-row">
-        <label for="myB">表3 B 欄行為（摘要）</label>
-        <textarea class="online-textarea" id="myB" placeholder="能…"></textarea>
+        <label for="myD">表3 D 標準（摘要）</label>
+        <textarea class="online-textarea" id="myD" placeholder="符合 P…，正確率…"></textarea>
       </div>
       <div class="field-row">
-        <label for="myMethodLogic">方法選擇邏輯（草稿）</label>
-        <textarea class="online-textarea" id="myMethodLogic" placeholder="哪個 B 需要演練？"></textarea>
+        <label for="myAssessLogic">評量設計邏輯（草稿）</label>
+        <textarea class="online-textarea" id="myAssessLogic" placeholder="用什麼方式驗證 D？"></textarea>
       </div>
       <div class="btn-row">
         <button type="button" class="btn btn-secondary" data-prev>← 上一步</button>
-        <button type="button" class="btn btn-gold" id="btnCopyB">套用 M1-1.1 示範</button>
-        <button type="button" class="btn btn-primary" data-next>下一步：勾選 →</button>
+        <button type="button" class="btn btn-gold" id="btnCopyD">套用 M1-1.1 示範</button>
+        <button type="button" class="btn btn-primary" data-next>下一步：方式 →</button>
       </div>
     </section>
 
     <section class="panel" data-step="2" hidden>
-      <h2 class="step-title">Step 2｜勾選教學方法</h2>
-      <p class="step-meta">ODT 表5 八種方法｜精選 2–4 項</p>
+      <h2 class="step-title">Step 2｜勾選評量方式</h2>
+      <p class="step-meta">方式須對表5 方法</p>
       <div class="example-box">
-        <div class="lbl">示範｜M1-1.1 勾選</div>
-        ☑ 講述｜☑ 案例｜☑ 討論｜☑ 示範｜☑ 演練<br>
-        ☐ 協同｜☐ 專題｜☐ 其他
+        <div class="lbl">示範｜M1-1.1 評量方式</div>
+        ☑ 筆試／測驗（法人比較）<br>
+        ☑ 實作評量（會議紀錄草稿）<br>
+        ☐ 口試｜☑ 作業／報告｜☑ 觀察檢核表
       </div>
       <div class="method-grid" id="methodGrid">
-        <label><input type="checkbox" name="m" value="講述"> 講述</label>
-        <label><input type="checkbox" name="m" value="討論"> 討論</label>
-        <label><input type="checkbox" name="m" value="演練"> 演練</label>
-        <label><input type="checkbox" name="m" value="協同"> 協同</label>
-        <label><input type="checkbox" name="m" value="專題"> 專題</label>
-        <label><input type="checkbox" name="m" value="示範"> 示範</label>
-        <label><input type="checkbox" name="m" value="案例"> 案例</label>
-        <label><input type="checkbox" name="m" value="其他"> 其他</label>
-      </div>
-      <div class="field-row">
-        <label for="myMethodNote">方法說明</label>
-        <textarea class="online-textarea" id="myMethodNote" placeholder="為何選這些方法對應 B 欄…"></textarea>
+        <label><input type="checkbox" name="a" value="筆試／測驗"> 筆試／測驗</label>
+        <label><input type="checkbox" name="a" value="實作評量"> 實作評量</label>
+        <label><input type="checkbox" name="a" value="口試"> 口試</label>
+        <label><input type="checkbox" name="a" value="作業／報告"> 作業／報告</label>
+        <label><input type="checkbox" name="a" value="觀察檢核表"> 觀察檢核表</label>
+        <label><input type="checkbox" name="a" value="同儕互評"> 同儕互評</label>
       </div>
       <div class="btn-row">
         <button type="button" class="btn btn-secondary" data-prev>← 上一步</button>
         <button type="button" class="btn btn-gold" id="btnCopyMethods">套用 M1-1.1 勾選</button>
-        <button type="button" class="btn btn-primary" data-next>下一步：表8 →</button>
+        <button type="button" class="btn btn-primary" data-next>下一步：工具 →</button>
       </div>
     </section>
 
     <section class="panel" data-step="3" hidden>
-      <h2 class="step-title">Step 3｜與表8 評量呼應</h2>
-      <p class="step-meta">教→法→驗 三角</p>
+      <h2 class="step-title">Step 3｜具名評量工具</h2>
+      <p class="step-meta">卷別、檢核表須可抽查</p>
       <div class="example-box">
-        <div class="lbl">示範｜M1-1.1 → 表8 預留</div>
-        評量方式：實作（會議紀錄草稿檢核）＋測驗（法人比較表）<br>
-        評量工具：☑ 檢核表｜☑ 筆試試卷<br>
-        表11 證據：學員會議紀錄草稿、比較表作答
+        <div class="lbl">示範｜M1-1.1 評量工具</div>
+        M1-1.1 法人比較檢核表（筆試，20 題）<br>
+        會議紀錄格式 Rubrics 檢核表（實作，2 級及格）<br>
+        → 表11 證據：學員作答 20 份、紀錄草稿 20 份
       </div>
       <div class="field-row">
-        <label for="myT8Method">表8 評量方式（草稿）</label>
-        <textarea class="online-textarea" id="myT8Method" placeholder="測驗／實作／口試…"></textarea>
+        <label for="myTools">評量工具（具體名稱）</label>
+        <textarea class="online-textarea" id="myTools" placeholder="檢核表名稱、試卷題數、Rubrics 級別…"></textarea>
       </div>
       <div class="field-row">
-        <label for="myT8Tool">表8 評量工具（草稿）</label>
-        <textarea class="online-textarea" id="myT8Tool" placeholder="檢核表、試卷名稱…"></textarea>
+        <label for="myT11">表11 證據預留（草稿）</label>
+        <textarea class="online-textarea" id="myT11" placeholder="可抽查的學員產出…"></textarea>
       </div>
       <div class="btn-row">
         <button type="button" class="btn btn-secondary" data-prev>← 上一步</button>
-        <button type="button" class="btn btn-gold" id="btnCopyT8">套用 M1-1.1 表8 草稿</button>
+        <button type="button" class="btn btn-gold" id="btnCopyTools">套用 M1-1.1 工具</button>
         <button type="button" class="btn btn-primary" data-next>下一步：檢核 →</button>
       </div>
     </section>
 
     <section class="panel" data-step="4" hidden>
       <h2 class="step-title">Step 4｜檢核與提交</h2>
-      <p class="step-meta">表3–5 設計鏈完成</p>
+      <p class="step-meta">表3–8 設計鏈完成</p>
       <table class="summary-table">
         <tr><th>單元</th><td id="sumUnit">—</td></tr>
-        <tr><th>B 行為</th><td id="sumB">—</td></tr>
-        <tr><th>勾選方法</th><td id="sumMethods">—</td></tr>
-        <tr><th>表8 草稿</th><td id="sumT8">—</td></tr>
+        <tr><th>D 標準</th><td id="sumD">—</td></tr>
+        <tr><th>評量方式</th><td id="sumMethods">—</td></tr>
+        <tr><th>評量工具</th><td id="sumTools">—</td></tr>
       </table>
       <div class="q" style="margin-top:1rem">
         <div class="q-title">自我檢核</div>
         <div class="opts" style="flex-direction:column;align-items:flex-start;">
-          <label><input type="checkbox"> B 要求「會做」，方法含演練／示範？</label>
-          <label><input type="checkbox"> 勾選與表4 大綱時段呼應？</label>
-          <label><input type="checkbox"> 表8 評量能驗證表3 D 標準？</label>
-          <label><input type="checkbox"> 未 8 格全勾？</label>
+          <label><input type="checkbox"> 評量能驗證表3 D 標準？</label>
+          <label><input type="checkbox"> 表5 演練 → 表8 含實作評量？</label>
+          <label><input type="checkbox"> 表11 能提出表8 所稱產出？</label>
+          <label><input type="checkbox"> 表12 結訓標準與表8 呼應？</label>
         </div>
       </div>
       <div class="btn-row">
         <button type="button" class="btn btn-secondary" data-prev>← 上一步</button>
         <button type="button" class="btn btn-secondary" id="btnSave">暫存本機（僅當次）</button>
         <button type="button" class="btn btn-gold" id="btnCopy">複製摘要文字</button>
-        <a class="btn btn-primary" href="table6-resources-walkthrough.html" style="text-decoration:none;display:inline-block">→ 表6 資源走讀</a>
+        <a class="btn btn-primary" href="table9-staff-walkthrough.html" style="text-decoration:none;display:inline-block">→ 表9 執行人員走讀</a>
         <a class="btn btn-primary" href="instructor-worksheet-online.html" style="text-decoration:none;display:inline-block">→ 線上整合版</a>
       </div>
       <p class="status-msg" id="statusMsg" hidden></p>
@@ -200,17 +189,16 @@
 
   <script>
     (function () {
-      var STORAGE_KEY = 'icap-table5-walkthrough-v1';
-      var STEP_LABELS = ['總覽', 'Step1 對B', 'Step2 勾選', 'Step3 表8', 'Step4 檢核'];
+      var STORAGE_KEY = 'icap-table8-walkthrough-v1';
+      var STEP_LABELS = ['總覽', 'Step1 對D', 'Step2 方式', 'Step3 工具', 'Step4 檢核'];
       var current = 0;
       var panels = Array.prototype.slice.call(document.querySelectorAll('.panel[data-step]'));
       var nav = document.getElementById('stepNav');
-      var textFields = ['myUnitName','myB','myMethodLogic','myMethodNote','myT8Method','myT8Tool'];
+      var textFields = ['myUnitName','myD','myAssessLogic','myTools','myT11'];
       var fields = {};
       textFields.forEach(function (id) { fields[id] = document.getElementById(id); });
       var checkboxes = Array.prototype.slice.call(document.querySelectorAll('#methodGrid input[type=checkbox]'));
-
-      var DEMO_METHODS = ['講述','案例','討論','示範','演練'];
+      var DEMO_METHODS = ['筆試／測驗','實作評量','作業／報告','觀察檢核表'];
 
       STEP_LABELS.forEach(function (label, i) {
         var btn = document.createElement('button');
@@ -219,23 +207,12 @@
         nav.appendChild(btn);
       });
 
-      function getChecked() {
-        return checkboxes.filter(function (c) { return c.checked; }).map(function (c) { return c.value; });
-      }
-      function setChecked(arr) {
-        checkboxes.forEach(function (c) { c.checked = arr.indexOf(c.value) >= 0; });
-      }
+      function getChecked() { return checkboxes.filter(function (c) { return c.checked; }).map(function (c) { return c.value; }); }
+      function setChecked(arr) { checkboxes.forEach(function (c) { c.checked = arr.indexOf(c.value) >= 0; }); }
       function collect() {
-        return {
-          step: current,
-          methods: getChecked(),
-          myUnitName: fields.myUnitName.value,
-          myB: fields.myB.value,
-          myMethodLogic: fields.myMethodLogic.value,
-          myMethodNote: fields.myMethodNote.value,
-          myT8Method: fields.myT8Method.value,
-          myT8Tool: fields.myT8Tool.value
-        };
+        return { step: current, methods: getChecked(), myUnitName: fields.myUnitName.value,
+          myD: fields.myD.value, myAssessLogic: fields.myAssessLogic.value,
+          myTools: fields.myTools.value, myT11: fields.myT11.value };
       }
       function apply(data) {
         if (!data) return;
@@ -244,14 +221,12 @@
         if (typeof data.step === 'number') current = data.step;
       }
       function saveLocal() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(collect())); } catch (e) {} }
-      function loadLocal() {
-        try { var raw = localStorage.getItem(STORAGE_KEY); if (raw) apply(JSON.parse(raw)); } catch (e) {}
-      }
+      function loadLocal() { try { var raw = localStorage.getItem(STORAGE_KEY); if (raw) apply(JSON.parse(raw)); } catch (e) {} }
       function updateSummary() {
         document.getElementById('sumUnit').textContent = fields.myUnitName.value || '—';
-        document.getElementById('sumB').textContent = fields.myB.value || '—';
+        document.getElementById('sumD').textContent = fields.myD.value || '—';
         document.getElementById('sumMethods').textContent = getChecked().join('、') || '—';
-        document.getElementById('sumT8').textContent = (fields.myT8Method.value || '—') + '｜' + (fields.myT8Tool.value || '—');
+        document.getElementById('sumTools').textContent = fields.myTools.value || '—';
       }
       function goTo(idx) {
         if (idx < 0 || idx >= panels.length) return;
@@ -270,20 +245,16 @@
       textFields.forEach(function (id) { fields[id].addEventListener('input', saveLocal); });
       checkboxes.forEach(function (c) { c.addEventListener('change', saveLocal); });
 
-      document.getElementById('btnCopyB').addEventListener('click', function () {
+      document.getElementById('btnCopyD').addEventListener('click', function () {
         fields.myUnitName.value = '緒論 - 為何寺廟需要法律定位？';
-        fields.myB.value = '能說明寺廟法人登記之法律定位，並辨識三種組織型態（寺廟、教會、基金會）之核心差異；能撰寫符合規定之會議紀錄';
-        fields.myMethodLogic.value = 'B1 導入用講述＋案例；B2 比較用討論；B3 撰寫紀錄用示範＋演練';
+        fields.myD.value = '符合 P1.1.1，法人比較表正確率 ≥80%；會議紀錄 Rubrics ≥2 級';
+        fields.myAssessLogic.value = '比較表用筆試；紀錄撰寫用實作＋Rubrics 檢核';
         saveLocal();
       });
-      document.getElementById('btnCopyMethods').addEventListener('click', function () {
-        setChecked(DEMO_METHODS);
-        fields.myMethodNote.value = 'B 欄要求「撰寫會議紀錄」，故採示範＋演練，非純講述；比較表用案例＋討論';
-        saveLocal();
-      });
-      document.getElementById('btnCopyT8').addEventListener('click', function () {
-        fields.myT8Method.value = '實作（會議紀錄草稿檢核）＋測驗（法人比較表）';
-        fields.myT8Tool.value = '檢核表（會議紀錄格式）；筆試試卷（法人比較）';
+      document.getElementById('btnCopyMethods').addEventListener('click', function () { setChecked(DEMO_METHODS); saveLocal(); });
+      document.getElementById('btnCopyTools').addEventListener('click', function () {
+        fields.myTools.value = 'M1-1.1 法人比較檢核表（筆試 20 題）；會議紀錄 Rubrics 檢核表（實作 2 級及格）';
+        fields.myT11.value = '學員比較表作答 20 份、會議紀錄草稿 20 份';
         saveLocal();
       });
       document.getElementById('btnSave').addEventListener('click', function () {
@@ -295,27 +266,18 @@
       });
       document.getElementById('btnCopy').addEventListener('click', function () {
         updateSummary();
-        var text = [
-          '【表5 教學方法】',
-          '單元：' + fields.myUnitName.value,
-          'B 行為：' + fields.myB.value,
-          '勾選：' + getChecked().join('、'),
-          '說明：' + fields.myMethodNote.value,
-          '表8 方式：' + fields.myT8Method.value,
-          '表8 工具：' + fields.myT8Tool.value
-        ].join('\n');
+        var text = ['【表8 學習成果評量】', '單元：' + fields.myUnitName.value, 'D 標準：' + fields.myD.value,
+          '方式：' + getChecked().join('、'), '工具：' + fields.myTools.value,
+          '表11 預留：' + fields.myT11.value].join('\n');
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(text).then(function () {
             var msg = document.getElementById('statusMsg');
-            msg.textContent = '已複製到剪貼簿';
-            msg.hidden = false;
+            msg.textContent = '已複製到剪貼簿'; msg.hidden = false;
             setTimeout(function () { msg.hidden = true; }, 3000);
           });
         }
       });
-
-      loadLocal();
-      goTo(current);
+      loadLocal(); goTo(current);
     })();
   </script>
 </body>
