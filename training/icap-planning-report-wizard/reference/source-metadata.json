@@ -13,5 +13,121 @@
   "lastEditor": "珮禎 張",
   "embeddedTitle": "職能導向課程品質認證作業手冊",
   "downloadPath": "reference/icap-course-planning-report-template.odt",
-  "thumbnailPath": "reference/icap-course-planning-report-template-thumb.png"
+  "thumbnailPath": "reference/icap-course-planning-report-template-thumb.png",
+  "printHandout": {
+    "htmlPath": "reference/report-format-print-handout.html",
+    "pagesDir": "reference/print-pages/",
+    "pageCount": 15,
+    "layout": "4-up",
+    "layoutNote": "2×2 縮圖／A4，約 4 張印完全部 15 頁",
+    "generatedAt": "2026-07-06",
+    "generator": "scripts/generate-report-print-pages.py",
+    "pages": [
+      {
+        "file": "page-01.png",
+        "index": 1,
+        "title": "封面｜申請欄位",
+        "section": "封面",
+        "slug": "cover"
+      },
+      {
+        "file": "page-02.png",
+        "index": 2,
+        "title": "壹、課程資訊",
+        "section": "壹、課程資訊",
+        "slug": "section-1"
+      },
+      {
+        "file": "page-03.png",
+        "index": 3,
+        "title": "表1 本課程之職能表",
+        "section": "貳、課程規劃內容",
+        "slug": "table-1"
+      },
+      {
+        "file": "page-04.png",
+        "index": 4,
+        "title": "表2 課程地圖",
+        "section": "貳、課程規劃內容",
+        "slug": "table-2"
+      },
+      {
+        "file": "page-05.png",
+        "index": 5,
+        "title": "表3 教學訓練目標與職能內涵",
+        "section": "貳、課程規劃內容",
+        "slug": "table-3"
+      },
+      {
+        "file": "page-06.png",
+        "index": 6,
+        "title": "表4 課程內容",
+        "section": "貳、課程規劃內容",
+        "slug": "table-4"
+      },
+      {
+        "file": "page-07.png",
+        "index": 7,
+        "title": "表5 教學方法",
+        "section": "貳、課程規劃內容",
+        "slug": "table-5"
+      },
+      {
+        "file": "page-08.png",
+        "index": 8,
+        "title": "表6 教材與教學資源",
+        "section": "貳、課程規劃內容",
+        "slug": "table-6"
+      },
+      {
+        "file": "page-09.png",
+        "index": 9,
+        "title": "表7 師資條件",
+        "section": "貳、課程規劃內容",
+        "slug": "table-7"
+      },
+      {
+        "file": "page-10.png",
+        "index": 10,
+        "title": "表8 學習成果評量方式",
+        "section": "貳、課程規劃內容",
+        "slug": "table-8"
+      },
+      {
+        "file": "page-11.png",
+        "index": 11,
+        "title": "表9 實際執行人員資格",
+        "section": "貳、課程規劃內容",
+        "slug": "table-9"
+      },
+      {
+        "file": "page-12.png",
+        "index": 12,
+        "title": "表10 試辦班的執行成果",
+        "section": "貳、課程規劃內容",
+        "slug": "table-10"
+      },
+      {
+        "file": "page-13.png",
+        "index": 13,
+        "title": "表11 學習成果證據",
+        "section": "貳、課程規劃內容",
+        "slug": "table-11"
+      },
+      {
+        "file": "page-14.png",
+        "index": 14,
+        "title": "表12 課程結訓標準*3",
+        "section": "貳、課程規劃內容",
+        "slug": "table-12"
+      },
+      {
+        "file": "page-15.png",
+        "index": 15,
+        "title": "參、課程發展相關佐證資料",
+        "section": "參、課程發展相關佐證資料",
+        "slug": "section-3"
+      }
+    ]
+  }
 }

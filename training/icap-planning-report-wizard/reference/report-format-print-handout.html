@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>職能導向課程規劃與執行報告書｜格式參考（縮圖列印版）</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #0f766e;
+      --border: #cbd5e1;
+      --muted: #64748b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background: #e8ecf0;
+      margin: 0;
+      color: #111;
+      line-height: 1.5;
+    }
+    .no-print {
+      max-width: 210mm;
+      margin: 0 auto;
+      padding: 1rem 1rem 0.5rem;
+      font-size: 0.9rem;
+    }
+    .no-print a { color: #1e40af; }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      margin: 0.75rem 0 1rem;
+    }
+    .toolbar button {
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 0.55rem 1.2rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 0.4rem;
+      cursor: pointer;
+    }
+    .toolbar button:hover { background: #115e59; }
+    .cover-note {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 1rem 1.15rem;
+      margin-bottom: 1rem;
+    }
+    .cover-note h1 {
+      font-size: 1.2rem;
+      margin: 0 0 0.35rem;
+      color: var(--accent);
+    }
+    .cover-note .lead { margin: 0 0 0.75rem; color: #334155; }
+    .cover-note ul {
+      margin: 0;
+      padding-left: 1.2rem;
+      font-size: 0.88rem;
+      color: #475569;
+    }
+    .odt-link {
+      display: inline-block;
+      margin-top: 0.85rem;
+      padding: 0.45rem 1rem;
+      background: #ecfdf5;
+      border: 1px solid #6ee7b7;
+      border-radius: 0.35rem;
+      color: #0f766e;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .odt-link:hover { background: #d1fae5; }
+
+    .print-sheet {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto 1rem;
+      padding: 10mm;
+      background: #fff;
+      box-shadow: 0 2px 10px rgb(0 0 0 / 0.08);
+    }
+    .sheet-header {
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 3mm;
+      margin-bottom: 5mm;
+      font-size: 8pt;
+      color: var(--muted);
+    }
+    .sheet-header strong { color: var(--accent); font-size: 9pt; }
+    .thumb-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8mm;
+      align-content: start;
+    }
+    .thumb {
+      border: 1px solid #ccc;
+      border-radius: 2px;
+      overflow: hidden;
+      background: #fff;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    .thumb img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 496 / 702;
+      object-fit: contain;
+      background: #f8fafc;
+    }
+    .thumb figcaption {
+      margin: 0;
+      padding: 2mm 2.5mm 2.5mm;
+      font-size: 6pt;
+      line-height: 1.35;
+      color: #334155;
+      border-top: 1px solid #e5e7eb;
+    }
+    .thumb figcaption .num {
+      display: inline-block;
+      min-width: 1.6em;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    @page { size: A4; margin: 10mm; }
+
+    @media print {
+      body { background: #fff; }
+      .no-print { display: none !important; }
+      .print-sheet {
+        width: auto;
+        min-height: auto;
+        margin: 0;
+        padding: 0;
+        box-shadow: none;
+        page-break-after: always;
+      }
+      .print-sheet:last-child { page-break-after: auto; }
+      .thumb-grid { gap: 6mm; }
+      .thumb { border-color: #bbb; }
+      .thumb figcaption { font-size: 6pt; }
+      a { color: inherit; text-decoration: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="no-print">
+    <p><a href="../index.html">← 報告書格式精靈模組</a> · <a href="source-metadata.json">來源元資料</a></p>
+    <div class="cover-note">
+      <h1>職能導向課程規劃與執行報告書｜格式參考（縮圖列印版）</h1>
+      <p class="lead"><strong>請自行下載 ODT 填寫；本頁為格式縮影供對照。</strong>內容取自勞動部公版 ODT，依封面、壹、表1–12、參共 15 頁邏輯區段產生縮圖。</p>
+      <ul>
+        <li><strong>版面：</strong>4-up（2×2）— 每張 A4 印 4 頁縮圖，全份約 4 張 A4</li>
+        <li><strong>列印：</strong>Chrome／Edge → 紙張 A4 → 邊界「預設」或「最小」→ 建議勾選「背景圖形」</li>
+        <li><strong>用途：</strong>講師對照章節與表格編號；正式填寫請用完整 ODT 檔</li>
+      </ul>
+      <a class="odt-link" href="icap-course-planning-report-template.odt" download="icap-course-planning-report-template.odt">下載完整 ODT 格式檔</a>
+    </div>
+    <div class="toolbar">
+      <button type="button" onclick="window.print()">列印本頁（省紙多合一）</button>
+      <span style="font-size:0.85rem;color:var(--muted)">15 頁縮圖 · 4 張 A4 · 4-up</span>
+    </div>
+  </div>
+
+  <section class="print-sheet sheet" aria-label="縮圖第 1 張">
+    <div class="sheet-header"><strong>格式參考縮圖</strong>｜第 1 / 4 張｜P01–P04</div>
+    <div class="thumb-grid">
+      <figure class="thumb"><img src="print-pages/page-01.png" width="496" height="702" alt="P01 封面｜申請欄位"><figcaption><span class="num">01</span>封面｜申請欄位</figcaption></figure>
+      <figure class="thumb"><img src="print-pages/page-02.png" width="496" height="702" alt="P02 壹、課程資訊"><figcaption><span class="num">02</span>壹、課程資訊</figcaption></figure>
+      <figure class="thumb"><img src="print-pages/page-03.png" width="496" height="702" alt="P03 表1 本課程之職能表"><figcaption><span class="num">03</span>表1 本課程之職能表</figcaption></figure>
+      <figure class="thumb"><img src="print-pages/page-04.png" width="496" height="702" alt="P04 表2 課程地圖"><figcaption><span class="num">04</span>表2 課程地圖</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="print-sheet sheet" aria-label="縮圖第 2 張">
+    <div class="sheet-header"><strong>格式參考縮圖</strong>｜第 2 / 4 張｜P05–P08</div>
+    <div class="thumb-grid">
+      <figure class="thumb"><img src="print-pages/page-05.png" width="496" height="702" alt="P05 表3 教學訓練目標與職能內涵"><figcaption><span class="num">05</span>表3 教學訓練目標與職能內涵</figcaption></figure>
+      <figure class="thumb"><img src="print-pages/page-06.png" width="496" height="702" alt="P06 表4 課程內容"><figcaption><span class="num">06</span>表4 課程內容</figcaption></figure>
+      <figure class="thumb"><img src="print-pages/page-07.png" width="496" height="702" alt="P07 表5 教學方法"><figcaption><span class="num">07</span>表5 教學方法</figcaption></figure>
+      <figure class="thumb"><img src="print-pages/page-08.png" width="496" height="702" alt="P08 表6 教材與教學資源"><figcaption><span class="num">08</span>表6 教材與教學資源</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="print-sheet sheet" aria-label="縮圖第 3 張">
+    <div class="sheet-header"><strong>格式參考縮圖</strong>｜第 3 / 4 張｜P09–P12</div>
+    <div class="thumb-grid">
+      <figure class="thumb"><img src="print-pages/page-09.png" width="496" height="702" alt="P09 表7 師資條件"><figcaption><span class="num">09</span>表7 師資條件</figcaption></figure>
+      <figure class="thumb"><img src="print-pages/page-10.png" width="496" height="702" alt="P10 表8 學習成果評量方式"><figcaption><span class="num">10</span>表8 學習成果評量方式</figcaption></figure>
+      <figure class="thumb"><img src="print-pages/page-11.png" width="496" height="702" alt="P11 表9 實際執行人員資格"><figcaption><span class="num">11</span>表9 實際執行人員資格</figcaption></figure>
+      <figure class="thumb"><img src="print-pages/page-12.png" width="496" height="702" alt="P12 表10 試辦班的執行成果"><figcaption><span class="num">12</span>表10 試辦班的執行成果</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="print-sheet sheet" aria-label="縮圖第 4 張">
+    <div class="sheet-header"><strong>格式參考縮圖</strong>｜第 4 / 4 張｜P13–P15</div>
+    <div class="thumb-grid">
+      <figure class="thumb"><img src="print-pages/page-13.png" width="496" height="702" alt="P13 表11 學習成果證據"><figcaption><span class="num">13</span>表11 學習成果證據</figcaption></figure>
+      <figure class="thumb"><img src="print-pages/page-14.png" width="496" height="702" alt="P14 表12 課程結訓標準"><figcaption><span class="num">14</span>表12 課程結訓標準</figcaption></figure>
+      <figure class="thumb"><img src="print-pages/page-15.png" width="496" height="702" alt="P15 參、課程發展相關佐證資料"><figcaption><span class="num">15</span>參、課程發展相關佐證資料</figcaption></figure>
+    </div>
+  </section>
+</body>
+</html>
