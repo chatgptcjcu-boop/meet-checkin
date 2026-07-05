@@ -84,6 +84,27 @@
     }
     .checklist li::before { content: '☐'; color: var(--accent); }
     table.agenda.compact th, table.agenda.compact td { padding: 0.45em 0.65em; font-size: clamp(0.75rem, 1.4vw, 0.98rem); }
+    .link-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1vh 1.2vw;
+      margin-top: 1.2vh;
+    }
+    @media (max-width: 900px) { .link-grid { grid-template-columns: 1fr; } }
+    a.card-link {
+      display: block;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 1vh 1.1vw;
+      text-decoration: none;
+      color: var(--text);
+      transition: border-color 0.15s, background 0.15s;
+    }
+    a.card-link:hover { border-color: var(--accent2); background: rgb(52 211 153 / 0.08); }
+    a.card-link .lbl { color: var(--accent); font-weight: 700; font-size: clamp(0.72rem, 1.3vw, 0.9rem); }
+    a.card-link .name { font-weight: 600; font-size: clamp(0.82rem, 1.5vw, 1.05rem); margin: 0.2vh 0; }
+    a.card-link .desc { font-size: clamp(0.72rem, 1.3vw, 0.88rem); color: #94a3b8; line-height: 1.4; }
   </style>
 </head>
 <body>
@@ -226,7 +247,56 @@
       </div>
     </section>
 
-    <!-- 6 壹、課程資訊總覽 -->
+    <!-- 6 本專案實例｜宮廟管理師職能基準 -->
+    <section class="slide" data-id="showcase-competency">
+      <div class="slide-header">
+        <p class="org">SHOWCASE｜SELF-ANALYSIS</p>
+        <h2>本專案實例｜宮廟管理師職能基準</h2>
+        <p class="meta">自行職能分析路徑｜115/06/30 評核委員會共構完成</p>
+      </div>
+      <div class="slide-body">
+        <div class="hint-box" style="margin-bottom:1.2vh">
+          本計畫封面勾選<strong>「自行職能分析」</strong>——參·A·1.1 佐證即下方完整文件包：七大範疇、工作任務與行為指標、180 小時課程架構，以及委員共構會議紀錄。
+        </div>
+        <div class="link-grid">
+          <a class="card-link" href="../../competency-standard/index.html" target="_blank">
+            <div class="lbl">文件包總索引</div>
+            <div class="name">宮廟管理師職能基準完整文件包</div>
+            <div class="desc">competency-standard/index.html</div>
+          </a>
+          <a class="card-link" href="../../08-evaluation-committee/1150630-data-compilation/index.html" target="_blank">
+            <div class="lbl">0630 資料彙整</div>
+            <div class="name">委員意見彙整｜決議｜主審認領</div>
+            <div class="desc">七大範疇、86 單元必要度、附錄十一</div>
+          </a>
+          <a class="card-link" href="../../09-editorial-committee/unit-claim-matrix.html" target="_blank">
+            <div class="lbl">86 單元課程地圖</div>
+            <div class="name">M1–M8 模組｜86 課程單元</div>
+            <div class="desc">180 小時培訓架構｜unit-claim-matrix</div>
+          </a>
+          <a class="card-link" href="../../meeting-display.html" target="_blank">
+            <div class="lbl">630 主投影</div>
+            <div class="name">評核委員會投影簡報</div>
+            <div class="desc">職能三層、議程、Phase 0–5</div>
+          </a>
+          <a class="card-link" href="../../08-evaluation-committee/1150630-handouts/index.html" target="_blank">
+            <div class="lbl">會議佐證</div>
+            <div class="name">委員填答手冊｜閱讀須知</div>
+            <div class="desc">利益關係人參與紀錄來源</div>
+          </a>
+          <a class="card-link" href="../../08-evaluation-committee/1150630/index.html" target="_blank">
+            <div class="lbl">Phase 模板</div>
+            <div class="name">Phase 0–5 填答索引</div>
+            <div class="desc">身分→需求→範疇→任務→86 單元→決議</div>
+          </a>
+        </div>
+        <p style="font-size:clamp(0.72rem,1.3vw,0.88rem);color:#94a3b8;margin-top:1vh">
+          委員掃描 PDF、OCS 正式匯出版待同步上傳；現有 HTML 索引與課程地圖已可線上查閱。
+        </p>
+      </div>
+    </section>
+
+    <!-- 7 壹、課程資訊總覽 -->
     <section class="slide" data-id="sec1-overview">
       <div class="slide-header">
         <p class="org">SECTION 壹｜OVERVIEW</p>
@@ -580,7 +650,7 @@
 
   </div>
 
-  <div class="slide-counter" id="counter">1 / 18</div>
+  <div class="slide-counter" id="counter">1 / 19</div>
 
   <div class="controls no-print">
     <button type="button" id="btnPrev">◀ 上一頁</button>
@@ -589,7 +659,7 @@
     <button type="button" id="btnFs">全螢幕</button>
     <a href="index.html" style="color:#94a3b8;font-size:0.78rem;text-decoration:none">訓練索引</a>
     <a href="../../dashboard.html" style="color:#94a3b8;font-size:0.78rem;text-decoration:none">儀表板</a>
-    <span class="counter" id="counterCtrl">1 / 18</span>
+    <span class="counter" id="counterCtrl">1 / 19</span>
     <span class="keys">← → 或空白鍵切換</span>
   </div>
 
@@ -598,7 +668,7 @@
     MeetingDisplay.init({
       labels: [
         '封面', '如何使用', '報告書總地圖', '封面申請欄位', '職能依據與類型',
-        '壹課程資訊總覽', '需求簡介目的', '時數級別對象', '表1 職能表', '表2 課程地圖',
+        '宮廟管理師實例', '壹課程資訊總覽', '需求簡介目的', '時數級別對象', '表1 職能表', '表2 課程地圖',
         '表3 教學目標', '表4-5 內容方法', '表6-8 資源師資評量', '表9-12 實施評估',
         '參佐證ADDIE', '利益關係人', '地雷Checklist', '結語下一步'
       ],
