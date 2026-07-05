@@ -225,6 +225,7 @@ fetch(GAS_URL, {
 - **前端：** `training/icap-planning-report-wizard/worksheets/instructor-worksheet-online.html`
 - **config：** `icapReportWorksheet.formType` / `sheetTab` in `event.config.json`
 - **測試：** GAS 編輯器執行 `testReportWizardWorksheet`；**改 Code.gs 後 GAS 新版本部署**
+- **完整複製 SOP：** [icap-report-wizard-kit](../icap-report-wizard-kit/SKILL.md)（投影簡報 + 學習單 + 資產包）
 
 ## 設定檔（套版 v1）
 
@@ -395,5 +396,7 @@ index.html（入口分流）
 ## 延伸閱讀
 
 詳細 payload 範例與試算表欄位對照見 [reference.md](reference.md)。
+
+**iCAP 報告書格式精靈訓練模組**（備援訓練、可複製資產包）：[icap-report-wizard-kit](../icap-report-wizard-kit/SKILL.md)｜資產清單 `training/icap-planning-report-wizard/ASSET-PACK.md`。
 
 **現場投影簡報**（一頁一投影片、金綠主題）必讀全域 skill：`~/.cursor/skills/meeting-display-deck/SKILL.md`（與 [url-and-locale-standards](~/.cursor/skills/url-and-locale-standards/SKILL.md) 搭配）。

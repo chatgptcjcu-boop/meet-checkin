@@ -9,3 +9,5 @@ _local/
 *.local
 !.cursor/skills/meet-checkin-kit/
 !.cursor/skills/meet-checkin-kit/**
+!.cursor/skills/icap-report-wizard-kit/
+!.cursor/skills/icap-report-wizard-kit/**

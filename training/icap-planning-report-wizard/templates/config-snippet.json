@@ -1,0 +1,12 @@
+{
+  "_comment": "Paste into config/events/{preset}.json or event.config.json. Run: node scripts/sync-config.js",
+  "backend": {
+    "gasWebAppUrl": "https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec"
+  },
+  "icapReportWorksheet": {
+    "formType": "icap-report-worksheet",
+    "sheetTab": "icap-report-worksheet",
+    "dateFilePrefix": "icap-report",
+    "onlineFormPath": "training/icap-planning-report-wizard/worksheets/instructor-worksheet-online.html"
+  }
+}
