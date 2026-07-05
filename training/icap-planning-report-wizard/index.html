@@ -14,6 +14,47 @@
     .card:hover { border-color: #0f766e; background: #f0fdfa; }
     .alert { background: #ecfdf5; border: 1px solid #6ee7b7; border-radius: 0.5rem; padding: 0.75rem 1rem; font-size: 0.9rem; margin-bottom: 1.5rem; }
     .alert-warn { background: #fffbeb; border-color: #fcd34d; }
+    .ref-card {
+      display: flex;
+      gap: 1.25rem;
+      align-items: flex-start;
+      border: 1px solid #d1d5db;
+      border-radius: 0.5rem;
+      padding: 1.25rem;
+      background: linear-gradient(135deg, #fffbeb 0%, #ecfdf5 100%);
+    }
+    .ref-thumb {
+      flex-shrink: 0;
+      width: 200px;
+      border: 1px solid #e5e7eb;
+      border-radius: 0.375rem;
+      box-shadow: 0 2px 8px rgb(0 0 0 / 0.08);
+      background: #fff;
+    }
+    .ref-body { flex: 1; min-width: 0; }
+    .ref-body h3 { font-size: 1.05rem; font-weight: 700; color: #0f766e; margin: 0 0 0.25rem; }
+    .ref-publisher { font-size: 0.88rem; color: #64748b; margin-bottom: 0.75rem; }
+    .ref-provenance { font-size: 0.85rem; color: #334155; line-height: 1.55; }
+    .ref-provenance dt { font-weight: 600; color: #0f766e; display: inline; }
+    .ref-provenance dd { display: inline; margin: 0 0 0.35rem 0; }
+    .ref-provenance dd::after { content: ''; display: block; margin-bottom: 0.15rem; }
+    .ref-download {
+      display: inline-block;
+      margin-top: 0.85rem;
+      padding: 0.5rem 1.1rem;
+      background: #0f766e;
+      color: #fff;
+      border-radius: 0.375rem;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .ref-download:hover { background: #115e59; }
+    .ref-note { font-size: 0.82rem; color: #64748b; margin-top: 0.65rem; }
+    @media (max-width: 640px) {
+      .ref-card { flex-direction: column; align-items: center; }
+      .ref-thumb { width: 160px; }
+    }
   </style>
 </head>
 <body>
@@ -32,6 +73,24 @@
 
     <div class="alert alert-warn">
       <strong>與 iCAP 平台申請的差異：</strong>本 ODT 格式供課程規劃與執行報告使用；<strong>iCAP 課程認證申請</strong>請依職能發展應用平台（iCAP 平台）線上申請系統欄位為準。兩者內容應一致，但欄位名稱與上傳介面可能不同。
+    </div>
+
+    <h2 class="section-title">參考教材</h2>
+    <div class="ref-card" id="reference-material">
+      <img class="ref-thumb" src="reference/icap-course-planning-report-template-thumb.png" width="200" height="260" alt="職能導向課程規劃與執行報告書 ODT 格式縮圖">
+      <div class="ref-body">
+        <h3>職能導向課程規劃與執行報告書</h3>
+        <p class="ref-publisher">勞動部勞動力發展署｜ODT 公版格式</p>
+        <dl class="ref-provenance">
+          <dt>溯源｜發布單位：</dt><dd>勞動部勞動力發展署（職能基準發展與應用推動計畫專案辦公室）</dd>
+          <dt>文件建立：</dt><dd>2025-01-13（UTC+8，依 ODT 內建元資料）</dd>
+          <dt>最近修改：</dt><dd>2025-04-15（UTC+8，依 ODT 內建元資料）</dd>
+          <dt>版本說明：</dt><dd>勞動部公版格式（ODT）；檔案內未標示官方版次編號，以檔案內建元資料為準</dd>
+          <dt>本站封存：</dt><dd>2026-07-05</dd>
+        </dl>
+        <a class="ref-download" href="reference/icap-course-planning-report-template.odt" download="icap-course-planning-report-template.odt">下載 ODT 格式檔</a>
+        <p class="ref-note">請自行下載後於本機以 LibreOffice／Word 等軟體撰寫使用。本報告書格式僅供課程使用；iCAP 課程認證申請格式請依 iCAP 平台線上申請系統為準。</p>
+      </div>
     </div>
 
     <h2 class="section-title">開始導覽</h2>

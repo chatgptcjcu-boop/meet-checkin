@@ -9,6 +9,7 @@
 | 類別 | 檔案 | 說明 |
 |------|------|------|
 | **入口** | `index.html` | 模組首頁、使用流程、結構速覽 |
+| **參考教材** | `reference/` | 勞動部 ODT 公版格式、縮圖、`source-metadata.json` 溯源 |
 | **投影** | `report-wizard-slideshow.html` | 18 頁 meeting-display 簡報（金綠主題） |
 | **學習單 hub** | `worksheets/index.html` | 分段 + 整合入口 |
 | **線上表單** | `worksheets/instructor-worksheet-online.html` | 壹～伍整合填寫、提交試算表 |
@@ -57,6 +58,26 @@ Base: `https://chatgptcjcu-boop.github.io/meet-checkin`
 | 儀表板 | […/dashboard.html](https://chatgptcjcu-boop.github.io/meet-checkin/dashboard.html) |
 
 Fork 後替換 GitHub Pages base URL。
+
+---
+
+## 參考教材（官方 ODT）
+
+| 檔案 | 說明 |
+|------|------|
+| `reference/icap-course-planning-report-template.odt` | 勞動部公版「職能導向課程規劃與執行報告書」ODT（~32 KB） |
+| `reference/icap-course-planning-report-template-thumb.png` | ODT 內建縮圖（~2 KB） |
+| `reference/source-metadata.json` | 溯源：發布單位、建立／修改日期、版本說明、下載路徑 |
+
+**溯源摘要（2026-07-05 封存）：**
+
+- 發布單位：勞動部勞動力發展署
+- 文件建立：2025-01-13（UTC+8，ODT meta）
+- 最近修改：2025-04-15（UTC+8，ODT meta）
+- 版本：勞動部公版格式（ODT）；檔案內無官方版次編號
+- 原始檔名：`iCAP課程規劃與執行報告書格式(ODT檔).odt`
+
+使用者請自行下載 ODT 於本機撰寫；模組入口 `index.html#reference-material` 提供縮圖、溯源與下載按鈕。
 
 ---
 
