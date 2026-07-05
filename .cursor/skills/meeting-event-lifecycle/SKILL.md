@@ -83,12 +83,37 @@ planned → preparing → active → completed
 | `prep` | 籌備入口 |
 | `preset` | 對應 `config/events/*.json` |
 | `rosterAdmin` | 出席名單管理 `roster-admin/index.html` |
+| `observerPack` | **列席／旁聽資料包**（非講師、非委員；不含 Phase／填答表） |
 | `trainingReportWizard` | （可選）備援訓練｜報告書格式精靈 `training/icap-planning-report-wizard/index.html` |
 | `trainingReportWorksheet` | （可選）報告書講師學習單 `…/worksheets/instructor-worksheet-online.html` |
 
 訓練模組 **不綁 active 活動**；`dashboard.html` quick-links 已固定列出報告書精靈入口。複製套版見 [icap-report-wizard-kit](../icap-report-wizard-kit/SKILL.md)。
 
 新增活動時：在 `events` 陣列加一筆，並建立對應 `config/events/{id}.json` stub（可複製既有 preset 改日期與標題）。
+
+### 每場會議必備紙本（meetingPapers）
+
+**每場會議**在 `events-registry.json` 應登錄 `meetingPapers.required[]` 與對應 `links`：
+
+| # | 項目 | `pathKey` | 說明 |
+|---|------|-----------|------|
+| 1 | 一頁式議程（投影＋列印） | `agendaPrint` 或 `agenda` | 全體時程總覽 |
+| 2 | 講師／委員資料包 | `handouts` | 評核：填答手冊；編審：講師學習單 |
+| 3 | **列席／旁聽資料包** | `observerPack` | 見證、提供意見；**不含**動手填 Phase |
+
+模板：`templates/meeting-papers-checklist.template.md`
+
+**0630 範本：**
+
+- 委員包：`08-evaluation-committee/1150630-handouts/`
+- 列席包正本：`onsite-print/guests/`｜handouts 索引：`1150630-handouts/observer-pack/`
+
+**0730 範本：**
+
+- 講師包：`09-editorial-committee/1150730-m1-demo/1150730-handouts/print-index.html`
+- 列席包：`…/1150730-handouts/observer-pack/`
+
+籌備中／已排程活動可先用 placeholder `observerPack` 路徑，會前補齊 HTML。
 
 ### 出席名單勾稽（rosterGroupIds）
 

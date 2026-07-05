@@ -20,6 +20,7 @@
         "entry": "index.html",
         "slideshow": "meeting-display.html",
         "handouts": "08-evaluation-committee/1150630-handouts/index.html",
+        "observerPack": "08-evaluation-committee/1150630-handouts/observer-pack/index.html",
         "materials": "08-evaluation-committee/1150630/index.html",
         "dataCompilation": "08-evaluation-committee/1150630-data-compilation/index.html",
         "competencyStandard": "competency-standard/index.html",
@@ -27,6 +28,13 @@
         "onsitePrint": "onsite-print/members/00-toc-cover.html",
         "checkin": "video-checkin/index.html",
         "preset": "config/events/1150630-evaluation.json"
+      },
+      "meetingPapers": {
+        "required": [
+          { "id": "agenda-one-page", "label": "一頁式議程（投影+列印）", "pathKey": "agenda" },
+          { "id": "member-handouts", "label": "評核委員資料包", "pathKey": "handouts" },
+          { "id": "observer-pack", "label": "列席／旁聽資料包", "pathKey": "observerPack" }
+        ]
       }
     },
     {
@@ -44,7 +52,16 @@
         "prep": "08-evaluation-committee/1150830-prep/index.html",
         "materials": "08-evaluation-committee/1150830/index.html",
         "agenda": "08-evaluation-committee/1150830/AGENDA.md",
+        "handouts": "08-evaluation-committee/1150830-prep/index.html",
+        "observerPack": "08-evaluation-committee/1150830/handouts/observer-pack/index.html",
         "preset": "config/events/1150830-evaluation.json"
+      },
+      "meetingPapers": {
+        "required": [
+          { "id": "agenda-one-page", "label": "一頁式議程（投影+列印）", "pathKey": "agenda" },
+          { "id": "member-handouts", "label": "評核委員資料包", "pathKey": "handouts" },
+          { "id": "observer-pack", "label": "列席／旁聽資料包", "pathKey": "observerPack" }
+        ]
       }
     },
     {
@@ -60,7 +77,16 @@
       "assetsPath": "08-evaluation-committee/1151025",
       "links": {
         "materials": "08-evaluation-committee/1151025/index.html",
+        "handouts": "08-evaluation-committee/1151025/handouts/index.html",
+        "observerPack": "08-evaluation-committee/1151025/handouts/observer-pack/index.html",
         "preset": "config/events/1151025-evaluation.json"
+      },
+      "meetingPapers": {
+        "required": [
+          { "id": "agenda-one-page", "label": "一頁式議程（投影+列印）", "pathKey": "agendaPrint" },
+          { "id": "member-handouts", "label": "評核委員資料包", "pathKey": "handouts" },
+          { "id": "observer-pack", "label": "列席／旁聽資料包", "pathKey": "observerPack" }
+        ]
       }
     },
     {
@@ -76,7 +102,16 @@
       "assetsPath": "08-evaluation-committee/1151129",
       "links": {
         "materials": "08-evaluation-committee/1151129/index.html",
+        "handouts": "08-evaluation-committee/1151129/handouts/index.html",
+        "observerPack": "08-evaluation-committee/1151129/handouts/observer-pack/index.html",
         "preset": "config/events/1151129-evaluation.json"
+      },
+      "meetingPapers": {
+        "required": [
+          { "id": "agenda-one-page", "label": "一頁式議程（投影+列印）", "pathKey": "agendaPrint" },
+          { "id": "member-handouts", "label": "評核委員資料包", "pathKey": "handouts" },
+          { "id": "observer-pack", "label": "列席／旁聽資料包", "pathKey": "observerPack" }
+        ]
       }
     },
     {
@@ -101,6 +136,7 @@
         "rehearsalRunbook": "09-editorial-committee/1150730-m1-demo/1150730-handouts/rehearsal-runbook.html",
         "slideshowAfternoon": "09-editorial-committee/1150730-m1-demo/00-preflight/m1-1-1-teaching-chain-slideshow.html",
         "handouts": "09-editorial-committee/1150730-m1-demo/1150730-handouts/print-index.html",
+        "observerPack": "09-editorial-committee/1150730-m1-demo/1150730-handouts/observer-pack/index.html",
         "trainingReportWizard": "training/icap-planning-report-wizard/agenda-flow.html",
         "reportWizardSlideshow": "training/icap-planning-report-wizard/report-wizard-slideshow.html",
         "onsiteCheckin": "onsite-checkin/index.html",
@@ -108,6 +144,13 @@
         "qrProjector": "onsite-projector.html",
         "qrPrint": "onsite-qr-print.html",
         "preset": "config/events/1150730-editorial.json"
+      },
+      "meetingPapers": {
+        "required": [
+          { "id": "agenda-one-page", "label": "一頁式議程（投影+列印）", "pathKey": "agendaPrint" },
+          { "id": "member-handouts", "label": "講師／委員資料包", "pathKey": "handouts" },
+          { "id": "observer-pack", "label": "列席／旁聽資料包", "pathKey": "observerPack" }
+        ]
       }
     },
     {
@@ -124,7 +167,16 @@
       "links": {
         "materials": "09-editorial-committee/1151018-m2-unit-claim/index.html",
         "unitClaimMatrix": "09-editorial-committee/unit-claim-matrix.html",
+        "handouts": "09-editorial-committee/1151018-m2-unit-claim/handouts/index.html",
+        "observerPack": "09-editorial-committee/1151018-m2-unit-claim/handouts/observer-pack/index.html",
         "preset": "config/events/1151018-editorial.json"
+      },
+      "meetingPapers": {
+        "required": [
+          { "id": "agenda-one-page", "label": "一頁式議程（投影+列印）", "pathKey": "agendaPrint" },
+          { "id": "member-handouts", "label": "講師／委員資料包", "pathKey": "handouts" },
+          { "id": "observer-pack", "label": "列席／旁聽資料包", "pathKey": "observerPack" }
+        ]
       }
     },
     {
@@ -140,7 +192,16 @@
       "assetsPath": "09-editorial-committee/1151115-m3-collaborative-review",
       "links": {
         "materials": "09-editorial-committee/1151115-m3-collaborative-review/index.html",
+        "handouts": "09-editorial-committee/1151115-m3-collaborative-review/handouts/index.html",
+        "observerPack": "09-editorial-committee/1151115-m3-collaborative-review/handouts/observer-pack/index.html",
         "preset": "config/events/1151115-editorial.json"
+      },
+      "meetingPapers": {
+        "required": [
+          { "id": "agenda-one-page", "label": "一頁式議程（投影+列印）", "pathKey": "agendaPrint" },
+          { "id": "member-handouts", "label": "講師／委員資料包", "pathKey": "handouts" },
+          { "id": "observer-pack", "label": "列席／旁聽資料包", "pathKey": "observerPack" }
+        ]
       }
     },
     {
@@ -156,7 +217,16 @@
       "assetsPath": "09-editorial-committee/1151220-m4-final-acceptance",
       "links": {
         "materials": "09-editorial-committee/1151220-m4-final-acceptance/index.html",
+        "handouts": "09-editorial-committee/1151220-m4-final-acceptance/handouts/index.html",
+        "observerPack": "09-editorial-committee/1151220-m4-final-acceptance/handouts/observer-pack/index.html",
         "preset": "config/events/1151220-editorial.json"
+      },
+      "meetingPapers": {
+        "required": [
+          { "id": "agenda-one-page", "label": "一頁式議程（投影+列印）", "pathKey": "agendaPrint" },
+          { "id": "member-handouts", "label": "講師／委員資料包", "pathKey": "handouts" },
+          { "id": "observer-pack", "label": "列席／旁聽資料包", "pathKey": "observerPack" }
+        ]
       }
     }
   ]

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>議程一頁式｜列席／旁聽｜115/07/30</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --am: #0f766e; --pm: #1e40af; --border: #cbd5e1; --accent: #1e3a5f; }
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background: #e8ecf0;
+      margin: 0;
+      font-size: 8.5pt;
+      line-height: 1.4;
+      color: #111;
+    }
+    .page {
+      max-width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto;
+      background: #fff;
+      padding: 10mm 12mm 8mm;
+    }
+    .no-print { padding: 0.75rem; text-align: center; font-size: 0.85rem; }
+    .no-print button {
+      font-family: inherit; font-size: 0.95rem; padding: 0.5rem 1.25rem;
+      background: var(--pm); color: #fff; border: none; border-radius: 0.35rem; cursor: pointer;
+    }
+    .header { border-bottom: 2.5px solid var(--accent); padding-bottom: 3mm; margin-bottom: 3mm; }
+    .header .org { font-size: 9pt; color: var(--accent); font-weight: 600; }
+    .header h1 { font-size: 12.5pt; margin: 1mm 0; color: var(--accent); line-height: 1.3; }
+    .header .meta { font-size: 8pt; color: #475569; margin: 0; }
+    .badge-obs {
+      display: inline-block; background: #047857; color: #fff;
+      font-size: 7.5pt; font-weight: 700; padding: 1mm 2.5mm; border-radius: 999px; margin-bottom: 2mm;
+    }
+    .attendee { display: flex; gap: 8mm; font-size: 8.5pt; margin: 2.5mm 0 3mm; padding: 2mm 0; border-bottom: 1px dashed var(--border); }
+    .attendee .line { flex: 1; border-bottom: 1px solid #94a3b8; min-width: 30mm; }
+    h2 { font-size: 9pt; font-weight: 700; margin: 2.5mm 0 1.5mm; padding-left: 2mm; border-left: 3px solid var(--pm); page-break-after: avoid; }
+    h2.am { border-color: var(--am); color: var(--am); }
+    table { width: 100%; border-collapse: collapse; font-size: 7.5pt; margin-bottom: 2mm; }
+    th, td { border: 1px solid var(--border); padding: 1.2mm 1.5mm; vertical-align: top; }
+    th { background: #f1f5f9; text-align: left; font-weight: 600; }
+    .time { white-space: nowrap; font-weight: 600; }
+    .lunch td { background: #f8fafc; color: #64748b; text-align: center; font-style: italic; }
+    .foot { margin-top: 3mm; padding-top: 2mm; border-top: 1px solid var(--border); font-size: 7pt; color: #64748b; }
+    .note-obs { background: #ecfdf5; border: 1px solid #6ee7b7; padding: 2mm 3mm; font-size: 7.5pt; margin-bottom: 3mm; border-radius: 1mm; }
+    @media print {
+      body { background: #fff; }
+      .no-print { display: none !important; }
+      .page { max-width: none; min-height: auto; padding: 8mm 10mm 6mm; }
+      @page { size: A4 portrait; margin: 0; }
+      tr { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <div class="no-print">
+    <a href="index.html">← 列席資料包</a> ·
+    <a href="../print-index.html">列印索引</a>
+    <p style="margin:0.5rem 0;"><button type="button" onclick="window.print()">列印本頁</button></p>
+  </div>
+
+  <div class="page">
+    <header class="header">
+      <span class="badge-obs">列席／旁聽版</span>
+      <p class="org">臺灣道法總會</p>
+      <h1>教材編審委員會｜115/07/30 議程總覽</h1>
+      <p class="meta">M1 Demo 示範｜單元 M1-1.1｜上午 10:00–11:30 ＋ 下午 13:50–17:00</p>
+    </header>
+
+    <div class="note-obs">
+      <strong>給列席／旁聽者：</strong>本頁僅列時程與主題，不含主持話術或講師填寫指引。您無需填寫講師學習單。
+    </div>
+
+    <div class="attendee">
+      <span>姓名</span><span class="line"></span>
+      <span>服務單位</span><span class="line"></span>
+    </div>
+
+    <h2 class="am">上午｜邏輯鏈導覽（10:00–11:30）</h2>
+    <table>
+      <thead><tr><th style="width:16%">時間</th><th style="width:5%">鏈</th><th>主題</th></tr></thead>
+      <tbody>
+        <tr><td class="time">10:00–10:10</td><td>L0</td><td>開場：傳統教材 vs 職能導向</td></tr>
+        <tr><td class="time">10:10–10:22</td><td>L1</td><td>職能如何發展？iCAP 程序總覽</td></tr>
+        <tr><td class="time">10:22–10:34</td><td>L2</td><td>產業需求分析</td></tr>
+        <tr><td class="time">10:34–10:46</td><td>L3</td><td>定義範疇（七大範疇 T1–T7）</td></tr>
+        <tr><td class="time">10:46–10:58</td><td>L4</td><td>工作任務 T → 行為指標 P → 產出 O</td></tr>
+        <tr><td class="time">10:58–11:10</td><td>L5</td><td>知識、技能、態度（KSA）</td></tr>
+        <tr><td class="time">11:10–11:22</td><td>L6</td><td>教學發展：課程地圖 → 教學單元</td></tr>
+        <tr><td class="time">11:22–11:30</td><td>L7</td><td>銜接下午 Demo ＋ 報告書精靈預告</td></tr>
+      </tbody>
+    </table>
+
+    <table><tbody><tr class="lunch"><td class="time" style="width:16%">11:30–13:50</td><td colspan="2">午休</td></tr></tbody></table>
+
+    <h2>下午｜教學鏈 ＋ Phase 0–5 ＋ 報告書走讀（13:50–17:00）</h2>
+    <table>
+      <thead><tr><th style="width:16%">時間</th><th style="width:8%">Phase</th><th>主題</th></tr></thead>
+      <tbody>
+        <tr><td class="time">13:50–14:05</td><td>Pre</td><td>M1-1.1 教學鏈說明（投影）</td></tr>
+        <tr><td class="time">14:05–14:15</td><td>0</td><td>身分確認、Demo 定位</td></tr>
+        <tr><td class="time">14:15–14:30</td><td>精靈</td><td>報告書總地圖 ＋ 表1 職能表走讀</td></tr>
+        <tr><td class="time">14:30–14:45</td><td>1</td><td>教學內容、教學步驟 ＋ 表4 走讀</td></tr>
+        <tr><td class="time">14:45–14:57</td><td>2</td><td>教學目標（ABCD）＋ 表3 走讀</td></tr>
+        <tr><td class="time">14:57–15:12</td><td>3</td><td>教學方式、學習單 ＋ 表5 走讀</td></tr>
+        <tr><td class="time">15:12–15:25</td><td>表2</td><td>課程地圖走讀</td></tr>
+        <tr class="lunch"><td class="time">15:25–15:30</td><td>—</td><td>短休</td></tr>
+        <tr><td class="time">15:30–15:50</td><td>4</td><td>評量方式 ＋ 評量精靈 ＋ 表8 走讀</td></tr>
+        <tr><td class="time">15:50–16:05</td><td>6–7</td><td>表6 資源、表7 師資走讀</td></tr>
+        <tr><td class="time">16:05–16:15</td><td>5</td><td>產出歸檔、協作平台、M2 銜接</td></tr>
+        <tr><td class="time">16:15–16:30</td><td>精靈</td><td>表9–12 快速概覽</td></tr>
+        <tr><td class="time">16:30–17:00</td><td>收尾</td><td>Checklist 自我審查 ＋ Q&A</td></tr>
+      </tbody>
+    </table>
+
+    <footer class="foot">
+      <strong>邏輯鏈順序：</strong>產業需求 → 七大範疇 → T/P/O → KSA → 課程地圖（86 單元）→ 單元設計 → 報告書表1–12<br>
+      報到入口：<strong>chatgptcjcu-boop.github.io/meet-checkin</strong>
+    </footer>
+  </div>
+</body>
+</html>

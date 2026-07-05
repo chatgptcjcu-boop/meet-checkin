@@ -266,6 +266,7 @@
       entry: '報到入口',
       materials: '會議資料',
       handouts: '現場發放',
+      observerPack: '列席資料包',
       slideshow: '投影簡報',
       slideshowAfternoon: '下午簡報',
       dataCompilation: '資料彙整區',
@@ -353,7 +354,7 @@
 
     function renderActive(ev) {
       const prog = findProgress(ev);
-      const links = renderLinks(ev.links, ['entry', 'agenda', 'agendaOnePage', 'agendaPrint', 'onsiteCheckin', 'videoCheckin', 'qrProjector', 'qrPrint', 'materials', 'slideshow', 'rehearsalRunbook', 'handouts']);
+      const links = renderLinks(ev.links, ['entry', 'agenda', 'agendaOnePage', 'agendaPrint', 'onsiteCheckin', 'videoCheckin', 'qrProjector', 'qrPrint', 'materials', 'slideshow', 'rehearsalRunbook', 'handouts', 'observerPack']);
       return (
         '<div class="event-card active-card">' +
           '<div class="event-head">' +
@@ -401,7 +402,7 @@
 
     function renderCompleted(ev) {
       const prog = findProgress(ev);
-      const links = renderLinks(ev.links, ['slideshow', 'agenda', 'handouts', 'materials', 'dataCompilation', 'onsitePrint', 'checkin', 'preset']);
+      const links = renderLinks(ev.links, ['slideshow', 'agenda', 'handouts', 'observerPack', 'materials', 'dataCompilation', 'onsitePrint', 'checkin', 'preset']);
       return (
         '<div class="event-card completed-card">' +
           '<div class="event-head">' +
