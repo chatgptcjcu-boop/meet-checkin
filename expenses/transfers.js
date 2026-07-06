@@ -27,7 +27,7 @@
   function fillPersonnel() {
     document.getElementById('personId').innerHTML = (state.personnel || [])
       .map((p) => {
-        const ready = p.email && p.bank && p.account ? ' ✓' : ' ⚠';
+        const ready = p.email && p.bankCode && p.bank && p.branch && p.account && p.accountName ? ' ✓' : ' ⚠';
         return '<option value="' + esc(p.id) + '">' + esc(p.name) + '（' + esc(p.role) + '）' + ready + '</option>';
       })
       .join('');
@@ -223,8 +223,8 @@
       setStatus('收款人尚未設定 Email，請先到人員帳戶或個人入口補齊');
       return;
     }
-    if (!person.bank || !person.account) {
-      setStatus('收款人銀行或帳號未完整，請先確認帳戶資料');
+    if (!person.bankCode || !person.bank || !person.branch || !person.account || !person.accountName) {
+      setStatus('收款人銀行代碼、銀行、分行、帳號或戶名未完整，請先確認帳戶資料');
       return;
     }
     if (!confirm('確認今日已撥付款項，並寄送 Email 通知給 ' + person.name + '？')) return;

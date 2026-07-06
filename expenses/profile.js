@@ -17,8 +17,11 @@
     document.getElementById('pName').value = person.name || '';
     document.getElementById('pRole').value = person.role || '';
     document.getElementById('pEmail').value = person.email || '';
+    document.getElementById('pBankCode').value = person.bankCode || '';
     document.getElementById('pBank').value = person.bank || '';
+    document.getElementById('pBranch').value = person.branch || '';
     document.getElementById('pAccount').value = person.account || '';
+    document.getElementById('pAccountName').value = person.accountName || person.name || '';
     document.getElementById('pNote').value = person.note || '';
     document.getElementById('pNotifyPayment').checked = person.notifyPayment !== false;
     document.getElementById('profilePanel').hidden = false;
@@ -55,8 +58,11 @@
         timestamp: new Date().toISOString(),
         profile: {
           email: document.getElementById('pEmail').value.trim(),
+          bankCode: document.getElementById('pBankCode').value.trim(),
           bank: document.getElementById('pBank').value.trim(),
+          branch: document.getElementById('pBranch').value.trim(),
           account: document.getElementById('pAccount').value.trim(),
+          accountName: document.getElementById('pAccountName').value.trim(),
           note: document.getElementById('pNote').value.trim(),
           notifyPayment: document.getElementById('pNotifyPayment').checked,
         },
@@ -94,7 +100,10 @@
 
   document.getElementById('btnClearAccount').addEventListener('click', () => {
     if (!confirm('確定清除銀行與帳號？')) return;
+    document.getElementById('pBankCode').value = '';
     document.getElementById('pBank').value = '';
+    document.getElementById('pBranch').value = '';
     document.getElementById('pAccount').value = '';
+    document.getElementById('pAccountName').value = '';
   });
 })();

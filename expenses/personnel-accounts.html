@@ -34,8 +34,11 @@
             <option>其他</option>
           </select>
         </label>
-        <label>銀行<input type="text" id="pBank" placeholder="例：台灣銀行"></label>
-        <label>帳號<input type="text" id="pAccount"></label>
+        <label>銀行代碼<input type="text" id="pBankCode" placeholder="例：004" inputmode="numeric"></label>
+        <label>銀行名稱<input type="text" id="pBank" placeholder="例：台灣銀行"></label>
+        <label>分行名稱<input type="text" id="pBranch" placeholder="例：台南分行"></label>
+        <label>帳號<input type="text" id="pAccount" inputmode="numeric"></label>
+        <label>戶名<input type="text" id="pAccountName" placeholder="須與收款帳戶一致"></label>
         <label>Email<input type="email" id="pEmail" placeholder="通知撥款與帳戶維護"></label>
         <label>登入碼<input type="text" id="pAccessCode" placeholder="留空可自動產生"></label>
         <label class="span-2">備註<input type="text" id="pNote"></label>

@@ -580,8 +580,11 @@ function publicExpensePerson_(person) {
     name: person.name || '',
     role: person.role || '',
     email: person.email || '',
+    bankCode: person.bankCode || '',
     bank: person.bank || '',
+    branch: person.branch || '',
     account: person.account || '',
+    accountName: person.accountName || '',
     note: person.note || '',
     notifyPayment: person.notifyPayment !== false,
     profileUpdatedAt: person.profileUpdatedAt || ''
@@ -611,8 +614,11 @@ function handleExpensePersonProfile(data) {
   }
 
   person.email = profile.email || '';
+  person.bankCode = profile.bankCode || '';
   person.bank = profile.bank || '';
+  person.branch = profile.branch || '';
   person.account = profile.account || '';
+  person.accountName = profile.accountName || person.name || '';
   person.note = profile.note || person.note || '';
   person.notifyPayment = profile.notifyPayment !== false;
   person.profileUpdatedAt = new Date().toISOString();
@@ -1573,7 +1579,10 @@ function sendExpenseTransferEmail_(transfer, person, timeStr) {
     '撥款方式：' + (transfer.type || ''),
     '撥付款項：' + (transfer.purpose || ''),
     '金額：' + (Number(transfer.amount) || 0),
+    '銀行代碼：' + (person.bankCode || ''),
     '收款銀行：' + (person.bank || ''),
+    '分行名稱：' + (person.branch || ''),
+    '戶名：' + (person.accountName || person.name || ''),
     '收款帳號：' + masked,
     '',
     '若您未收到款項，或帳戶資料需更正，請回覆本信或聯繫主辦單位。'

@@ -41,9 +41,9 @@
         ],
       },
       personnel: [
-        { id: 'p-wa', name: '工讀生A', role: '工讀生', email: '', accessCode: '', bank: '', account: '', note: '現場簽到、會務' },
-        { id: 'p-wb', name: '工讀生B', role: '工讀生', email: '', accessCode: '', bank: '', account: '', note: '現場簽到、攝影紀錄' },
-        { id: 'p-staff', name: '王芯庭', role: '專案人員', email: '', accessCode: '', bank: '', account: '', note: '會議助理／紀錄' },
+        { id: 'p-wa', name: '工讀生A', role: '工讀生', email: '', accessCode: '', bankCode: '', bank: '', branch: '', account: '', accountName: '', note: '現場簽到、會務' },
+        { id: 'p-wb', name: '工讀生B', role: '工讀生', email: '', accessCode: '', bankCode: '', bank: '', branch: '', account: '', accountName: '', note: '現場簽到、攝影紀錄' },
+        { id: 'p-staff', name: '王芯庭', role: '專案人員', email: '', accessCode: '', bankCode: '', bank: '', branch: '', account: '', accountName: '', note: '會議助理／紀錄' },
       ],
       entries: [],
       transfers: [],

@@ -87,8 +87,11 @@
         Object.assign(person, row, {
           email: person.email || '',
           accessCode: person.accessCode || makeAccessCode(),
+          bankCode: person.bankCode || '',
           bank: person.bank || '',
+          branch: person.branch || '',
           account: person.account || '',
+          accountName: person.accountName || person.name || '',
           notifyPayment: person.notifyPayment !== false,
         });
         updated++;
@@ -97,8 +100,11 @@
           ...row,
           email: '',
           accessCode: makeAccessCode(),
+          bankCode: '',
           bank: '',
+          branch: '',
           account: '',
+          accountName: rosterPerson.name,
           notifyPayment: true,
         });
         added++;
@@ -155,7 +161,7 @@
     const tbody = document.querySelector('#personTable tbody');
     tbody.innerHTML = (state.personnel || [])
       .map((p) => {
-        const acct = [p.bank, EF.maskAccount(p.account)].filter(Boolean).join('／') || '—';
+        const acct = [p.bankCode, p.bank, p.branch, EF.maskAccount(p.account), p.accountName].filter(Boolean).join('／') || '—';
         return (
           '<tr><td><code>' +
           esc(p.id) +
@@ -188,8 +194,11 @@
         document.getElementById('editId').value = p.id;
         document.getElementById('pName').value = p.name;
         document.getElementById('pRole').value = p.role;
+        document.getElementById('pBankCode').value = p.bankCode || '';
         document.getElementById('pBank').value = p.bank || '';
+        document.getElementById('pBranch').value = p.branch || '';
         document.getElementById('pAccount').value = p.account || '';
+        document.getElementById('pAccountName').value = p.accountName || p.name || '';
         document.getElementById('pEmail').value = p.email || '';
         document.getElementById('pAccessCode').value = p.accessCode || '';
         document.getElementById('pNote').value = p.note || '';
@@ -250,8 +259,11 @@
     const row = {
       name: document.getElementById('pName').value.trim(),
       role: document.getElementById('pRole').value,
+      bankCode: document.getElementById('pBankCode').value.trim(),
       bank: document.getElementById('pBank').value.trim(),
+      branch: document.getElementById('pBranch').value.trim(),
       account: document.getElementById('pAccount').value.trim(),
+      accountName: document.getElementById('pAccountName').value.trim(),
       email: document.getElementById('pEmail').value.trim(),
       accessCode: document.getElementById('pAccessCode').value.trim() || makeAccessCode(),
       note: document.getElementById('pNote').value.trim(),

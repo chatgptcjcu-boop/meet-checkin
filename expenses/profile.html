@@ -32,9 +32,12 @@
         <label>姓名<input type="text" id="pName" disabled></label>
         <label>身分<input type="text" id="pRole" disabled></label>
         <label class="span-2">Email<input type="email" id="pEmail" required placeholder="撥款通知寄送信箱"></label>
-        <label>銀行<input type="text" id="pBank" placeholder="例：台灣銀行"></label>
+        <label>銀行代碼<input type="text" id="pBankCode" placeholder="例：004" inputmode="numeric"></label>
+        <label>銀行名稱<input type="text" id="pBank" placeholder="例：台灣銀行"></label>
+        <label>分行名稱<input type="text" id="pBranch" placeholder="例：台南分行"></label>
         <label>帳號<input type="text" id="pAccount" inputmode="numeric"></label>
-        <label class="span-2">備註<input type="text" id="pNote" placeholder="例：戶名與本人不同時請註明"></label>
+        <label>戶名<input type="text" id="pAccountName" placeholder="須與收款帳戶一致"></label>
+        <label>備註<input type="text" id="pNote" placeholder="例：戶名與本人不同時請註明"></label>
         <label class="span-2 checkbox-line">
           <input type="checkbox" id="pNotifyPayment" checked>
           接收撥款 Email 通知
