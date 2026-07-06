@@ -400,7 +400,7 @@
 
   function markBudgetPlanSyncNeeded() {
     try {
-      sessionStorage.setItem('meet-checkin-budget-plan-sync-needed', '1');
+      localStorage.setItem('meet-checkin-budget-plan-sync-needed', '1');
     } catch (_) {}
   }
 

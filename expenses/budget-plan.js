@@ -5,6 +5,7 @@
   let events = [];
 
   const DEFAULT_PER_MEETING = 22000;
+  const BUDGET_PLAN_SYNC_KEY = 'meet-checkin-budget-plan-sync-needed';
 
   function setStatus(msg, ok) {
     const el = document.getElementById('status');
@@ -99,6 +100,15 @@
     }
   }
 
+  function localBudgetNeedsMerge(budgetState) {
+    if (!budgetState || !budgetState.meta || !Array.isArray(budgetState.rows)) return false;
+    const sourceKey = budgetSourceKey(budgetState);
+    const plan = (state.plans || []).find((p) => p.sourceKey === sourceKey);
+    if (!plan) return true;
+    if (budgetState.dataVersion && plan.sourceBudgetVersion !== budgetState.dataVersion) return true;
+    return false;
+  }
+
   function syncLocalBudget(showStatus) {
     const budgetState = loadLocalBudgetState();
     if (!budgetState || !budgetState.meta || !Array.isArray(budgetState.rows)) {
@@ -109,7 +119,7 @@
     EF.saveState(state);
     renderTable();
     try {
-      sessionStorage.removeItem('meet-checkin-budget-plan-sync-needed');
+      localStorage.setItem(BUDGET_PLAN_SYNC_KEY, '1');
     } catch (_) {}
     if (showStatus) {
       setStatus('已同步本機會議編列到動支規劃：$' + EF.fmtMoney(plan.amount) + '（請按儲存到雲端）', true);
@@ -275,6 +285,9 @@
   document.getElementById('btnSaveCloud').addEventListener('click', async () => {
     try {
       await EF.saveCloud(state, '動支規劃');
+      try {
+        localStorage.removeItem(BUDGET_PLAN_SYNC_KEY);
+      } catch (_) {}
       setStatus('已儲存到雲端 ✓', true);
     } catch (e) {
       setStatus('儲存失敗：' + e.message);
@@ -297,7 +310,8 @@
       renderTable();
     }
     try {
-      if (sessionStorage.getItem('meet-checkin-budget-plan-sync-needed') === '1') {
+      const localBudget = loadLocalBudgetState();
+      if (localStorage.getItem(BUDGET_PLAN_SYNC_KEY) === '1' || localBudgetNeedsMerge(localBudget)) {
         syncLocalBudget(true);
       }
     } catch (_) {}
