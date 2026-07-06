@@ -316,6 +316,57 @@
     return (window.EVENT_CONFIG && window.EVENT_CONFIG.expenses && window.EVENT_CONFIG.expenses.action) || 'expenses';
   }
 
+  function budgetRowsTotal(state) {
+    return (state.rows || []).reduce((sum, r) => {
+      return sum + ((Number(r.unitPrice) || 0) * (Number(r.qty) || 0));
+    }, 0);
+  }
+
+  function budgetPlanEventId(state) {
+    return (
+      (window.EVENT_CONFIG && window.EVENT_CONFIG.event && window.EVENT_CONFIG.event.id) ||
+      (state.meta && state.meta.meetingDate) ||
+      'budget-dashboard'
+    );
+  }
+
+  function upsertBudgetPlan(financeState, budgetState) {
+    const eventId = budgetPlanEventId(budgetState);
+    const amount = budgetRowsTotal(budgetState);
+    const meetingName = (budgetState.meta && budgetState.meta.meetingName) || '會議經費編列';
+    const meetingDate = (budgetState.meta && budgetState.meta.meetingDate) || '';
+    const sourceKey = 'budget-dashboard:' + eventId;
+    financeState.plans = financeState.plans || [];
+
+    let plan = financeState.plans.find((p) => p.sourceKey === sourceKey);
+    if (!plan) {
+      plan = { id: (window.ExpenseFinance ? window.ExpenseFinance.uid('pl') : 'pl-' + Date.now()), sourceKey };
+      financeState.plans.push(plan);
+    }
+
+    Object.assign(plan, {
+      eventId,
+      eventTitle: meetingName,
+      item: meetingName + '｜會議經費編列',
+      amount,
+      status: '編列完成',
+      note: [meetingDate, '來源版本 ' + (budgetState.dataVersion || '')].filter(Boolean).join('｜'),
+      source: 'budget-dashboard',
+      sourceBudgetVersion: budgetState.dataVersion || '',
+      updatedAt: new Date().toISOString(),
+    });
+    return plan;
+  }
+
+  async function syncBudgetToFinancePlan(budgetState, editorName) {
+    if (!window.ExpenseFinance) return;
+    const financeState = (await window.ExpenseFinance.syncCloud(true)) || window.ExpenseFinance.loadState();
+    const plan = upsertBudgetPlan(financeState, budgetState);
+    window.ExpenseFinance.saveState(financeState);
+    await window.ExpenseFinance.saveCloud(financeState, editorName || '會議經費編列');
+    return plan;
+  }
+
   function nowStr() {
     return new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Taipei' }).slice(0, 16);
   }
@@ -389,7 +440,20 @@
       const t = nowStr();
       localStorage.setItem(CLOUD_AT_KEY, t);
       renderCloudSavedAt();
-      setCloudStatus('已儲存到雲端 ✓（分頁 expenses，版本 ' + state.dataVersion + '，' + t + '）', 'ok');
+      setCloudStatus('已儲存到雲端 ✓（分頁 expenses，版本 ' + state.dataVersion + '，' + t + '）；正在同步動支規劃…', 'ok');
+      try {
+        const plan = await syncBudgetToFinancePlan(state, name || '會議經費編列');
+        if (plan) {
+          setCloudStatus(
+            '已儲存到雲端並同步動支規劃 ✓（$' + fmtMoney(plan.amount) + '，來源版本 ' + state.dataVersion + '）',
+            'ok'
+          );
+        } else {
+          setCloudStatus('已儲存到雲端 ✓（分頁 expenses，版本 ' + state.dataVersion + '，' + t + '）', 'ok');
+        }
+      } catch (planErr) {
+        setCloudStatus('經費編列已儲存，但同步動支規劃失敗：' + planErr.message + '。可到「動支規劃」按同步補帶入。', 'err');
+      }
     } catch (e) {
       setCloudStatus('雲端儲存失敗：' + e.message + '（本機已儲存，稍後可重試或改用「⬇ 匯出」備份）', 'err');
     } finally {

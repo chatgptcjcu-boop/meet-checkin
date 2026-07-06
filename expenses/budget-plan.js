@@ -18,6 +18,53 @@
     return e ? e.date + ' ' + e.title : id;
   }
 
+  function expensesAction() {
+    return (window.EVENT_CONFIG && window.EVENT_CONFIG.expenses && window.EVENT_CONFIG.expenses.action) || 'expenses';
+  }
+
+  function budgetRowsTotal(budgetState) {
+    return (budgetState.rows || []).reduce((sum, r) => {
+      return sum + ((Number(r.unitPrice) || 0) * (Number(r.qty) || 0));
+    }, 0);
+  }
+
+  function budgetEventId(budgetState) {
+    return (
+      (window.EVENT_CONFIG && window.EVENT_CONFIG.event && window.EVENT_CONFIG.event.id) ||
+      (budgetState.meta && budgetState.meta.meetingDate) ||
+      'budget-dashboard'
+    );
+  }
+
+  function upsertBudgetPlanFromState(budgetState) {
+    const eventId = budgetEventId(budgetState);
+    const sourceKey = 'budget-dashboard:' + eventId;
+    const meetingName = (budgetState.meta && budgetState.meta.meetingName) || '會議經費編列';
+    const meetingDate = (budgetState.meta && budgetState.meta.meetingDate) || '';
+    const amount = budgetRowsTotal(budgetState);
+    state.plans = state.plans || [];
+
+    let plan = state.plans.find((p) => p.sourceKey === sourceKey);
+    if (!plan) {
+      plan = { id: EF.uid('pl'), sourceKey };
+      state.plans.push(plan);
+    }
+
+    Object.assign(plan, {
+      eventId,
+      eventTitle: meetingName,
+      item: meetingName + '｜會議經費編列',
+      amount,
+      status: '編列完成',
+      note: [meetingDate, '來源版本 ' + (budgetState.dataVersion || '')].filter(Boolean).join('｜'),
+      source: 'budget-dashboard',
+      sourceBudgetVersion: budgetState.dataVersion || '',
+      updatedAt: new Date().toISOString(),
+    });
+
+    return plan;
+  }
+
   function fillEventSelect() {
     document.getElementById('planEvent').innerHTML = events
       .map((e) => '<option value="' + e.id + '">' + e.date + ' ' + e.committeeLabel + '｜' + e.title + '</option>')
@@ -148,6 +195,26 @@
   });
 
   document.getElementById('btnSeed').addEventListener('click', seedFromEvents);
+
+  document.getElementById('btnSyncBudget').addEventListener('click', async () => {
+    const url = EF.gasUrl();
+    if (!url) {
+      setStatus('尚未設定 GAS 網址');
+      return;
+    }
+    setStatus('讀取會議經費編列最新版…');
+    try {
+      const res = await fetch(url + '?action=' + encodeURIComponent(expensesAction()), { cache: 'no-cache' });
+      const json = await res.json();
+      if (!json.ok || !json.state) throw new Error(json.error || '雲端尚無會議經費編列資料');
+      const plan = upsertBudgetPlanFromState(json.state);
+      EF.saveState(state);
+      renderTable();
+      setStatus('已同步會議編列到動支規劃：$' + EF.fmtMoney(plan.amount) + '（請按儲存到雲端）', true);
+    } catch (e) {
+      setStatus('同步失敗：' + e.message);
+    }
+  });
 
   document.getElementById('btnSaveCloud').addEventListener('click', async () => {
     try {
