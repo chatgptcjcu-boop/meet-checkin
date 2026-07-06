@@ -20,6 +20,8 @@
     <input type="file" id="importFile" accept="application/json,.json" hidden>
     <button type="button" id="btnReset">↺ 還原預設</button>
     <button type="button" onclick="window.print()">🖨 列印</button>
+    <a class="btn" href="./budget-plan.html">← 回動支規劃</a>
+    <a class="btn" href="./audit-dashboard.html">監管總覽</a>
     <a class="btn" href="./member-fee-receipts.html">委員簽收單 →</a>
   </div>
 
@@ -43,6 +45,7 @@
         「<strong>☁ 儲存到雲端</strong>」會把整份經費資料寫入主辦單位 Google 試算表（分頁 <code>expenses</code>，每次存檔新增一版、保留歷史）。
         開啟頁面會自動讀取雲端最新版；亦可按「<strong>🔄 同步最新</strong>」重新載入。
         「💾 儲存(本機)／⬇ 匯出／⬆ 匯入」仍保留為離線備份。
+        編列完成後可回到 <a href="./budget-plan.html">計畫動支規劃</a> 查看彙總，或到 <a href="./audit-dashboard.html">預算監管總覽</a> 查看全計畫。
         每次儲存會產生新版本號：<strong>YYYYMMDD-HHmmss-NNNN</strong>（日期＋時間＋4碼流水號）。
         注意：雲端採<strong>後寫覆蓋（last-write-wins）</strong>，多人同時編輯時以最後儲存者為準；建議編輯前先「同步最新」。
       </p>
