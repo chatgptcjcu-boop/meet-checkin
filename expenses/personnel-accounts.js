@@ -108,6 +108,49 @@
     return { added, updated };
   }
 
+  function updateRosterWarning() {
+    const el = document.getElementById('rosterWarning');
+    if (!el) return;
+    const rosterPeople = (state.personnel || []).filter((p) => p.rosterMemberId || /^\d{3}[co]-\d{3}$/.test(p.id || ''));
+    if (rosterPeople.length >= 10) {
+      el.hidden = true;
+      return;
+    }
+    el.hidden = false;
+    el.className = 'sync-banner no-print err';
+    el.innerHTML =
+      '目前經費人員只有 ' +
+      (state.personnel || []).length +
+      ' 人，尚未匯入出席名單。請按「從出席名單同步」或「同步名單並儲存雲端」。';
+  }
+
+  async function importRosterMembers(saveCloudAfter) {
+    if (!confirm('從出席名單同步委員與工作人員？既有 Email、登入碼、銀行帳號會保留。')) return;
+    const url = gasUrl();
+    if (!url) {
+      setStatus('尚未設定 GAS 網址');
+      return;
+    }
+    setStatus('同步出席名單中…');
+    try {
+      const res = await fetch(url + '?action=roster', { cache: 'no-cache' });
+      const json = await res.json();
+      if (!json.ok) throw new Error(json.error || '載入出席名單失敗');
+      const result = mergeRosterMembers(json.members || [], json.groups || []);
+      EF.saveState(state);
+      render();
+      updateRosterWarning();
+      if (saveCloudAfter) {
+        await EF.saveCloud(state, '人員帳戶同步出席名單');
+        setStatus('已同步出席名單並儲存雲端：新增 ' + result.added + ' 人、更新 ' + result.updated + ' 人 ✓', true);
+      } else {
+        setStatus('已同步出席名單：新增 ' + result.added + ' 人、更新 ' + result.updated + ' 人（請按儲存到雲端）', true);
+      }
+    } catch (e) {
+      setStatus('同步失敗：' + e.message);
+    }
+  }
+
   function render() {
     const tbody = document.querySelector('#personTable tbody');
     tbody.innerHTML = (state.personnel || [])
@@ -136,6 +179,7 @@
         );
       })
       .join('');
+    updateRosterWarning();
 
     tbody.querySelectorAll('.edit-person').forEach((btn) => {
       btn.addEventListener('click', () => {
@@ -191,24 +235,13 @@
   });
 
   document.getElementById('btnImportRoster').addEventListener('click', async () => {
-    if (!confirm('從出席名單同步委員與工作人員？既有 Email、登入碼、銀行帳號會保留。')) return;
-    const url = gasUrl();
-    if (!url) {
-      setStatus('尚未設定 GAS 網址');
-      return;
-    }
-    setStatus('同步出席名單中…');
-    try {
-      const res = await fetch(url + '?action=roster', { cache: 'no-cache' });
-      const json = await res.json();
-      if (!json.ok) throw new Error(json.error || '載入出席名單失敗');
-      const result = mergeRosterMembers(json.members || [], json.groups || []);
-      EF.saveState(state);
-      render();
-      setStatus('已同步出席名單：新增 ' + result.added + ' 人、更新 ' + result.updated + ' 人（請按儲存到雲端）', true);
-    } catch (e) {
-      setStatus('同步失敗：' + e.message);
-    }
+    importRosterMembers(false);
+  });
+  document.getElementById('btnImportRosterTop').addEventListener('click', async () => {
+    importRosterMembers(false);
+  });
+  document.getElementById('btnImportRosterAndSave').addEventListener('click', async () => {
+    importRosterMembers(true);
   });
 
   document.getElementById('personForm').addEventListener('submit', (ev) => {
