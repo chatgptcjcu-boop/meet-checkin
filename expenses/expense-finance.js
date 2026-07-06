@@ -79,12 +79,17 @@
       (t) => t.amount
     );
     const entriesLogged = sum(
-      (state.entries || []).filter((e) => e.status !== '作廢'),
+      (state.entries || []).filter((e) => e.status !== '作廢' && e.status !== '待審'),
+      (e) => e.amount
+    );
+    const unpaidEntries = sum(
+      (state.entries || []).filter((e) => e.status === '已核准' || e.status === '已排入出帳'),
       (e) => e.amount
     );
     const planned = sum(state.plans || [], (p) => p.amount);
-    const available = deposits - transfersOut - entriesLogged;
-    return { deposits, transfersOut, entriesLogged, planned, available };
+    const available = deposits - entriesLogged;
+    const cashBalance = deposits - transfersOut;
+    return { deposits, transfersOut, entriesLogged, unpaidEntries, planned, available, cashBalance };
   }
 
   function fmtMoney(n) {

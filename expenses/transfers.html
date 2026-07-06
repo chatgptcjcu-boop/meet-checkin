@@ -32,6 +32,20 @@
         <div class="span-2 btn-row"><button type="submit" class="btn-sm primary">＋ 登記出帳</button></div>
       </form>
     </div>
+    <div class="panel no-print">
+      <h2>待出帳明細（由已核准記帳彙總）</h2>
+      <p class="note">每筆已核准記帳會依支領人累積在這裡。確認要批次付款時，可依支領人產生一筆匯款出帳，再於實際匯款後寄送通知。</p>
+      <div class="summary-grid" id="payableSummary"></div>
+      <div class="btn-row">
+        <button type="button" class="btn-sm primary" id="btnCreateTransfers">依支領人產生匯款批次</button>
+      </div>
+      <table class="sheet" id="payableTable">
+        <thead>
+          <tr><th>支領人</th><th>筆數</th><th>待付金額</th><th>明細</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
     <div class="panel">
       <h2>出帳清單</h2>
       <table class="sheet" id="transferTable">

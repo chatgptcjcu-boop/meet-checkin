@@ -24,13 +24,29 @@
       .join('');
   }
 
+  function actualByEvent() {
+    const map = new Map();
+    (state.entries || [])
+      .filter((e) => e.status !== '待審' && e.status !== '作廢')
+      .forEach((e) => {
+        const key = e.eventId || '';
+        map.set(key, (map.get(key) || 0) + (Number(e.amount) || 0));
+      });
+    return map;
+  }
+
   function renderSummary() {
     const s = EF.calcSummary(state);
     const plannedActive = (state.plans || [])
       .filter((p) => p.status !== '取消')
       .reduce((sum, p) => sum + (Number(p.amount) || 0), 0);
+    const actualActive = (state.entries || [])
+      .filter((e) => e.status !== '待審' && e.status !== '作廢')
+      .reduce((sum, e) => sum + (Number(e.amount) || 0), 0);
     document.getElementById('planSummary').innerHTML = [
       ['規劃合計', plannedActive],
+      ['已核准實際', actualActive],
+      ['規劃差額', plannedActive - actualActive],
       ['可動用餘額', s.available],
       ['規劃後剩餘', s.available - plannedActive],
     ]
@@ -52,26 +68,38 @@
   function renderTable() {
     const tbody = document.querySelector('#planTable tbody');
     const rows = (state.plans || []).slice();
+    const actual = actualByEvent();
     tbody.innerHTML = rows.length
       ? rows
           .map(
-            (p) =>
-              '<tr><td>' +
-              eventLabel(p.eventId) +
-              '</td><td>' +
-              (p.item || '') +
-              '</td><td>$' +
-              EF.fmtMoney(p.amount) +
-              '</td><td>' +
-              (p.status || '') +
-              '</td><td>' +
-              (p.note || '') +
-              '</td><td class="no-print"><button type="button" class="btn-sm del-plan" data-id="' +
-              p.id +
-              '">刪除</button></td></tr>'
+            (p) => {
+              const used = actual.get(p.eventId || '') || 0;
+              const diff = (Number(p.amount) || 0) - used;
+              return (
+                '<tr><td>' +
+                eventLabel(p.eventId) +
+                '</td><td>' +
+                (p.item || '') +
+                '</td><td>$' +
+                EF.fmtMoney(p.amount) +
+                '</td><td>$' +
+                EF.fmtMoney(used) +
+                '</td><td style="color:' +
+                (diff < 0 ? '#b91c1c' : 'var(--green)') +
+                '">$' +
+                EF.fmtMoney(diff) +
+                '</td><td>' +
+                (p.status || '') +
+                '</td><td>' +
+                (p.note || '') +
+                '</td><td class="no-print"><button type="button" class="btn-sm del-plan" data-id="' +
+                p.id +
+                '">刪除</button></td></tr>'
+              );
+            }
           )
           .join('')
-      : '<tr><td colspan="6" style="text-align:center;color:#64748b">尚無規劃，可按「從會議清單帶入」</td></tr>';
+      : '<tr><td colspan="8" style="text-align:center;color:#64748b">尚無規劃，可按「從會議清單帶入」</td></tr>';
 
     tbody.querySelectorAll('.del-plan').forEach((btn) => {
       btn.addEventListener('click', () => {

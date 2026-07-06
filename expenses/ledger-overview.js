@@ -6,10 +6,12 @@
     const s = EF.calcSummary(state);
     document.getElementById('summaryCards').innerHTML = [
       ['已入帳', s.deposits, 'var(--green)'],
-      ['已匯出／出帳', s.transfersOut, '#b45309'],
-      ['已登錄支出', s.entriesLogged, '#6366f1'],
+      ['已核准實際', s.entriesLogged, '#6366f1'],
+      ['待付款', s.unpaidEntries, '#b45309'],
+      ['已匯出／出帳', s.transfersOut, '#0f766e'],
       ['規劃動支', s.planned, '#64748b'],
-      ['可動用餘額', s.available, s.available >= 0 ? 'var(--green)' : '#b91c1c'],
+      ['預算餘額', s.available, s.available >= 0 ? 'var(--green)' : '#b91c1c'],
+      ['帳戶現金餘額', s.cashBalance, s.cashBalance >= 0 ? 'var(--green)' : '#b91c1c'],
     ]
       .map(
         ([label, val, color]) =>

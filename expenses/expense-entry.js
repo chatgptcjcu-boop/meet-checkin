@@ -83,6 +83,8 @@
               '>待審</option><option' +
               (e.status === '已核准' ? ' selected' : '') +
               '>已核准</option><option' +
+              (e.status === '已排入出帳' ? ' selected' : '') +
+              '>已排入出帳</option><option' +
               (e.status === '已匯款' ? ' selected' : '') +
               '>已匯款</option><option' +
               (e.status === '作廢' ? ' selected' : '') +
@@ -101,6 +103,10 @@
         const entry = state.entries.find((x) => x.id === sel.dataset.id);
         if (entry) {
           entry.status = sel.value;
+          if (sel.value === '已核准') {
+            delete entry.transferId;
+            delete entry.paidAt;
+          }
           persist();
         }
       });
