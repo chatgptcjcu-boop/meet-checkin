@@ -16,6 +16,14 @@
     return (window.EVENT_CONFIG && window.EVENT_CONFIG.expenseFinance && window.EVENT_CONFIG.expenseFinance.action) || 'expense-finance';
   }
 
+  function entrySubmissionAction() {
+    return 'expense-entry-submission';
+  }
+
+  function entrySubmissionsAction() {
+    return 'expense-entry-submissions';
+  }
+
   function defaultState() {
     return {
       schemaVersion: SCHEMA_VERSION,
@@ -130,6 +138,46 @@
     return state;
   }
 
+  async function postGas(payload) {
+    const url = gasUrl();
+    if (!url) throw new Error('尚未設定 GAS 網址');
+    await fetch(url, {
+      method: 'POST',
+      mode: 'no-cors',
+      cache: 'no-cache',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async function submitEntrySubmission(submission) {
+    await postGas({
+      action: entrySubmissionAction(),
+      timestamp: new Date().toISOString(),
+      submission,
+      pageUrl: location.href,
+    });
+  }
+
+  async function syncEntrySubmissions() {
+    const url = gasUrl();
+    if (!url) throw new Error('尚未設定 GAS 網址');
+    const res = await fetch(url + '?action=' + encodeURIComponent(entrySubmissionsAction()), { cache: 'no-cache' });
+    const json = await res.json();
+    if (json && json.ok && Array.isArray(json.submissions)) return json.submissions;
+    return [];
+  }
+
+  async function markEntrySubmission(submissionId, status) {
+    await postGas({
+      action: entrySubmissionAction(),
+      operation: 'markImported',
+      submissionId,
+      status: status || '已匯入',
+      timestamp: new Date().toISOString(),
+    });
+  }
+
   function renderFinanceNav(active) {
     const links = [
       ['index.html', '入口'],
@@ -164,6 +212,9 @@
     formatDateZh,
     syncCloud,
     saveCloud,
+    submitEntrySubmission,
+    syncEntrySubmissions,
+    markEntrySubmission,
     renderFinanceNav,
     gasUrl,
   };

@@ -17,6 +17,9 @@
  *                           讀取：doGet ?action=expenses 回傳最新一版的資料 JSON
  * • expense-finance       → handleExpenseFinance（核銷總帳／人員／出帳／動支規劃 JSON，分頁 expense-finance）
  *                           讀取：doGet ?action=expense-finance 回傳最新一版
+ * • expense-entry-submission
+ *                         → 工讀生支出送審，分頁 expense-entry-submissions，並寄信通知主辦
+ *                           讀取：doGet ?action=expense-entry-submissions 回傳送審清單
  * • roster-admin          → handleRosterAdmin（出席名單群組／成員 CRUD＋批次貼上）
  *                           讀取：doGet ?action=roster 回傳全部群組＋成員 JSON
  * • 簽到 / 簽退           → handleSignInOut（驗證簽到＋試算表＋Drive＋寄信通知）
@@ -56,6 +59,8 @@ var UNIT_CLAIM_SHEET_NAME = 'unit-claim-matrix';
 var EXPENSE_SHEET_NAME = 'expenses';
 /** 核銷總帳分頁（ledger／personnel／transfers／plans／entries 整包 JSON） */
 var EXPENSE_FINANCE_SHEET_NAME = 'expense-finance';
+/** 工讀生支出送審分頁（送出後先通知主辦，確認後才匯入 expense-finance） */
+var EXPENSE_ENTRY_SUBMISSIONS_SHEET_NAME = 'expense-entry-submissions';
 /** 出席名單群組／成員分頁（英文 tab 名；memberId 為跨群組連動刪改的主鍵） */
 var ROSTER_GROUPS_SHEET_NAME = 'roster-groups';
 var ROSTER_MEMBERS_SHEET_NAME = 'roster-members';
@@ -64,6 +69,11 @@ var ROSTER_MEMBERS_SHEET_NAME = 'roster-members';
 var EXPENSE_HEADERS = ['更新時間', '版本', '更新者', '資料JSON'];
 /** expense-finance 分頁欄位（與 expenses 相同版本化模式） */
 var EXPENSE_FINANCE_HEADERS = ['更新時間', '版本', '更新者', '資料JSON'];
+/** expense-entry-submissions 分頁欄位 */
+var EXPENSE_ENTRY_SUBMISSION_HEADERS = [
+  'submissionId', '提交時間', '登錄人ID', '登錄人', '日期', '類別', '金額',
+  '說明', '會議ID', '狀態', '匯入時間', '資料JSON', '頁面URL'
+];
 
 /** roster-groups 分頁欄位（groupId 為活動 preset rosterGroupIds 引用的穩定 ID） */
 var ROSTER_GROUP_HEADERS = ['groupId', 'name', 'committee', 'rosterKind', 'sortOrder', 'description'];
@@ -135,6 +145,9 @@ function doPost(e) {
     }
     if (action === 'expense-finance') {
       return handleExpenseFinance(data);
+    }
+    if (action === 'expense-entry-submission') {
+      return handleExpenseEntrySubmission(data);
     }
     if (action === 'roster-admin') {
       return handleRosterAdmin(data);
@@ -509,6 +522,114 @@ function getExpenseFinance_() {
     updatedBy: row[2],
     state: state
   });
+}
+
+function handleExpenseEntrySubmission(data) {
+  var op = data.operation || 'submit';
+  if (op === 'markImported') {
+    return markExpenseEntrySubmission_(data);
+  }
+  return createExpenseEntrySubmission_(data);
+}
+
+function getOrCreateExpenseEntrySubmissionsSheet_(ss) {
+  var sheet = ss.getSheetByName(EXPENSE_ENTRY_SUBMISSIONS_SHEET_NAME) || ss.insertSheet(EXPENSE_ENTRY_SUBMISSIONS_SHEET_NAME);
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(EXPENSE_ENTRY_SUBMISSION_HEADERS);
+  }
+  return sheet;
+}
+
+function createExpenseEntrySubmission_(data) {
+  var ss = getSpreadsheet_();
+  var sheet = getOrCreateExpenseEntrySubmissionsSheet_(ss);
+  var submission = data.submission || {};
+  var submissionId = submission.id || data.submissionId || ('sub-' + new Date().getTime());
+  var timeStr = formatTaiwanTime_(data.timestamp);
+
+  sheet.appendRow([
+    submissionId,
+    timeStr,
+    submission.personId || '',
+    submission.submitter || '',
+    submission.date || '',
+    submission.category || '',
+    Number(submission.amount) || 0,
+    submission.note || '',
+    submission.eventId || '',
+    '待匯入',
+    '',
+    JSON.stringify(submission),
+    data.pageUrl || ''
+  ]);
+
+  try {
+    sendExpenseEntrySubmissionEmail_(submission, timeStr, data.pageUrl || '');
+  } catch (mailErr) {
+    Logger.log('工讀生支出送審通知信失敗: ' + mailErr);
+  }
+
+  return jsonOut({ ok: true, submissionId: submissionId, rows: sheet.getLastRow() - 1 });
+}
+
+function getExpenseEntrySubmissions_() {
+  var ss = getSpreadsheet_();
+  var sheet = ss.getSheetByName(EXPENSE_ENTRY_SUBMISSIONS_SHEET_NAME);
+  if (!sheet || sheet.getLastRow() < 2) {
+    return jsonOut({ ok: true, submissions: [] });
+  }
+
+  var rows = sheet.getRange(2, 1, sheet.getLastRow() - 1, EXPENSE_ENTRY_SUBMISSION_HEADERS.length).getValues();
+  var submissions = rows.map(function (r) {
+    var payload = {};
+    try {
+      payload = r[11] ? JSON.parse(r[11]) : {};
+    } catch (e) {
+      payload = {};
+    }
+    return {
+      id: r[0],
+      submittedAt: r[1],
+      personId: r[2],
+      submitter: r[3],
+      date: r[4],
+      category: r[5],
+      amount: Number(r[6]) || 0,
+      note: r[7],
+      eventId: r[8],
+      status: r[9] || '待匯入',
+      importedAt: r[10],
+      pageUrl: r[12],
+      payload: payload
+    };
+  });
+
+  return jsonOut({ ok: true, submissions: submissions });
+}
+
+function markExpenseEntrySubmission_(data) {
+  var submissionId = data.submissionId || '';
+  if (!submissionId) {
+    return jsonOut({ ok: false, error: '缺少 submissionId' });
+  }
+
+  var ss = getSpreadsheet_();
+  var sheet = getOrCreateExpenseEntrySubmissionsSheet_(ss);
+  if (sheet.getLastRow() < 2) {
+    return jsonOut({ ok: false, error: '找不到送審資料' });
+  }
+
+  var ids = sheet.getRange(2, 1, sheet.getLastRow() - 1, 1).getValues();
+  for (var i = 0; i < ids.length; i++) {
+    if (ids[i][0] === submissionId) {
+      var rowNum = i + 2;
+      sheet.getRange(rowNum, 10).setValue(data.status || '已匯入');
+      sheet.getRange(rowNum, 11).setValue(formatTaiwanTime_(data.timestamp));
+      return jsonOut({ ok: true, submissionId: submissionId });
+    }
+  }
+
+  return jsonOut({ ok: false, error: '找不到送審資料：' + submissionId });
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1299,6 +1420,32 @@ function sendSignEmail_(data, timeStr, imageBlob, imageUrl) {
   MailApp.sendEmail(NOTIFY_EMAIL, subject, bodyLines.join('\n'), options);
 }
 
+function sendExpenseEntrySubmissionEmail_(submission, timeStr, pageUrl) {
+  if (!NOTIFY_EMAIL) {
+    return;
+  }
+
+  var reviewUrl = 'https://chatgptcjcu-boop.github.io/meet-checkin/expenses/expense-entry.html?organizer=1';
+  var subject = '【經費送審】' + (submission.submitter || '工讀生') + ' $' + (Number(submission.amount) || 0);
+  var bodyLines = [
+    '系統通知：有新的工讀生經費送審，請進入經費管理確認後匯入總帳。',
+    '',
+    '提交時間：' + timeStr,
+    '登錄人：' + (submission.submitter || ''),
+    '日期：' + (submission.date || ''),
+    '類別：' + (submission.category || ''),
+    '金額：' + (Number(submission.amount) || 0),
+    '說明：' + (submission.note || ''),
+    '會議ID：' + (submission.eventId || ''),
+    '',
+    '審核入口：' + reviewUrl
+  ];
+
+  MailApp.sendEmail(NOTIFY_EMAIL, subject, bodyLines.join('\n'), {
+    name: '宮廟管理師經費管理系統'
+  });
+}
+
 function jsonOut(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj))
     .setMimeType(ContentService.MimeType.JSON);
@@ -1309,6 +1456,7 @@ function jsonOut(obj) {
  * ?action=unit-claim-matrix → 回傳目前 86 單元認領矩陣（供前端「同步最新」）。
  * ?action=expenses          → 回傳經費編列表最新一版（供前端「同步最新」）。
  * ?action=expense-finance   → 回傳核銷總帳最新一版。
+ * ?action=expense-entry-submissions → 回傳工讀生支出送審清單。
  * ?action=roster            → 回傳出席名單全部群組＋成員（供 roster-admin 與簽到頁）。
  */
 function doGet(e) {
@@ -1321,6 +1469,9 @@ function doGet(e) {
   }
   if (action === 'expense-finance') {
     return getExpenseFinance_();
+  }
+  if (action === 'expense-entry-submissions') {
+    return getExpenseEntrySubmissions_();
   }
   if (action === 'roster') {
     return getRoster_();
