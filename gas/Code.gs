@@ -20,6 +20,8 @@
  * • expense-entry-submission
  *                         → 工讀生支出送審，分頁 expense-entry-submissions，並寄信通知主辦
  *                           讀取：doGet ?action=expense-entry-submissions 回傳送審清單
+ * • expense-person-profile → 委員／工作人員以人員ID＋登入碼維護 Email 與收款帳戶
+ * • expense-transfer-notify→ 撥款後寄送 Email 通知收款人並留通知紀錄
  * • roster-admin          → handleRosterAdmin（出席名單群組／成員 CRUD＋批次貼上）
  *                           讀取：doGet ?action=roster 回傳全部群組＋成員 JSON
  * • 簽到 / 簽退           → handleSignInOut（驗證簽到＋試算表＋Drive＋寄信通知）
@@ -148,6 +150,12 @@ function doPost(e) {
     }
     if (action === 'expense-entry-submission') {
       return handleExpenseEntrySubmission(data);
+    }
+    if (action === 'expense-person-profile') {
+      return handleExpensePersonProfile(data);
+    }
+    if (action === 'expense-transfer-notify') {
+      return handleExpenseTransferNotify(data);
     }
     if (action === 'roster-admin') {
       return handleRosterAdmin(data);
@@ -522,6 +530,109 @@ function getExpenseFinance_() {
     updatedBy: row[2],
     state: state
   });
+}
+
+function getLatestExpenseFinanceState_() {
+  var ss = getSpreadsheet_();
+  var sheet = ss.getSheetByName(EXPENSE_FINANCE_SHEET_NAME);
+  if (!sheet || sheet.getLastRow() < 2) {
+    return { state: null, row: null };
+  }
+  var row = sheet.getRange(sheet.getLastRow(), 1, 1, EXPENSE_FINANCE_HEADERS.length).getValues()[0];
+  var state = null;
+  try {
+    state = row[3] ? JSON.parse(row[3]) : null;
+  } catch (e) {
+    state = null;
+  }
+  return { state: state, row: row };
+}
+
+function appendExpenseFinanceState_(state, updater) {
+  var ss = getSpreadsheet_();
+  var sheet = ss.getSheetByName(EXPENSE_FINANCE_SHEET_NAME) || ss.insertSheet(EXPENSE_FINANCE_SHEET_NAME);
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(EXPENSE_FINANCE_HEADERS);
+  }
+  var version = new Date().toISOString().replace(/[-:T.Z]/g, '').slice(0, 14);
+  state.dataVersion = version;
+  state.updatedAt = new Date().toISOString();
+  sheet.appendRow([
+    formatTaiwanTime_(new Date().toISOString()),
+    version,
+    updater || '',
+    JSON.stringify(state)
+  ]);
+  return version;
+}
+
+function findExpensePerson_(state, personId) {
+  var people = state && state.personnel ? state.personnel : [];
+  for (var i = 0; i < people.length; i++) {
+    if (people[i].id === personId) return people[i];
+  }
+  return null;
+}
+
+function publicExpensePerson_(person) {
+  return {
+    id: person.id || '',
+    name: person.name || '',
+    role: person.role || '',
+    email: person.email || '',
+    bank: person.bank || '',
+    account: person.account || '',
+    note: person.note || '',
+    notifyPayment: person.notifyPayment !== false,
+    profileUpdatedAt: person.profileUpdatedAt || ''
+  };
+}
+
+function getExpensePersonProfile_(e) {
+  var personId = e && e.parameter ? (e.parameter.personId || '') : '';
+  var accessCode = e && e.parameter ? (e.parameter.accessCode || '') : '';
+  var latest = getLatestExpenseFinanceState_();
+  var person = findExpensePerson_(latest.state, personId);
+  if (!person || !person.accessCode || person.accessCode !== accessCode) {
+    return jsonOut({ ok: false, error: '人員ID或登入碼錯誤' });
+  }
+  return jsonOut({ ok: true, person: publicExpensePerson_(person) });
+}
+
+function handleExpensePersonProfile(data) {
+  var personId = data.personId || '';
+  var accessCode = data.accessCode || '';
+  var profile = data.profile || {};
+  var latest = getLatestExpenseFinanceState_();
+  var state = latest.state;
+  var person = findExpensePerson_(state, personId);
+  if (!person || !person.accessCode || person.accessCode !== accessCode) {
+    return jsonOut({ ok: false, error: '人員ID或登入碼錯誤' });
+  }
+
+  person.email = profile.email || '';
+  person.bank = profile.bank || '';
+  person.account = profile.account || '';
+  person.note = profile.note || person.note || '';
+  person.notifyPayment = profile.notifyPayment !== false;
+  person.profileUpdatedAt = new Date().toISOString();
+
+  var version = appendExpenseFinanceState_(state, '個人資料維護：' + (person.name || person.id));
+  return jsonOut({ ok: true, version: version, person: publicExpensePerson_(person) });
+}
+
+function handleExpenseTransferNotify(data) {
+  var transfer = data.transfer || {};
+  var person = data.person || {};
+  var email = person.email || '';
+  if (!email) {
+    return jsonOut({ ok: false, error: '收款人尚未設定 Email' });
+  }
+  if (person.notifyPayment === false) {
+    return jsonOut({ ok: false, error: '收款人未啟用撥款通知' });
+  }
+  sendExpenseTransferEmail_(transfer, person, formatTaiwanTime_(data.timestamp));
+  return jsonOut({ ok: true });
 }
 
 function handleExpenseEntrySubmission(data) {
@@ -1446,6 +1557,38 @@ function sendExpenseEntrySubmissionEmail_(submission, timeStr, pageUrl) {
   });
 }
 
+function sendExpenseTransferEmail_(transfer, person, timeStr) {
+  var subject = '【撥款通知】今日已撥付款項：' + (transfer.purpose || transfer.type || '經費款項');
+  var account = person.account || '';
+  var masked = account ? '末五碼 ' + account.slice(-5) : '未填帳號';
+  var bodyLines = [
+    (person.name || '您好') + ' 您好：',
+    '',
+    '系統通知：今日已撥付款項，請留存本通知作為撥款通知憑據。',
+    '',
+    '通知時間：' + timeStr,
+    '收款人：' + (person.name || ''),
+    '身分：' + (person.role || ''),
+    '撥款日期：' + (transfer.date || ''),
+    '撥款方式：' + (transfer.type || ''),
+    '撥付款項：' + (transfer.purpose || ''),
+    '金額：' + (Number(transfer.amount) || 0),
+    '收款銀行：' + (person.bank || ''),
+    '收款帳號：' + masked,
+    '',
+    '若您未收到款項，或帳戶資料需更正，請回覆本信或聯繫主辦單位。'
+  ];
+  if (transfer.note) {
+    bodyLines.splice(12, 0, '備註：' + transfer.note);
+  }
+
+  var options = { name: '宮廟管理師經費管理系統' };
+  if (NOTIFY_EMAIL) {
+    options.cc = NOTIFY_EMAIL;
+  }
+  MailApp.sendEmail(person.email, subject, bodyLines.join('\n'), options);
+}
+
 function jsonOut(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj))
     .setMimeType(ContentService.MimeType.JSON);
@@ -1457,6 +1600,7 @@ function jsonOut(obj) {
  * ?action=expenses          → 回傳經費編列表最新一版（供前端「同步最新」）。
  * ?action=expense-finance   → 回傳核銷總帳最新一版。
  * ?action=expense-entry-submissions → 回傳工讀生支出送審清單。
+ * ?action=expense-person-profile → 以 personId/accessCode 讀取個人收款資料。
  * ?action=roster            → 回傳出席名單全部群組＋成員（供 roster-admin 與簽到頁）。
  */
 function doGet(e) {
@@ -1472,6 +1616,9 @@ function doGet(e) {
   }
   if (action === 'expense-entry-submissions') {
     return getExpenseEntrySubmissions_();
+  }
+  if (action === 'expense-person-profile') {
+    return getExpensePersonProfile_(e);
   }
   if (action === 'roster') {
     return getRoster_();

@@ -33,9 +33,12 @@
         </label>
         <label>銀行<input type="text" id="pBank" placeholder="例：台灣銀行"></label>
         <label>帳號<input type="text" id="pAccount"></label>
+        <label>Email<input type="email" id="pEmail" placeholder="通知撥款與帳戶維護"></label>
+        <label>登入碼<input type="text" id="pAccessCode" placeholder="留空可自動產生"></label>
         <label class="span-2">備註<input type="text" id="pNote"></label>
         <div class="span-2 btn-row">
           <button type="submit" class="btn-sm primary">儲存人員</button>
+          <button type="button" class="btn-sm" id="btnGenerateCode">產生登入碼</button>
           <button type="button" class="btn-sm" id="btnResetForm">清除表單</button>
         </div>
       </form>
@@ -44,7 +47,7 @@
       <h2>人員清單與出帳紀錄</h2>
       <table class="sheet" id="personTable">
         <thead>
-          <tr><th>姓名</th><th>身分</th><th>銀行／帳號</th><th>累計出帳</th><th class="no-print">操作</th></tr>
+          <tr><th>ID</th><th>姓名</th><th>身分</th><th>Email</th><th>銀行／帳號</th><th>累計出帳</th><th class="no-print">操作</th></tr>
         </thead>
         <tbody></tbody>
       </table>

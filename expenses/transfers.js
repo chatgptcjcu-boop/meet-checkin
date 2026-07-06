@@ -12,7 +12,10 @@
 
   function fillPersonnel() {
     document.getElementById('personId').innerHTML = (state.personnel || [])
-      .map((p) => '<option value="' + p.id + '">' + p.name + '（' + p.role + '）</option>')
+      .map((p) => {
+        const ready = p.email && p.bank && p.account ? ' ✓' : ' ⚠';
+        return '<option value="' + p.id + '">' + p.name + '（' + p.role + '）' + ready + '</option>';
+      })
       .join('');
   }
 
@@ -35,8 +38,13 @@
               '</td><td>$' +
               EF.fmtMoney(t.amount) +
               '</td><td>' +
-              (t.status || '已登記') +
-              '</td><td class="no-print"><button type="button" class="btn-sm void-t" data-id="' +
+              (t.status || '待撥款') +
+              (t.notifiedAt ? '<br><small>通知：' + t.notifiedAt + '</small>' : '') +
+              '</td><td class="no-print"><button type="button" class="btn-sm primary notify-t" data-id="' +
+              t.id +
+              '"' +
+              (t.status === '已通知撥款' ? ' disabled' : '') +
+              '>通知撥款</button> <button type="button" class="btn-sm void-t" data-id="' +
               t.id +
               '">作廢</button></td></tr>'
             );
@@ -53,6 +61,9 @@
           render();
         }
       });
+    });
+    tbody.querySelectorAll('.notify-t').forEach((btn) => {
+      btn.addEventListener('click', () => notifyTransfer(btn.dataset.id));
     });
   }
 
@@ -71,7 +82,7 @@
       type: document.getElementById('tType').value,
       purpose: document.getElementById('tPurpose').value.trim(),
       note: document.getElementById('tNote').value.trim(),
-      status: '已登記',
+      status: '待撥款',
     });
     EF.saveState(state);
     document.getElementById('tAmount').value = '';
@@ -80,6 +91,38 @@
     render();
     setStatus('已登記出帳', true);
   });
+
+  async function notifyTransfer(id) {
+    const transfer = (state.transfers || []).find((t) => t.id === id);
+    if (!transfer || transfer.status === '作廢') return;
+    const person = (state.personnel || []).find((p) => p.id === transfer.personId);
+    if (!person) {
+      setStatus('找不到收款人');
+      return;
+    }
+    if (!person.email) {
+      setStatus('收款人尚未設定 Email，請先到人員帳戶或個人入口補齊');
+      return;
+    }
+    if (!person.bank || !person.account) {
+      setStatus('收款人銀行或帳號未完整，請先確認帳戶資料');
+      return;
+    }
+    if (!confirm('確認今日已撥付款項，並寄送 Email 通知給 ' + person.name + '？')) return;
+
+    setStatus('寄送撥款通知中…');
+    try {
+      transfer.status = '已通知撥款';
+      transfer.notifiedAt = new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Taipei' }).slice(0, 16);
+      EF.saveState(state);
+      await EF.saveCloud(state, '撥款通知');
+      await EF.notifyTransfer(transfer, person);
+      render();
+      setStatus('已寄送撥款通知並儲存總帳 ✓', true);
+    } catch (e) {
+      setStatus('通知失敗：' + e.message);
+    }
+  }
 
   document.getElementById('btnSaveCloud').addEventListener('click', async () => {
     try {

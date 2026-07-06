@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>個人收款資料維護</title>
+  <link rel="stylesheet" href="./expense.css">
+</head>
+<body>
+  <div class="top-bar no-print">
+    <h1>個人收款資料維護</h1>
+    <a class="btn" href="./index.html">← 入口</a>
+  </div>
+  <div class="wrap" style="max-width:760px">
+    <p class="note no-print">請以主辦提供的人員ID與登入碼進入，只能維護自己的 Email 與收款帳戶。主辦撥款後，系統會寄送撥款通知作為憑據。</p>
+
+    <div class="panel no-print" id="loginPanel">
+      <h2>登入</h2>
+      <form id="loginForm" class="form-grid">
+        <label>人員ID<input type="text" id="personId" required autocomplete="username"></label>
+        <label>登入碼<input type="password" id="accessCode" required autocomplete="current-password"></label>
+        <div class="span-2 btn-row">
+          <button type="submit" class="btn-sm primary">讀取我的資料</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="panel" id="profilePanel" hidden>
+      <h2>收款與通知資料</h2>
+      <form id="profileForm" class="form-grid">
+        <label>姓名<input type="text" id="pName" disabled></label>
+        <label>身分<input type="text" id="pRole" disabled></label>
+        <label class="span-2">Email<input type="email" id="pEmail" required placeholder="撥款通知寄送信箱"></label>
+        <label>銀行<input type="text" id="pBank" placeholder="例：台灣銀行"></label>
+        <label>帳號<input type="text" id="pAccount" inputmode="numeric"></label>
+        <label class="span-2">備註<input type="text" id="pNote" placeholder="例：戶名與本人不同時請註明"></label>
+        <label class="span-2 checkbox-line">
+          <input type="checkbox" id="pNotifyPayment" checked>
+          接收撥款 Email 通知
+        </label>
+        <div class="span-2 btn-row">
+          <button type="submit" class="btn-sm primary">儲存我的資料</button>
+          <button type="button" class="btn-sm danger" id="btnClearAccount">清除銀行帳號</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div id="status" class="sync-banner no-print" hidden></div>
+  <script src="../config/event.config.js"></script>
+  <script src="./expense-finance.js"></script>
+  <script src="./profile.js"></script>
+</body>
+</html>

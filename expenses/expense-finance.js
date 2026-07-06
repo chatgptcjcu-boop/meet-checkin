@@ -41,9 +41,9 @@
         ],
       },
       personnel: [
-        { id: 'p-wa', name: '工讀生A', role: '工讀生', bank: '', account: '', note: '現場簽到、會務' },
-        { id: 'p-wb', name: '工讀生B', role: '工讀生', bank: '', account: '', note: '現場簽到、攝影紀錄' },
-        { id: 'p-staff', name: '王芯庭', role: '專案人員', bank: '', account: '', note: '會議助理／紀錄' },
+        { id: 'p-wa', name: '工讀生A', role: '工讀生', email: '', accessCode: '', bank: '', account: '', note: '現場簽到、會務' },
+        { id: 'p-wb', name: '工讀生B', role: '工讀生', email: '', accessCode: '', bank: '', account: '', note: '現場簽到、攝影紀錄' },
+        { id: 'p-staff', name: '王芯庭', role: '專案人員', email: '', accessCode: '', bank: '', account: '', note: '會議助理／紀錄' },
       ],
       entries: [],
       transfers: [],
@@ -96,6 +96,13 @@
     const d = new Date(iso.length === 10 ? iso + 'T12:00:00' : iso);
     if (Number.isNaN(d.getTime())) return iso;
     return d.getFullYear() - 1911 + '年' + (d.getMonth() + 1) + '月' + d.getDate() + '日';
+  }
+
+  function maskAccount(account) {
+    const raw = String(account || '').replace(/\s+/g, '');
+    if (!raw) return '';
+    if (raw.length <= 5) return raw;
+    return '••••' + raw.slice(-5);
   }
 
   async function syncCloud(silent) {
@@ -178,6 +185,16 @@
     });
   }
 
+  async function notifyTransfer(transfer, person) {
+    await postGas({
+      action: 'expense-transfer-notify',
+      timestamp: new Date().toISOString(),
+      transfer,
+      person,
+      pageUrl: location.href,
+    });
+  }
+
   function renderFinanceNav(active) {
     const links = [
       ['index.html', '入口'],
@@ -210,11 +227,13 @@
     calcSummary,
     fmtMoney,
     formatDateZh,
+    maskAccount,
     syncCloud,
     saveCloud,
     submitEntrySubmission,
     syncEntrySubmissions,
     markEntrySubmission,
+    notifyTransfer,
     renderFinanceNav,
     gasUrl,
   };

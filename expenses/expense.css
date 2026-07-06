@@ -270,6 +270,14 @@ table.sheet tr:hover td { background: #fafafa; }
   border-radius: 6px;
   font-size: 0.88rem;
 }
+.form-grid .checkbox-line {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+.form-grid .checkbox-line input {
+  width: auto;
+}
 @media (max-width: 560px) {
   .form-grid { grid-template-columns: 1fr; }
   .form-grid label.span-2 { grid-column: span 1; }
