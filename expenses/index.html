@@ -10,26 +10,45 @@
 </head>
 <body>
   <div class="top-bar no-print">
-    <h1>宮廟管理師第一次評核委員會｜經費與簽收</h1>
+    <h1>宮廟管理師計畫｜經費與簽收</h1>
   </div>
-  <div class="wrap" style="max-width:640px">
+  <div class="wrap" style="max-width:720px">
     <div class="panel">
       <h2>指定人員專用</h2>
-      <p style="margin:0 0 1rem;line-height:1.6">通過密碼驗證後，可進入下列頁面（同一瀏覽器分頁內免重複輸入）。</p>
+      <p style="margin:0 0 1rem;line-height:1.6">通過密碼驗證後可進入下列頁面。主辦開發期可在網址加 <code>?organizer=1</code> 免密碼（本機記住）。</p>
+      <h3 style="margin:1.25rem 0 0.5rem;font-size:0.95rem;color:var(--accent)">核銷總帳（新）</h3>
+      <div class="btn-row">
+        <a class="btn-sm primary" href="./ledger-overview.html">總帳概覽（20 萬入帳）</a>
+        <a class="btn-sm" href="./expense-entry.html">記帳登錄（工讀生）</a>
+        <a class="btn-sm" href="./personnel-accounts.html">人員帳戶</a>
+        <a class="btn-sm" href="./transfers.html">匯款出帳</a>
+        <a class="btn-sm" href="./budget-plan.html">動支規劃</a>
+      </div>
+      <h3 style="margin:1.25rem 0 0.5rem;font-size:0.95rem;color:var(--accent)">會議編列與簽收</h3>
       <p class="note" style="margin:0 0 1rem;line-height:1.6">
-        「經費動態編列表」已支援<strong>雲端儲存</strong>：按「☁ 儲存到雲端」寫入主辦單位 Google 試算表（分頁 <code>expenses</code>），
-        開啟頁面會自動載入雲端最新版。列印<strong>委員／主持費簽收單</strong>前，請先開啟「經費動態編列表」讓它同步雲端資料到本機，簽收單才會顯示最新金額。
+        「經費動態編列表」支援<strong>雲端儲存</strong>（分頁 <code>expenses</code>）。
+        核銷總帳資料寫入分頁 <code>expense-finance</code>（需重新部署 GAS 後生效）。
       </p>
       <div class="btn-row">
-        <a class="btn-sm primary" href="./budget-dashboard.html" style="text-decoration:none;display:inline-block">經費動態編列表</a>
-        <a class="btn-sm" href="./member-fee-receipts.html" style="text-decoration:none;display:inline-block">委員簽收單</a>
-        <a class="btn-sm" href="./host-fee-receipt.html" style="text-decoration:none;display:inline-block">主持費簽收單</a>
+        <a class="btn-sm primary" href="./budget-dashboard.html">經費動態編列表</a>
+        <a class="btn-sm" href="./member-fee-receipts.html">委員簽收單</a>
+        <a class="btn-sm" href="./host-fee-receipt.html">主持費簽收單</a>
       </div>
     </div>
     <p class="note">本區含委員身分與經費資料，請勿轉傳連結與密碼給非授權人員。</p>
   </div>
   <div class="version-bar no-print" id="versionBar"></div>
+  <script src="../config/event.config.js"></script>
   <script src="./expense-data.js"></script>
-  <script>renderExpenseVersionBar();</script>
+  <script src="./expense-finance.js"></script>
+  <script>
+    renderExpenseVersionBar();
+    (function () {
+      const EF = window.ExpenseFinance;
+      const s = EF.calcSummary(EF.loadState());
+      const bar = document.getElementById('versionBar');
+      if (bar) bar.innerHTML += ' · 可動用餘額 $' + EF.fmtMoney(s.available);
+    })();
+  </script>
 </body>
 </html>

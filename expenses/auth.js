@@ -1,7 +1,16 @@
-/** 經費頁面密碼閘（sessionStorage，關閉分頁後需重新輸入） */
+/** 經費頁面密碼閘（sessionStorage，關閉分頁後需重新輸入；主辦開發期可 ?organizer=1 免密碼） */
 (function () {
   const AUTH_KEY = 'meet-checkin-expenses-auth-v1';
+  const ORGANIZER_KEY = 'meet-checkin-expense-organizer-v1';
   const PASS_HASH = '4976f0fe46a1a5d8f0fa99cbe09a273b34e8386c9f4c73fa99e390ddc3181c64';
+
+  if (new URLSearchParams(location.search).get('organizer') === '1') {
+    localStorage.setItem(ORGANIZER_KEY, '1');
+  }
+
+  function organizerBypass() {
+    return localStorage.getItem(ORGANIZER_KEY) === '1';
+  }
 
   async function sha256(msg) {
     const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
@@ -87,7 +96,7 @@
     input.focus();
   }
 
-  if (authed()) return;
+  if (authed() || organizerBypass()) return;
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', buildGate);

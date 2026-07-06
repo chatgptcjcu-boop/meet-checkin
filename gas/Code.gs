@@ -15,6 +15,8 @@
  *                           讀取：doGet ?action=unit-claim-matrix 回傳目前全部單元 JSON
  * • expenses              → handleExpenses（經費編列整份 JSON，分頁 expenses，每次儲存新增一版）
  *                           讀取：doGet ?action=expenses 回傳最新一版的資料 JSON
+ * • expense-finance       → handleExpenseFinance（核銷總帳／人員／出帳／動支規劃 JSON，分頁 expense-finance）
+ *                           讀取：doGet ?action=expense-finance 回傳最新一版
  * • roster-admin          → handleRosterAdmin（出席名單群組／成員 CRUD＋批次貼上）
  *                           讀取：doGet ?action=roster 回傳全部群組＋成員 JSON
  * • 簽到 / 簽退           → handleSignInOut（驗證簽到＋試算表＋Drive＋寄信通知）
@@ -52,12 +54,16 @@ var REPORT_WIZARD_SHEET_NAME = 'icap-report-worksheet';
 var UNIT_CLAIM_SHEET_NAME = 'unit-claim-matrix';
 /** 經費編列表分頁（英文 tab 名；整份經費 JSON 每次儲存新增一版，保留歷史） */
 var EXPENSE_SHEET_NAME = 'expenses';
+/** 核銷總帳分頁（ledger／personnel／transfers／plans／entries 整包 JSON） */
+var EXPENSE_FINANCE_SHEET_NAME = 'expense-finance';
 /** 出席名單群組／成員分頁（英文 tab 名；memberId 為跨群組連動刪改的主鍵） */
 var ROSTER_GROUPS_SHEET_NAME = 'roster-groups';
 var ROSTER_MEMBERS_SHEET_NAME = 'roster-members';
 
 /** expenses 分頁欄位順序（單一結構化文件；每列一個版本，最後一列為最新） */
 var EXPENSE_HEADERS = ['更新時間', '版本', '更新者', '資料JSON'];
+/** expense-finance 分頁欄位（與 expenses 相同版本化模式） */
+var EXPENSE_FINANCE_HEADERS = ['更新時間', '版本', '更新者', '資料JSON'];
 
 /** roster-groups 分頁欄位（groupId 為活動 preset rosterGroupIds 引用的穩定 ID） */
 var ROSTER_GROUP_HEADERS = ['groupId', 'name', 'committee', 'rosterKind', 'sortOrder', 'description'];
@@ -126,6 +132,9 @@ function doPost(e) {
     }
     if (action === 'expenses') {
       return handleExpenses(data);
+    }
+    if (action === 'expense-finance') {
+      return handleExpenseFinance(data);
     }
     if (action === 'roster-admin') {
       return handleRosterAdmin(data);
@@ -442,6 +451,51 @@ function getExpenses_() {
   }
   var lastRow = sheet.getLastRow();
   var row = sheet.getRange(lastRow, 1, 1, EXPENSE_HEADERS.length).getValues()[0];
+  var state = null;
+  try {
+    state = row[3] ? JSON.parse(row[3]) : null;
+  } catch (e) {
+    state = null;
+  }
+  return jsonOut({
+    ok: true,
+    updatedAt: row[0],
+    version: row[1],
+    updatedBy: row[2],
+    state: state
+  });
+}
+
+function handleExpenseFinance(data) {
+  var ss = getSpreadsheet_();
+  var sheet = ss.getSheetByName(EXPENSE_FINANCE_SHEET_NAME) || ss.insertSheet(EXPENSE_FINANCE_SHEET_NAME);
+
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(EXPENSE_FINANCE_HEADERS);
+  }
+
+  var state = data.state || {};
+  var version = data.version || (state && state.dataVersion) || '';
+  var updater = data.name || '';
+
+  sheet.appendRow([
+    formatTaiwanTime_(data.timestamp),
+    version,
+    updater,
+    JSON.stringify(state)
+  ]);
+
+  return jsonOut({ ok: true, version: version, rows: sheet.getLastRow() - 1 });
+}
+
+function getExpenseFinance_() {
+  var ss = getSpreadsheet_();
+  var sheet = ss.getSheetByName(EXPENSE_FINANCE_SHEET_NAME);
+  if (!sheet || sheet.getLastRow() < 2) {
+    return jsonOut({ ok: true, state: null });
+  }
+  var lastRow = sheet.getLastRow();
+  var row = sheet.getRange(lastRow, 1, 1, EXPENSE_FINANCE_HEADERS.length).getValues()[0];
   var state = null;
   try {
     state = row[3] ? JSON.parse(row[3]) : null;
@@ -1254,6 +1308,7 @@ function jsonOut(obj) {
  * 瀏覽器開啟 /exec 可測試部署是否上線。
  * ?action=unit-claim-matrix → 回傳目前 86 單元認領矩陣（供前端「同步最新」）。
  * ?action=expenses          → 回傳經費編列表最新一版（供前端「同步最新」）。
+ * ?action=expense-finance   → 回傳核銷總帳最新一版。
  * ?action=roster            → 回傳出席名單全部群組＋成員（供 roster-admin 與簽到頁）。
  */
 function doGet(e) {
@@ -1263,6 +1318,9 @@ function doGet(e) {
   }
   if (action === 'expenses') {
     return getExpenses_();
+  }
+  if (action === 'expense-finance') {
+    return getExpenseFinance_();
   }
   if (action === 'roster') {
     return getRoster_();

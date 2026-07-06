@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>匯款與出帳紀錄</title>
+  <link rel="stylesheet" href="./expense.css">
+  <script src="./auth.js"></script>
+</head>
+<body>
+  <div class="top-bar no-print">
+    <h1>匯款／出帳紀錄</h1>
+    <button type="button" id="btnSaveCloud" class="primary">☁ 儲存到雲端</button>
+    <a class="btn" href="./index.html">← 入口</a>
+  </div>
+  <div class="wrap">
+    <div id="financeNav"></div>
+    <div class="panel no-print">
+      <h2>新增出帳</h2>
+      <form id="transferForm" class="form-grid">
+        <label>收款人
+          <select id="personId" required></select>
+        </label>
+        <label>日期<input type="date" id="tDate" required></label>
+        <label>金額（元）<input type="number" id="tAmount" min="0" step="1" required></label>
+        <label>類型
+          <select id="tType"><option>匯款</option><option>現金</option><option>轉帳</option></select>
+        </label>
+        <label class="span-2">用途<input type="text" id="tPurpose" placeholder="例：6/30 出席費"></label>
+        <label class="span-2">備註<input type="text" id="tNote"></label>
+        <div class="span-2 btn-row"><button type="submit" class="btn-sm primary">＋ 登記出帳</button></div>
+      </form>
+    </div>
+    <div class="panel">
+      <h2>出帳清單</h2>
+      <table class="sheet" id="transferTable">
+        <thead>
+          <tr><th>日期</th><th>收款人</th><th>類型</th><th>用途</th><th>金額</th><th>狀態</th><th class="no-print">操作</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+  <div id="status" class="sync-banner no-print" hidden></div>
+  <script src="../config/event.config.js"></script>
+  <script src="./expense-finance.js"></script>
+  <script src="./transfers.js"></script>
+</body>
+</html>

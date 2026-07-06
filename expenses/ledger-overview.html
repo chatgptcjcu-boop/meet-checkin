@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>經費總帳概覽</title>
+  <link rel="stylesheet" href="./expense.css">
+  <script src="./auth.js"></script>
+</head>
+<body>
+  <div class="top-bar no-print">
+    <h1>計畫經費總帳</h1>
+    <button type="button" id="btnSync" class="primary">🔄 同步雲端</button>
+    <button type="button" id="btnSaveCloud">☁ 儲存到雲端</button>
+    <a class="btn" href="./index.html">← 入口</a>
+  </div>
+  <div class="wrap">
+    <div id="financeNav"></div>
+    <div id="status" class="sync-banner no-print" hidden></div>
+    <div class="summary-grid" id="summaryCards"></div>
+    <div class="panel">
+      <h2>入帳紀錄</h2>
+      <table class="sheet" id="depositTable">
+        <thead><tr><th>日期</th><th>金額</th><th>說明</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="panel">
+      <h2>最近支出／匯款</h2>
+      <table class="sheet" id="recentTable">
+        <thead><tr><th>日期</th><th>類型</th><th>對象</th><th>金額</th><th>狀態</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+  <script src="../config/event.config.js"></script>
+  <script src="./expense-finance.js"></script>
+  <script src="./ledger-overview.js"></script>
+</body>
+</html>

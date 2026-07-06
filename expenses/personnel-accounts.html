@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>人員帳戶管理</title>
+  <link rel="stylesheet" href="./expense.css">
+  <script src="./auth.js"></script>
+</head>
+<body>
+  <div class="top-bar no-print">
+    <h1>人員帳戶（委員／工讀生／專案人員）</h1>
+    <button type="button" id="btnSaveCloud" class="primary">☁ 儲存到雲端</button>
+    <a class="btn" href="./index.html">← 入口</a>
+  </div>
+  <div class="wrap">
+    <div id="financeNav"></div>
+    <div class="panel no-print">
+      <h2>新增／編輯人員</h2>
+      <form id="personForm" class="form-grid">
+        <input type="hidden" id="editId">
+        <label>姓名<input type="text" id="pName" required></label>
+        <label>身分
+          <select id="pRole">
+            <option>工讀生</option>
+            <option>專案人員</option>
+            <option>評核委員</option>
+            <option>編審委員</option>
+            <option>教材講師</option>
+            <option>其他</option>
+          </select>
+        </label>
+        <label>銀行<input type="text" id="pBank" placeholder="例：台灣銀行"></label>
+        <label>帳號<input type="text" id="pAccount"></label>
+        <label class="span-2">備註<input type="text" id="pNote"></label>
+        <div class="span-2 btn-row">
+          <button type="submit" class="btn-sm primary">儲存人員</button>
+          <button type="button" class="btn-sm" id="btnResetForm">清除表單</button>
+        </div>
+      </form>
+    </div>
+    <div class="panel">
+      <h2>人員清單與出帳紀錄</h2>
+      <table class="sheet" id="personTable">
+        <thead>
+          <tr><th>姓名</th><th>身分</th><th>銀行／帳號</th><th>累計出帳</th><th class="no-print">操作</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+  <div id="status" class="sync-banner no-print" hidden></div>
+  <script src="../config/event.config.js"></script>
+  <script src="./expense-finance.js"></script>
+  <script src="./personnel-accounts.js"></script>
+</body>
+</html>

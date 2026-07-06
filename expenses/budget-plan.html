@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>計畫動支規劃</title>
+  <link rel="stylesheet" href="./expense.css">
+  <script src="./auth.js"></script>
+</head>
+<body>
+  <div class="top-bar no-print">
+    <h1>計畫動支規劃（依會議時程）</h1>
+    <button type="button" id="btnSeed" class="btn-sm">從會議清單帶入</button>
+    <button type="button" id="btnSaveCloud" class="primary">☁ 儲存到雲端</button>
+    <a class="btn" href="./index.html">← 入口</a>
+  </div>
+  <div class="wrap">
+    <div id="financeNav"></div>
+    <p class="note no-print">依 <code>events-registry.json</code> 八場會議預排動支項目；金額可調整，合計應不超過可動用餘額。</p>
+    <div class="summary-grid" id="planSummary"></div>
+    <div class="panel no-print">
+      <h2>新增規劃列</h2>
+      <form id="planForm" class="form-grid">
+        <label>會議
+          <select id="planEvent" required></select>
+        </label>
+        <label>項目<input type="text" id="planItem" required placeholder="例：場地+餐費"></label>
+        <label>金額（元）<input type="number" id="planAmount" min="0" step="1" required></label>
+        <label>狀態
+          <select id="planStatus"><option>規劃中</option><option>已動支</option><option>取消</option></select>
+        </label>
+        <label class="span-2">備註<input type="text" id="planNote"></label>
+        <div class="span-2 btn-row"><button type="submit" class="btn-sm primary">＋ 新增</button></div>
+      </form>
+    </div>
+    <div class="panel">
+      <h2>動支規劃表</h2>
+      <table class="sheet" id="planTable">
+        <thead>
+          <tr><th>會議</th><th>項目</th><th>金額</th><th>狀態</th><th>備註</th><th class="no-print">操作</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+  <div id="status" class="sync-banner no-print" hidden></div>
+  <script src="../config/event.config.js"></script>
+  <script src="./expense-finance.js"></script>
+  <script src="./budget-plan.js"></script>
+</body>
+</html>

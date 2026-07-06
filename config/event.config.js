@@ -265,6 +265,11 @@ window.EVENT_CONFIG = {
     "sheetTab": "expenses",
     "pagePath": "expenses/budget-dashboard.html"
   },
+  "expenseFinance": {
+    "action": "expense-finance",
+    "sheetTab": "expense-finance",
+    "pagePath": "expenses/index.html"
+  },
   "rosterAdmin": {
     "action": "roster-admin",
     "groupsSheetTab": "roster-groups",
