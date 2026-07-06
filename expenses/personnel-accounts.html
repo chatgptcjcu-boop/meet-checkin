@@ -39,10 +39,12 @@
         <div class="span-2 btn-row">
           <button type="submit" class="btn-sm primary">儲存人員</button>
           <button type="button" class="btn-sm" id="btnGenerateCode">產生登入碼</button>
+          <button type="button" class="btn-sm" id="btnImportRoster">從出席名單同步</button>
           <button type="button" class="btn-sm" id="btnResetForm">清除表單</button>
         </div>
       </form>
     </div>
+    <p class="note no-print">建議先從出席名單同步人員，系統會沿用 <code>memberId</code> 作為人員ID，再由主辦產生登入碼並複製個人入口給委員／工作人員。</p>
     <div class="panel">
       <h2>人員清單與出帳紀錄</h2>
       <table class="sheet" id="personTable">

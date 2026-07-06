@@ -29,10 +29,83 @@
     return Math.random().toString(36).slice(2, 6).toUpperCase() + '-' + Math.random().toString(36).slice(2, 6).toUpperCase();
   }
 
+  function gasUrl() {
+    return (window.EVENT_CONFIG && window.EVENT_CONFIG.backend && window.EVENT_CONFIG.backend.gasWebAppUrl) || '';
+  }
+
   function profileUrl(person) {
     const url = new URL('./profile.html', location.href);
     url.searchParams.set('personId', person.id);
     return url.href;
+  }
+
+  function mergeRosterMembers(members, groups) {
+    const groupById = new Map((groups || []).map((g) => [g.groupId, g]));
+    const byMemberId = new Map();
+
+    (members || []).forEach((m) => {
+      if (!m.memberId || !m.name) return;
+      const group = groupById.get(m.groupId);
+      const cur = byMemberId.get(m.memberId) || {
+        id: m.memberId,
+        name: m.name,
+        role: m.role || '',
+        org: m.org || '',
+        title: m.title || '',
+        rosterGroups: [],
+      };
+      if (!cur.role && m.role) cur.role = m.role;
+      if (!cur.org && m.org) cur.org = m.org;
+      if (!cur.title && m.title) cur.title = m.title;
+      if (group) cur.rosterGroups.push(group.name || group.groupId);
+      byMemberId.set(m.memberId, cur);
+    });
+
+    let added = 0;
+    let updated = 0;
+    state.personnel = state.personnel || [];
+
+    byMemberId.forEach((rosterPerson) => {
+      let person = state.personnel.find((p) => p.id === rosterPerson.id);
+      if (!person) {
+        person = state.personnel.find((p) => p.name === rosterPerson.name && !p.rosterMemberId);
+      }
+
+      const row = {
+        id: rosterPerson.id,
+        rosterMemberId: rosterPerson.id,
+        name: rosterPerson.name,
+        role: rosterPerson.role || '其他',
+        org: rosterPerson.org || '',
+        title: rosterPerson.title || '',
+        note:
+          [rosterPerson.org, rosterPerson.title].filter(Boolean).join('／') +
+          (rosterPerson.rosterGroups.length ? '｜' + rosterPerson.rosterGroups.join('、') : ''),
+      };
+
+      if (person) {
+        Object.assign(person, row, {
+          email: person.email || '',
+          accessCode: person.accessCode || makeAccessCode(),
+          bank: person.bank || '',
+          account: person.account || '',
+          notifyPayment: person.notifyPayment !== false,
+        });
+        updated++;
+      } else {
+        state.personnel.push({
+          ...row,
+          email: '',
+          accessCode: makeAccessCode(),
+          bank: '',
+          account: '',
+          notifyPayment: true,
+        });
+        added++;
+      }
+    });
+
+    return { added, updated };
   }
 
   function render() {
@@ -115,6 +188,27 @@
   document.getElementById('btnResetForm').addEventListener('click', resetForm);
   document.getElementById('btnGenerateCode').addEventListener('click', () => {
     document.getElementById('pAccessCode').value = makeAccessCode();
+  });
+
+  document.getElementById('btnImportRoster').addEventListener('click', async () => {
+    if (!confirm('從出席名單同步委員與工作人員？既有 Email、登入碼、銀行帳號會保留。')) return;
+    const url = gasUrl();
+    if (!url) {
+      setStatus('尚未設定 GAS 網址');
+      return;
+    }
+    setStatus('同步出席名單中…');
+    try {
+      const res = await fetch(url + '?action=roster', { cache: 'no-cache' });
+      const json = await res.json();
+      if (!json.ok) throw new Error(json.error || '載入出席名單失敗');
+      const result = mergeRosterMembers(json.members || [], json.groups || []);
+      EF.saveState(state);
+      render();
+      setStatus('已同步出席名單：新增 ' + result.added + ' 人、更新 ' + result.updated + ' 人（請按儲存到雲端）', true);
+    } catch (e) {
+      setStatus('同步失敗：' + e.message);
+    }
   });
 
   document.getElementById('personForm').addEventListener('submit', (ev) => {
