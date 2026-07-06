@@ -82,6 +82,9 @@
       note: [meetingDate, '來源版本 ' + (budgetState.dataVersion || '')].filter(Boolean).join('｜'),
       source: 'budget-dashboard',
       sourceBudgetVersion: budgetState.dataVersion || '',
+      budgetMeta: budgetState.meta || {},
+      budgetRowsSnapshot: budgetState.rows || [],
+      budgetStaffSnapshot: budgetState.staff || [],
       updatedAt: new Date().toISOString(),
     });
 

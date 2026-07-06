@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>預算監管總覽</title>
+  <link rel="stylesheet" href="./expense.css">
+  <script src="./auth.js"></script>
+</head>
+<body>
+  <div class="top-bar no-print">
+    <h1>預算基金監管｜計畫總帳與各場會議編列</h1>
+    <button type="button" id="btnSync" class="primary">🔄 同步雲端</button>
+    <a class="btn" href="./index.html">← 入口</a>
+  </div>
+  <div class="wrap">
+    <div id="financeNav"></div>
+    <p class="note no-print">
+      本頁為唯讀監管視角：看計畫總帳、各場會議編列、實際核准支出、待付款與已出帳。單場「會議經費編列」仍由承辦維護；儲存後會轉入本頁彙整。
+    </p>
+    <div id="status" class="sync-banner no-print" hidden></div>
+    <div class="summary-grid" id="summaryCards"></div>
+
+    <div class="panel">
+      <h2>各場會議預算與實際</h2>
+      <table class="sheet" id="meetingTable">
+        <thead>
+          <tr>
+            <th>會議</th>
+            <th>編列/規劃</th>
+            <th>已核准實際</th>
+            <th>待付款</th>
+            <th>已出帳</th>
+            <th>差額</th>
+            <th>來源</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="panel">
+      <h2>會議編列明細快照</h2>
+      <div id="detailWrap"></div>
+    </div>
+  </div>
+  <script src="../config/event.config.js"></script>
+  <script src="./expense-finance.js"></script>
+  <script src="./audit-dashboard.js"></script>
+</body>
+</html>

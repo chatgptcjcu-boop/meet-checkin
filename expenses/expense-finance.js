@@ -203,6 +203,7 @@
   function renderFinanceNav(active) {
     const links = [
       ['index.html', '入口'],
+      ['audit-dashboard.html', '監管總覽'],
       ['ledger-overview.html', '總帳概覽'],
       ['expense-entry.html', '記帳登錄'],
       ['personnel-accounts.html', '人員帳戶'],
