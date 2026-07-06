@@ -28,23 +28,46 @@
     }, 0);
   }
 
+  function budgetIdentityPart(v) {
+    return String(v || '')
+      .trim()
+      .replace(/\s+/g, '')
+      .replace(/[^\w\u4e00-\u9fff-]/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '')
+      .slice(0, 80);
+  }
+
   function budgetEventId(budgetState) {
-    return (
-      (window.EVENT_CONFIG && window.EVENT_CONFIG.event && window.EVENT_CONFIG.event.id) ||
-      (budgetState.meta && budgetState.meta.meetingDate) ||
-      'budget-dashboard'
-    );
+    const meta = budgetState.meta || {};
+    const name = budgetIdentityPart(meta.meetingName || '會議經費編列');
+    const date = budgetIdentityPart(meta.meetingDate || '未填日期');
+    return 'budget-' + date + '-' + name;
+  }
+
+  function budgetSourceKey(budgetState) {
+    return 'budget-dashboard:' + budgetEventId(budgetState);
   }
 
   function upsertBudgetPlanFromState(budgetState) {
     const eventId = budgetEventId(budgetState);
-    const sourceKey = 'budget-dashboard:' + eventId;
+    const sourceKey = budgetSourceKey(budgetState);
     const meetingName = (budgetState.meta && budgetState.meta.meetingName) || '會議經費編列';
     const meetingDate = (budgetState.meta && budgetState.meta.meetingDate) || '';
     const amount = budgetRowsTotal(budgetState);
     state.plans = state.plans || [];
 
     let plan = state.plans.find((p) => p.sourceKey === sourceKey);
+    if (!plan && budgetState.dataVersion) {
+      plan = state.plans.find((p) => p.source === 'budget-dashboard' && p.sourceBudgetVersion === budgetState.dataVersion);
+    }
+    if (!plan) {
+      plan = state.plans.find((p) =>
+        p.source === 'budget-dashboard' &&
+        p.eventTitle === meetingName &&
+        String(p.note || '').includes(meetingDate)
+      );
+    }
     if (!plan) {
       plan = { id: EF.uid('pl'), sourceKey };
       state.plans.push(plan);
@@ -62,6 +85,32 @@
       updatedAt: new Date().toISOString(),
     });
 
+    return plan;
+  }
+
+  function loadLocalBudgetState() {
+    try {
+      return JSON.parse(localStorage.getItem('meet-checkin-expenses-v1'));
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function syncLocalBudget(showStatus) {
+    const budgetState = loadLocalBudgetState();
+    if (!budgetState || !budgetState.meta || !Array.isArray(budgetState.rows)) {
+      if (showStatus) setStatus('本機尚無會議經費編列資料');
+      return null;
+    }
+    const plan = upsertBudgetPlanFromState(budgetState);
+    EF.saveState(state);
+    renderTable();
+    try {
+      sessionStorage.removeItem('meet-checkin-budget-plan-sync-needed');
+    } catch (_) {}
+    if (showStatus) {
+      setStatus('已同步本機會議編列到動支規劃：$' + EF.fmtMoney(plan.amount) + '（請按儲存到雲端）', true);
+    }
     return plan;
   }
 
@@ -196,6 +245,10 @@
 
   document.getElementById('btnSeed').addEventListener('click', seedFromEvents);
 
+  document.getElementById('btnSyncLocalBudget').addEventListener('click', () => {
+    syncLocalBudget(true);
+  });
+
   document.getElementById('btnSyncBudget').addEventListener('click', async () => {
     const url = EF.gasUrl();
     if (!url) {
@@ -240,5 +293,10 @@
       state = cloud;
       renderTable();
     }
+    try {
+      if (sessionStorage.getItem('meet-checkin-budget-plan-sync-needed') === '1') {
+        syncLocalBudget(true);
+      }
+    } catch (_) {}
   });
 })();
