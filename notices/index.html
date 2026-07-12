@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>開會通知專頁｜宮廟管理師 iCAP</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --red: #b91c1c;
+      --blue: #1e40af;
+      --amber: #92400e;
+      --green: #065f46;
+      --bg: #f1f5f9;
+      --ink: #111;
+    }
+    * { box-sizing: border-box; }
+    body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); margin: 0; padding: 1.25rem 1rem 3rem; color: var(--ink); }
+    .wrap { max-width: 68rem; margin: 0 auto; }
+    header.page-head {
+      background: linear-gradient(135deg, #1e3a5f 0%, #0f766e 100%);
+      color: #fff; border-radius: 0.75rem; padding: 1.5rem 1.75rem; margin-bottom: 1.25rem;
+    }
+    header.page-head h1 { margin: 0 0 0.35rem; font-size: 1.35rem; }
+    header.page-head p { margin: 0; opacity: 0.9; font-size: 0.88rem; }
+    header.page-head a { color: #a7f3d0; }
+    .panel {
+      background: #fff; border-radius: 0.75rem; box-shadow: 0 2px 8px rgb(0 0 0 / 0.06);
+      padding: 1.15rem 1.35rem; margin-bottom: 1rem;
+    }
+    .panel h2 { font-size: 1.02rem; margin: 0 0 0.75rem; border-left: 4px solid #0f766e; padding-left: 0.55rem; }
+    .panel h2.red { border-color: var(--red); }
+    .panel h2.blue { border-color: var(--blue); }
+    .panel h2.amber { border-color: var(--amber); }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-bottom: 0.85rem; }
+    .toolbar select, .toolbar input, .toolbar textarea, .form-grid input, .form-grid select, .form-grid textarea {
+      font-family: inherit; font-size: 0.85rem; padding: 0.4rem 0.55rem; border: 1px solid #cbd5e1; border-radius: 6px;
+    }
+    .toolbar button, .btn {
+      font-family: inherit; font-size: 0.82rem; font-weight: 700; border: none; border-radius: 6px;
+      padding: 0.45rem 0.85rem; cursor: pointer; background: #0f766e; color: #fff;
+    }
+    .btn.secondary { background: #e2e8f0; color: #1e3a5f; }
+    .btn.red { background: var(--red); }
+    .btn.blue { background: var(--blue); }
+    .theme-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+    @media (max-width: 800px) { .theme-grid { grid-template-columns: 1fr; } }
+    .theme-card { border: 1px solid #e2e8f0; border-radius: 10px; padding: 0.85rem 1rem; border-top: 4px solid #999; }
+    .theme-card h3 { margin: 0 0 0.35rem; font-size: 0.95rem; }
+    .theme-card p { margin: 0; font-size: 0.78rem; color: #64748b; line-height: 1.55; }
+    .badge { display: inline-block; font-size: 0.68rem; padding: 0.12rem 0.45rem; border-radius: 0.25rem; font-weight: 600; }
+    .done { background: #d1fae5; color: var(--green); }
+    .wip { background: #fef3c7; color: var(--amber); }
+    .plan { background: #e5e7eb; color: #374151; }
+    table.cycle { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+    table.cycle th, table.cycle td { border: 1px solid #e5e7eb; padding: 0.4rem 0.5rem; text-align: left; vertical-align: top; }
+    table.cycle th { background: #f8fafc; }
+    .timeline {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.5rem;
+    }
+    .tl-item {
+      border-radius: 8px; padding: 0.65rem 0.7rem; border: 1px solid #e2e8f0; background: #fafafa;
+      cursor: pointer; transition: box-shadow 0.15s, transform 0.15s;
+    }
+    .tl-item:hover { box-shadow: 0 4px 12px rgb(0 0 0 / 0.08); transform: translateY(-1px); }
+    .tl-item.active { outline: 2px solid #0f766e; background: #f0fdfa; }
+    .tl-date { font-weight: 700; font-size: 0.82rem; }
+    .tl-title { font-size: 0.72rem; color: #475569; margin-top: 0.2rem; line-height: 1.35; }
+    .tl-tag { font-size: 0.65rem; margin-top: 0.35rem; font-weight: 600; }
+    .layout-2 { display: grid; grid-template-columns: 1fr 1.15fr; gap: 1rem; }
+    @media (max-width: 960px) { .layout-2 { grid-template-columns: 1fr; } }
+    .form-grid { display: grid; grid-template-columns: 7rem 1fr; gap: 0.45rem 0.65rem; align-items: start; font-size: 0.82rem; }
+    .form-grid label { padding-top: 0.45rem; color: #475569; font-weight: 600; }
+    .form-grid .full { grid-column: 1 / -1; }
+    .hint { font-size: 0.78rem; color: #64748b; line-height: 1.55; margin: 0.35rem 0 0; }
+
+    /* 開會通知單（公文風格） */
+    .notice-sheet {
+      background: #fff; border: 1px solid #cbd5e1; border-radius: 4px;
+      padding: 1.5rem 1.75rem; font-family: 'Noto Serif TC', 'Noto Sans TC', serif;
+      font-size: 11.5pt; line-height: 1.75; color: #111; max-width: 210mm; margin: 0 auto;
+    }
+    .notice-sheet .org-title {
+      text-align: center; font-size: 1.45rem; font-weight: 700; letter-spacing: 0.35em;
+      border-bottom: 2px solid #111; padding-bottom: 0.35rem; margin-bottom: 0.75rem;
+    }
+    .notice-sheet .meta-line { font-size: 0.92rem; margin: 0.15rem 0; }
+    .notice-sheet .meta-label { display: inline-block; min-width: 5.5rem; font-weight: 700; }
+    .notice-sheet h3.subject {
+      font-size: 1.05rem; margin: 1rem 0 0.5rem; border-left: 4px solid #111; padding-left: 0.5rem;
+    }
+    .notice-sheet .section { margin: 0.65rem 0; }
+    .notice-sheet .section-title { font-weight: 700; margin-bottom: 0.25rem; }
+    .notice-sheet ol { margin: 0.25rem 0 0.25rem 1.4rem; padding: 0; }
+    .notice-sheet ol li { margin: 0.15rem 0; }
+    .notice-sheet .sign-block {
+      margin-top: 1.75rem; display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+    }
+    .notice-sheet .sign-item { min-width: 10rem; }
+    .notice-sheet .footer-note { margin-top: 1rem; font-size: 0.85rem; color: #444; border-top: 1px dashed #ccc; padding-top: 0.65rem; }
+    .empty { color: #94a3b8; font-size: 0.85rem; padding: 1rem; text-align: center; }
+
+    @media print {
+      body { background: #fff; padding: 0; }
+      .no-print { display: none !important; }
+      .panel { box-shadow: none; border: none; padding: 0; margin: 0; }
+      .notice-sheet { border: none; max-width: none; padding: 12mm 14mm; }
+      @page { size: A4; margin: 12mm; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="page-head no-print">
+      <h1>開會通知專頁｜主題週期對照與通知單產出</h1>
+      <p>
+        評核會議 · 教材會議 · 審閱會議 — 時間／議題對照，並依公文格式產出開會通知單。
+        <a href="../dashboard.html">← 返回儀表板</a>
+      </p>
+    </header>
+
+    <div class="panel no-print">
+      <h2>一、會議主題設定</h2>
+      <div class="theme-grid" id="themeCards"></div>
+      <p class="hint">主題色：評核紅｜教材藍｜審閱琥珀。選下方時程點即可帶入該場會議資料並產出通知單。
+        第一次評核會原始通知 PDF：<a href="./sample-eval1-notice.pdf" target="_blank">sample-eval1-notice.pdf</a>
+      </p>
+    </div>
+
+    <div class="panel no-print">
+      <h2 class="red">二、年度週期對照（時間軸）</h2>
+      <div class="timeline" id="timeline"></div>
+    </div>
+
+    <div class="panel no-print">
+      <h2 class="blue">三、議題 × 時間對照表</h2>
+      <div style="overflow-x:auto">
+        <table class="cycle" id="cycleTable">
+          <thead>
+            <tr>
+              <th>日期</th>
+              <th>主題</th>
+              <th>場次／週期標籤</th>
+              <th>會議名稱</th>
+              <th>時間</th>
+              <th>狀態</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="layout-2 no-print">
+      <div class="panel">
+        <h2 class="amber">四、通知單設定（可改）</h2>
+        <div class="toolbar">
+          <label>選擇會議
+            <select id="meetingSelect"></select>
+          </label>
+          <button type="button" class="btn secondary" id="btnReload">重載資料</button>
+        </div>
+        <div class="form-grid" id="editForm">
+          <label>發文字號</label><input id="fDocNo" placeholder="例：115道法秘字第15號">
+          <label>發文日期</label><input id="fIssued" placeholder="例：115年6月18日">
+          <label>速別</label><select id="fSpeed"><option>速件</option><option>普通</option><option>最速件</option></select>
+          <label>主旨</label><input id="fSubject">
+          <label>會議日期</label><input id="fDate">
+          <label>星期</label><input id="fWeekday">
+          <label>報到</label><input id="fCheckIn">
+          <label>開議–結束</label><input id="fTimeRange" placeholder="10:00–13:00">
+          <label>地點</label><input id="fVenue">
+          <label>交通備註</label><textarea id="fTransport" rows="2"></textarea>
+          <label>午餐</label><input id="fLunch">
+          <label>附件</label><input id="fAttachment">
+          <label>議題說明</label><textarea id="fPurpose" rows="4"></textarea>
+          <label>議程（每行一項）</label><textarea id="fAgenda" rows="8"></textarea>
+          <label>正本</label><input id="fTo">
+          <label>副本</label><input id="fCc">
+        </div>
+        <p class="hint">修改後即時反映右側預覽。按「列印／另存 PDF」產出開會通知單。資料來源：<code>dashboard/meetings-calendar.json</code></p>
+        <div class="toolbar" style="margin-top:0.75rem">
+          <button type="button" class="btn" id="btnPrint">🖨 列印／另存 PDF</button>
+          <button type="button" class="btn secondary" id="btnCopy">複製純文字</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>五、開會通知單預覽</h2>
+        <div id="noticePreview" class="notice-sheet"><p class="empty">請選擇會議…</p></div>
+      </div>
+    </div>
+
+    <div class="panel" style="display:none" id="printOnly">
+      <div id="noticePrint" class="notice-sheet"></div>
+    </div>
+
+    <footer class="no-print" style="text-align:center;font-size:0.75rem;color:#9ca3af;margin-top:1.5rem">
+      notices/index.html｜資料：dashboard/meetings-calendar.json<br>
+      Live: https://chatgptcjcu-boop.github.io/meet-checkin/notices/
+    </footer>
+  </div>
+
+  <script>
+(function () {
+  const STATUS_LABEL = {
+    completed: { text: '已完成', cls: 'done' },
+    preparing: { text: '籌備中', cls: 'wip' },
+    planned: { text: '待規劃', cls: 'plan' },
+  };
+
+  let data = null;
+  let current = null;
+
+  function themeOf(id) {
+    return (data.themes || []).find((t) => t.id === id) || { name: id, short: id, color: '#64748b' };
+  }
+
+  function statusBadge(status) {
+    const s = STATUS_LABEL[status] || STATUS_LABEL.planned;
+    return `<span class="badge ${s.cls}">${s.text}</span>`;
+  }
+
+  function renderThemes() {
+    document.getElementById('themeCards').innerHTML = (data.themes || []).map((t) => `
+      <div class="theme-card" style="border-top-color:${t.color}">
+        <h3 style="color:${t.color}">${t.short}｜${t.name}</h3>
+        <p><strong>目的：</strong>${t.purpose}</p>
+        <p style="margin-top:0.35rem"><strong>對象：</strong>${t.audience}</p>
+      </div>
+    `).join('');
+  }
+
+  function sortedMeetings() {
+    return [...(data.meetings || [])].sort((a, b) => String(a.dateIso).localeCompare(String(b.dateIso)));
+  }
+
+  function renderTimeline() {
+    const box = document.getElementById('timeline');
+    box.innerHTML = sortedMeetings().map((m) => {
+      const th = themeOf(m.themeId);
+      const active = current && current.id === m.id ? ' active' : '';
+      return `
+        <div class="tl-item${active}" data-id="${m.id}" style="border-left:4px solid ${th.color}">
+          <div class="tl-date">${m.dateRoc}</div>
+          <div class="tl-title">${m.title}</div>
+          <div class="tl-tag" style="color:${th.color}">${th.short} · ${m.cycleTag || ''}</div>
+        </div>`;
+    }).join('');
+    box.querySelectorAll('.tl-item').forEach((el) => {
+      el.onclick = () => selectMeeting(el.dataset.id);
+    });
+  }
+
+  function renderTable() {
+    const tbody = document.querySelector('#cycleTable tbody');
+    tbody.innerHTML = sortedMeetings().map((m) => {
+      const th = themeOf(m.themeId);
+      return `<tr>
+        <td>${m.dateRoc}<br><span style="color:#94a3b8;font-size:0.72rem">${m.weekday || ''}</span></td>
+        <td><span style="color:${th.color};font-weight:700">${th.short}</span></td>
+        <td>第 ${m.n} 場<br>${m.cycleTag || '—'}</td>
+        <td>${m.title}</td>
+        <td>${m.checkIn || '—'} 報到<br>${m.start || ''}–${m.end || ''}</td>
+        <td>${statusBadge(m.status)}</td>
+        <td><button type="button" class="btn secondary" data-pick="${m.id}" style="padding:0.25rem 0.5rem">產出通知</button></td>
+      </tr>`;
+    }).join('');
+    tbody.querySelectorAll('[data-pick]').forEach((btn) => {
+      btn.onclick = () => selectMeeting(btn.dataset.pick);
+    });
+  }
+
+  function renderSelect() {
+    const sel = document.getElementById('meetingSelect');
+    sel.innerHTML = sortedMeetings().map((m) => {
+      const th = themeOf(m.themeId);
+      return `<option value="${m.id}">${m.dateRoc}｜${th.short}｜${m.title}</option>`;
+    }).join('');
+    sel.onchange = () => selectMeeting(sel.value);
+  }
+
+  function fillForm(m) {
+    document.getElementById('meetingSelect').value = m.id;
+    document.getElementById('fDocNo').value = m.docNo || '';
+    document.getElementById('fIssued').value = m.issuedDateRoc || '';
+    document.getElementById('fSpeed').value = m.speed || '速件';
+    document.getElementById('fSubject').value = m.subject || '';
+    document.getElementById('fDate').value = m.dateRoc || '';
+    document.getElementById('fWeekday').value = m.weekday || '';
+    document.getElementById('fCheckIn').value = m.checkIn || '';
+    document.getElementById('fTimeRange').value = [m.start, m.end].filter(Boolean).join('–');
+    document.getElementById('fVenue').value = m.venue || '';
+    document.getElementById('fTransport').value = (m.transport || []).join('\n');
+    document.getElementById('fLunch').value = m.lunch || '';
+    document.getElementById('fAttachment').value = m.attachment || '';
+    document.getElementById('fPurpose').value = m.purposeText || '';
+    document.getElementById('fAgenda').value = (m.agenda || []).join('\n');
+    document.getElementById('fTo').value = (m.recipients && m.recipients.to) || '';
+    document.getElementById('fCc').value = (m.recipients && m.recipients.cc) || '';
+  }
+
+  function readForm() {
+    const agenda = document.getElementById('fAgenda').value.split(/\n+/).map((s) => s.trim()).filter(Boolean);
+    const transport = document.getElementById('fTransport').value.split(/\n+/).map((s) => s.trim()).filter(Boolean);
+    const timeRange = document.getElementById('fTimeRange').value;
+    return {
+      docNo: document.getElementById('fDocNo').value.trim(),
+      issuedDateRoc: document.getElementById('fIssued').value.trim(),
+      speed: document.getElementById('fSpeed').value,
+      subject: document.getElementById('fSubject').value.trim(),
+      dateRoc: document.getElementById('fDate').value.trim(),
+      weekday: document.getElementById('fWeekday').value.trim(),
+      checkIn: document.getElementById('fCheckIn').value.trim(),
+      timeRange,
+      venue: document.getElementById('fVenue').value.trim(),
+      transport,
+      lunch: document.getElementById('fLunch').value.trim(),
+      attachment: document.getElementById('fAttachment').value.trim(),
+      purposeText: document.getElementById('fPurpose').value.trim(),
+      agenda,
+      to: document.getElementById('fTo').value.trim(),
+      cc: document.getElementById('fCc').value.trim(),
+      themeId: current ? current.themeId : '',
+      title: current ? current.title : '',
+    };
+  }
+
+  function buildNoticeHtml(f) {
+    const c = data.contacts || {};
+    const host = c.host || {};
+    const lia = c.liaison || {};
+    const asst = c.assistant || {};
+    const th = themeOf(f.themeId);
+    const agendaOl = f.agenda.map((a) => `<li>${escapeHtml(a)}</li>`).join('');
+    const transportOl = f.transport.length
+      ? `<ol>${f.transport.map((t) => `<li>${escapeHtml(t)}</li>`).join('')}</ol>`
+      : '<p>（無）</p>';
+
+    return `
+      <div class="org-title">臺灣道法總會　函</div>
+      <div class="meta-line"><span class="meta-label">會　址：</span>${escapeHtml(data.orgAddress || '')}</div>
+      <div class="meta-line"><span class="meta-label">聯 絡 人：</span>${escapeHtml(lia.title || '')}${escapeHtml(lia.name || '')}</div>
+      <div class="meta-line"><span class="meta-label">聯絡電話：</span>${escapeHtml(lia.phone || '')}</div>
+      <div class="meta-line"><span class="meta-label">受 文 者：</span>如文</div>
+      <div class="meta-line"><span class="meta-label">速　別：</span>${escapeHtml(f.speed || '')}</div>
+      <div class="meta-line"><span class="meta-label">發文日期：</span>中華民國 ${escapeHtml(f.issuedDateRoc || '　　年　月　日')}</div>
+      <div class="meta-line"><span class="meta-label">發文字號：</span>${escapeHtml(f.docNo || '　　　　　　　　')}</div>
+      <div class="meta-line"><span class="meta-label">附　件：</span>${escapeHtml(f.attachment || '無')}</div>
+      <h3 class="subject">主　旨：${escapeHtml(f.subject || '')}</h3>
+      <div class="section">
+        <div class="section-title">說　明：</div>
+        <p><strong>壹、時間：</strong>${escapeHtml(f.dateRoc)}${f.weekday ? `（${escapeHtml(f.weekday)}）` : ''}
+          ${f.checkIn ? `${escapeHtml(f.checkIn)} 報到，` : ''}${escapeHtml(f.timeRange || '')} 開議。</p>
+        <p><strong>貳、地點：</strong>${escapeHtml(f.venue || '')}</p>
+        <div><strong>參、交通</strong>${transportOl}</div>
+        <p><strong>肆、承辦人：</strong>${escapeHtml(host.title || '')}${escapeHtml(host.name || '')}
+          ${host.phone || ''}${host.line ? `（LINE ID：${escapeHtml(host.line)}）` : ''}<br>
+          <strong>聯絡人：</strong>${escapeHtml(lia.title || '')}${escapeHtml(lia.name || '')}
+          ${lia.phone || ''}${lia.line ? `（LINE：${escapeHtml(lia.line)}）` : ''}
+        </p>
+        <div><strong>伍、議題說明</strong>
+          <p style="margin:0.35rem 0 0">${escapeHtml(f.purposeText || '')}</p>
+          <p style="margin:0.35rem 0 0;font-size:0.9rem;color:#555">【主題分類：${escapeHtml(th.name)}｜${escapeHtml(f.title || '')}】</p>
+        </div>
+        <div style="margin-top:0.5rem"><strong>陸、議程</strong>
+          <ol>${agendaOl || '<li>（請填寫議程）</li>'}</ol>
+        </div>
+        <p><strong>柒、</strong>本次屬重要會議請撥空參加；如不克參加請與
+          ${escapeHtml(asst.title || '')}${escapeHtml(asst.name || '')}
+          ${asst.phone || ''}${asst.line ? `（LINE ${escapeHtml(asst.line)}）` : ''}聯絡，安排以視訊方式參加。</p>
+        ${f.lunch ? `<p><strong>捌、</strong>${escapeHtml(f.lunch)}</p>` : ''}
+      </div>
+      <div class="section">
+        <p><strong>正本：</strong>${escapeHtml(f.to || '')}</p>
+        <p><strong>副本：</strong>${escapeHtml(f.cc || '')}</p>
+      </div>
+      <div class="sign-block">
+        <div class="sign-item">總會長　陳瑞宏</div>
+        <div class="sign-item">召 集 人　林清淇</div>
+      </div>
+      <div class="footer-note">
+        ${escapeHtml(data.project || '')}<br>
+        ${escapeHtml(data.org || '')}｜開會通知單（系統產出）
+      </div>
+    `;
+  }
+
+  function escapeHtml(s) {
+    return String(s || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function refreshPreview() {
+    const html = buildNoticeHtml(readForm());
+    document.getElementById('noticePreview').innerHTML = html;
+    document.getElementById('noticePrint').innerHTML = html;
+  }
+
+  function selectMeeting(id) {
+    current = (data.meetings || []).find((m) => m.id === id) || sortedMeetings()[0];
+    if (!current) return;
+    fillForm(current);
+    renderTimeline();
+    refreshPreview();
+    document.getElementById('noticePreview').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function bindForm() {
+    document.querySelectorAll('#editForm input, #editForm select, #editForm textarea').forEach((el) => {
+      el.addEventListener('input', refreshPreview);
+      el.addEventListener('change', refreshPreview);
+    });
+    document.getElementById('btnPrint').onclick = () => {
+      refreshPreview();
+      window.print();
+    };
+    document.getElementById('btnCopy').onclick = () => {
+      const text = document.getElementById('noticePreview').innerText;
+      navigator.clipboard.writeText(text).then(() => alert('已複製開會通知純文字')).catch(() => {
+        prompt('請手動複製：', text);
+      });
+    };
+    document.getElementById('btnReload').onclick = () => load();
+  }
+
+  function load() {
+    fetch('../dashboard/meetings-calendar.json')
+      .then((r) => {
+        if (!r.ok) throw new Error('load failed');
+        return r.json();
+      })
+      .then((json) => {
+        data = json;
+        renderThemes();
+        renderSelect();
+        renderTable();
+        const first = sortedMeetings().find((m) => m.status === 'preparing')
+          || sortedMeetings().find((m) => m.status === 'planned')
+          || sortedMeetings()[0];
+        if (first) selectMeeting(first.id);
+        else renderTimeline();
+      })
+      .catch(() => {
+        document.getElementById('themeCards').innerHTML = '<p class="empty">無法載入 meetings-calendar.json</p>';
+      });
+  }
+
+  bindForm();
+  load();
+})();
+  </script>
+</body>
+</html>
