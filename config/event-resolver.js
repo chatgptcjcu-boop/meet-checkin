@@ -6,15 +6,19 @@
 (function (global) {
   'use strict';
 
+  /* 以本檔所在 config/ 目錄為基準，避免 root、onsite-checkin、投影頁的相對路徑不同。 */
+  var scriptUrl = global.document && global.document.currentScript ? global.document.currentScript.src : '';
+  var configBaseUrl = scriptUrl ? new URL('.', scriptUrl).toString() : '';
+
   var EVENTS = [
-    { presetId: '1150630-evaluation', dateIso: '2026-06-30', path: '../config/events/1150630-evaluation.json' },
-    { presetId: '1150730-editorial', dateIso: '2026-07-30', path: '../config/events/1150730-editorial.json' },
-    { presetId: '1150830-evaluation', dateIso: '2026-08-30', path: '../config/events/1150830-evaluation.json' },
-    { presetId: '1151018-editorial', dateIso: '2026-10-18', path: '../config/events/1151018-editorial.json' },
-    { presetId: '1151025-evaluation', dateIso: '2026-10-25', path: '../config/events/1151025-evaluation.json' },
-    { presetId: '1151115-editorial', dateIso: '2026-11-15', path: '../config/events/1151115-editorial.json' },
-    { presetId: '1151129-evaluation', dateIso: '2026-11-29', path: '../config/events/1151129-evaluation.json' },
-    { presetId: '1151220-editorial', dateIso: '2026-12-20', path: '../config/events/1151220-editorial.json' }
+    { presetId: '1150630-evaluation', dateIso: '2026-06-30', path: 'events/1150630-evaluation.json' },
+    { presetId: '1150730-editorial', dateIso: '2026-07-30', path: 'events/1150730-editorial.json' },
+    { presetId: '1150830-evaluation', dateIso: '2026-08-30', path: 'events/1150830-evaluation.json' },
+    { presetId: '1151018-editorial', dateIso: '2026-10-18', path: 'events/1151018-editorial.json' },
+    { presetId: '1151025-evaluation', dateIso: '2026-10-25', path: 'events/1151025-evaluation.json' },
+    { presetId: '1151115-editorial', dateIso: '2026-11-15', path: 'events/1151115-editorial.json' },
+    { presetId: '1151129-evaluation', dateIso: '2026-11-29', path: 'events/1151129-evaluation.json' },
+    { presetId: '1151220-editorial', dateIso: '2026-12-20', path: 'events/1151220-editorial.json' }
   ];
 
   function taiwanDateIso() {
@@ -45,7 +49,8 @@
     if (!choice.event) {
       return Promise.resolve({ ok: false, dateIso: choice.dateIso, reason: 'no-event' });
     }
-    return fetch(choice.event.path, { cache: 'no-cache' })
+    var configUrl = configBaseUrl ? new URL(choice.event.path, configBaseUrl).toString() : choice.event.path;
+    return fetch(configUrl, { cache: 'no-cache' })
       .then(function (response) {
         if (!response.ok) throw new Error('活動設定讀取失敗');
         return response.json();
