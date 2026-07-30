@@ -8,6 +8,7 @@
   <meta property="og:description" content="">
   <script src="config/event.config.js"></script>
   <script src="config/apply-event-config.js"></script>
+  <script src="config/event-resolver.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
   <style>
@@ -29,12 +30,12 @@
   </header>
 
   <main class="flex-grow max-w-3xl mx-auto w-full px-4 py-10">
-    <p class="text-center text-slate-600 mb-8 text-sm md:text-base">
+    <p id="entryIntro" class="text-center text-slate-600 mb-8 text-sm md:text-base">
       委員名單已事先建檔，請依您的<strong class="text-slate-800">出席方式</strong>選擇入口：<br class="hidden md:inline">
       現場出席請點「現場簽到」；視訊出席請點「視訊簽到」。
     </p>
 
-    <div class="grid md:grid-cols-2 gap-5 mb-8">
+    <div id="entryChoices" class="grid md:grid-cols-2 gap-5 mb-8">
       <a href="./onsite-checkin/" class="entry-card block bg-white rounded-2xl border-2 border-emerald-200 p-8 text-center shadow-md">
         <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-emerald-100 flex items-center justify-center">
           <svg class="w-8 h-8 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -65,7 +66,7 @@
       </a>
     </div>
 
-    <section class="bg-amber-50 border-2 border-amber-200 rounded-2xl p-5 mb-8">
+    <section id="organizerQrPanel" class="bg-amber-50 border-2 border-amber-200 rounded-2xl p-5 mb-8">
       <h3 class="text-sm font-bold text-amber-900 mb-3 text-center">主辦用｜現場簽到 QR</h3>
       <div class="flex flex-col sm:flex-row gap-3 justify-center">
         <a href="./onsite-projector.html" class="text-center bg-white border-2 border-emerald-300 rounded-xl px-5 py-3 text-sm font-bold text-emerald-800 hover:bg-emerald-50 shadow-sm">
@@ -91,6 +92,27 @@
   <footer class="text-center text-xs text-slate-400 py-6" data-event="org.copyright">
     &copy; 2026 臺灣道法總會 教育委員會
   </footer>
-  <script>MeetCheckinConfig.init();</script>
+  <script>
+    function showNoEntryEvent(result) {
+      document.querySelector('[data-event="event.title"]').textContent = '今日無排定會議';
+      document.querySelector('[data-event="event.dateRoc"]').textContent = result.dateIso;
+      document.getElementById('entryIntro').innerHTML =
+        '<strong class="text-amber-800">今日沒有可簽到的會議。</strong><br>請由主辦確認活動日期後再掃描 QR Code。';
+      document.getElementById('entryChoices').style.display = 'none';
+      document.getElementById('organizerQrPanel').style.display = 'none';
+    }
+
+    window.MeetCheckinEventResolver.resolve()
+      .then(function (result) {
+        if (!result.ok) {
+          showNoEntryEvent(result);
+          return;
+        }
+        MeetCheckinConfig.init();
+      })
+      .catch(function () {
+        showNoEntryEvent({ dateIso: window.MeetCheckinEventResolver.taiwanDateIso() });
+      });
+  </script>
 </body>
 </html>

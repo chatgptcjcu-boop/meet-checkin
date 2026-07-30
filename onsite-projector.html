@@ -6,6 +6,7 @@
   <title>現場簽到 QR｜投影用</title>
   <script src="config/event.config.js"></script>
   <script src="config/apply-event-config.js"></script>
+  <script src="config/event-resolver.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -86,6 +87,15 @@
       <p class="hint">會議結束請再次掃描完成簽退</p>
     </footer>
   </div>
-  <script>MeetCheckinConfig.init({ meta: false });</script>
+  <script>
+    window.MeetCheckinEventResolver.resolve().then(function (result) {
+      if (result.ok) {
+        MeetCheckinConfig.init({ meta: false });
+        return;
+      }
+      document.querySelector('[data-event="event.title"]').textContent = '今日無排定現場會議';
+      document.querySelector('[data-event-date-line]').textContent = result.dateIso + '｜請由主辦確認活動';
+    });
+  </script>
 </body>
 </html>

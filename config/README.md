@@ -24,6 +24,9 @@ python3 -c "import json; p='config/event.config.json'; c=json.load(open(p)); ope
 `onsite-checkin/` 會依 **Asia/Taipei 當日日期**，從 `config/events/` 自動載入
 `event.dateIso` 相符的活動與出席名單。QR 圖固定不必逐場更換。
 
+永久 QR 入口為：`https://chatgptcjcu-boop.github.io/meet-checkin/`。首頁會先顯示
+當日會議，再引導使用者進入現場或視訊簽到；投影版與列印版 QR 也使用同一網址。
+
 - 當日有活動：載入該活動的標題、身份選項、GAS URL 與名單。
 - 當日無活動：停止簽到並顯示「今日沒有可簽到的會議」，不沿用上一場名單。
 - 主辦測試：可在簽到網址加上 `?event=1150730-editorial`，強制載入指定 preset。
