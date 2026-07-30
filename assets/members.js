@@ -100,12 +100,15 @@ window.attendanceBadge = function (att) {
   return '<span class="badge badge-video">視訊</span>';
 };
 
-/** 若 EVENT_CONFIG.event.roster 存在，覆蓋名單（須先載入 event.config.js） */
-window.applyConfigRoster = function () {
+/**
+ * 若 EVENT_CONFIG.event.roster 存在，覆蓋名單（須先載入 event.config.js）。
+ * forceInline 用於雲端 roster API 暫不可用時，改用活動設定檔內建名單。
+ */
+window.applyConfigRoster = function (forceInline) {
   var cfg = window.EVENT_CONFIG;
   if (!cfg || !cfg.event || !cfg.event.roster) return;
   var r = cfg.event.roster;
-  if (r.rosterGroupIds && (r.rosterGroupIds.committee || r.rosterGroupIds.observers)) {
+  if (!forceInline && r.rosterGroupIds && (r.rosterGroupIds.committee || r.rosterGroupIds.observers)) {
     return;
   }
   window.MEMBER_ROSTER = {
@@ -185,7 +188,7 @@ window.loadRosterFromCloud = function (callback) {
   }
   var url = cfg.backend && cfg.backend.gasWebAppUrl;
   if (!url) {
-    window.applyConfigRoster();
+    window.applyConfigRoster(true);
     if (callback) callback(false);
     return Promise.resolve(false);
   }
@@ -199,14 +202,14 @@ window.loadRosterFromCloud = function (callback) {
        * 讓簽到仍可正常進行。
        */
       if (!json || !json.ok || !Array.isArray(json.groups) || !Array.isArray(json.members)) {
-        window.applyConfigRoster();
+        window.applyConfigRoster(true);
         return false;
       }
       window.applyRosterFromCloudData(json, rg);
       return true;
     })
     .catch(function () {
-      window.applyConfigRoster();
+      window.applyConfigRoster(true);
       return false;
     })
     .then(function (ok) {
