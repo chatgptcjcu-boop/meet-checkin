@@ -6,6 +6,7 @@
   <title>現場簽到</title>
   <script src="../config/event.config.js"></script>
   <script src="../config/apply-event-config.js"></script>
+  <script src="../config/event-resolver.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="../assets/checkin.css">
 </head>
@@ -122,8 +123,7 @@
   </div>
 
   <script src="../assets/checkin.js?v=5"></script>
-  <script src="../assets/members.js?v=2"></script>
-  <script>MeetCheckinConfig.init({ meta: false, roleSelectId: 'guestRole' });</script>
+  <script src="../assets/members.js?v=3"></script>
   <script>
     const CHANNEL = '現場';
     let currentMode = 'signin';
@@ -305,8 +305,33 @@
       document.getElementById(btnId).style.display = 'block';
     }
 
-    switchMode('signin');
-    window.initCheckinRoster(renderList);
+    function showNoEventMessage(result) {
+      document.querySelector('[data-event="event.title"]').textContent = '今日無排定現場會議';
+      document.querySelector('[data-event="event.dateRoc"]').textContent = result.dateIso;
+      document.getElementById('listView').innerHTML = `
+        <section class="bg-white rounded-2xl border border-amber-200 p-6 text-center shadow-sm">
+          <h2 class="text-lg font-bold text-amber-800 mb-2">今日沒有可簽到的會議</h2>
+          <p class="text-sm text-slate-600">請由主辦確認會議日期與活動設定後再掃描 QR Code。</p>
+        </section>`;
+    }
+
+    function startCheckinForResolvedEvent() {
+      MeetCheckinConfig.init({ meta: false, roleSelectId: 'guestRole' });
+      switchMode('signin');
+      window.initCheckinRoster(renderList);
+    }
+
+    window.MeetCheckinEventResolver.resolve()
+      .then(function (result) {
+        if (!result.ok) {
+          showNoEventMessage(result);
+          return;
+        }
+        startCheckinForResolvedEvent();
+      })
+      .catch(function () {
+        showNoEventMessage({ dateIso: window.MeetCheckinEventResolver.taiwanDateIso() });
+      });
   </script>
 </body>
 </html>

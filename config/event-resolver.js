@@ -1,0 +1,68 @@
+/**
+ * 依台灣日期選擇簽到活動設定。
+ * 一般 QR 不帶參數，會自動選擇當日 dateIso 相符的活動；
+ * 主辦測試時可使用 ?event=1150730-editorial 覆寫日期。
+ */
+(function (global) {
+  'use strict';
+
+  var EVENTS = [
+    { presetId: '1150630-evaluation', dateIso: '2026-06-30', path: '../config/events/1150630-evaluation.json' },
+    { presetId: '1150730-editorial', dateIso: '2026-07-30', path: '../config/events/1150730-editorial.json' },
+    { presetId: '1150830-evaluation', dateIso: '2026-08-30', path: '../config/events/1150830-evaluation.json' },
+    { presetId: '1151018-editorial', dateIso: '2026-10-18', path: '../config/events/1151018-editorial.json' },
+    { presetId: '1151025-evaluation', dateIso: '2026-10-25', path: '../config/events/1151025-evaluation.json' },
+    { presetId: '1151115-editorial', dateIso: '2026-11-15', path: '../config/events/1151115-editorial.json' },
+    { presetId: '1151129-evaluation', dateIso: '2026-11-29', path: '../config/events/1151129-evaluation.json' },
+    { presetId: '1151220-editorial', dateIso: '2026-12-20', path: '../config/events/1151220-editorial.json' }
+  ];
+
+  function taiwanDateIso() {
+    var parts = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'Asia/Taipei', year: 'numeric', month: '2-digit', day: '2-digit'
+    }).formatToParts(new Date());
+    var values = {};
+    parts.forEach(function (part) { values[part.type] = part.value; });
+    return values.year + '-' + values.month + '-' + values.day;
+  }
+
+  function requestedPresetId() {
+    return new URLSearchParams(global.location.search).get('event') || '';
+  }
+
+  function chooseEvent() {
+    var presetId = requestedPresetId();
+    var dateIso = taiwanDateIso();
+    var event = EVENTS.filter(function (item) {
+      return presetId ? item.presetId === presetId : item.dateIso === dateIso;
+    })[0];
+    return { event: event || null, dateIso: dateIso, overridden: !!presetId };
+  }
+
+  function resolve() {
+    var choice = chooseEvent();
+    if (!choice.event) {
+      return Promise.resolve({ ok: false, dateIso: choice.dateIso, reason: 'no-event' });
+    }
+    return fetch(choice.event.path, { cache: 'no-cache' })
+      .then(function (response) {
+        if (!response.ok) throw new Error('活動設定讀取失敗');
+        return response.json();
+      })
+      .then(function (config) {
+        global.EVENT_CONFIG = config;
+        return {
+          ok: true,
+          dateIso: choice.dateIso,
+          presetId: choice.event.presetId,
+          overridden: choice.overridden
+        };
+      });
+  }
+
+  global.MeetCheckinEventResolver = {
+    resolve: resolve,
+    taiwanDateIso: taiwanDateIso,
+    events: EVENTS.slice()
+  };
+})(window);

@@ -19,6 +19,18 @@ python3 -c "import json; p='config/event.config.json'; c=json.load(open(p)); ope
 3. 更新 `event.roster` 名單（或沿用 `assets/members.js` 預設）
 4. push GitHub Pages，硬刷新瀏覽器
 
+## 現場 QR 的日期自動選擇
+
+`onsite-checkin/` 會依 **Asia/Taipei 當日日期**，從 `config/events/` 自動載入
+`event.dateIso` 相符的活動與出席名單。QR 圖固定不必逐場更換。
+
+- 當日有活動：載入該活動的標題、身份選項、GAS URL 與名單。
+- 當日無活動：停止簽到並顯示「今日沒有可簽到的會議」，不沿用上一場名單。
+- 主辦測試：可在簽到網址加上 `?event=1150730-editorial`，強制載入指定 preset。
+
+新增活動時，除了建立 `config/events/{preset}.json`，也要在
+`config/event-resolver.js` 的 `EVENTS` 清單加入其 `presetId`、`dateIso` 與檔案路徑。
+
 ## 活動 preset 一覽
 
 | preset 檔名 | 活動 | 日期 |
