@@ -49,7 +49,8 @@ function getSpreadsheet_() {
   );
 }
 
-var SIGN_SHEET_NAME = '工作表1';
+/** 簽到／簽退紀錄固定寫入此分頁；名稱需與 Google Sheet 分頁一致。 */
+var SIGN_SHEET_NAME = '簽到退紀錄';
 var FORM_SHEET_NAME = '填答紀錄';
 /** 730 教材編審 Demo 講師學習單專用分頁（英文 tab 名，避免 Sheets 編碼問題） */
 var INSTRUCTOR_SHEET_NAME = 'instructor-730';
@@ -1418,7 +1419,7 @@ function rosterNormalizeMemberIds_(data) {
   return jsonOut({ ok: true, updated: updated, merged: merged });
 }
 
-/** 簽到／簽退固定寫入「工作表1」，避免與「填答紀錄」分頁混淆 */
+/** 簽到／簽退固定寫入「簽到退紀錄」，避免與「填答紀錄」分頁混淆 */
 function getOrCreateSignSheet_(ss) {
   var sheet = ss.getSheetByName(SIGN_SHEET_NAME);
   if (!sheet) {

@@ -193,7 +193,12 @@ window.loadRosterFromCloud = function (callback) {
   return fetch(url + '?action=roster', { method: 'GET', cache: 'no-cache' })
     .then(function (res) { return res.json(); })
     .then(function (json) {
-      if (!json || !json.ok) {
+      /*
+       * 部署中的 GAS 可能只提供簽到 API，尚未含 roster 讀取 API。
+       * 這時不可把空資料套用到畫面，應保留活動設定檔內建名單，
+       * 讓簽到仍可正常進行。
+       */
+      if (!json || !json.ok || !Array.isArray(json.groups) || !Array.isArray(json.members)) {
         window.applyConfigRoster();
         return false;
       }
