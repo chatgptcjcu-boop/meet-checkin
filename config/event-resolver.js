@@ -11,14 +11,14 @@
   var configBaseUrl = scriptUrl ? new URL('.', scriptUrl).toString() : '';
 
   var EVENTS = [
-    { presetId: '1150630-evaluation', dateIso: '2026-06-30', label: '6/30 第一次評核委員會', path: 'events/1150630-evaluation.json' },
-    { presetId: '1150730-editorial', dateIso: '2026-07-30', label: '7/30 教材編審 M1 Demo', path: 'events/1150730-editorial.json' },
-    { presetId: '1150830-evaluation', dateIso: '2026-08-30', label: '8/30 第二次評核委員會', path: 'events/1150830-evaluation.json' },
-    { presetId: '1151018-editorial', dateIso: '2026-10-18', label: '10/18 教材編審第二場', path: 'events/1151018-editorial.json' },
-    { presetId: '1151025-evaluation', dateIso: '2026-10-25', label: '10/25 第三次評核委員會', path: 'events/1151025-evaluation.json' },
-    { presetId: '1151115-editorial', dateIso: '2026-11-15', label: '11/15 教材編審第三場', path: 'events/1151115-editorial.json' },
-    { presetId: '1151129-evaluation', dateIso: '2026-11-29', label: '11/29 第四次評核委員會', path: 'events/1151129-evaluation.json' },
-    { presetId: '1151220-editorial', dateIso: '2026-12-20', label: '12/20 教材編審第四場', path: 'events/1151220-editorial.json' }
+    { presetId: '1150630-evaluation', dateIso: '2026-06-30', label: '6/30 第一次評核委員會', shortLabel: '6/30 評核一', path: 'events/1150630-evaluation.json' },
+    { presetId: '1150730-editorial', dateIso: '2026-07-30', label: '7/30 教材編審 M1 Demo', shortLabel: '7/30 編審 M1', path: 'events/1150730-editorial.json' },
+    { presetId: '1150830-evaluation', dateIso: '2026-08-30', label: '8/30 第二次評核委員會', shortLabel: '8/30 評核二', path: 'events/1150830-evaluation.json' },
+    { presetId: '1151018-editorial', dateIso: '2026-10-18', label: '10/18 教材編審第二場', shortLabel: '10/18 編審二', path: 'events/1151018-editorial.json' },
+    { presetId: '1151025-evaluation', dateIso: '2026-10-25', label: '10/25 第三次評核委員會', shortLabel: '10/25 評核三', path: 'events/1151025-evaluation.json' },
+    { presetId: '1151115-editorial', dateIso: '2026-11-15', label: '11/15 教材編審第三場', shortLabel: '11/15 編審三', path: 'events/1151115-editorial.json' },
+    { presetId: '1151129-evaluation', dateIso: '2026-11-29', label: '11/29 第四次評核委員會', shortLabel: '11/29 評核四', path: 'events/1151129-evaluation.json' },
+    { presetId: '1151220-editorial', dateIso: '2026-12-20', label: '12/20 教材編審第四場', shortLabel: '12/20 編審四', path: 'events/1151220-editorial.json' }
   ];
 
   function taiwanDateIso() {
@@ -36,7 +36,8 @@
 
   function chooseEvent(options) {
     options = options || {};
-    var presetId = options.presetId || requestedPresetId();
+    /* 日期選擇器已明確指定日期時，必須優先使用該日期，不受網址舊 event 參數鎖定。 */
+    var presetId = options.presetId || (!options.dateIso && requestedPresetId());
     var dateIso = options.dateIso || taiwanDateIso();
     var event = EVENTS.filter(function (item) {
       return presetId ? item.presetId === presetId : item.dateIso === dateIso;
