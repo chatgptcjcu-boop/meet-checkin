@@ -7,6 +7,7 @@
   <script src="config/event.config.js"></script>
   <script src="config/apply-event-config.js"></script>
   <script src="config/event-resolver.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -39,7 +40,7 @@
       background: #fff;
       box-shadow: 0 8px 40px rgb(4 120 87 / 0.15);
     }
-    .qr-wrap img {
+    .qr-wrap img, .qr-wrap canvas {
       display: block;
       width: clamp(220px, 42vmin, 520px);
       height: clamp(220px, 42vmin, 520px);
@@ -49,10 +50,13 @@
     .steps strong { color: #047857; }
     .hint { font-size: clamp(0.8rem, 1.5vw, 1rem); color: #94a3b8; margin-top: 1vh; }
     .toolbar {
-      position: fixed; top: 0; right: 0; padding: 0.5rem;
-      display: flex; gap: 0.35rem; opacity: 0.25; transition: opacity 0.2s; z-index: 10;
+      position: fixed; top: 1rem; right: 1rem; padding: 0.65rem;
+      display: flex; align-items: center; gap: 0.45rem; z-index: 10;
+      background: rgb(255 255 255 / 0.95); border: 1px solid #cbd5e1; border-radius: 10px;
+      box-shadow: 0 4px 16px rgb(15 23 42 / 0.12);
     }
-    .toolbar:hover { opacity: 1; }
+    .toolbar label { font-size: 0.75rem; color: #475569; font-weight: 700; }
+    .toolbar input { font: inherit; font-size: 0.82rem; padding: 0.35rem; border: 1px solid #94a3b8; border-radius: 6px; color: #0f172a; }
     .toolbar a, .toolbar button {
       font-size: 0.72rem; padding: 0.35rem 0.65rem; border-radius: 6px;
       border: 1px solid #cbd5e1; background: #f8fafc; color: #334155;
@@ -63,8 +67,10 @@
 </head>
 <body>
   <div class="toolbar no-print">
+    <label for="eventDatePicker">會議日期</label>
+    <input id="eventDatePicker" type="date" aria-label="選擇會議日期">
     <a href="./onsite-qr-print.html">列印版</a>
-    <a href="./onsite-checkin/">簽到頁</a>
+    <a id="checkinLink" href="./onsite-checkin/">簽到頁</a>
     <button type="button" onclick="document.documentElement.requestFullscreen?.()">全螢幕</button>
   </div>
   <div class="stage">
@@ -74,7 +80,7 @@
       <p class="date" data-event-date-line>—｜現場簽到</p>
     </header>
     <div class="qr-block">
-      <div class="qr-wrap">
+      <div class="qr-wrap" id="dynamicQrCode">
         <img src="./assets/onsite-qrcode.png" alt="現場簽到 QR Code" width="520" height="520">
       </div>
       <p class="scan">請掃描 QR Code 完成簽到</p>
@@ -88,14 +94,48 @@
     </footer>
   </div>
   <script>
-    window.MeetCheckinEventResolver.resolve().then(function (result) {
-      if (result.ok) {
-        MeetCheckinConfig.init({ meta: false });
-        return;
-      }
-      document.querySelector('[data-event="event.title"]').textContent = '今日無排定現場會議';
-      document.querySelector('[data-event-date-line]').textContent = result.dateIso + '｜請由主辦確認活動';
-    });
+    var QR_ENTRY_URL = 'https://chatgptcjcu-boop.github.io/meet-checkin/';
+    var picker = document.getElementById('eventDatePicker');
+    var qrBlock = document.querySelector('.qr-block');
+    var checkinLink = document.getElementById('checkinLink');
+
+    function renderEventQr(presetId) {
+      var target = QR_ENTRY_URL + '?event=' + encodeURIComponent(presetId);
+      var container = document.getElementById('dynamicQrCode');
+      container.innerHTML = '';
+      new QRCode(container, {
+        text: target,
+        width: 520,
+        height: 520,
+        correctLevel: QRCode.CorrectLevel.M
+      });
+      checkinLink.href = './onsite-checkin/?event=' + encodeURIComponent(presetId);
+    }
+
+    function showUnavailable(dateIso) {
+      document.querySelector('[data-event="event.title"]').textContent = '此日期尚無排定會議';
+      document.querySelector('[data-event-date-line]').textContent = dateIso + '｜請選擇已建立的會議日期';
+      qrBlock.style.visibility = 'hidden';
+      checkinLink.href = './onsite-checkin/';
+    }
+
+    function loadSelectedDate(dateIso) {
+      window.MeetCheckinEventResolver.resolve({ dateIso: dateIso })
+        .then(function (result) {
+          if (!result.ok) {
+            showUnavailable(dateIso);
+            return;
+          }
+          qrBlock.style.visibility = 'visible';
+          MeetCheckinConfig.init({ meta: false });
+          renderEventQr(result.presetId);
+        })
+        .catch(function () { showUnavailable(dateIso); });
+    }
+
+    picker.value = window.MeetCheckinEventResolver.taiwanDateIso();
+    picker.addEventListener('change', function () { loadSelectedDate(picker.value); });
+    loadSelectedDate(picker.value);
   </script>
 </body>
 </html>

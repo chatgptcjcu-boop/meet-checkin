@@ -30,17 +30,18 @@
     return new URLSearchParams(global.location.search).get('event') || '';
   }
 
-  function chooseEvent() {
-    var presetId = requestedPresetId();
-    var dateIso = taiwanDateIso();
+  function chooseEvent(options) {
+    options = options || {};
+    var presetId = options.presetId || requestedPresetId();
+    var dateIso = options.dateIso || taiwanDateIso();
     var event = EVENTS.filter(function (item) {
       return presetId ? item.presetId === presetId : item.dateIso === dateIso;
     })[0];
     return { event: event || null, dateIso: dateIso, overridden: !!presetId };
   }
 
-  function resolve() {
-    var choice = chooseEvent();
+  function resolve(options) {
+    var choice = chooseEvent(options);
     if (!choice.event) {
       return Promise.resolve({ ok: false, dateIso: choice.dateIso, reason: 'no-event' });
     }
@@ -62,6 +63,9 @@
 
   global.MeetCheckinEventResolver = {
     resolve: resolve,
+    findByDate: function (dateIso) {
+      return EVENTS.filter(function (item) { return item.dateIso === dateIso; })[0] || null;
+    },
     taiwanDateIso: taiwanDateIso,
     events: EVENTS.slice()
   };

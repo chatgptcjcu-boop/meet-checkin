@@ -27,6 +27,10 @@ python3 -c "import json; p='config/event.config.json'; c=json.load(open(p)); ope
 永久 QR 入口為：`https://chatgptcjcu-boop.github.io/meet-checkin/`。首頁會先顯示
 當日會議，再引導使用者進入現場或視訊簽到；投影版與列印版 QR 也使用同一網址。
 
+投影頁 `onsite-projector.html` 右上角可由主辦選擇會議日期。選擇已建立的日期後，
+畫面會更新會議名稱與 QR；該 QR 會帶入 `?event={presetId}`，確保參與者的首頁與
+簽到名單都對應主辦選定的活動，而不是受手機日期影響。
+
 - 當日有活動：載入該活動的標題、身份選項、GAS URL 與名單。
 - 當日無活動：停止簽到並顯示「今日沒有可簽到的會議」，不沿用上一場名單。
 - 主辦測試：可在簽到網址加上 `?event=1150730-editorial`，強制載入指定 preset。
