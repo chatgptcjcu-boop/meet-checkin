@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>宮廟管理師｜會議標準工作程序</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #1a2332;
+      --muted: #5c6b7a;
+      --paper: #f7f3ec;
+      --card: #fffdf9;
+      --line: #e4dccf;
+      --step1: #c45c26;
+      --step2: #0f766e;
+      --step3: #6d28d9;
+      --step4: #047857;
+      --gold: #b45309;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Noto Sans TC', sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse 80% 50% at 0% 0%, #fde8d4 0%, transparent 50%),
+        radial-gradient(ellipse 60% 40% at 100% 10%, #d8efe9 0%, transparent 45%),
+        linear-gradient(180deg, var(--paper) 0%, #eef1f4 100%);
+      min-height: 100vh;
+      line-height: 1.65;
+    }
+    .wrap { max-width: 920px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+    .eyebrow {
+      font-size: .75rem; font-weight: 700; letter-spacing: .18em;
+      text-transform: uppercase; color: var(--gold); margin: 0 0 .5rem;
+    }
+    h1 {
+      font-family: 'Noto Serif TC', serif;
+      font-size: clamp(1.75rem, 4vw, 2.35rem);
+      font-weight: 700; margin: 0 0 .75rem; line-height: 1.25;
+    }
+    .lead { color: var(--muted); font-size: 1.05rem; margin: 0 0 2rem; max-width: 38em; }
+    .actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-bottom: 2.5rem; }
+    .btn {
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .7rem 1.15rem; border-radius: .65rem; font-weight: 700;
+      font-size: .9rem; text-decoration: none; border: none; cursor: pointer;
+    }
+    .btn-primary { background: var(--ink); color: #fff; }
+    .btn-primary:hover { background: #2a3a4f; }
+    .btn-ghost { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+    .flow {
+      display: grid; gap: 0; position: relative;
+    }
+    .flow::before {
+      content: ''; position: absolute; left: 1.55rem; top: 1.5rem; bottom: 1.5rem;
+      width: 3px; background: linear-gradient(180deg, var(--step1), var(--step2), var(--step3), var(--step4));
+      border-radius: 2px; opacity: .35;
+    }
+    @media (min-width: 720px) {
+      .flow::before { left: 2rem; }
+    }
+    .step {
+      position: relative;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 1rem;
+      padding: 1.35rem 1.35rem 1.35rem 4.25rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 8px 24px rgba(26, 35, 50, .04);
+    }
+    @media (min-width: 720px) {
+      .step { padding-left: 5rem; }
+    }
+    .step-num {
+      position: absolute; left: .85rem; top: 1.25rem;
+      width: 2.4rem; height: 2.4rem; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; color: #fff; font-size: 1rem;
+    }
+    @media (min-width: 720px) {
+      .step-num { left: 1.1rem; width: 2.75rem; height: 2.75rem; font-size: 1.1rem; }
+    }
+    .s1 .step-num { background: var(--step1); }
+    .s2 .step-num { background: var(--step2); }
+    .s3 .step-num { background: var(--step3); }
+    .s4 .step-num { background: var(--step4); }
+    .s1 { border-left: 4px solid var(--step1); }
+    .s2 { border-left: 4px solid var(--step2); }
+    .s3 { border-left: 4px solid var(--step3); }
+    .s4 { border-left: 4px solid var(--step4); }
+    .step h2 { margin: 0 0 .35rem; font-size: 1.2rem; }
+    .step .who {
+      font-size: .8rem; font-weight: 700; margin-bottom: .75rem;
+      display: inline-block; padding: .15rem .55rem; border-radius: 999px;
+      background: #f3efe6; color: var(--muted);
+    }
+    .step ol { margin: 0; padding-left: 1.15rem; }
+    .step li { margin-bottom: .4rem; color: #334155; }
+    .step .out {
+      margin-top: .9rem; padding: .65rem .85rem;
+      background: #f8fafc; border-radius: .5rem;
+      font-size: .85rem; color: var(--muted); border: 1px dashed var(--line);
+    }
+    .step .out strong { color: var(--ink); }
+    .note {
+      margin-top: 2rem; padding: 1.25rem 1.4rem;
+      background: #fff7ed; border: 1px solid #fed7aa; border-radius: 1rem;
+    }
+    .note h3 { margin: 0 0 .5rem; font-size: 1rem; color: #9a3412; }
+    .note p, .note code { font-size: .9rem; color: #7c2d12; }
+    .note code {
+      display: block; background: #ffedd5; padding: .55rem .75rem;
+      border-radius: .4rem; margin-top: .5rem; overflow-x: auto;
+      font-family: ui-monospace, monospace; font-size: .8rem; color: #431407;
+    }
+    .grid-2 {
+      display: grid; gap: 1rem; margin-top: 2rem;
+    }
+    @media (min-width: 640px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+    .mini {
+      background: var(--card); border: 1px solid var(--line);
+      border-radius: .85rem; padding: 1.1rem 1.2rem;
+    }
+    .mini h3 { margin: 0 0 .5rem; font-size: .95rem; }
+    .mini ul { margin: 0; padding-left: 1.1rem; font-size: .88rem; color: var(--muted); }
+    footer {
+      margin-top: 2.5rem; text-align: center;
+      font-size: .75rem; color: #94a3b8;
+    }
+    @media print {
+      body { background: #fff; }
+      .actions { display: none; }
+      .step { break-inside: avoid; box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p class="eyebrow">職能基準推動 · 專案會議 SOP</p>
+    <h1>宮廟管理師｜會議標準工作程序</h1>
+    <p class="lead">
+      從 Google Meet 錄影到短影音宣傳、逐字稿會議記錄、委員即視二修、線上簽署確認版——
+      依序完成，工讀生可按步驟協助專案負責人執行。
+    </p>
+
+    <div class="actions">
+      <a class="btn btn-ghost" href="../dashboard.html">← 回儀表板</a>
+      <a class="btn btn-primary" href="index.html">開啟會議協作平台 →</a>
+      <button class="btn btn-ghost" type="button" onclick="window.print()">列印／存 PDF</button>
+    </div>
+
+    <div class="flow">
+      <article class="step s1">
+        <div class="step-num">1</div>
+        <h2>處理 Google Meet 錄影檔</h2>
+        <span class="who">執行：工讀生／紀錄</span>
+        <ol>
+          <li>自 Google Meet／雲端硬碟下載會議錄影（建議 MP4）。</li>
+          <li>於協作平台「步驟一」上傳錄影檔。</li>
+          <li>抽出完整會議 <strong>MP3</strong>（供後續聽打與核對）。</li>
+          <li>依平台切割短檔：
+            <strong>TK／IG／YT Shorts</strong> → 60–90 秒、直式 9:16；
+            <strong>FB／官網</strong> → 約 3 分鐘、16:9 或原比例。</li>
+          <li>匯出 <strong>SRT 字幕檔</strong>，後置加字幕後發布短影片宣傳。</li>
+        </ol>
+        <div class="out"><strong>產出：</strong>MP3 音檔、短影音 MP4 分段、字幕 SRT</div>
+      </article>
+
+      <article class="step s2">
+        <div class="step-num">2</div>
+        <h2>逐字稿 → 會議記錄（MD／Google Doc）</h2>
+        <span class="who">執行：工讀生／紀錄</span>
+        <ol>
+          <li>播放 MP3，對照會議內容。</li>
+          <li>貼上 Google Meet 自動字幕／逐字稿，或匯入 .txt／.srt／.vtt。</li>
+          <li>（注意）瀏覽器無法可靠「聽」檔內音訊自動轉字，請用 Meet 字幕或外部轉寫結果。</li>
+          <li>為每段指定發言人，細修錯字與標點。</li>
+          <li>匯出 <strong>Markdown (.md)</strong> 與 <strong>Word (.docx)</strong>；docx 上傳 Google 雲端硬碟即可開成 Google 文件。</li>
+        </ol>
+        <div class="out"><strong>產出：</strong>結構化會議記錄、.md、.docx／Google Doc、可選再匯出 SRT</div>
+      </article>
+
+      <article class="step s3">
+        <div class="step-num">3</div>
+        <h2>委員即視即編輯（細修／二修發言）</h2>
+        <span class="who">執行：各委員｜協助：工讀生建名單</span>
+        <ol>
+          <li>建立與會委員名單。</li>
+          <li>委員選擇自己的身分登入（模擬）。</li>
+          <li>系統鎖定他人發言；委員僅能以 HTML 即視編輯修改<strong>自己的段落</strong>。</li>
+          <li>可勾選「只顯示我的發言」，專注二修用字與意思。</li>
+          <li>修改自動存於本機；可用 JSON 專案檔交接。</li>
+        </ol>
+        <div class="out"><strong>產出：</strong>委員確認後的修改稿（修改確認版底稿）</div>
+      </article>
+
+      <article class="step s4">
+        <div class="step-num">4</div>
+        <h2>確認版發布與線上簽署</h2>
+        <span class="who">執行：全體委員｜彙整：專案負責人／工讀生</span>
+        <ol>
+          <li>預覽「會議記錄修改確認版」全文。</li>
+          <li>各委員檢視無誤後，於平台完成<strong>線上簽名</strong>。</li>
+          <li>標記為「已發布確認版」。</li>
+          <li>下載最終 MD／DOCX（含簽署狀態）歸檔；必要時上傳 Drive 存檔備查。</li>
+        </ol>
+        <div class="out"><strong>產出：</strong>已簽署確認版會議記錄、歸檔檔案</div>
+      </article>
+    </div>
+
+    <div class="grid-2">
+      <div class="mini">
+        <h3>工讀生六格檢查</h3>
+        <ul>
+          <li>下載 Meet 錄影並上傳步驟一</li>
+          <li>抽出 MP3、切短影音（YT/FB/TK/IG）</li>
+          <li>貼上／匯入逐字稿</li>
+          <li>指定發言人，匯出 MD／DOCX</li>
+          <li>通知委員進入步驟三二修</li>
+          <li>步驟四全員簽署後歸檔</li>
+        </ul>
+      </div>
+      <div class="mini">
+        <h3>宣傳短片銜接</h3>
+        <ul>
+          <li>步驟一切 60 秒＋9:16</li>
+          <li>步驟二定稿後帶 SRT</li>
+          <li>CapCut／剪映套字幕與片頭</li>
+          <li>上傳社群，說明連回正式記錄</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="note">
+      <h3>啟動方式</h3>
+      <p>線上：自儀表板進入即可（GitHub Pages）。本機大檔處理建議：</p>
+      <code>cd ~/Documents/meet-checkin && python3 -m http.server 8765</code>
+      <p style="margin-top:.5rem">然後開啟 <code>http://localhost:8765/meeting-minutes/</code></p>
+    </div>
+
+    <footer>
+      meet-checkin/meeting-minutes｜宮廟管理師職能基準｜會議標準工作程序 ·
+      <a href="../dashboard.html" style="color:#94a3b8">儀表板</a>
+    </footer>
+  </div>
+</body>
+</html>

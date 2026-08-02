@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>宮廟管理師｜會議記錄協作平台</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/umd/index.js"></script>
+  <script src="https://unpkg.com/docx@8.5.0/build/index.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand: #1e3a5f;
+      --accent: #c45c26;
+      --mint: #0f766e;
+    }
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background:
+        radial-gradient(ellipse at 10% 0%, #fef3e8 0%, transparent 45%),
+        radial-gradient(ellipse at 90% 10%, #e8f4f2 0%, transparent 40%),
+        linear-gradient(180deg, #f7f4ef 0%, #eef2f6 100%);
+      min-height: 100vh;
+    }
+    .step-tab { transition: all .25s ease; border-bottom: 3px solid transparent; }
+    .step-tab.active { border-bottom-color: var(--accent); color: var(--brand); font-weight: 700; background: #fff7ed; }
+    .step-content { display: none; animation: fadeIn .28s ease; }
+    .step-content.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    .drop-zone { border: 2px dashed #cbd5e1; transition: .25s; }
+    .drop-zone.dragover { border-color: var(--accent); background: #fff7ed; }
+    #log-container { max-height: 140px; overflow-y: auto; font-family: ui-monospace, monospace; font-size: 11px; }
+    .editable-text { min-height: 28px; outline: none; padding: 8px; border-radius: 6px; border: 1px solid transparent; }
+    .editable-text:focus { background: #fff; box-shadow: 0 0 0 2px #fdba74; border-color: #fb923c; }
+    .editable-text[contenteditable="false"] { cursor: default; }
+    .signature-canvas { border: 1px dashed #94a3b8; border-radius: .5rem; background: #fafafa; touch-action: none; cursor: crosshair; }
+    .sop-check:checked + span { text-decoration: line-through; opacity: .55; }
+    .badge-pulse { animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.55} }
+  </style>
+</head>
+<body class="text-slate-800 flex flex-col items-center py-6 px-3 md:px-6">
+
+  <!-- 頂部 -->
+  <header class="w-full max-w-6xl mb-5 flex flex-col md:flex-row md:items-end justify-between gap-3">
+    <div>
+      <p class="text-xs font-bold tracking-widest uppercase text-orange-700/80 mb-1">
+        <a href="../dashboard.html" class="hover:underline">← 儀表板</a>
+        · meet-checkin／meeting-minutes
+      </p>
+      <h1 class="text-2xl md:text-3xl font-black text-slate-900">宮廟管理師｜會議記錄協作平台</h1>
+      <p class="text-slate-600 text-sm mt-1">錄影切割 → 音檔／逐字稿 → 委員即視編輯 → 線上簽署歸檔 · <a href="workflow.html" class="text-orange-700 underline">工作程序 SOP</a></p>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <button id="saveProjectBtn" class="text-sm bg-white border border-slate-200 px-3 py-2 rounded-lg shadow-sm hover:bg-slate-50 font-medium">💾 存專案</button>
+      <button id="loadProjectBtn" class="text-sm bg-white border border-slate-200 px-3 py-2 rounded-lg shadow-sm hover:bg-slate-50 font-medium">📂 載入專案</button>
+      <input type="file" id="projectFileInput" class="hidden" accept=".json,application/json">
+      <button id="clearAllBtn" class="text-sm bg-red-50 text-red-700 border border-red-100 px-3 py-2 rounded-lg hover:bg-red-100 font-medium">清空</button>
+    </div>
+  </header>
+
+  <!-- 啟動提示 -->
+  <div id="protocolBanner" class="hidden w-full max-w-6xl mb-4 bg-amber-50 border border-amber-200 text-amber-900 text-sm rounded-xl p-4">
+    <strong>請用本機伺服器開啟</strong>（勿直接雙擊用 <code>file://</code>）。工讀生啟動指令：
+              <code class="bg-amber-100 px-1 rounded">cd ~/Documents/meet-checkin && python3 -m http.server 8765</code>
+    然後開啟 <code class="bg-amber-100 px-1 rounded">http://localhost:8765/meeting-minutes/</code>
+  </div>
+
+  <!-- 會議基本資料 -->
+  <section class="w-full max-w-6xl bg-white/90 border border-slate-200 rounded-2xl shadow-sm p-4 md:p-5 mb-4">
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="font-bold text-slate-800">會議基本資料</h2>
+      <span id="autosaveStatus" class="text-xs text-slate-400">尚未自動儲存</span>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+      <label class="text-sm">會議名稱
+        <input id="metaTitle" class="mt-1 w-full border border-slate-200 rounded-lg px-3 py-2" placeholder="例：職能基準草案第3次審查會" value="宮廟管理師職能基準推動會議">
+      </label>
+      <label class="text-sm">會議日期
+        <input id="metaDate" type="date" class="mt-1 w-full border border-slate-200 rounded-lg px-3 py-2">
+      </label>
+      <label class="text-sm">地點／線上
+        <input id="metaPlace" class="mt-1 w-full border border-slate-200 rounded-lg px-3 py-2" placeholder="Google Meet / 會議室" value="Google Meet">
+      </label>
+      <label class="text-sm">紀錄／工讀生
+        <input id="metaRecorder" class="mt-1 w-full border border-slate-200 rounded-lg px-3 py-2" placeholder="姓名">
+      </label>
+    </div>
+  </section>
+
+  <div class="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-4 gap-4">
+    <!-- 工讀生 SOP -->
+    <aside class="lg:col-span-1 bg-white border border-slate-200 rounded-2xl shadow-sm p-4 h-fit sticky top-4">
+      <h3 class="font-bold text-sm text-slate-800 mb-2">工讀生標準作業（SOP）</h3>
+      <ol class="space-y-2 text-sm text-slate-700">
+        <li><label class="flex gap-2 items-start cursor-pointer"><input type="checkbox" class="sop-check mt-1 accent-orange-600"><span>1. 下載 Google Meet 錄影 → 步驟一上傳</span></label></li>
+        <li><label class="flex gap-2 items-start cursor-pointer"><input type="checkbox" class="sop-check mt-1 accent-orange-600"><span>2. 抽出 MP3，切割短影音（YT/FB/TK/IG）</span></label></li>
+        <li><label class="flex gap-2 items-start cursor-pointer"><input type="checkbox" class="sop-check mt-1 accent-orange-600"><span>3. 貼上 Meet 逐字稿或匯入 SRT/VTT/TXT</span></label></li>
+        <li><label class="flex gap-2 items-start cursor-pointer"><input type="checkbox" class="sop-check mt-1 accent-orange-600"><span>4. 指定發言人，匯出 MD／DOCX</span></label></li>
+        <li><label class="flex gap-2 items-start cursor-pointer"><input type="checkbox" class="sop-check mt-1 accent-orange-600"><span>5. 通知委員進入步驟三二修發言</span></label></li>
+        <li><label class="flex gap-2 items-start cursor-pointer"><input type="checkbox" class="sop-check mt-1 accent-orange-600"><span>6. 步驟四全員簽署後歸檔發布</span></label></li>
+      </ol>
+      <p class="text-[11px] text-slate-500 mt-3 leading-relaxed">提示：瀏覽器無法直接「聽」音檔轉字。請從 Google Meet「錄製／字幕」匯出文字，或貼上會議聊天／自動字幕。</p>
+      <button id="demoDataBtn" class="mt-3 w-full text-xs border border-dashed border-slate-300 rounded-lg py-2 hover:bg-slate-50">載入示範資料（測試用）</button>
+    </aside>
+
+    <!-- 主流程 -->
+    <main class="lg:col-span-3 bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100">
+      <div class="flex flex-wrap border-b border-slate-200 bg-slate-50 text-sm">
+        <div class="flex-1 min-w-[25%] text-center py-3.5 step-tab active cursor-pointer" data-step="1">1. 錄影處理</div>
+        <div class="flex-1 min-w-[25%] text-center py-3.5 step-tab text-slate-500 cursor-pointer" data-step="2">2. 會議記錄</div>
+        <div class="flex-1 min-w-[25%] text-center py-3.5 step-tab text-slate-500 cursor-pointer" data-step="3">3. 委員編輯</div>
+        <div class="flex-1 min-w-[25%] text-center py-3.5 step-tab text-slate-500 cursor-pointer" data-step="4">4. 簽署發布</div>
+      </div>
+
+      <div class="p-5 md:p-7">
+        <!-- STEP 1 -->
+        <div id="step1" class="step-content active">
+          <h2 class="text-xl font-bold mb-2 border-l-4 border-orange-500 pl-3">步驟一：Google Meet 錄影擷取與短影音切割</h2>
+          <p class="mb-5 text-slate-600 text-sm">上傳會議錄影 → 提取 MP3（供聽打）→ 依平台格式切割短檔，並可匯出字幕檔供 YT/FB/TK/IG 後置上字幕。</p>
+
+          <div id="dropZone" class="drop-zone p-8 rounded-xl text-center cursor-pointer mb-4 bg-slate-50 hover:bg-slate-100">
+            <p class="text-lg font-semibold text-slate-700">點擊或拖曳錄影檔至此</p>
+            <p class="text-xs text-slate-500 mt-1">支援 MP4 / WebM / MOV（建議 &lt; 500MB；大檔請先用本機壓縮）</p>
+            <input type="file" id="fileInput" class="hidden" accept="video/*,.mp4,.webm,.mov">
+          </div>
+
+          <div id="fileInfo" class="hidden bg-orange-50 p-3 rounded-lg mb-4 border border-orange-100 flex justify-between items-center gap-2">
+            <div>
+              <p class="font-semibold text-orange-950 text-sm">已選：<span id="fileNameDisplay" class="font-normal"></span></p>
+              <p class="text-xs text-orange-700">大小：<span id="fileSizeDisplay"></span></p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+              <label class="font-semibold text-sm block mb-2">切割長度</label>
+              <select id="splitPreset" class="w-full border border-slate-300 rounded-md p-2 text-sm">
+                <option value="60">短影音 60 秒（TK / IG / YT Shorts）</option>
+                <option value="90">短影音 90 秒</option>
+                <option value="180">宣傳片 3 分鐘（FB / 官網）</option>
+                <option value="600">精華 10 分鐘</option>
+                <option value="0">不切割，僅提取 MP3</option>
+              </select>
+            </div>
+            <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+              <label class="font-semibold text-sm block mb-2">畫面比例</label>
+              <select id="aspectPreset" class="w-full border border-slate-300 rounded-md p-2 text-sm">
+                <option value="copy">原始比例（快速無損切割）</option>
+                <option value="9:16">直式 9:16（TK / IG Reels / Shorts）</option>
+                <option value="16:9">橫式 16:9（YT / FB）</option>
+                <option value="1:1">方形 1:1（FB／IG 動態）</option>
+              </select>
+              <p class="text-[11px] text-slate-500 mt-1">直式／方形會重新編碼，較慢但適合社群。</p>
+            </div>
+            <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 flex flex-col justify-end">
+              <label class="flex items-center gap-2 text-sm mb-3">
+                <input type="checkbox" id="exportSrtWithClips" class="accent-orange-600" checked>
+                一併產出字幕檔（.srt）範本
+              </label>
+              <button id="processBtn" disabled class="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-4 rounded-lg disabled:opacity-45 shadow">
+                啟動處理
+              </button>
+            </div>
+          </div>
+
+          <div id="progressSection" class="hidden mb-4">
+            <div class="flex justify-between text-sm mb-1"><span class="font-semibold">處理進度</span><span id="progressText" class="text-orange-600 font-bold">0%</span></div>
+            <div class="w-full bg-slate-200 rounded-full h-2 mb-2"><div id="progressBar" class="bg-orange-600 h-2 rounded-full transition-all" style="width:0%"></div></div>
+            <div class="bg-slate-900 text-emerald-400 p-2 rounded" id="log-container"></div>
+          </div>
+
+          <div id="downloadSection" class="hidden bg-emerald-50 p-4 rounded-xl border border-emerald-200">
+            <h3 class="font-bold text-emerald-900 mb-2">處理完成 — 下載區</h3>
+            <div id="downloadLinks" class="flex flex-col gap-2 mb-4"></div>
+            <button class="next-step-btn w-full bg-slate-900 text-white py-3 rounded-lg font-bold hover:bg-slate-800" data-target="2">
+              下一步：建立會議記錄 →
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 2 -->
+        <div id="step2" class="step-content">
+          <h2 class="text-xl font-bold mb-2 border-l-4 border-teal-600 pl-3">步驟二：音檔備份＋逐字稿會議記錄</h2>
+          <p class="mb-4 text-slate-600 text-sm">聽取 MP3、貼上／匯入 Meet 逐字稿，指定發言人後匯出 Markdown 與 Word（可上傳 Google 雲端硬碟開成 Google Doc）。</p>
+
+          <div class="bg-teal-50 p-4 rounded-xl border border-teal-100 mb-4">
+            <label class="block text-sm font-bold text-teal-900 mb-2">A. 會議音檔（MP3）</label>
+            <audio id="audioPlayer" class="w-full mb-2 rounded" controls></audio>
+            <div class="flex flex-wrap gap-2">
+              <button id="downloadMp3Btn" disabled class="text-sm bg-teal-700 text-white px-3 py-1.5 rounded disabled:opacity-40">下載 MP3</button>
+              <label class="text-sm bg-white border border-teal-200 px-3 py-1.5 rounded cursor-pointer hover:bg-teal-50">
+                另傳音檔／MP3
+                <input type="file" id="audioOnlyInput" class="hidden" accept="audio/*,.mp3,.wav,.m4a">
+              </label>
+            </div>
+          </div>
+
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 mb-4">
+            <label class="block text-sm font-bold mb-2">B. 匯入逐字稿（建議做法）</label>
+            <textarea id="pasteTranscript" rows="5" class="w-full border border-slate-300 rounded-lg p-3 text-sm" placeholder="貼上 Google Meet 自動字幕／逐字稿。&#10;格式範例：&#10;主席：各位委員午安…&#10;王委員：關於職能基準第三項…"></textarea>
+            <div class="flex flex-wrap gap-2 mt-2">
+              <button id="importPasteBtn" class="bg-teal-600 hover:bg-teal-700 text-white text-sm font-bold px-4 py-2 rounded-lg">解析並寫入記錄</button>
+              <label class="text-sm bg-white border border-slate-300 px-3 py-2 rounded-lg cursor-pointer hover:bg-slate-100">
+                匯入 .txt / .srt / .vtt
+                <input type="file" id="transcriptFileInput" class="hidden" accept=".txt,.srt,.vtt,text/plain">
+              </label>
+              <button id="addManualBlockBtn" class="text-sm bg-slate-200 hover:bg-slate-300 px-3 py-2 rounded-lg font-medium">＋手動新增段落</button>
+            </div>
+            <p id="speechWarning" class="text-xs text-amber-700 mt-2 hidden"></p>
+          </div>
+
+          <div class="mb-2 flex justify-between items-end">
+            <label class="text-sm font-bold">C. 結構化會議逐字稿</label>
+            <button id="exportSrtBtn" class="text-xs text-teal-700 underline">匯出目前字幕 .srt</button>
+          </div>
+          <div id="transcriptContainer" class="rounded-lg bg-slate-50 p-3 min-h-[260px] max-h-[420px] overflow-y-auto border border-slate-200 space-y-2">
+            <div class="text-center text-slate-400 text-sm py-14" id="emptyTranscriptMsg">尚未有記錄。請貼上逐字稿或手動新增。</div>
+          </div>
+
+          <div class="mt-6 flex flex-wrap justify-end gap-2">
+            <button id="earlyExportMdBtn" class="bg-slate-100 border border-slate-300 text-slate-800 py-2.5 px-4 rounded-lg text-sm font-bold hover:bg-slate-200">先匯出 MD</button>
+            <button id="earlyExportDocxBtn" class="bg-blue-600 text-white py-2.5 px-4 rounded-lg text-sm font-bold hover:bg-blue-700">先匯出 Word／Google Doc</button>
+            <button class="next-step-btn bg-slate-900 text-white py-2.5 px-6 rounded-lg font-bold hover:bg-slate-800" data-target="3">下一步：委員即視編輯 →</button>
+          </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div id="step3" class="step-content">
+          <h2 class="text-xl font-bold mb-2 border-l-4 border-violet-500 pl-3">步驟三：委員即視即編輯（細修／二修發言）</h2>
+          <p class="mb-4 text-slate-600 text-sm">建立委員名單後，委員選擇自己身分，系統鎖定他人發言，僅能 contentEditable 修改自己的段落。</p>
+
+          <div class="bg-violet-50 p-4 rounded-xl border border-violet-100 mb-4">
+            <h3 class="font-bold text-violet-900 mb-3 text-sm">建立／選擇身分</h3>
+            <div class="flex flex-col md:flex-row gap-3">
+              <div class="flex flex-1 gap-2">
+                <input type="text" id="newMemberInput" placeholder="例：王委員、李專家…" class="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm">
+                <button id="addMemberBtn" class="bg-violet-600 hover:bg-violet-700 text-white px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap">新增委員</button>
+              </div>
+              <div class="flex-1 flex items-center gap-2 md:border-l md:pl-4 border-violet-200">
+                <label class="text-sm whitespace-nowrap font-medium">目前身分</label>
+                <select id="currentUserSelect" class="w-full border border-slate-300 rounded-lg p-2 text-sm bg-white">
+                  <option value="ADMIN">系統管理員（可編輯全部）</option>
+                </select>
+              </div>
+            </div>
+            <div id="memberChips" class="flex flex-wrap gap-2 mt-3"></div>
+          </div>
+
+          <div class="mb-2 flex justify-between items-center">
+            <label class="text-sm font-bold">協作編輯區</label>
+            <div class="flex items-center gap-2">
+              <label class="text-xs flex items-center gap-1"><input type="checkbox" id="filterMineOnly" class="accent-violet-600"> 只顯示我的發言</label>
+              <span id="roleStatusMsg" class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">管理員模式</span>
+            </div>
+          </div>
+          <div class="border-2 border-violet-100 rounded-xl p-4 bg-white min-h-[280px]" id="collaborationArea">
+            <div class="text-center text-slate-400 py-10">請先在步驟二產生會議記錄。</div>
+          </div>
+
+          <div class="mt-6 text-right">
+            <button class="next-step-btn bg-slate-900 text-white py-3 px-8 rounded-lg font-bold hover:bg-slate-800" data-target="4">確認無誤，前往線上簽署 →</button>
+          </div>
+        </div>
+
+        <!-- STEP 4 -->
+        <div id="step4" class="step-content">
+          <h2 class="text-xl font-bold mb-2 border-l-4 border-emerald-500 pl-3">步驟四：修改確認版發布與線上簽署</h2>
+          <p class="mb-4 text-slate-600 text-sm">預覽確認版 → 各委員線上簽名 → 下載 Markdown／Word 歸檔。Word 可上傳 Google Drive 開成 Google 文件。</p>
+
+          <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+            <div class="lg:col-span-3">
+              <div class="flex justify-between items-center mb-2">
+                <h3 class="font-bold text-slate-700">最終版預覽</h3>
+                <span id="signProgress" class="text-xs text-slate-500"></span>
+              </div>
+              <div id="finalDocumentPreview" class="border rounded-xl bg-slate-50 p-5 text-sm min-h-[300px] max-h-[480px] overflow-y-auto leading-relaxed shadow-inner mb-4 font-serif"></div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <button id="exportMdBtn" class="bg-slate-900 hover:bg-black text-white font-bold py-3 rounded-lg">下載 Markdown (.md)</button>
+                <button id="exportDocxBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg">下載 Word (.docx)</button>
+              </div>
+              <p class="text-[11px] text-slate-500 mt-2">Google Doc：將 .docx 上傳至 Google 雲端硬碟 → 右鍵「開啟方式」→ Google 文件。</p>
+            </div>
+            <div class="lg:col-span-2">
+              <h3 class="font-bold text-slate-700 mb-2">委員簽署確認</h3>
+              <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-4 min-h-[300px]">
+                <div id="signatureList" class="space-y-3">
+                  <p class="text-slate-500 text-sm text-center py-8">請先在步驟三新增委員。</p>
+                </div>
+              </div>
+              <button id="markPublishedBtn" class="mt-3 w-full border border-emerald-600 text-emerald-800 font-bold py-2.5 rounded-lg hover:bg-emerald-100">標記為「已發布確認版」</button>
+              <p id="publishStatus" class="text-xs text-center mt-2 text-slate-500"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- 簽名 Modal -->
+  <div id="signatureModal" class="fixed inset-0 bg-slate-900/60 hidden flex items-center justify-center z-50 backdrop-blur-sm p-4">
+    <div class="bg-white p-5 rounded-2xl shadow-2xl max-w-lg w-full">
+      <h3 class="text-lg font-bold mb-1">委員簽署確認</h3>
+      <p class="text-sm text-slate-500 mb-3">請 <strong id="signingMemberName" class="text-orange-700"></strong> 簽名，確認已審閱會議記錄確認版。</p>
+      <div class="bg-slate-100 p-2 rounded-lg mb-3">
+        <canvas id="sigCanvas" width="450" height="200" class="signature-canvas w-full"></canvas>
+      </div>
+      <div class="flex justify-between items-center">
+        <button id="clearSigBtn" class="text-slate-500 hover:text-red-600 text-sm font-medium">清除重簽</button>
+        <div class="space-x-2">
+          <button id="cancelSigBtn" class="bg-slate-200 hover:bg-slate-300 px-4 py-2 rounded-lg text-sm font-medium">取消</button>
+          <button id="saveSigBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-bold">確認簽署</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="w-full max-w-6xl mt-6 text-center text-xs text-slate-400 pb-8">
+    meet-checkin/meeting-minutes · 宮廟管理師職能基準｜會議工作流 v2 ·
+    <a href="../dashboard.html" class="underline hover:text-slate-600">儀表板</a> ·
+    資料僅存本機瀏覽器（localStorage）
+  </footer>
+
+<script>
+(() => {
+  const STORAGE_KEY = 'temple_meeting_workflow_v2';
+
+  const AppState = {
+    videoFile: null,
+    audioUrl: null,
+    audioBlob: null,
+    baseFileName: 'Meeting',
+    transcriptBlocks: [],
+    members: ['主席', '紀錄'],
+    signatures: {},
+    currentRole: 'ADMIN',
+    published: false,
+    meta: { title: '', date: '', place: '', recorder: '' }
+  };
+
+  const els = {
+    tabs: document.querySelectorAll('.step-tab'),
+    contents: document.querySelectorAll('.step-content'),
+    nextBtns: document.querySelectorAll('.next-step-btn'),
+    dropZone: document.getElementById('dropZone'),
+    fileInput: document.getElementById('fileInput'),
+    fileInfo: document.getElementById('fileInfo'),
+    processBtn: document.getElementById('processBtn'),
+    splitPreset: document.getElementById('splitPreset'),
+    aspectPreset: document.getElementById('aspectPreset'),
+    exportSrtWithClips: document.getElementById('exportSrtWithClips'),
+    logContainer: document.getElementById('log-container'),
+    progressBar: document.getElementById('progressBar'),
+    progressText: document.getElementById('progressText'),
+    progressSection: document.getElementById('progressSection'),
+    downloadSection: document.getElementById('downloadSection'),
+    downloadLinks: document.getElementById('downloadLinks'),
+    audioPlayer: document.getElementById('audioPlayer'),
+    downloadMp3Btn: document.getElementById('downloadMp3Btn'),
+    audioOnlyInput: document.getElementById('audioOnlyInput'),
+    pasteTranscript: document.getElementById('pasteTranscript'),
+    importPasteBtn: document.getElementById('importPasteBtn'),
+    transcriptFileInput: document.getElementById('transcriptFileInput'),
+    transcriptContainer: document.getElementById('transcriptContainer'),
+    addManualBlockBtn: document.getElementById('addManualBlockBtn'),
+    emptyTranscriptMsg: document.getElementById('emptyTranscriptMsg'),
+    speechWarning: document.getElementById('speechWarning'),
+    exportSrtBtn: document.getElementById('exportSrtBtn'),
+    earlyExportMdBtn: document.getElementById('earlyExportMdBtn'),
+    earlyExportDocxBtn: document.getElementById('earlyExportDocxBtn'),
+    newMemberInput: document.getElementById('newMemberInput'),
+    addMemberBtn: document.getElementById('addMemberBtn'),
+    currentUserSelect: document.getElementById('currentUserSelect'),
+    memberChips: document.getElementById('memberChips'),
+    collabArea: document.getElementById('collaborationArea'),
+    roleStatusMsg: document.getElementById('roleStatusMsg'),
+    filterMineOnly: document.getElementById('filterMineOnly'),
+    finalPreview: document.getElementById('finalDocumentPreview'),
+    signatureList: document.getElementById('signatureList'),
+    exportDocxBtn: document.getElementById('exportDocxBtn'),
+    exportMdBtn: document.getElementById('exportMdBtn'),
+    signProgress: document.getElementById('signProgress'),
+    markPublishedBtn: document.getElementById('markPublishedBtn'),
+    publishStatus: document.getElementById('publishStatus'),
+    sigModal: document.getElementById('signatureModal'),
+    sigCanvas: document.getElementById('sigCanvas'),
+    signingMemberName: document.getElementById('signingMemberName'),
+    clearSigBtn: document.getElementById('clearSigBtn'),
+    cancelSigBtn: document.getElementById('cancelSigBtn'),
+    saveSigBtn: document.getElementById('saveSigBtn'),
+    metaTitle: document.getElementById('metaTitle'),
+    metaDate: document.getElementById('metaDate'),
+    metaPlace: document.getElementById('metaPlace'),
+    metaRecorder: document.getElementById('metaRecorder'),
+    autosaveStatus: document.getElementById('autosaveStatus'),
+    protocolBanner: document.getElementById('protocolBanner'),
+    saveProjectBtn: document.getElementById('saveProjectBtn'),
+    loadProjectBtn: document.getElementById('loadProjectBtn'),
+    projectFileInput: document.getElementById('projectFileInput'),
+    clearAllBtn: document.getElementById('clearAllBtn'),
+    demoDataBtn: document.getElementById('demoDataBtn')
+  };
+
+  /* ---------- utils ---------- */
+  const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const uid = () => Math.random().toString(36).slice(2, 11);
+  const fmtTime = (sec) => {
+    const s = Math.max(0, Math.floor(Number(sec) || 0));
+    const m = Math.floor(s / 60).toString().padStart(2, '0');
+    const r = (s % 60).toString().padStart(2, '0');
+    return `${m}:${r}`;
+  };
+  const srtTime = (sec) => {
+    const h = Math.floor(sec / 3600);
+    const m = Math.floor((sec % 3600) / 60);
+    const s = Math.floor(sec % 60);
+    const ms = Math.floor((sec % 1) * 1000);
+    return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')},${String(ms).padStart(3,'0')}`;
+  };
+  const parseClock = (t) => {
+    if (!t) return 0;
+    const parts = String(t).replace(',', '.').split(':').map(Number);
+    if (parts.length === 3) return parts[0]*3600 + parts[1]*60 + parts[2];
+    if (parts.length === 2) return parts[0]*60 + parts[1];
+    return Number(t) || 0;
+  };
+
+  function syncMetaFromForm() {
+    AppState.meta = {
+      title: els.metaTitle.value.trim(),
+      date: els.metaDate.value,
+      place: els.metaPlace.value.trim(),
+      recorder: els.metaRecorder.value.trim()
+    };
+  }
+  function syncMetaToForm() {
+    els.metaTitle.value = AppState.meta.title || '';
+    els.metaDate.value = AppState.meta.date || '';
+    els.metaPlace.value = AppState.meta.place || '';
+    els.metaRecorder.value = AppState.meta.recorder || '';
+  }
+
+  function persist() {
+    syncMetaFromForm();
+    const payload = {
+      meta: AppState.meta,
+      baseFileName: AppState.baseFileName,
+      transcriptBlocks: AppState.transcriptBlocks,
+      members: AppState.members,
+      signatures: AppState.signatures,
+      currentRole: AppState.currentRole,
+      published: AppState.published,
+      savedAt: new Date().toISOString()
+    };
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      els.autosaveStatus.textContent = `已自動儲存 ${new Date().toLocaleTimeString()}`;
+    } catch (e) {
+      els.autosaveStatus.textContent = '儲存失敗（容量可能不足）';
+    }
+  }
+
+  function restore() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const data = JSON.parse(raw);
+      Object.assign(AppState, {
+        meta: data.meta || AppState.meta,
+        baseFileName: data.baseFileName || AppState.baseFileName,
+        transcriptBlocks: data.transcriptBlocks || [],
+        members: data.members || AppState.members,
+        signatures: data.signatures || {},
+        currentRole: data.currentRole || 'ADMIN',
+        published: !!data.published
+      });
+      syncMetaToForm();
+      updateMemberLists();
+      els.autosaveStatus.textContent = `已還原 ${data.savedAt ? new Date(data.savedAt).toLocaleString() : ''}`;
+    } catch (_) {}
+  }
+
+  /* ---------- tabs ---------- */
+  function switchTab(step) {
+    const s = String(step);
+    els.tabs.forEach(t => {
+      t.classList.toggle('active', t.dataset.step === s);
+      t.classList.toggle('text-slate-500', t.dataset.step !== s);
+    });
+    els.contents.forEach(c => c.classList.remove('active'));
+    document.getElementById(`step${s}`).classList.add('active');
+    if (s === '2') renderTranscripts();
+    if (s === '3') renderCollaborationArea();
+    if (s === '4') renderFinalStep();
+  }
+  els.tabs.forEach(tab => tab.addEventListener('click', () => switchTab(tab.dataset.step)));
+  els.nextBtns.forEach(btn => btn.addEventListener('click', () => switchTab(btn.dataset.target)));
+
+  /* ---------- FFmpeg ---------- */
+  const FFmpegNS = window.FFmpegWASM || window;
+  const UtilNS = window.FFmpegUtil || window;
+  const FFmpeg = FFmpegNS.FFmpeg;
+  const fetchFile = UtilNS.fetchFile;
+  const toBlobURL = UtilNS.toBlobURL;
+  let ff = null;
+
+  if (location.protocol === 'file:') {
+    els.protocolBanner.classList.remove('hidden');
+    els.speechWarning.classList.remove('hidden');
+    els.speechWarning.innerHTML = '目前為 file:// 模式：FFmpeg 與部分功能可能失敗。請用上方指令啟動本機伺服器。';
+  }
+
+  function logMsg(msg) {
+    const el = document.createElement('div');
+    el.textContent = msg;
+    els.logContainer.appendChild(el);
+    els.logContainer.scrollTop = els.logContainer.scrollHeight;
+  }
+
+  async function initFFmpeg() {
+    if (ff) return;
+    if (!FFmpeg || !fetchFile || !toBlobURL) {
+      throw new Error('FFmpeg 函式庫未正確載入，請檢查網路或 CDN。');
+    }
+    ff = new FFmpeg();
+    ff.on('log', ({ message }) => {
+      if (/frame=|size=|time=/.test(message)) logMsg(`[引擎] ${message.slice(0, 120)}`);
+    });
+    ff.on('progress', ({ progress }) => {
+      const p = Math.min(100, Math.max(0, Math.round((progress || 0) * 100)));
+      els.progressBar.style.width = `${p}%`;
+      els.progressText.textContent = `${p}%`;
+    });
+    const coreBase = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd';
+    logMsg('載入 FFmpeg.wasm…');
+    await ff.load({
+      coreURL: await toBlobURL(`${coreBase}/ffmpeg-core.js`, 'text/javascript'),
+      wasmURL: await toBlobURL(`${coreBase}/ffmpeg-core.wasm`, 'application/wasm')
+    });
+    logMsg('引擎就緒。');
+  }
+
+  els.dropZone.addEventListener('click', () => els.fileInput.click());
+  els.dropZone.addEventListener('dragover', e => { e.preventDefault(); els.dropZone.classList.add('dragover'); });
+  els.dropZone.addEventListener('dragleave', () => els.dropZone.classList.remove('dragover'));
+  els.dropZone.addEventListener('drop', e => {
+    e.preventDefault(); els.dropZone.classList.remove('dragover');
+    if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+  });
+  els.fileInput.addEventListener('change', e => { if (e.target.files[0]) handleFile(e.target.files[0]); });
+
+  function handleFile(file) {
+    if (!file.type.startsWith('video/') && !/\.(mp4|webm|mov|mkv)$/i.test(file.name)) {
+      alert('請上傳影片檔（MP4 / WebM / MOV）');
+      return;
+    }
+    AppState.videoFile = file;
+    AppState.baseFileName = file.name.replace(/\.[^/.]+$/, '').replace(/[^\w\u4e00-\u9fa5\-]+/g, '_') || 'Meeting';
+    document.getElementById('fileNameDisplay').textContent = file.name;
+    document.getElementById('fileSizeDisplay').textContent = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
+    els.fileInfo.classList.remove('hidden');
+    els.processBtn.disabled = false;
+  }
+
+  function createDlBtn(url, filename, text) {
+    const a = document.createElement('a');
+    a.href = url; a.download = filename;
+    a.className = 'bg-white border border-emerald-200 rounded-lg p-3 text-sm hover:bg-emerald-50 flex justify-between items-center shadow-sm font-medium';
+    a.innerHTML = `<span>${esc(text)}</span><span class="text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded text-xs">下載</span>`;
+    els.downloadLinks.appendChild(a);
+  }
+
+  function setAudioFromBlob(blob, name) {
+    if (AppState.audioUrl) URL.revokeObjectURL(AppState.audioUrl);
+    AppState.audioBlob = blob;
+    AppState.audioUrl = URL.createObjectURL(blob);
+    els.audioPlayer.src = AppState.audioUrl;
+    els.downloadMp3Btn.disabled = false;
+    els.downloadMp3Btn.onclick = () => saveAs(blob, name || `${AppState.baseFileName}.mp3`);
+  }
+
+  function vfForAspect(aspect) {
+    if (aspect === '9:16') return 'scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920';
+    if (aspect === '16:9') return 'scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720';
+    if (aspect === '1:1') return 'scale=1080:1080:force_original_aspect_ratio=increase,crop=1080:1080';
+    return null;
+  }
+
+  els.processBtn.addEventListener('click', async () => {
+    if (!AppState.videoFile) return;
+    const splitSeconds = parseInt(els.splitPreset.value, 10);
+    const aspect = els.aspectPreset.value;
+
+    els.processBtn.disabled = true;
+    els.processBtn.textContent = '處理中，請勿關閉…';
+    els.progressSection.classList.remove('hidden');
+    els.downloadSection.classList.add('hidden');
+    els.downloadLinks.innerHTML = '';
+    els.logContainer.innerHTML = '';
+
+    try {
+      await initFFmpeg();
+      const ext = (AppState.videoFile.name.match(/\.[^.]+$/) || ['.mp4'])[0].toLowerCase();
+      const inputName = 'input' + (ext === '.mov' ? '.mov' : ext === '.webm' ? '.webm' : '.mp4');
+      await ff.writeFile(inputName, await fetchFile(AppState.videoFile));
+
+      logMsg('任務一：提取完整會議 MP3…');
+      const audioName = 'meeting_audio.mp3';
+      await ff.exec(['-i', inputName, '-vn', '-acodec', 'libmp3lame', '-q:a', '2', audioName]);
+      const audioData = await ff.readFile(audioName);
+      const audioBlob = new Blob([audioData.buffer], { type: 'audio/mpeg' });
+      setAudioFromBlob(audioBlob, `${AppState.baseFileName}.mp3`);
+      createDlBtn(AppState.audioUrl, `${AppState.baseFileName}.mp3`, '完整會議音檔 MP3（逐字稿聽打用）');
+      await ff.deleteFile(audioName);
+
+      if (splitSeconds > 0) {
+        logMsg(`任務二：切割短影音（每 ${splitSeconds} 秒，比例 ${aspect}）…`);
+        const pattern = 'part_%03d.mp4';
+        try {
+          if (aspect === 'copy') {
+            await ff.exec(['-i', inputName, '-c', 'copy', '-map', '0', '-segment_time', String(splitSeconds), '-f', 'segment', '-reset_timestamps', '1', pattern]);
+          } else {
+            const vf = vfForAspect(aspect);
+            await ff.exec(['-i', inputName, '-vf', vf, '-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '28', '-c:a', 'aac', '-b:a', '128k', '-segment_time', String(splitSeconds), '-f', 'segment', '-reset_timestamps', '1', pattern]);
+          }
+          let partIdx = 0;
+          while (true) {
+            const expected = `part_${String(partIdx).padStart(3, '0')}.mp4`;
+            try {
+              const pData = await ff.readFile(expected);
+              const pUrl = URL.createObjectURL(new Blob([pData.buffer], { type: 'video/mp4' }));
+              createDlBtn(pUrl, `${AppState.baseFileName}_Part${partIdx + 1}.mp4`, `社群短片 Part ${partIdx + 1}`);
+              await ff.deleteFile(expected);
+              partIdx++;
+            } catch { break; }
+          }
+          logMsg(`切割完成：共 ${partIdx} 段。`);
+          if (els.exportSrtWithClips.checked && partIdx > 0) {
+            const srt = buildSrtFromBlocks(0, splitSeconds * partIdx);
+            const srtBlob = new Blob([srt], { type: 'text/plain;charset=utf-8' });
+            createDlBtn(URL.createObjectURL(srtBlob), `${AppState.baseFileName}_字幕.srt`, '字幕檔 SRT（上傳平台後置加字幕）');
+          }
+        } catch (err) {
+          logMsg('切割失敗（編碼可能不相容）。已保留 MP3。可改「原始比例」重試。');
+          console.error(err);
+        }
+      } else {
+        logMsg('已跳過影片切割。');
+      }
+
+      try { await ff.deleteFile(inputName); } catch (_) {}
+      els.processBtn.textContent = '處理完成（可再處理）';
+      els.processBtn.disabled = false;
+      els.downloadSection.classList.remove('hidden');
+      persist();
+    } catch (error) {
+      console.error(error);
+      logMsg('錯誤：' + (error.message || error));
+      logMsg('請確認：1) 用 http://localhost 開啟  2) Chrome/Edge  3) 影片不要過大');
+      els.processBtn.disabled = false;
+      els.processBtn.textContent = '發生錯誤，重試';
+    }
+  });
+
+  els.audioOnlyInput.addEventListener('change', e => {
+    const f = e.target.files[0];
+    if (!f) return;
+    setAudioFromBlob(f, f.name);
+    AppState.baseFileName = f.name.replace(/\.[^/.]+$/, '').replace(/[^\w\u4e00-\u9fa5\-]+/g, '_') || AppState.baseFileName;
+    persist();
+  });
+
+  /* ---------- transcript import ---------- */
+  function addTranscriptBlock(speaker, text, timestamp) {
+    AppState.transcriptBlocks.push({
+      id: uid(),
+      speaker: speaker || '未指定講者',
+      text: (text || '').trim(),
+      timestamp: timestamp || fmtTime(els.audioPlayer.currentTime || 0)
+    });
+    renderTranscripts();
+    persist();
+  }
+
+  function parseSpeakerLines(raw) {
+    const lines = raw.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+    const blocks = [];
+    let current = null;
+    const speakerRe = /^([^:：\-]{1,40})[:：]\s*(.*)$/;
+    lines.forEach(line => {
+      const m = line.match(speakerRe);
+      if (m) {
+        if (current) blocks.push(current);
+        current = { speaker: m[1].trim(), text: m[2] || '', timestamp: fmtTime(blocks.length * 30) };
+        if (!AppState.members.includes(current.speaker) && current.speaker !== '未指定講者') {
+          // 不自動塞入成員，避免雜訊；只在明確新增時加入
+        }
+      } else if (current) {
+        current.text += (current.text ? ' ' : '') + line;
+      } else {
+        current = { speaker: '未指定講者', text: line, timestamp: fmtTime(blocks.length * 30) };
+      }
+    });
+    if (current) blocks.push(current);
+    return blocks.filter(b => b.text.trim());
+  }
+
+  function parseSrtOrVtt(raw) {
+    const cleaned = raw.replace(/^WEBVTT.*$/m, '').trim();
+    const chunks = cleaned.split(/\n\s*\n/);
+    const blocks = [];
+    chunks.forEach(chunk => {
+      const lines = chunk.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+      if (!lines.length) return;
+      let timeLine = lines.find(l => l.includes('-->'));
+      let textLines = lines.filter(l => l !== timeLine && !/^\d+$/.test(l));
+      let ts = fmtTime(blocks.length * 5);
+      if (timeLine) {
+        const start = timeLine.split('-->')[0].trim();
+        ts = fmtTime(parseClock(start.replace(',', '.')));
+      }
+      const text = textLines.join(' ');
+      if (!text) return;
+      const m = text.match(/^([^:：]{1,40})[:：]\s*(.*)$/);
+      if (m) blocks.push({ speaker: m[1].trim(), text: m[2], timestamp: ts });
+      else blocks.push({ speaker: '未指定講者', text, timestamp: ts });
+    });
+    return blocks;
+  }
+
+  els.importPasteBtn.addEventListener('click', () => {
+    const raw = els.pasteTranscript.value.trim();
+    if (!raw) return alert('請先貼上逐字稿文字');
+    const blocks = raw.includes('-->') ? parseSrtOrVtt(raw) : parseSpeakerLines(raw);
+    if (!blocks.length) return alert('無法解析內容，請確認格式');
+    blocks.forEach(b => AppState.transcriptBlocks.push({ id: uid(), ...b }));
+    els.pasteTranscript.value = '';
+    renderTranscripts();
+    persist();
+  });
+
+  els.transcriptFileInput.addEventListener('change', async e => {
+    const f = e.target.files[0];
+    if (!f) return;
+    const raw = await f.text();
+    const blocks = /\.srt$|\.vtt$/i.test(f.name) || raw.includes('-->') ? parseSrtOrVtt(raw) : parseSpeakerLines(raw);
+    blocks.forEach(b => AppState.transcriptBlocks.push({ id: uid(), ...b }));
+    renderTranscripts();
+    persist();
+    e.target.value = '';
+  });
+
+  els.addManualBlockBtn.addEventListener('click', () => {
+    addTranscriptBlock(AppState.members[0] || '主席', '請輸入發言內容…', '記錄');
+  });
+
+  function buildSrtFromBlocks(startSec = 0, totalHint = null) {
+    if (!AppState.transcriptBlocks.length) {
+      return `1\n${srtTime(0)} --> ${srtTime(5)}\n（尚無逐字稿，請於步驟二匯入後再匯出）\n`;
+    }
+    return AppState.transcriptBlocks.map((b, i) => {
+      const start = parseClock(b.timestamp) || (startSec + i * 8);
+      const end = start + 7;
+      return `${i + 1}\n${srtTime(start)} --> ${srtTime(end)}\n${b.speaker}：${b.text}\n`;
+    }).join('\n');
+  }
+
+  els.exportSrtBtn.addEventListener('click', () => {
+    const blob = new Blob([buildSrtFromBlocks()], { type: 'text/plain;charset=utf-8' });
+    saveAs(blob, `${AppState.baseFileName}_字幕.srt`);
+  });
+
+  function renderTranscripts() {
+    const empty = document.getElementById('emptyTranscriptMsg');
+    els.transcriptContainer.innerHTML = '';
+    if (!AppState.transcriptBlocks.length) {
+      const msg = document.createElement('div');
+      msg.id = 'emptyTranscriptMsg';
+      msg.className = 'text-center text-slate-400 text-sm py-14';
+      msg.textContent = '尚未有記錄。請貼上逐字稿或手動新增。';
+      els.transcriptContainer.appendChild(msg);
+      return;
+    }
+    AppState.transcriptBlocks.forEach((block, index) => {
+      const div = document.createElement('div');
+      div.className = 'transcript-block p-3 border border-slate-200 bg-white rounded-lg flex gap-3 group shadow-sm';
+
+      const left = document.createElement('div');
+      left.className = 'w-28 flex-shrink-0';
+      const sel = document.createElement('select');
+      sel.className = 'w-full text-xs font-bold text-teal-900 bg-teal-50 border border-teal-100 rounded p-1.5';
+      const opts = ['未指定講者', ...AppState.members];
+      if (!opts.includes(block.speaker)) opts.push(block.speaker);
+      opts.forEach(m => {
+        const o = document.createElement('option');
+        o.value = m; o.textContent = m;
+        if (m === block.speaker) o.selected = true;
+        sel.appendChild(o);
+      });
+      sel.onchange = e => { AppState.transcriptBlocks[index].speaker = e.target.value; persist(); };
+      left.appendChild(sel);
+      const time = document.createElement('input');
+      time.className = 'w-full text-[11px] text-center text-slate-500 mt-1 border border-slate-100 rounded';
+      time.value = block.timestamp;
+      time.onchange = e => { AppState.transcriptBlocks[index].timestamp = e.target.value; persist(); };
+      left.appendChild(time);
+
+      const content = document.createElement('div');
+      content.className = 'flex-1 relative';
+      const textDiv = document.createElement('div');
+      textDiv.className = 'editable-text text-slate-800 text-sm leading-relaxed';
+      textDiv.contentEditable = 'true';
+      textDiv.textContent = block.text;
+      textDiv.onblur = e => { AppState.transcriptBlocks[index].text = e.target.textContent; persist(); };
+      const del = document.createElement('button');
+      del.className = 'absolute top-0 right-0 text-red-400 hover:text-red-600 hidden group-hover:block text-[11px] bg-red-50 px-2 py-0.5 rounded';
+      del.textContent = '刪除';
+      del.onclick = () => { AppState.transcriptBlocks.splice(index, 1); renderTranscripts(); persist(); };
+      content.appendChild(textDiv);
+      content.appendChild(del);
+
+      div.appendChild(left);
+      div.appendChild(content);
+      els.transcriptContainer.appendChild(div);
+    });
+    els.transcriptContainer.scrollTop = els.transcriptContainer.scrollHeight;
+  }
+
+  /* ---------- members / collab ---------- */
+  function updateMemberLists() {
+    const cur = els.currentUserSelect.value || AppState.currentRole;
+    els.currentUserSelect.innerHTML = '<option value="ADMIN">系統管理員（可編輯全部）</option>';
+    AppState.members.forEach(m => {
+      const o = document.createElement('option');
+      o.value = m; o.textContent = `委員：${m}`;
+      els.currentUserSelect.appendChild(o);
+    });
+    if ([...els.currentUserSelect.options].some(o => o.value === cur)) els.currentUserSelect.value = cur;
+    AppState.currentRole = els.currentUserSelect.value;
+
+    els.memberChips.innerHTML = '';
+    AppState.members.forEach(m => {
+      const chip = document.createElement('span');
+      chip.className = 'inline-flex items-center gap-1 text-xs bg-violet-100 text-violet-900 px-2 py-1 rounded-full';
+      chip.innerHTML = `${esc(m)} <button data-m="${esc(m)}" class="text-violet-500 hover:text-red-600 font-bold" title="移除">×</button>`;
+      chip.querySelector('button').onclick = () => {
+        if (!confirm(`移除委員「${m}」？`)) return;
+        AppState.members = AppState.members.filter(x => x !== m);
+        delete AppState.signatures[m];
+        updateMemberLists();
+        renderTranscripts();
+        renderCollaborationArea();
+        persist();
+      };
+      els.memberChips.appendChild(chip);
+    });
+  }
+
+  els.addMemberBtn.addEventListener('click', () => {
+    const name = els.newMemberInput.value.trim();
+    if (!name) return;
+    if (AppState.members.includes(name)) return alert('委員已存在');
+    AppState.members.push(name);
+    els.newMemberInput.value = '';
+    updateMemberLists();
+    renderTranscripts();
+    renderCollaborationArea();
+    persist();
+  });
+  els.newMemberInput.addEventListener('keydown', e => { if (e.key === 'Enter') els.addMemberBtn.click(); });
+  els.currentUserSelect.addEventListener('change', e => {
+    AppState.currentRole = e.target.value;
+    renderCollaborationArea();
+    persist();
+  });
+  els.filterMineOnly.addEventListener('change', () => renderCollaborationArea());
+
+  function renderCollaborationArea() {
+    updateMemberLists();
+    els.collabArea.innerHTML = '';
+    if (!AppState.transcriptBlocks.length) {
+      els.collabArea.innerHTML = '<div class="text-center text-slate-400 py-16">尚無會議記錄，請先至步驟二匯入。</div>';
+      els.roleStatusMsg.textContent = '未準備好';
+      return;
+    }
+    const isAdmin = AppState.currentRole === 'ADMIN';
+    els.roleStatusMsg.textContent = isAdmin ? '管理員模式：可編輯全部' : `委員模式：僅能編輯「${AppState.currentRole}」`;
+    els.roleStatusMsg.className = `text-xs px-2 py-1 rounded font-bold ${isAdmin ? 'bg-blue-100 text-blue-800' : 'bg-violet-100 text-violet-800'}`;
+
+    AppState.transcriptBlocks.forEach((block, index) => {
+      const isMine = isAdmin || AppState.currentRole === block.speaker;
+      if (els.filterMineOnly.checked && !isAdmin && !isMine) return;
+
+      const div = document.createElement('div');
+      div.className = `p-3 mb-2 rounded-lg border transition ${isMine ? 'bg-white border-violet-400 shadow-sm' : 'bg-slate-100 border-slate-200 opacity-60'}`;
+      div.innerHTML = `<div class="text-xs mb-2 flex justify-between items-center pb-2 border-b ${isMine ? 'border-violet-100' : 'border-slate-200'}">
+        <div class="flex items-center gap-2">
+          <span class="px-2 py-0.5 rounded-full font-bold ${isMine ? 'bg-violet-100 text-violet-700' : 'bg-slate-200 text-slate-600'}">${esc(block.speaker)}</span>
+          <span class="text-slate-400 font-mono">${esc(block.timestamp)}</span>
+        </div>
+        <span class="${isMine ? 'text-violet-600' : 'text-slate-400'} text-[11px]">${isMine ? '點擊文字進行二修' : '唯讀鎖定'}</span>
+      </div>`;
+      const textDiv = document.createElement('div');
+      textDiv.className = `editable-text text-sm leading-relaxed ${isMine ? 'text-slate-900' : 'text-slate-500 select-none'}`;
+      textDiv.contentEditable = isMine ? 'true' : 'false';
+      textDiv.textContent = block.text;
+      if (isMine) {
+        textDiv.onblur = e => { AppState.transcriptBlocks[index].text = e.target.textContent; persist(); };
+      }
+      div.appendChild(textDiv);
+      els.collabArea.appendChild(div);
+    });
+  }
+
+  /* ---------- final / sign / export ---------- */
+  function buildMd() {
+    syncMetaFromForm();
+    let md = `# ${AppState.meta.title || '會議記錄'}\n\n`;
+    md += `- 日期：${AppState.meta.date || '（未填）'}\n`;
+    md += `- 地點：${AppState.meta.place || '（未填）'}\n`;
+    md += `- 紀錄：${AppState.meta.recorder || '（未填）'}\n`;
+    md += `- 產出：${new Date().toLocaleString()}\n`;
+    md += `- 狀態：${AppState.published ? '已發布確認版' : '草稿／修改確認中'}\n\n---\n\n## 會議內容\n\n`;
+    AppState.transcriptBlocks.forEach(b => {
+      md += `**${b.speaker}** \`[${b.timestamp}]\`\n\n> ${b.text}\n\n`;
+    });
+    md += `---\n\n## 委員簽署確認\n\n`;
+    AppState.members.forEach(m => {
+      md += `- **${m}**：${AppState.signatures[m] ? '已簽署' : '未簽署'}\n`;
+    });
+    return md;
+  }
+
+  async function exportDocx() {
+    syncMetaFromForm();
+    const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, ImageRun } = docx;
+    const children = [
+      new Paragraph({ text: AppState.meta.title || '會議記錄確認版', heading: HeadingLevel.TITLE, alignment: AlignmentType.CENTER }),
+      new Paragraph({
+        alignment: AlignmentType.CENTER,
+        spacing: { after: 400 },
+        children: [new TextRun({ text: `日期：${AppState.meta.date || '—'}｜地點：${AppState.meta.place || '—'}｜紀錄：${AppState.meta.recorder || '—'}`, size: 20, font: '微軟正黑體', color: '666666' })]
+      }),
+      new Paragraph({
+        spacing: { after: 300 },
+        children: [new TextRun({ text: AppState.published ? '【已發布確認版】' : '【修改確認版】', bold: true, color: AppState.published ? '047857' : 'c2410c', font: '微軟正黑體', size: 22 })]
+      })
+    ];
+    AppState.transcriptBlocks.forEach(b => {
+      children.push(new Paragraph({
+        children: [
+          new TextRun({ text: `${b.speaker} `, bold: true, size: 24, font: '微軟正黑體', color: '1e3a5f' }),
+          new TextRun({ text: `[${b.timestamp}]`, size: 18, font: 'Courier New', color: '888888' })
+        ]
+      }));
+      children.push(new Paragraph({
+        spacing: { after: 240 },
+        children: [new TextRun({ text: b.text, size: 22, font: '微軟正黑體' })]
+      }));
+    });
+    children.push(new Paragraph({ text: '委員簽署確認', heading: HeadingLevel.HEADING_1, spacing: { before: 400, after: 200 } }));
+    for (const m of AppState.members) {
+      children.push(new Paragraph({
+        children: [new TextRun({ text: `${m}：${AppState.signatures[m] ? '已線上簽署' : '尚未簽署'}`, size: 22, font: '微軟正黑體' })],
+        spacing: { after: 80 }
+      }));
+      if (AppState.signatures[m]) {
+        try {
+          const b64 = AppState.signatures[m].split(',')[1];
+          const bin = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+          children.push(new Paragraph({
+            spacing: { after: 200 },
+            children: [new ImageRun({ data: bin, transformation: { width: 160, height: 70 }, type: 'png' })]
+          }));
+        } catch (_) {}
+      }
+    }
+    const doc = new Document({ sections: [{ children }] });
+    const blob = await Packer.toBlob(doc);
+    saveAs(blob, `${AppState.baseFileName}_會議記錄.docx`);
+  }
+
+  function renderFinalStep() {
+    syncMetaFromForm();
+    els.finalPreview.innerHTML = '';
+    const title = document.createElement('h1');
+    title.className = 'text-xl font-bold text-center mb-1';
+    title.textContent = AppState.meta.title || '會議記錄確認版';
+    els.finalPreview.appendChild(title);
+    const meta = document.createElement('p');
+    meta.className = 'text-center text-slate-500 text-xs mb-2';
+    meta.textContent = `日期：${AppState.meta.date || '—'}｜${AppState.meta.place || '—'}｜紀錄：${AppState.meta.recorder || '—'}`;
+    els.finalPreview.appendChild(meta);
+    const badge = document.createElement('p');
+    badge.className = `text-center text-xs font-bold mb-4 ${AppState.published ? 'text-emerald-700' : 'text-orange-700'}`;
+    badge.textContent = AppState.published ? '【已發布確認版】' : '【修改確認版｜待簽署】';
+    els.finalPreview.appendChild(badge);
+
+    AppState.transcriptBlocks.forEach(block => {
+      const p = document.createElement('p');
+      p.className = 'mb-3 pb-3 border-b border-slate-100';
+      p.innerHTML = `<span class="font-bold text-slate-900 bg-orange-50 px-1 rounded">${esc(block.speaker)}</span> <span class="text-xs text-slate-400 font-mono">[${esc(block.timestamp)}]</span><br><span class="text-slate-800 mt-1 block">${esc(block.text)}</span>`;
+      els.finalPreview.appendChild(p);
+    });
+
+    const signed = AppState.members.filter(m => AppState.signatures[m]).length;
+    els.signProgress.textContent = `簽署進度 ${signed}/${AppState.members.length}`;
+
+    els.signatureList.innerHTML = '';
+    if (!AppState.members.length) {
+      els.signatureList.innerHTML = '<p class="text-slate-400 text-sm text-center py-6">無委員名單</p>';
+    }
+    AppState.members.forEach(member => {
+      const div = document.createElement('div');
+      div.className = 'flex items-center justify-between p-2.5 bg-white border border-emerald-200 rounded-lg shadow-sm';
+      const name = document.createElement('span');
+      name.className = 'font-bold text-slate-700 text-sm';
+      name.textContent = member;
+      const right = document.createElement('div');
+      if (AppState.signatures[member]) {
+        right.className = 'flex items-center gap-2';
+        const img = document.createElement('img');
+        img.src = AppState.signatures[member];
+        img.className = 'h-10 w-20 object-contain bg-slate-50 border rounded';
+        img.alt = member + ' 簽名';
+        const retake = document.createElement('button');
+        retake.textContent = '重簽';
+        retake.className = 'text-xs text-blue-600 underline';
+        retake.onclick = () => openSignatureModal(member);
+        right.appendChild(img); right.appendChild(retake);
+      } else {
+        const btn = document.createElement('button');
+        btn.textContent = '簽署確認';
+        btn.className = 'text-sm bg-emerald-500 text-white px-3 py-1.5 rounded shadow hover:bg-emerald-600 font-medium';
+        btn.onclick = () => openSignatureModal(member);
+        right.appendChild(btn);
+      }
+      div.appendChild(name); div.appendChild(right);
+      els.signatureList.appendChild(div);
+    });
+    els.publishStatus.textContent = AppState.published
+      ? `已於本機標記發布。簽署 ${signed}/${AppState.members.length}`
+      : '尚未標記發布';
+  }
+
+  let ctx = els.sigCanvas.getContext('2d');
+  let isDrawing = false;
+  let currentSigningMember = '';
+
+  function openSignatureModal(member) {
+    currentSigningMember = member;
+    els.signingMemberName.textContent = member;
+    const rect = els.sigCanvas.getBoundingClientRect();
+    els.sigCanvas.width = Math.floor(rect.width);
+    els.sigCanvas.height = 200;
+    ctx.clearRect(0, 0, els.sigCanvas.width, els.sigCanvas.height);
+    ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.lineWidth = 3; ctx.strokeStyle = '#1e3a5f';
+    els.sigModal.classList.remove('hidden');
+  }
+  function closeSignatureModal() { els.sigModal.classList.add('hidden'); }
+  function getPos(e) {
+    const rect = els.sigCanvas.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    return { x: clientX - rect.left, y: clientY - rect.top };
+  }
+  function startDrawing(e) { e.preventDefault(); isDrawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); }
+  function draw(e) { if (!isDrawing) return; e.preventDefault(); const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); }
+  function stopDrawing() { isDrawing = false; }
+
+  els.sigCanvas.addEventListener('mousedown', startDrawing);
+  els.sigCanvas.addEventListener('mousemove', draw);
+  els.sigCanvas.addEventListener('mouseup', stopDrawing);
+  els.sigCanvas.addEventListener('mouseout', stopDrawing);
+  els.sigCanvas.addEventListener('touchstart', startDrawing, { passive: false });
+  els.sigCanvas.addEventListener('touchmove', draw, { passive: false });
+  els.sigCanvas.addEventListener('touchend', stopDrawing);
+  els.clearSigBtn.onclick = () => ctx.clearRect(0, 0, els.sigCanvas.width, els.sigCanvas.height);
+  els.cancelSigBtn.onclick = closeSignatureModal;
+  els.saveSigBtn.onclick = () => {
+    const blank = document.createElement('canvas');
+    blank.width = els.sigCanvas.width; blank.height = els.sigCanvas.height;
+    if (els.sigCanvas.toDataURL() === blank.toDataURL()) return alert('請先簽名');
+    AppState.signatures[currentSigningMember] = els.sigCanvas.toDataURL('image/png');
+    closeSignatureModal();
+    renderFinalStep();
+    persist();
+  };
+
+  els.exportMdBtn.addEventListener('click', () => saveAs(new Blob([buildMd()], { type: 'text/markdown;charset=utf-8' }), `${AppState.baseFileName}_會議記錄.md`));
+  els.earlyExportMdBtn.addEventListener('click', () => els.exportMdBtn.click());
+  els.exportDocxBtn.addEventListener('click', () => exportDocx().catch(err => alert('匯出 Word 失敗：' + err.message)));
+  els.earlyExportDocxBtn.addEventListener('click', () => els.exportDocxBtn.click());
+
+  els.markPublishedBtn.addEventListener('click', () => {
+    const unsigned = AppState.members.filter(m => !AppState.signatures[m]);
+    if (unsigned.length && !confirm(`尚有未簽署：${unsigned.join('、')}\n仍要標記為已發布確認版？`)) return;
+    AppState.published = true;
+    renderFinalStep();
+    persist();
+    alert('已標記為「已發布確認版」。請下載 MD／DOCX 歸檔，並視需要上傳 Google Drive。');
+  });
+
+  /* ---------- project save/load ---------- */
+  els.saveProjectBtn.addEventListener('click', () => {
+    persist();
+    const raw = localStorage.getItem(STORAGE_KEY);
+    saveAs(new Blob([raw], { type: 'application/json' }), `${AppState.baseFileName}_專案.json`);
+  });
+  els.loadProjectBtn.addEventListener('click', () => els.projectFileInput.click());
+  els.projectFileInput.addEventListener('change', async e => {
+    const f = e.target.files[0];
+    if (!f) return;
+    try {
+      const data = JSON.parse(await f.text());
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      restore();
+      renderTranscripts();
+      renderCollaborationArea();
+      renderFinalStep();
+      alert('專案已載入');
+    } catch {
+      alert('專案檔格式錯誤');
+    }
+    e.target.value = '';
+  });
+  els.clearAllBtn.addEventListener('click', () => {
+    if (!confirm('確定清空本機專案資料？')) return;
+    localStorage.removeItem(STORAGE_KEY);
+    AppState.transcriptBlocks = [];
+    AppState.signatures = {};
+    AppState.published = false;
+    AppState.members = ['主席', '紀錄'];
+    renderTranscripts();
+    updateMemberLists();
+    renderCollaborationArea();
+    renderFinalStep();
+    els.autosaveStatus.textContent = '已清空';
+  });
+
+  els.demoDataBtn.addEventListener('click', () => {
+    AppState.meta = {
+      title: '宮廟管理師職能基準推動｜第3次專案會議',
+      date: new Date().toISOString().slice(0, 10),
+      place: 'Google Meet',
+      recorder: '工讀生示範'
+    };
+    syncMetaToForm();
+    AppState.members = ['主席', '紀錄', '王委員', '李專家', '陳顧問'];
+    AppState.transcriptBlocks = [
+      { id: uid(), speaker: '主席', text: '各位委員午安，本日審查宮廟管理師職能基準草案第三版，請依序發言。', timestamp: '00:00' },
+      { id: uid(), speaker: '王委員', text: '建議將「廟務行政」與「信眾服務」職能條目拆分，以利評量指標對應。', timestamp: '00:45' },
+      { id: uid(), speaker: '李專家', text: '職能基準第三項「風險與法規遵循」應補強個資與財務透明相關行為指標。', timestamp: '02:10' },
+      { id: uid(), speaker: '陳顧問', text: '同意，並建議工讀生後續將會議精華剪成60秒短影音供社群宣傳。', timestamp: '03:20' },
+      { id: uid(), speaker: '紀錄', text: '以上發言列入修正對照表，下次會議前提交確認版供簽署。', timestamp: '04:05' }
+    ];
+    AppState.signatures = {};
+    AppState.published = false;
+    updateMemberLists();
+    renderTranscripts();
+    persist();
+    alert('已載入示範資料，可從步驟三測試委員編輯與簽署。');
+    switchTab(2);
+  });
+
+  // meta autosave
+  ['metaTitle','metaDate','metaPlace','metaRecorder'].forEach(id => {
+    els[id].addEventListener('change', persist);
+    els[id].addEventListener('blur', persist);
+  });
+
+  // init
+  if (!els.metaDate.value) els.metaDate.value = new Date().toISOString().slice(0, 10);
+  restore();
+  updateMemberLists();
+  renderTranscripts();
+})();
+</script>
+</body>
+</html>

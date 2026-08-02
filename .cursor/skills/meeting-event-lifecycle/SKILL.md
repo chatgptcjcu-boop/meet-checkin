@@ -86,6 +86,9 @@ planned → preparing → active → completed
 | `observerPack` | **列席／旁聽資料包**（非講師、非委員；不含 Phase／填答表） |
 | `trainingReportWizard` | （可選）備援訓練｜報告書格式精靈 `training/icap-planning-report-wizard/index.html` |
 | `trainingReportWorksheet` | （可選）報告書講師學習單 `…/worksheets/instructor-worksheet-online.html` |
+| `meetingMinutes` | （可選）會後會議記錄工作流 `meeting-minutes/`；儀表板 ACTIVE／completed 無此鍵時仍顯示預設入口 |
+
+訓練模組與**會議記錄工作流**不綁單一 active 活動；`dashboard.html` 固定區塊「會後｜會議記錄整理工作流」指向 `meeting-minutes/`（錄影切割 → 逐字稿 → 委員二修 → 簽署）。詳細 SOP：`meeting-minutes/workflow.html`。全域 skill 亦可參考 `~/.cursor/skills/temple-meeting-workflow/`。
 
 訓練模組 **不綁 active 活動**；`dashboard.html` quick-links 已固定列出報告書精靈入口。複製套版見 [icap-report-wizard-kit](../icap-report-wizard-kit/SKILL.md)。
 
